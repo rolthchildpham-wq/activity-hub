@@ -2,7 +2,7 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const vm=require('node:vm');
 const html=fs.readFileSync('topkey/sports/badminton/index.html','utf8');
-const match=html.match(/<script id="topkey-auth-boot-cleanup">([\\s\\S]*?)<\\/script>/);
+const match=html.match(/<script id="topkey-auth-boot-cleanup">([\s\S]*?)<\/script>/);
 assert.ok(match,'Independent auth overlay cleanup script exists');
 const listeners={};
 const removed=[];
