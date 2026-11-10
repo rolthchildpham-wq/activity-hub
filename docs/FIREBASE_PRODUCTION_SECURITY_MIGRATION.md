@@ -33,3 +33,21 @@ The `.github/workflows/topkey-production-safety.yml` job fails if the canonical 
 - Firebase project connection/administrative deployment permission is not available to this integration.
 - EdgeOne production deployment permission also not available.
 - No production rules or live tournament records have been modified.
+
+
+## Static legacy-root usage inventory (P3 ZIP local audit)
+
+The shipped P3 JavaScript/HTML/JSON/Markdown sources were scanned for the exact legacy root names:
+
+| Database root | Static references outside Rules files | Interpretation |
+| --- | --- | --- |
+| `topkey_badminton_app` | The string appears in badminton legacy migration/reference code (also as a prefix of `topkey_badminton_app_ai`) | Must inspect actual paths before changing access |
+| `topkey_badminton_app_ai` | Yes: `sports/badminton/src/config.js` sets `T.LEGACY_ROOT`; migration UI mentions reading this root | Legacy import/migration may need legitimate read access |
+| `topkey_badminton_app_ai_testing` | None found | Potentially historical, still confirm clients and data |
+| `topkey_multisport_app` | None found | Potentially historical, still confirm clients and data |
+| `topkey_multisport_app_v3` | None found | Potentially historical, still confirm clients and data |
+| `topkey_multisport_app_v4` | None found | Potentially historical, still confirm clients and data |
+
+**Scope limitation:** Static search cannot prove no older deployed browsers, cached service workers, external integrations or previously installed apps use these paths. No live data content has been read or exported in this review.
+
+**Security recommendation:** Once an external backup and current-client inventory are verified, prioritize disabling unauthenticated **writes** to all six roots. For legacy migration reads, prefer an authenticated admin-only migration service or explicit authorized read rather than a globally writable root. Do not deploy this migration without an authorization/compatibility test on staging.
