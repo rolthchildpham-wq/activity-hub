@@ -1,0 +1,58 @@
+name: TOPKEY EdgeOne preview (manual only)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: topkey-edgeone-preview
+  cancel-in-progress: false
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate static website assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f topkey/index.html
+          test -f topkey/sports/badminton/index.html
+          test -f topkey/topkey-shared-auth.js
+          node --check topkey/topkey-shared-auth.js
+          node --check topkey/sports/badminton/production-loader.js
+          node topkey/tests/auth-profile-pending.test.cjs
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('topkey')
+          for f in ('edgeone.json','firebase.json','firebase.database.rules.json'):
+              json.loads((root/f).read_text(encoding='utf-8'))
+          print('TOPKEY static artifacts and auth regression validated')
+          PY
+      - name: Require account-managed EdgeOne credentials
+        shell: bash
+        env:
+          EDGEONE_API_TOKEN: ${{ secrets.EDGEONE_API_TOKEN }}
+          EDGEONE_PROJECT_NAME: ${{ vars.EDGEONE_PROJECT_NAME }}
+        run: |
+          if [ -z "$EDGEONE_API_TOKEN" ]; then
+            echo "::error::Missing EDGEONE_API_TOKEN Actions secret. Configure in GitHub Settings > Secrets and variables > Actions."
+            exit 1
+          fi
+          if [ -z "$EDGEONE_PROJECT_NAME" ]; then
+            echo "::error::Missing EDGEONE_PROJECT_NAME Actions variable. Set to the EXACT existing EdgeOne project name."
+            exit 1
+          fi
+      - name: Deploy preview only - never production
+        shell: bash
+        env:
+          EDGEONE_API_TOKEN: ${{ secrets.EDGEONE_API_TOKEN }}
+          EDGEONE_PROJECT_NAME: ${{ vars.EDGEONE_PROJECT_NAME }}
+        run: |
+          set -euo pipefail
+          npx --yes edgeone pages deploy ./topkey -n "$EDGEONE_PROJECT_NAME" -t "$EDGEONE_API_TOKEN" -e preview
