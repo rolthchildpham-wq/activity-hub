@@ -1,0 +1,24 @@
+name: TOPKEY Badminton auth boot regression
+on:
+  pull_request:
+    paths:
+      - 'topkey/sports/badminton/index.html'
+      - 'topkey/topkey-shared-auth.js'
+      - 'topkey/tests/badminton-auth-boot.test.cjs'
+      - '.github/workflows/topkey-badminton-auth-boot.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'topkey/sports/badminton/index.html'
+      - 'topkey/topkey-shared-auth.js'
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node --check topkey/topkey-shared-auth.js
+      - run: node --check topkey/tests/badminton-auth-boot.test.cjs
+      - run: node topkey/tests/auth-profile-pending.test.cjs
+      - run: node topkey/tests/badminton-auth-boot.test.cjs
