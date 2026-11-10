@@ -1,0 +1,24 @@
+name: TOPKEY EdgeOne host regression
+on:
+  pull_request:
+    paths:
+      - 'topkey/index.html'
+      - 'topkey/sports/badminton/index.html'
+      - 'topkey/sports/vnext/index.html'
+      - 'topkey/tests/edgeone-host-redirect.test.cjs'
+      - '.github/workflows/topkey-edgeone-host-regression.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'topkey/index.html'
+      - 'topkey/sports/badminton/index.html'
+      - 'topkey/sports/vnext/index.html'
+permissions:
+  contents: read
+jobs:
+  verify-host:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node topkey/tests/edgeone-host-redirect.test.cjs
+      - run: node topkey/tests/auth-profile-pending.test.cjs

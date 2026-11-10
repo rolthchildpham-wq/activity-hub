@@ -30,6 +30,7 @@ jobs:
           node --check topkey/topkey-shared-auth.js
           node --check topkey/sports/badminton/production-loader.js
           node topkey/tests/auth-profile-pending.test.cjs
+          node topkey/tests/edgeone-host-redirect.test.cjs
           python3 - <<'PY'
           import json
           from pathlib import Path
