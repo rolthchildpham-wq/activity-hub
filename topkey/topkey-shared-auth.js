@@ -88,7 +88,11 @@
       }catch(e){this._showVerificationPending(safeMessage(e))}
       finally{retry.disabled=false;retry.textContent='Thử kiểm tra quyền'}
      });
-     panel.append(heading,detail,retry);document.body.appendChild(panel);
+     const signIn=document.createElement('button');signIn.type='button';signIn.id='topkey-auth-verification-sign-in';
+     signIn.textContent='Đăng nhập lại (nếu phiên đã hết hạn)';
+     signIn.style.cssText='display:block;margin-top:12px;padding:8px 12px;border:1px solid #65809b;background:transparent;color:#e4eeff;border-radius:8px;cursor:pointer';
+     signIn.addEventListener('click',()=>this._clearProtectedSession('SIGNED_OUT'));
+     panel.append(heading,detail,retry,signIn);document.body.appendChild(panel);
     }
     const detail=panel.querySelector('#topkey-auth-verification-message');
     if(detail)detail.textContent=message;
@@ -216,6 +220,18 @@
       }
      }
      if(this.ensureAuth()?.currentUser)return;
+     // Firebase may briefly lose its persisted user after a successful login.
+     // Withhold protected UI and wait for re-verification; never use Hub state
+     // alone as authorization. Provide explicit sign-in only on user request.
+     if(this._profileVerifiedUid||this.user?.uid){
+      this._generation++;this.detachProfile();
+      this.user=null;this.profile=null;this._profileVerifiedUid='';
+      this._appStartedUid='';this._publishedReadyUid='';
+      window.__TOPKEY_ADMIN_READY=false;
+      if(Array.isArray(T.App?.offs)){for(const off of T.App.offs)try{off()}catch{}T.App.offs=[]}
+      this._showVerificationPending('Firebase đang khôi phục phiên. Thử kiểm tra quyền để tiếp tục nếu tài khoản vẫn còn đăng nhập.');
+      return;
+     }
      this._clearProtectedSession('SIGNED_OUT');return
     }
     if(this.user?.uid!==user.uid){
