@@ -1,4 +1,4 @@
-name: TOPKEY EdgeOne preview (manual only)
+name: TOPKEY EdgeOne Git-provider readiness
 
 on:
   workflow_dispatch:
@@ -38,25 +38,26 @@ jobs:
               json.loads((root/f).read_text(encoding='utf-8'))
           print('TOPKEY static artifacts and auth regression validated')
           PY
-      - name: Require account-managed EdgeOne credentials
+      - name: Explain existing GitHub-connected EdgeOne deploy
         shell: bash
         env:
-          EDGEONE_API_TOKEN: ${{ secrets.EDGEONE_API_TOKEN }}
-          EDGEONE_PROJECT_NAME: ${{ vars.EDGEONE_PROJECT_NAME }}
-        run: |
-          if [ -z "$EDGEONE_API_TOKEN" ]; then
-            echo "::error::Missing EDGEONE_API_TOKEN Actions secret. Configure in GitHub Settings > Secrets and variables > Actions."
-            exit 1
-          fi
-          if [ -z "$EDGEONE_PROJECT_NAME" ]; then
-            echo "::error::Missing EDGEONE_PROJECT_NAME Actions variable. Set to the EXACT existing EdgeOne project name."
-            exit 1
-          fi
-      - name: Deploy preview only - never production
-        shell: bash
-        env:
-          EDGEONE_API_TOKEN: ${{ secrets.EDGEONE_API_TOKEN }}
           EDGEONE_PROJECT_NAME: ${{ vars.EDGEONE_PROJECT_NAME }}
         run: |
           set -euo pipefail
-          npx --yes edgeone pages deploy ./topkey -n "$EDGEONE_PROJECT_NAME" -t "$EDGEONE_API_TOKEN" -e preview
+          {
+            echo "## TOPKEY checked; EdgeOne deployment is not triggered here"
+            echo ""
+            echo "The existing EdgeOne project \`topkey-activity-management\` is a GitHub-provider project."
+            echo "Its CLI rejects folder/ZIP upload; the GitHub integration in EdgeOne must be configured."
+            echo ""
+            echo "Project name variable: \`${EDGEONE_PROJECT_NAME:-not-set}\`."
+            echo "Expected GitHub repository: \`rolthchildpham-wq/activity-hub\`."
+            echo "Expected branch: \`main\`."
+            echo "Site root directory: \`topkey\`."
+            echo "Output directory relative to root: \`.\`."
+            echo "Framework preset: \`Other/Static\`; no build command."
+            echo ""
+            echo "Go to EdgeOne Makers > project > Settings > Build and Deployment, confirm repo and settings, then request preview redeploy in EdgeOne."
+            echo ""
+            echo "**This workflow validates source only; it does not deploy or change Firebase Rules.**"
+          } >> "$GITHUB_STEP_SUMMARY"
