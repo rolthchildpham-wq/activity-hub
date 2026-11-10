@@ -5,13 +5,13 @@ const vm=require('node:vm');
 const source=fs.readFileSync('topkey/topkey-shared-auth.js','utf8');
 const elements=new Map();
 function el(id){
- if(!elements.has(id))elements.set(id,{id,hidden:false,style:{},children:[],classList:{add(){},remove(){},toggle(){}},setAttribute(){},append(...xs){this.children.push(...xs)},appendChild(x){this.children.push(x)},remove(){elements.delete(id)},querySelector(selector){return this.children.find(c=>'#'+c.id===selector)||null},addEventListener(name,fn){this['on'+name]=fn},textContent:''});
+ if(!elements.has(id))elements.set(id,{id,hidden:false,style:{},children:[],classList:{add(){},remove(){},toggle(){}},setAttribute(){},append(...xs){this.children.push(...xs)},appendChild(x){this.children.push(x)},remove(){for(const [key,value] of elements)if(value===this)elements.delete(key)},querySelector(selector){return this.children.find(c=>'#'+c.id===selector)||null},addEventListener(name,fn){this['on'+name]=fn},textContent:''});
  return elements.get(id);
 }
 const document={
  readyState:'loading',
  addEventListener(){},
- getElementById(id){return elements.get(id)||null},
+ getElementById(id){return [...elements.values()].find(v=>v.id===id||v.children?.some(c=>c.id===id))?.id===id?[...elements.values()].find(v=>v.id===id):[...elements.values()].flatMap(v=>v.children||[]).find(c=>c.id===id)||null},
  createElement(){return el('generated-'+Math.random())},
  body:{appendChild(x){if(x.id)elements.set(x.id,x)}}
 };
