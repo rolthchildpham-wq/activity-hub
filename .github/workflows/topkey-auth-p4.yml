@@ -1,0 +1,21 @@
+name: TOPKEY Auth P4 regression
+on:
+  pull_request:
+    paths:
+      - 'topkey/topkey-shared-auth.js'
+      - 'topkey/tests/auth-profile-pending.test.cjs'
+      - '.github/workflows/topkey-auth-p4.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  auth-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check auth script syntax
+        run: node --check topkey/topkey-shared-auth.js
+      - name: Check test syntax
+        run: node --check topkey/tests/auth-profile-pending.test.cjs
+      - name: Simulate Firebase authenticated profile timeout
+        run: node topkey/tests/auth-profile-pending.test.cjs
