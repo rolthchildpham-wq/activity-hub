@@ -1,0 +1,54 @@
+name: TOPKEY production safety audit
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'topkey/**'
+      - '.github/workflows/topkey-production-safety.yml'
+  pull_request:
+    paths:
+      - 'topkey/**'
+      - '.github/workflows/topkey-production-safety.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify static entrypoints and Firebase security policy
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json,sys
+          root=Path('topkey')
+          needed=['index.html','sports/badminton/index.html','topkey-shared-auth.js','firebase.json','firebase.database.rules.json','firebase.storage.rules','edgeone.json']
+          missing=[s for s in needed if not (root/s).is_file()]
+          if missing:
+              print('MISSING APP ASSETS:', ', '.join(missing))
+              sys.exit(1)
+          config=json.loads((root/'firebase.json').read_text(encoding='utf-8'))
+          rules=json.loads((root/'firebase.database.rules.json').read_text(encoding='utf-8'))['rules']
+          json.loads((root/'edgeone.json').read_text(encoding='utf-8'))
+          assert config.get('database',{}).get('rules')=='firebase.database.rules.json'
+          unsafe=[]
+          for name,rule in rules.items():
+              if not isinstance(rule,dict): continue
+              if rule.get('.write') is True or rule.get('.read') is True:
+                  unsafe.append(name)
+          if unsafe:
+              print('BLOCK PRODUCTION: PUBLIC READ/WRITE DATABASE ROOTS:', ', '.join(unsafe))
+              print('Do not deploy these Firebase rules. Review legacy data access and migrate clients first.')
+              sys.exit(1)
+          print('Production static and Firebase top-level policy checks passed')
+          PY
+      - name: Check critical JavaScript syntax
+        shell: bash
+        run: |
+          node --check topkey/topkey-shared-auth.js
+          node --check topkey/sports/badminton/production-loader.js
