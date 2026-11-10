@@ -1,0 +1,933 @@
+{
+  "build": "upgrade118",
+  "cacheTag": "u118-20261031",
+  "adminCore": {
+    "js": "admin-core.24b593ff0271.js",
+    "css": "admin-core.11cda5bc98f3.css",
+    "bytes": {
+      "js": 1190378,
+      "css": 140120
+    },
+    "sources": [
+      "src/config.js",
+      "src/utils.js",
+      "src/idb.js",
+      "src/firebase.js",
+      "src/auth.js",
+      "src/scoring.js",
+      "src/app.js",
+      "src/core/ui-boundary.js",
+      "src/upgrade9.js",
+      "src/upgrade11.js",
+      "src/upgrade12.js",
+      "src/upgrade13.js",
+      "src/upgrade14.js",
+      "src/upgrade15.js",
+      "src/upgrade16.js",
+      "src/upgrade17.js",
+      "src/upgrade18.js",
+      "src/upgrade19.js",
+      "src/upgrade20.js",
+      "src/upgrade21.js",
+      "src/upgrade22.js",
+      "src/upgrade23.js",
+      "src/features/umpire/runtime.js",
+      "src/upgrade24.js",
+      "src/upgrade25.js",
+      "src/upgrade26.js",
+      "src/upgrade27.js",
+      "src/upgrade30.js",
+      "src/upgrade31.js",
+      "src/upgrade32.js",
+      "src/upgrade33.js",
+      "src/upgrade34.js",
+      "src/upgrade35.js",
+      "src/upgrade36.js",
+      "src/upgrade37.js",
+      "src/upgrade38.js",
+      "src/upgrade39.js",
+      "src/upgrade40.js",
+      "src/upgrade41.js",
+      "src/upgrade42.js",
+      "src/upgrade43.js",
+      "src/upgrade44.js",
+      "src/upgrade45.js",
+      "src/upgrade46.js",
+      "src/upgrade47.js",
+      "src/upgrade48.js",
+      "src/upgrade49.js",
+      "src/upgrade50.js",
+      "src/upgrade51.js",
+      "src/upgrade52.js",
+      "src/upgrade53.js",
+      "src/upgrade54.js",
+      "src/upgrade55.js",
+      "src/upgrade56.js",
+      "src/upgrade57.js",
+      "src/upgrade58.js",
+      "src/upgrade59.js",
+      "src/upgrade60.js",
+      "src/upgrade61.js",
+      "src/upgrade62.js",
+      "src/upgrade63.js",
+      "src/upgrade64.js",
+      "src/upgrade65.js",
+      "src/upgrade66.js",
+      "src/upgrade67.js",
+      "src/upgrade68.js",
+      "src/upgrade69.js",
+      "src/upgrade70.js",
+      "src/upgrade71.js",
+      "src/upgrade72.js",
+      "src/upgrade73.js",
+      "src/upgrade74.js",
+      "src/upgrade75.js",
+      "src/upgrade76.js",
+      "src/upgrade78.js",
+      "src/features/live/runtime.js",
+      "src/upgrade87.js",
+      "src/upgrade88.js",
+      "src/upgrade89.js",
+      "src/upgrade90.js",
+      "src/upgrade101.js",
+      "src/core/data-runtime.js",
+      "src/upgrade105.js",
+      "src/features/schedule/runtime.js",
+      "src/upgrade111.js",
+      "src/upgrade113.js",
+      "src/core/ui-boundary-install.js",
+      "src/core/production-hardening.js",
+      "src/core/runtime-authority.js"
+    ],
+    "cssSources": [
+      "styles.css",
+      "upgrade9.css",
+      "upgrade11.css",
+      "upgrade12.css",
+      "upgrade13.css",
+      "upgrade14.css",
+      "upgrade15.css",
+      "upgrade16.css",
+      "upgrade17.css",
+      "upgrade18.css",
+      "upgrade19.css",
+      "upgrade20.css",
+      "upgrade21.css",
+      "upgrade22.css",
+      "upgrade23.css",
+      "upgrade24.css",
+      "upgrade25.css",
+      "upgrade26.css",
+      "upgrade27.css",
+      "upgrade30.css",
+      "upgrade31.css",
+      "upgrade32.css",
+      "upgrade33.css",
+      "upgrade34.css",
+      "upgrade35.css",
+      "upgrade36.css",
+      "upgrade37.css",
+      "upgrade38.css",
+      "upgrade39.css",
+      "upgrade40.css",
+      "upgrade41.css",
+      "upgrade42.css",
+      "upgrade43.css",
+      "upgrade44.css",
+      "upgrade45.css",
+      "upgrade46.css",
+      "upgrade47.css",
+      "upgrade48.css",
+      "upgrade49.css",
+      "upgrade50.css",
+      "upgrade51.css",
+      "upgrade52.css",
+      "upgrade53.css",
+      "upgrade57.css",
+      "upgrade58.css",
+      "upgrade59.css",
+      "upgrade62.css",
+      "upgrade63.css",
+      "upgrade65.css",
+      "upgrade66.css",
+      "upgrade67.css",
+      "upgrade69.css",
+      "upgrade70.css",
+      "upgrade71.css",
+      "upgrade72.css",
+      "upgrade73.css",
+      "upgrade74.css",
+      "upgrade75.css",
+      "upgrade76.css",
+      "upgrade78.css",
+      "upgrade80.css",
+      "upgrade87.css",
+      "upgrade88.css",
+      "upgrade98.css",
+      "upgrade105.css",
+      "upgrade106.css",
+      "upgrade111.css"
+    ]
+  },
+  "consolidation": {
+    "phase": 4,
+    "removedAdminRuntimeSources": [
+      "src/upgrade80.js",
+      "src/upgrade106.js",
+      "src/upgrade107.js"
+    ],
+    "newCoreModules": [
+      "src/core/data-runtime.js",
+      "src/core/ui-boundary.js",
+      "src/core/ui-boundary-install.js",
+      "src/core/runtime-authority.js",
+      "src/core/production-hardening.js"
+    ],
+    "featureBoundaries": [
+      "src/features/schedule/runtime.js",
+      "src/features/umpire/runtime.js",
+      "src/features/live/runtime.js"
+    ],
+    "refactoredLegacyHooks": [
+      "src/upgrade24.js",
+      "src/upgrade87.js",
+      "src/upgrade111.js"
+    ],
+    "compatibilityExports": [
+      "TopkeyUpgrade80",
+      "TopkeyUpgrade106",
+      "TopkeyUpgrade107",
+      "TopkeyUpgrade102",
+      "TopkeyUpgrade103"
+    ],
+    "preservedDataPaths": true,
+    "legacySourceFilesPreservedForAudit": true
+  },
+  "features": {
+    "replayAi": {
+      "js": "feature-replay.fe7f71fb1812.js",
+      "css": "feature-replay.066a639d1526.css",
+      "bytes": {
+        "js": 55849,
+        "css": 10600
+      },
+      "sources": [
+        "src/upgrade77.js",
+        "src/upgrade79.js",
+        "src/upgrade81.js",
+        "src/upgrade82.js",
+        "src/upgrade83.js",
+        "src/upgrade84.js",
+        "src/upgrade85.js",
+        "src/upgrade86.js"
+      ],
+      "cssSources": [
+        "upgrade77.css",
+        "upgrade82.css",
+        "upgrade84.css",
+        "upgrade85.css",
+        "upgrade86.css"
+      ],
+      "trigger": "tab:live",
+      "assetRoot": "assets/u118"
+    },
+    "firebaseStorage": {
+      "external": "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js",
+      "trigger": "tab:finance|settings or upload"
+    },
+    "qrcode": {
+      "external": "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js",
+      "trigger": "tab:teams"
+    },
+    "jszip": {
+      "external": "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js",
+      "trigger": "finance export ZIP"
+    }
+  },
+  "viewer": {
+    "js": "viewer.efcea4228988.js",
+    "css": "viewer.6dbec66a2de5.css",
+    "bytes": {
+      "js": 32198,
+      "css": 6108
+    }
+  },
+  "viewerExcludes": [
+    "firebase-storage-compat.js",
+    "qrcode.min.js",
+    "upgrade73-preboot.js",
+    "admin bundle",
+    "finance",
+    "scheduler",
+    "umpire",
+    "replay-ai",
+    "migration"
+  ],
+  "js": {
+    "file": "./assets/u118/admin-core.24b593ff0271.js",
+    "sha256": "24b593ff0271bbca1cdc0ef7cdc3290557a8d2c6b7e690ca62ec187c95775797",
+    "sources": [
+      {
+        "file": "./src/config.js",
+        "sha256": "738b4aac4d79ce5ec6d91e0a32b272ab6cf91432c6b17076ef92a7802a0ea032"
+      },
+      {
+        "file": "./src/utils.js",
+        "sha256": "63863c11b997078dfb0d642eb3b9ae4da246fcb346ad5cb628a0c1e97b188357"
+      },
+      {
+        "file": "./src/idb.js",
+        "sha256": "2ecbe7a67e05032008a31d2749b3008404130d474444fc407910d1559230f343"
+      },
+      {
+        "file": "./src/firebase.js",
+        "sha256": "4c95b01b33bf40a892c49a268281c36be16731b227ddec6eb04f0cfc6889add0"
+      },
+      {
+        "file": "./src/auth.js",
+        "sha256": "3a680ebce57bb540717b684e4a5605c1093b5932f3e283757bda46297d0f7b82"
+      },
+      {
+        "file": "./src/scoring.js",
+        "sha256": "576643136cd0087d0ed5e7bd5bb40303febe97d34971b272cf4f826d73a11425"
+      },
+      {
+        "file": "./src/app.js",
+        "sha256": "cb53e08986c86afe9380c1e23c7b949a62a43402995597156469d9d7461badc3"
+      },
+      {
+        "file": "./src/core/ui-boundary.js",
+        "sha256": "67229772937cce4c1782f6c82cc9baf9a50e8d7d4529e910a38811f3dca36e3e"
+      },
+      {
+        "file": "./src/upgrade9.js",
+        "sha256": "8a3d1a92c95cfdcfbf5e4407698d6158e2e31fd12ae8d36c010184d8e92feca5"
+      },
+      {
+        "file": "./src/upgrade11.js",
+        "sha256": "535407cfb3f5cdeebf9717d80e8a562e020b25e576d4aa4f3a7984256b6adc06"
+      },
+      {
+        "file": "./src/upgrade12.js",
+        "sha256": "33470fe57f48cd7a2986b2aeaecd9e8d0277050efc33ef061a81d2efc9c25abc"
+      },
+      {
+        "file": "./src/upgrade13.js",
+        "sha256": "1ec44687c737296295e0f3dcdce7c2384a5228e24ce12a7596f7c288815a3bbd"
+      },
+      {
+        "file": "./src/upgrade14.js",
+        "sha256": "baf78c836e8af0a6202c462743eafb1109e1f2b2ed326b88e5688e5da7fe3d8f"
+      },
+      {
+        "file": "./src/upgrade15.js",
+        "sha256": "4d4ddda0390ac3d14e650b53dbb9e1f9485034a9ef31444939d119929ed737e1"
+      },
+      {
+        "file": "./src/upgrade16.js",
+        "sha256": "ae06aa57af00a0278217955b5d1b84d3b4f883417b3e12ac2b2d2f8ed65e73d1"
+      },
+      {
+        "file": "./src/upgrade17.js",
+        "sha256": "0883fa9a88042ce55446140dd36f8fab56fea2e49a6edd0ed9eac7a7043f96c0"
+      },
+      {
+        "file": "./src/upgrade18.js",
+        "sha256": "19f79d076027a6b7867be35c8c49d4a5c0d223e1a81dc4416d4b7b0f83e538aa"
+      },
+      {
+        "file": "./src/upgrade19.js",
+        "sha256": "c510b94b1c9cb292df8212040f6aa7707f19fc3ee13c178ca9ac87ecf8b7d335"
+      },
+      {
+        "file": "./src/upgrade20.js",
+        "sha256": "82e4435c813b494a4d60dca86a144283bcd6af153b54826f6bbc231ac2f0727f"
+      },
+      {
+        "file": "./src/upgrade21.js",
+        "sha256": "bde4e7fd4b7f825b7a45bd73eb9da97b181d54abbca2e49d1f2e68c65a248bea"
+      },
+      {
+        "file": "./src/upgrade22.js",
+        "sha256": "51c8f2ecc692a990a99053ab8a37b1c0b41e6fec512bd13c150a2fb7c8cef2ff"
+      },
+      {
+        "file": "./src/upgrade23.js",
+        "sha256": "37223c48b3b47f524e6195e3cdabbd3ea592506e24e65f2f9f2c8fed76c179e7"
+      },
+      {
+        "file": "./src/features/umpire/runtime.js",
+        "sha256": "7dd12efd031f0a321f0043575d2fd92ba48927576cc2059054f6f421d94945c7"
+      },
+      {
+        "file": "./src/upgrade24.js",
+        "sha256": "5fc8ede66ef75dffc7486b17119d4ec303c50d8c09bc0fbe3f3aea7c38c3d4c0"
+      },
+      {
+        "file": "./src/upgrade25.js",
+        "sha256": "42c3399c0b385d9fe53d7c7921d6019f833eecd37db31ac7428a59fc17bdd3f2"
+      },
+      {
+        "file": "./src/upgrade26.js",
+        "sha256": "839570b2b29214c61fc4c296beceffa3b0f829cf7d675da2a9831dc176ae4ea8"
+      },
+      {
+        "file": "./src/upgrade27.js",
+        "sha256": "a62ae38815886e767a09e8d7964a3cd5e73e68a1d311bbabfaa3dbcda0aa7bbb"
+      },
+      {
+        "file": "./src/upgrade30.js",
+        "sha256": "d328d9973e4afaca882216102276c8738c834f5229b12f7bc3524e0fdcbcc746"
+      },
+      {
+        "file": "./src/upgrade31.js",
+        "sha256": "79b5efc23f8e561eba628a0564247dc57b1f3ec472b5d0729173ec8877c9a411"
+      },
+      {
+        "file": "./src/upgrade32.js",
+        "sha256": "e6a0a69bd3b481226d65b40095dafe73eed2f7266be81cf3214e000aa0f9c93c"
+      },
+      {
+        "file": "./src/upgrade33.js",
+        "sha256": "546d0b2780d8630e4a1e172ec807a9a5d0948ac27bc0b9fbfcfde2cbfad87f18"
+      },
+      {
+        "file": "./src/upgrade34.js",
+        "sha256": "d2b65632a5fac53c6c81702f3aa987ff9964f5760167ffae189dc1fee4ee0bcc"
+      },
+      {
+        "file": "./src/upgrade35.js",
+        "sha256": "acfa35a42fc35166dffb412a5f950287ffec1e713ab135c1a45bd94eeda94198"
+      },
+      {
+        "file": "./src/upgrade36.js",
+        "sha256": "4405ea52368d6e8a6ea6dbece299e95eed35a77c330cdb6e135fefb5023087f2"
+      },
+      {
+        "file": "./src/upgrade37.js",
+        "sha256": "4c7308f8a065f7e5428f785d3af10af00d468501c43be2c17a63d29971b443a4"
+      },
+      {
+        "file": "./src/upgrade38.js",
+        "sha256": "1c2767c45c007022f661ab97426444db5cb71057750827e95c02067ab3e6ba4c"
+      },
+      {
+        "file": "./src/upgrade39.js",
+        "sha256": "6473b1e2f81d5eeacd0906e3601e8d2d4cfbaa0396ac592c30adce6020a3b1d2"
+      },
+      {
+        "file": "./src/upgrade40.js",
+        "sha256": "6c0006b8dbc94d6d2344a29e6ac1f0e3119aba327fbbce77a3fc174b27fa5e81"
+      },
+      {
+        "file": "./src/upgrade41.js",
+        "sha256": "4e1942a558a9bac83c2e1fc74400c99e12c8a1a4f7f97e01326505fdf4049276"
+      },
+      {
+        "file": "./src/upgrade42.js",
+        "sha256": "e4d90fba963c02a4ca7de550415cf2ae6e6dba3463d8c4df9c9e70a209f3a3c3"
+      },
+      {
+        "file": "./src/upgrade43.js",
+        "sha256": "a4b77e689c08ab6181b2dac9565ee4aab713e1c5e9aae14e030ebef60780c8f2"
+      },
+      {
+        "file": "./src/upgrade44.js",
+        "sha256": "d16921705919e644937f29c36b387fe70e9d7704cffb834c9f6e75da5261635c"
+      },
+      {
+        "file": "./src/upgrade45.js",
+        "sha256": "7dd4d2b0bc8164a30c4e711ea30e3838546b58af2317e54d3fcb17c79aa36f21"
+      },
+      {
+        "file": "./src/upgrade46.js",
+        "sha256": "909f0366d1d3e614c17b1615744d0b5b14026ea956a9e0b30c06799e3044a1b2"
+      },
+      {
+        "file": "./src/upgrade47.js",
+        "sha256": "61de64ec4f7337dda9a4210b843a24942660fa623cc44ac9fc2b6e04b05d59ec"
+      },
+      {
+        "file": "./src/upgrade48.js",
+        "sha256": "439752deeb4dfbb9a5859e3a5983151ba764312b0c7e5e475e7b556993604cd6"
+      },
+      {
+        "file": "./src/upgrade49.js",
+        "sha256": "abb09f3777596c1543e1f66f1290e3301610218d02f8515d6a65f1422ecfe4be"
+      },
+      {
+        "file": "./src/upgrade50.js",
+        "sha256": "3d205ea1a60e0ad60724acdb52a360899ece8c8fe3ec44b21a92cc733a504efb"
+      },
+      {
+        "file": "./src/upgrade51.js",
+        "sha256": "7945c271ee6c6506eb229dcdfb1bb78e163a87f88b785cc196e8acd08e6e058b"
+      },
+      {
+        "file": "./src/upgrade52.js",
+        "sha256": "651e633a66b117a979d5a35d6b460ea42eb321caed2c97f85b6b9574bead4a42"
+      },
+      {
+        "file": "./src/upgrade53.js",
+        "sha256": "606ef9a39d6e1ee3045f9ce8938a5e30acbac47100788144a30b66f0d8b7c29b"
+      },
+      {
+        "file": "./src/upgrade54.js",
+        "sha256": "dc383bc677d97e8534c3e6f769a5bff296a4d2ce1a983c72bd46b6b3663a02ee"
+      },
+      {
+        "file": "./src/upgrade55.js",
+        "sha256": "f024609d28934eb0e213eb67aa9ab9c2093e0a73bfb6a1e9ef98139ec172b1ea"
+      },
+      {
+        "file": "./src/upgrade56.js",
+        "sha256": "19931f5005021f0654adef34f052f008ca50825d730c7d090c495bfe378eee16"
+      },
+      {
+        "file": "./src/upgrade57.js",
+        "sha256": "a5547fa6882da0c1cab89e1141c5448270314339d4a364ea1274f2a58afc0c1f"
+      },
+      {
+        "file": "./src/upgrade58.js",
+        "sha256": "84c7c03ea2203aa5f4479c1eef93f3b51ace0e2e4632380621a605b849561f44"
+      },
+      {
+        "file": "./src/upgrade59.js",
+        "sha256": "c436e811a35840e27f8b73c62c5e11e00dc0b1e6bd95a55b2be7fd9429f1a449"
+      },
+      {
+        "file": "./src/upgrade60.js",
+        "sha256": "4b09cf5d40e37d2140800b0e03dd26149cdf1ad6fc764b4bd56e801a163b4fda"
+      },
+      {
+        "file": "./src/upgrade61.js",
+        "sha256": "8561d73a3a394687bffdde158b76467df27c6d2f415ac6b25beee3788b13e5a7"
+      },
+      {
+        "file": "./src/upgrade62.js",
+        "sha256": "3ed5326cbedc3956a60eec70070e158913e6252b06944f30182c8c7b07b1c28b"
+      },
+      {
+        "file": "./src/upgrade63.js",
+        "sha256": "ce2c5cd38c4607f760f73de24b099cdbcabe2808597d1239b5a7e58d735d793d"
+      },
+      {
+        "file": "./src/upgrade64.js",
+        "sha256": "0293c1f274f55dad2a5f781a947895904e85acf58c44e934ff90eaf50b564099"
+      },
+      {
+        "file": "./src/upgrade65.js",
+        "sha256": "fc08d95226e5613b849763089e2f5689ff7731ebb3dc5a93390e662fa16d010a"
+      },
+      {
+        "file": "./src/upgrade66.js",
+        "sha256": "5d07a24ced8803290abb6d2d2bbb093901363855694c0b2800be998b68ef1f2d"
+      },
+      {
+        "file": "./src/upgrade67.js",
+        "sha256": "15dbb0d0399b3fbeaa3212a94acba688f1bac2b32da2a9cbf0c54f2372e79e5b"
+      },
+      {
+        "file": "./src/upgrade68.js",
+        "sha256": "3ca0f0a61d6ce9210cd8aee5d761790adc8742190b10d8e56414830d60fafc14"
+      },
+      {
+        "file": "./src/upgrade69.js",
+        "sha256": "1b06976b75e07c4f6785ed037388148f27eaa13a027fc2c72bd02a7d760c4e32"
+      },
+      {
+        "file": "./src/upgrade70.js",
+        "sha256": "89da4c6410891938174537790b5e84089925e3e2ce1189b4940e93dc7a387398"
+      },
+      {
+        "file": "./src/upgrade71.js",
+        "sha256": "047798468aa88e511258f191e808cc6b8406068722e9eda0bd6f048cc4078057"
+      },
+      {
+        "file": "./src/upgrade72.js",
+        "sha256": "829b6fdfbcd8fb68a5f445a25826e718ff1ca38a788a10dfbe032f999b8d45f6"
+      },
+      {
+        "file": "./src/upgrade73.js",
+        "sha256": "dd190585583758e996192d1a5d93b032d17ffb25e025b67b63e7247c17b18862"
+      },
+      {
+        "file": "./src/upgrade74.js",
+        "sha256": "a58b432849403e524e084636fc495cd24c2b62afd2f6787702c1f648c620fbd3"
+      },
+      {
+        "file": "./src/upgrade75.js",
+        "sha256": "05e8bade7d21ef2dbd0b9ca9dc6f91946ccc51537e95415b7fbf02ad4319f171"
+      },
+      {
+        "file": "./src/upgrade76.js",
+        "sha256": "7bdf263212bf3c40b001c3687a7c8716e354e4f770f47c56b24a051fe19908f7"
+      },
+      {
+        "file": "./src/upgrade78.js",
+        "sha256": "b4a64d35fef331bfed815b9f95a626464e9f0c0b66f0d4016e72fe8d26957528"
+      },
+      {
+        "file": "./src/features/live/runtime.js",
+        "sha256": "ac56c6661729171253746ac08e9e0421841ccd72505a5664bda0cffaf743fc8e"
+      },
+      {
+        "file": "./src/upgrade87.js",
+        "sha256": "9eb654df977e7a682fcfbd63b7b937ad111a45566d52b14239fba80b2bc7b89f"
+      },
+      {
+        "file": "./src/upgrade88.js",
+        "sha256": "0f3f8336bf1c972badd27543a452781ceea065b466c15a6fbb82f01c66971c34"
+      },
+      {
+        "file": "./src/upgrade89.js",
+        "sha256": "71c3da7d86c2517b1da0e08af5926f639680d3e4dc1677335dfab8557fc68656"
+      },
+      {
+        "file": "./src/upgrade90.js",
+        "sha256": "4d07ee8a6a50948bfb32d7b5a16c0941642040de08c48ab792056f0e39d311bb"
+      },
+      {
+        "file": "./src/upgrade101.js",
+        "sha256": "e8d0d1fc6174b7ef743f5d96b00d4ab623ea2e8c8ad3f5d2a7ac8041cefe4b8d"
+      },
+      {
+        "file": "./src/core/data-runtime.js",
+        "sha256": "b1f1be662431c60d693ff200f2d6bf62ebd40e58d537595e2c6e8c5e670b634c"
+      },
+      {
+        "file": "./src/upgrade105.js",
+        "sha256": "6bbe05310737fa5412c0ee1679bc9b767b33ae924956ab3b7519f2fe64aeba86"
+      },
+      {
+        "file": "./src/features/schedule/runtime.js",
+        "sha256": "e1f7d85a668102dde75870ade00a0d3132b34488dfc018985a02de972d04583a"
+      },
+      {
+        "file": "./src/upgrade111.js",
+        "sha256": "c39d6973dd7646c8614db40ff88ae32be11559bcd7685e1e4ae067c10ee94f25"
+      },
+      {
+        "file": "./src/upgrade113.js",
+        "sha256": "5532e6a2f4cd72a6d6f6f90a04be2dc7b4901b191eec30f6ae817d692da4a52c"
+      },
+      {
+        "file": "./src/core/ui-boundary-install.js",
+        "sha256": "fc00493eb179f2fad0a36a7c7bf30e4ddb211e3cf78ac27462a39e5a26f8b786"
+      },
+      {
+        "file": "./src/core/production-hardening.js",
+        "sha256": "ce0f36c64fd80081bfd5d74539c25afeb9b86a38a7206dd2da852c5093702189"
+      },
+      {
+        "file": "./src/core/runtime-authority.js",
+        "sha256": "1ac44de23d1730319cceabb855946d4a4b9a7fbd9a86e9a0a322901f3e5b49f4"
+      }
+    ]
+  },
+  "css": {
+    "file": "./assets/u118/admin-core.11cda5bc98f3.css",
+    "sha256": "11cda5bc98f33070928c4e6ffc8e9e5cb3c44de3a6aca4ecfa269ba94aec05b7",
+    "sources": [
+      {
+        "file": "./styles.css",
+        "sha256": "40d9c1f8999b1bdcfba2027cdbb381a50fa9dd2b9715b2b2dd33a74c81d73cb2"
+      },
+      {
+        "file": "./upgrade9.css",
+        "sha256": "5582e98acd201766ce3587c1de617bd6d5e8b92a5ec57a7290ec98a616b17c64"
+      },
+      {
+        "file": "./upgrade11.css",
+        "sha256": "92aaafb4d66b069dce597c9b994f7f0e5301bedee9f56cd6c999b148bcb46c4c"
+      },
+      {
+        "file": "./upgrade12.css",
+        "sha256": "5c1819840b12e5e6aab2919a9c4dc0c96ecc2e06d609806d4bffac825b0c18ce"
+      },
+      {
+        "file": "./upgrade13.css",
+        "sha256": "0f851287c54996a35a6045d4f145781eb563a99b7b842e49f7d39ceed179825d"
+      },
+      {
+        "file": "./upgrade14.css",
+        "sha256": "610c410c5cbd8b933af7fbf392cffe186c520c51ba721d63c4d4f28b7cf0ffc8"
+      },
+      {
+        "file": "./upgrade15.css",
+        "sha256": "7a30fa6512b8e8662bd3dc35efda7e2c00b8ae3ef199a0d519ecd96a7af55890"
+      },
+      {
+        "file": "./upgrade16.css",
+        "sha256": "88ff86c434e34a2356cc8c5cfb1a5578e77aee6fffa63408b14c8ee03db677f0"
+      },
+      {
+        "file": "./upgrade17.css",
+        "sha256": "478f464ce340b1fa2f4120a0a804d9877050b3089cd4dfd0e51f95cef2de5e06"
+      },
+      {
+        "file": "./upgrade18.css",
+        "sha256": "b18049318a20f890619e70db0bc0976beb5ed3f9bd5f7b9c4a8a0e3a7d87524b"
+      },
+      {
+        "file": "./upgrade19.css",
+        "sha256": "34b6f4acb017246d4aea3541cc1ccb0a5a1abbb056daf2463b7f5f9cc9dc5b75"
+      },
+      {
+        "file": "./upgrade20.css",
+        "sha256": "e0708d13a1416c4f2775ce2ace136fe1cb65170abb08cb7c19bcfdecb8810ff2"
+      },
+      {
+        "file": "./upgrade21.css",
+        "sha256": "9874bbee79d0892995fcc9bf13455673b9ee02635ebf5e3f61be55563ab1f4a2"
+      },
+      {
+        "file": "./upgrade22.css",
+        "sha256": "b38e3fe6d8a49506961c89c3e31eb7f03aa502d531fae585d7f168e02027d62a"
+      },
+      {
+        "file": "./upgrade23.css",
+        "sha256": "586c564560f588c24eea6fe5905ead37e2819ae4d4c21f57dc64c92ff65c3451"
+      },
+      {
+        "file": "./upgrade24.css",
+        "sha256": "801476c5f52673bdb288b9ce5201058eced638d2eaf4320981090a42567161c5"
+      },
+      {
+        "file": "./upgrade25.css",
+        "sha256": "c501923f3d7cf8cb65e3c8534a0471cf5a1379058a38bd2306664d6243c955fd"
+      },
+      {
+        "file": "./upgrade26.css",
+        "sha256": "628fcec942d299e54b36e32d70b5f625b7a867e8c045d0ca59dbae03c351356e"
+      },
+      {
+        "file": "./upgrade27.css",
+        "sha256": "883f353548dffb511f5fb0516891535acf713e706e5ed9a3701eafc9968b52f9"
+      },
+      {
+        "file": "./upgrade30.css",
+        "sha256": "7b583a50ad3b50018718b57aeb939c95ec4e0df6104ad92708788111f7d64beb"
+      },
+      {
+        "file": "./upgrade31.css",
+        "sha256": "e96688f096d2c96a22796ac2a45ca7b39cf8ce86751609aa58f3ef2b56231658"
+      },
+      {
+        "file": "./upgrade32.css",
+        "sha256": "3aee0fcfb598331b4ddff2324fb102d9506f36944f27f7ffaaeaa721fbda7a32"
+      },
+      {
+        "file": "./upgrade33.css",
+        "sha256": "d3d354b701c983b114c74416ca8663dadf244ddff51e2a4857af01eb487373e4"
+      },
+      {
+        "file": "./upgrade34.css",
+        "sha256": "a49f924417b6afbf00cfd53e2e7da2f9ca46abd041f797fcba3e751d64954133"
+      },
+      {
+        "file": "./upgrade35.css",
+        "sha256": "8c62d4bf52b411846637b3639b7f7850e72f3ff9567bf780c72a3631ed1e14b3"
+      },
+      {
+        "file": "./upgrade36.css",
+        "sha256": "b884fb0d65023ffdf46a0a8bfe126cf58e2eeea9adde80a423a4c47a010ca732"
+      },
+      {
+        "file": "./upgrade37.css",
+        "sha256": "3832336d9730b545897d1925c709387444f4a051c1a2c8e10a782e09ce56b4cb"
+      },
+      {
+        "file": "./upgrade38.css",
+        "sha256": "1dc824546ce1af5fa7bc0439564ffd0578e5ad9ae2add8b694bb4c0a318a14d6"
+      },
+      {
+        "file": "./upgrade39.css",
+        "sha256": "b598bec8819cff5b5b69b18f141458e8d2f9bb22d5ce26821969187ecae1fb1e"
+      },
+      {
+        "file": "./upgrade40.css",
+        "sha256": "9f8c141a6d291e5b64de4c693ec71b9d7563a3522b2827878243b9b58406cc03"
+      },
+      {
+        "file": "./upgrade41.css",
+        "sha256": "9bdf73cc9155ab955811f6eccb11ff2767a069ecc948a4752660179cbb208df3"
+      },
+      {
+        "file": "./upgrade42.css",
+        "sha256": "82a396c3affc53156e48b578b8c1e380210fc44d0f83ad04cbc128efd022ee66"
+      },
+      {
+        "file": "./upgrade43.css",
+        "sha256": "218ac1e1872f66b88daad7eaac0d13eb2dd7d79a0394a82fac0a88626f11ef6f"
+      },
+      {
+        "file": "./upgrade44.css",
+        "sha256": "2e34fa416415dccc6fcaca41502e1f4280d54485f912c9a2679aee857aa2c2f0"
+      },
+      {
+        "file": "./upgrade45.css",
+        "sha256": "d25a31ce125459c93a6d5f45763fdf6fa338955e6df59f3d3f6f6f17c32c42e9"
+      },
+      {
+        "file": "./upgrade46.css",
+        "sha256": "72ab72046da795b090739972460f3833c235ad81204ca7ab0db0f98add6750bf"
+      },
+      {
+        "file": "./upgrade47.css",
+        "sha256": "a1ebcc4c3f219532828c4a78f44fa246c320a7be8fb62788feab8ea394fc4ded"
+      },
+      {
+        "file": "./upgrade48.css",
+        "sha256": "ac0c64ac4de6e2e05adff3885d9500eabf444501346a304c62ea0211e8b4aa4a"
+      },
+      {
+        "file": "./upgrade49.css",
+        "sha256": "d123d1a157b3a92016ff3f1d20f7cf131407a9478f5f8b8448767dc2721feaf5"
+      },
+      {
+        "file": "./upgrade50.css",
+        "sha256": "516cab16fe8a4aad2ae50e506ad776612ab3e2b0831ed165eddc1996d10fab15"
+      },
+      {
+        "file": "./upgrade51.css",
+        "sha256": "de43fef28f6e1517ff4f88fde94bc44ca77caac49b0cbcfd2392b24b6023e947"
+      },
+      {
+        "file": "./upgrade52.css",
+        "sha256": "96b077dc30907a0c49a1655fb60994bbedb3adc6c66d7ebecbb0c1c7e8d480ca"
+      },
+      {
+        "file": "./upgrade53.css",
+        "sha256": "d1c57fd96cabe787a25b29a75958e1f826f0f6f393ea1f74c93ade40f91ecbed"
+      },
+      {
+        "file": "./upgrade57.css",
+        "sha256": "a271e4b7abe3df28f03237267c1daff3c57ec590cc56c57d9a7633ad74127853"
+      },
+      {
+        "file": "./upgrade58.css",
+        "sha256": "44f36735310b7ef46e1ee96f665c90780f44d16305bfc740160b67b47755a256"
+      },
+      {
+        "file": "./upgrade59.css",
+        "sha256": "61fac32b4e586712e0b4b58df7dfb3dcb11878f178766f29adfc7401ee2ebae8"
+      },
+      {
+        "file": "./upgrade62.css",
+        "sha256": "a4a56e5f89d3b20a1e9a593719da1f737ade4ad4bd7fc99c3b0ca6ff7524bcf7"
+      },
+      {
+        "file": "./upgrade63.css",
+        "sha256": "42b24459dffd53751f7ca8afddec225c4974910da8568df9e620d87246a0090e"
+      },
+      {
+        "file": "./upgrade65.css",
+        "sha256": "29a9ccad7e38442a673a66a50cf34bc62ff0992df0fe4b913da1f11e2beff827"
+      },
+      {
+        "file": "./upgrade66.css",
+        "sha256": "af59b248ffca713963505ba07939a00766379fdd98be3368889911672b2ef9a9"
+      },
+      {
+        "file": "./upgrade67.css",
+        "sha256": "4d6ee561c8fa997f357dcc9d4f19f9f98273bd327477e3242a0aea114deb9d3c"
+      },
+      {
+        "file": "./upgrade69.css",
+        "sha256": "4446b82625a54000265ddb588748ed1c6f5f8b9c87dde9d2d8c094187a31b91e"
+      },
+      {
+        "file": "./upgrade70.css",
+        "sha256": "3ba8d493bef465e106593d387b06e275f93a774f3aa29be35f60c6a27f4b377a"
+      },
+      {
+        "file": "./upgrade71.css",
+        "sha256": "30055546f4576af09509ee8a508e2ea07b64fccc1fd7c3c035f104eb71c9e4b1"
+      },
+      {
+        "file": "./upgrade72.css",
+        "sha256": "54926729f739964e84dd109169e0d88f557e89445782a959bad2aa32f41673ee"
+      },
+      {
+        "file": "./upgrade73.css",
+        "sha256": "bf67a7fc8fb6096c68944ba566afcc5767ca9be06ae6f6e18a908c64f371bfb0"
+      },
+      {
+        "file": "./upgrade74.css",
+        "sha256": "fbfece4700f234caad8c6eba8ef15cb49d751b94c99e50cb6d52df471fa6abf3"
+      },
+      {
+        "file": "./upgrade75.css",
+        "sha256": "ad469db04ff28eb11065a9ae3c87d8e4580f663180d443d5525c66d11fa1883a"
+      },
+      {
+        "file": "./upgrade76.css",
+        "sha256": "f10aa71a770612e26a8cd9e362e4c40fcf6b031651a62a95b37b6fa0ee556fa0"
+      },
+      {
+        "file": "./upgrade78.css",
+        "sha256": "dd9d4a9f5eb309161e8f5e4ad8b57d86ebcf5b0ae352389a32cead186704325e"
+      },
+      {
+        "file": "./upgrade80.css",
+        "sha256": "847e083948b273c834e1da865d8fd255593b68295a90c88e2d70530589ad1178"
+      },
+      {
+        "file": "./upgrade87.css",
+        "sha256": "ef257d8cf9c63da82117c6185174686d493c76c2bd9d5370a885b315a7f4519a"
+      },
+      {
+        "file": "./upgrade88.css",
+        "sha256": "753afbc627712b762d372d51dbca7fd0f30b07c2b75cbe8800b260b0db0632ee"
+      },
+      {
+        "file": "./upgrade98.css",
+        "sha256": "544333f766f32b53344d280bc1287636e2269851de4247827d12bcb0bd0b1277"
+      },
+      {
+        "file": "./upgrade105.css",
+        "sha256": "a8e06be17cc57e7f322f8f3be1e67e516ec8fe2b65aa32d9f057f1a9008b343a"
+      },
+      {
+        "file": "./upgrade106.css",
+        "sha256": "ac1800f15a433f7ed4f84ea9b30addfc586d1cd57256cd820b04db56ecb1d539"
+      },
+      {
+        "file": "./upgrade111.css",
+        "sha256": "c4e1707be340de54fb9b3dc615e7eb3a1a764f9d88daa6fa4eb42a6ea181bf69"
+      }
+    ]
+  },
+  "admin": {
+    "js": "admin-core.24b593ff0271.js",
+    "css": "admin-core.11cda5bc98f3.css",
+    "bytes": {
+      "js": 1190378,
+      "css": 140120
+    }
+  },
+  "hardening": {
+    "module": "src/core/production-hardening.js",
+    "contracts": [
+      "PRODUCTION_HARDENING_SINGLEFLIGHT_001",
+      "PRODUCTION_HARDENING_SOAK_001"
+    ],
+    "dataInitSingleFlight": true,
+    "authInitSingleFlight": true,
+    "queueFlushSerialized": true,
+    "resumeRecoveryCoalesced": true,
+    "listenerBudgetSelfCheck": true,
+    "rulesChanged": false,
+    "viewerBundleChanged": false,
+    "replayBundleChanged": false
+  },
+  "artifactCleanup": {
+    "contract": "PRODUCTION_ARTIFACT_CLEANUP_001",
+    "runtimeAssetManifest": true,
+    "historicalRuntimeAssetDependencyRemoved": true,
+    "onlyCurrentVersionedAssetDirectory": true,
+    "sourceAndRegressionHistoryPreserved": true,
+    "rulesChanged": false
+  }
+}

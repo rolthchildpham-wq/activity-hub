@@ -1,0 +1,9 @@
+{
+  "pass": true,
+  "cases": [
+    "Denied first failed profile verification, shows retry without logout",
+    "Retry click verifies cached Firebase identity, opens protected app exactly once",
+    "Repeated observer callback does not re-read or reload"
+  ],
+  "context": "Chromium DOM with mocked Firebase; no production deployment"
+}

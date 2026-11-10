@@ -1,0 +1,74 @@
+/* Upgrade106 — Schedule Internal Scroll UX */
+/* Expanded schedules stay in a bounded scroll region instead of stretching the whole page. */
+.u106-admin-scroll .tk105-collapse-status,
+.u106-public-scroll .tk105-collapse-status{white-space:nowrap}
+
+/* Admin: let the table wrapper own the vertical + horizontal scrolling so sticky TH works. */
+.u106-admin-scroll:not(.tk105-collapsed) .tk105-collapse-body{
+  max-height:none!important;
+  overflow:visible!important;
+  opacity:1;
+}
+.u106-admin-scroll .tk105-collapse-body>.table-wrap{
+  max-height:min(64vh,680px);
+  overflow:auto!important;
+  scrollbar-gutter:stable both-edges;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+}
+.u106-admin-scroll .tk105-collapse-body>.table-wrap thead th{
+  position:sticky;
+  top:0;
+  z-index:8;
+  box-shadow:0 1px 0 #315270;
+}
+.u106-admin-scroll .tk105-collapse-body>.table-wrap .tk12-day-head{
+  position:sticky;
+  top:36px;
+  z-index:7;
+  box-shadow:0 1px 0 #315270;
+}
+
+/* Public viewer: cards scroll vertically inside the schedule panel. */
+.u106-public-scroll:not(.tk105-collapsed) .tk105-collapse-body{
+  max-height:min(64vh,680px)!important;
+  overflow-y:scroll!important;
+  overflow-x:hidden!important;
+  scrollbar-gutter:stable;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  padding-right:4px;
+  opacity:1;
+}
+.u106-public-scroll .tk105-collapse-body .tk12-public-day{
+  position:sticky;
+  top:0;
+  z-index:6;
+  box-shadow:0 2px 8px rgba(0,0,0,.25);
+}
+
+/* Keep collapse authoritative. */
+.u106-admin-scroll.tk105-collapsed .tk105-collapse-body,
+.u106-public-scroll.tk105-collapsed .tk105-collapse-body{
+  max-height:0!important;
+  overflow:hidden!important;
+  opacity:0;
+}
+
+/* Visible desktop scrollbar. */
+.u106-admin-scroll .table-wrap::-webkit-scrollbar,
+.u106-public-scroll .tk105-collapse-body::-webkit-scrollbar{width:11px;height:11px}
+.u106-admin-scroll .table-wrap::-webkit-scrollbar-track,
+.u106-public-scroll .tk105-collapse-body::-webkit-scrollbar-track{background:#071a2d;border-radius:10px}
+.u106-admin-scroll .table-wrap::-webkit-scrollbar-thumb,
+.u106-public-scroll .tk105-collapse-body::-webkit-scrollbar-thumb{background:#315a7a;border:2px solid #071a2d;border-radius:10px}
+.u106-admin-scroll .table-wrap::-webkit-scrollbar-thumb:hover,
+.u106-public-scroll .tk105-collapse-body::-webkit-scrollbar-thumb:hover{background:#477da5}
+.u106-admin-scroll .table-wrap,
+.u106-public-scroll .tk105-collapse-body{scrollbar-width:auto;scrollbar-color:#315a7a #071a2d}
+
+@media(max-width:700px){
+  .u106-admin-scroll .tk105-collapse-body>.table-wrap,
+  .u106-public-scroll:not(.tk105-collapsed) .tk105-collapse-body{max-height:58vh!important}
+  .u106-admin-scroll .tk105-collapse-body>.table-wrap .tk12-day-head{top:34px}
+}

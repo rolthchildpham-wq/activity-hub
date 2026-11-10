@@ -1,0 +1,18 @@
+const fs=require('fs'),path=require('path'),assert=require('assert');
+const root=path.resolve(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8');
+const u105=read('src/upgrade105.js'),css=read('upgrade105.css'),index=read('index.html'),sw=read('sw.js');
+const build=JSON.parse(read('build.json'));const n=Number((String(build.build).match(/upgrade(\d+)/)||[])[1]||0);assert(n>=105,'build must preserve U105 or later');
+assert(u105.includes('SCORING_FAST_LANE_001'),'Fast Lane contract missing');
+assert(u105.includes("String(meta?.type||'')!=='SCORE'"),'Fast Lane must be SCORE-only');
+assert(u105.includes('this.db.ref().update(normalized)'),'online SCORE must direct-update Firebase');
+assert(u105.includes("T.idb.put('queue',item)"),'failed SCORE must persist to IndexedDB');
+assert(u105.includes("status:denied?'BLOCKED':'PENDING'"),'permission-denied SCORE must be blocked');
+assert(u105.includes('newestActiveForKey'),'fallback must protect against stale score regression');
+assert(u105.includes('S.queuedScoreKeys.has(key)'),'queued court must stay ordered instead of overtaking');
+assert(u105.includes('topkey_u105_public_schedule_collapsed'),'public schedule collapse persistence missing');
+assert(u105.includes('topkey_u105_admin_schedule_collapsed'),'admin schedule collapse persistence missing');
+assert(css.includes('.tk105-collapsed .tk105-collapse-body'),'collapse CSS missing');
+assert(/\.\/assets\/u(?:10[5-9]|1[1-9]\d)\/(?:app|admin|admin-core)\.[a-f0-9]{12}\.js/.test(index),'U105+ protected hashed bundle not loaded');
+assert(/const CACHE='topkey-vnext-2026-upgrade(?:10[5-9]|1[1-9]\d)-/.test(sw),'U105+ SW cache name missing');
+assert(!u105.includes('getUserMedia'),'U105 must not add camera/mic access');
+console.log('upgrade105 scoring fast lane + schedule collapse regression: PASS');

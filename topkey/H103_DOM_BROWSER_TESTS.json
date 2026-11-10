@@ -1,0 +1,32 @@
+{
+  "checks": [
+    {
+      "name": "click_check_does_not_reload",
+      "pass": true,
+      "detail": "about:blank"
+    },
+    {
+      "name": "change_found_apply_button_visible",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "mismatched_release_blocks_apply",
+      "pass": true,
+      "detail": "Hub, Cầu lông và VNext chưa đồng bộ phiên bản. Không tải lại."
+    },
+    {
+      "name": "matching_release_hides_apply",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no_updater_page_errors",
+      "pass": true,
+      "detail": "[]"
+    }
+  ],
+  "pass_count": 5,
+  "fail_count": 0,
+  "limitations": "Chromium navigation blocked by administrator; DOM updater unit test only."
+}

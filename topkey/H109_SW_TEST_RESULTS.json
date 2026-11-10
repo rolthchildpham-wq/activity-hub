@@ -1,0 +1,28 @@
+{
+  "pass": true,
+  "results": [
+    {
+      "file": "sw.js",
+      "deleted": [
+        "topkey-h107-hub-shell",
+        "topkey-h108-hub-shell"
+      ],
+      "install": "non-disruptive"
+    },
+    {
+      "file": "sports/badminton/sw.js",
+      "deleted": [
+        "topkey-h105-r1-sports-badminton-shell",
+        "topkey-h106-r1-sports-badminton-shell"
+      ],
+      "install": "non-disruptive"
+    },
+    {
+      "file": "sports/vnext/sw.js",
+      "deleted": [
+        "topkey-h108-r1-sports-vnext-shell"
+      ],
+      "install": "non-disruptive"
+    }
+  ]
+}

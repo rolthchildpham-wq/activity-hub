@@ -1,0 +1,17 @@
+const fs=require('fs'),path=require('path'),assert=require('assert');
+const root=path.resolve(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8');
+const u88=read('src/upgrade88.js'),u101=read('src/upgrade101.js'),build=JSON.parse(read('build.json'));
+assert(u88.includes('WEBRTC_SIGNALING_RESILIENCE_001'),'U88 resilience contract missing');
+assert(u88.includes('heartbeatAt:Date.now()'),'broadcaster heartbeat missing');
+assert(u88.includes('ensureSharedBroadcast'),'broadcaster self-heal missing');
+assert(u88.includes('pruneStaleSessions'),'stale-session pruning missing');
+assert(!u88.includes("try{await sessionsRef.remove()}catch(e){console.warn('U88 clear WebRTC sessions'"),'broadcaster must not wipe waiting Viewer sessions');
+assert(u88.includes("showPublicCourt(courtId,{force:true})"),'Viewer same-court retry missing');
+assert(!u88.includes('if(force)state.publicRetry[courtId]=0'),'auto retry must not reset its own counter');
+assert(u88.includes('d.onclick=()=>{state.publicRetry[courtId]=0;'),'manual Xem LIVE must reset retry counter');
+assert(u88.includes('BTC đang LIVE · đang thử lại signaling WebRTC'),'fast signaling retry status missing');
+assert(u88.includes('Camera BTC đã ngắt/reload'),'stale broadcaster diagnosis missing');
+assert(u88.includes("surface:'PUBLIC_SPECTATOR_U101'"),'U101 Viewer request marker missing');
+const bn=Number((String(build.build).match(/upgrade(\d+)/)||[])[1]||0);assert(bn>=101,'current build must preserve U101 signaling contract');assert(/^u\d+-\d{8}$/.test(build.cacheTag));
+assert(u101.includes('WEBRTC_SIGNALING_RESILIENCE_HEARTBEAT_SELFHEAL_001'));
+console.log('upgrade101 webrtc signaling resilience regression: PASS');

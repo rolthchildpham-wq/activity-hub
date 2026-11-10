@@ -1,0 +1,6 @@
+{
+  "pass": true,
+  "checks": 28,
+  "release": "H120",
+  "scope": "Local static/rules parity; deployed Firebase ACLs not read"
+}

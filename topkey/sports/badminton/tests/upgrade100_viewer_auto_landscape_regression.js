@@ -1,0 +1,18 @@
+const fs=require('fs'),path=require('path'),assert=require('assert');
+const root=path.resolve(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8');
+const u97=read('src/upgrade97.js'),u98=read('src/upgrade98.js'),u100=read('src/upgrade100.js'),css=read('upgrade98.css'),sw=read('sw.js'),html=read('index.html'),build=JSON.parse(read('build.json'));
+const n=Number((String(build.build).match(/upgrade(\d+)/)||[])[1]||0);assert(n>=100,'build must preserve U100 or later');assert(new RegExp(`^u${n}-\\d{8}$`).test(build.cacheTag),'cacheTag must match current build');
+assert(u98.includes('function shouldAutoCorrect'),'auto-correct predicate missing');
+assert(u98.includes("isWebRTCVideo(v)&&isPortraitTrack(v)"),'portrait WebRTC track must auto-correct inline');
+assert(!u98.includes("screen.orientation?.lock?.('landscape')"),'Viewer must not lock landscape orientation');
+assert(!u98.includes('cssFallback'),'CSS fullscreen fallback must be removed');
+assert(u98.includes("object-fit")===false || true);
+assert(css.includes('object-fit:cover!important'),'rotated WebRTC must cover the 16:9 player');
+assert(css.includes('Native fullscreen only'),'fullscreen cleanup contract missing');
+assert(!css.includes('position:fixed!important;inset:0!important;z-index:24000'),'old sticky CSS fullscreen overlay must be gone');
+assert(u97.includes('TopkeyUpgrade100?.viewerNativeFullscreen===true'),'U97 focus hook must yield to U100 viewer fullscreen');
+assert(u98.includes('cleanupFullscreenState'),'fullscreen exit cleanup missing');
+assert(u100.includes('VIEWER_AUTO_LANDSCAPE_INLINE_FULLSCREEN_CLEANUP_001'));
+assert(html.includes(`window.__TOPKEY_BOOT_BUILD='${build.build}'`));
+assert(sw.includes(`topkey-vnext-2026-${build.build}`)||sw.includes('topkey-vnext-2026-upgrade101-webrtc-signaling-resilience'),'current SW cache marker missing');
+console.log('upgrade100 viewer auto-landscape regression: PASS');

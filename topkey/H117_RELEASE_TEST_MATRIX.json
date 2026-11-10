@@ -1,0 +1,246 @@
+{
+  "version": "H117",
+  "base": "H116",
+  "checks": {
+    "javascript_syntax": {
+      "total": 419,
+      "pass": 419,
+      "fail": 0,
+      "errors": []
+    },
+    "embedded_script_syntax": {
+      "total": 48,
+      "pass": 48,
+      "fail": []
+    },
+    "selected_regressions": {
+      "total": 11,
+      "pass": 11,
+      "details": {
+        "tests/h115/club_crud.cjs": {
+          "pass": true,
+          "exit": 0,
+          "tail": "d\nPASS milestone row keeps tri-language source\nPASS milestone row offers edit/delete\nPASS schedule actions available\nPASS testlab does not write production path\nPASS testlab rejects production tournament ID\nTOTAL 14/14\n\n"
+        },
+        "tests/h117/club_plan_conflicts.cjs": {
+          "pass": true,
+          "exit": 0,
+          "tail": "le changes\nPASS schedule and finance remain intact\nPASS separate Test Lab namespace\nPASS Test Lab writes own plan\nPASS production plan not changed by Test Lab\nPASS sport scopes isolated\nH117 CLUB CONCURRENCY 14/14 PASS\n\n"
+        },
+        "tests/h117/release_integrity.cjs": {
+          "pass": true,
+          "exit": 0,
+          "tail": "nning write remains authenticated\nPASS clubPlan handmade write remains authenticated\nPASS clubPlan shuttle write remains authenticated\nPASS clubPlan cooking write remains authenticated\nH117 RELEASE INTEGRITY 29/29 PASS\n\n"
+        },
+        "tests/h115/dynamic_i18n.cjs": {
+          "pass": true,
+          "exit": 0,
+          "tail": "r EN\nPASS dictionary UI label translated\nPASS translation cached for repeated DOM refresh\nPASS athlete name retranslated for Chinese\nPASS static label switched to Chinese\nPASS no firebase records were mutated\nTOTAL 6/6\n\n"
+        },
+        "tests/h115/translate_proxy.cjs": {
+          "pass": true,
+          "exit": 0,
+          "tail": "PASS unauthenticated denied\nPASS authenticated translation batch\nPASS public translation only when explicitly enabled\nPASS mismatched Origin denied\nPASS unknown locale rejected\nPASS excessive batch rejected\nTOTAL 6/6\n\n"
+        },
+        "tests/h108_auth_security_regression.js": {
+          "pass": true,
+          "exit": 0,
+          "tail": "denied\n    at Object.once (/mnt/data/h117work/tests/h108_auth_security_regression.js:12:51)\n    at _h108HandleState (evalmachine.<anonymous>:1:5080)\n    at /mnt/data/h117work/tests/h108_auth_security_regression.js:11:93\n"
+        },
+        "tests/club_plan_rules_h93.js": {
+          "pass": true,
+          "exit": 0,
+          "tail": "CLUB_PLAN_RULES_H93_OK\n\n"
+        },
+        "h104-tests/v2-engine.test.js": {
+          "pass": true,
+          "exit": 0,
+          "tail": "000 pages=98\nPASS PAGE finance {\"day\":\"2026-11-03\"} records=429 pages=4\nPASS status/date index mutation atomic delta\nPASS financial aggregate invalidation\nPASS referential integrity catches invalid match\nALL TESTS PASS\n\n"
+        },
+        "sports/badminton/tests/h48_ranking_mini_league_test.js": {
+          "pass": true,
+          "exit": 0,
+          "tail": "H48 ranking mini-league: PASS\n\n"
+        },
+        "sports/badminton/tests/h45_core_standings_authority_test.js": {
+          "pass": true,
+          "exit": 0,
+          "tail": " '1-0', pts: 1 },\n  { id: 'q', p: 1, wl: '0-1', pts: 0 },\n  { id: 'd', p: 2, wl: '0-2', pts: 0 },\n  { id: 'h', p: 2, wl: '0-2', pts: 0 },\n  { id: 'n', p: 2, wl: '0-2', pts: 0 },\n  { id: 't', p: 2, wl: '0-2', pts: 0 }\n]\n\n"
+        },
+        "sports/badminton/tests/h46_withdrawal_policy_recovery_test.js": {
+          "pass": true,
+          "exit": 0,
+          "tail": "wal policy recovery: PASS [\n  { id: 'b', p: 3, wl: '3-0', pts: 3, wo: 2 },\n  { id: 'x', p: 3, wl: '2-1', pts: 2, wo: 2 },\n  { id: 'w1', p: 2, wl: '0-2', pts: 0, wo: 2 },\n  { id: 'w2', p: 2, wl: '0-2', pts: 0, wo: 2 }\n]\n\n"
+        }
+      }
+    },
+    "high_risk_unchanged": [
+      {
+        "file": "firebase.database.rules.json",
+        "unchanged": true
+      },
+      {
+        "file": "h113-finance-report.js",
+        "unchanged": true
+      },
+      {
+        "file": "h106-final-report-pdf.js",
+        "unchanged": true
+      },
+      {
+        "file": "h112-ppt-template.js",
+        "unchanged": true
+      },
+      {
+        "file": "sports/badminton/src/scoring.js",
+        "unchanged": true
+      }
+    ],
+    "h116_pdf_reference": {
+      "note": "Reference outputs from H116; not newly exported from production",
+      "files": {
+        "H116_badminton_FINAL.pdf": {
+          "pages": 7,
+          "nonblank_pages": 7,
+          "mean_gray": [
+            223.9,
+            217.0,
+            223.2,
+            217.1,
+            218.6,
+            222.1,
+            226.6
+          ]
+        },
+        "H116_cooking_FINAL.pdf": {
+          "pages": 7,
+          "nonblank_pages": 7,
+          "mean_gray": [
+            224.1,
+            217.9,
+            223.7,
+            218.0,
+            219.1,
+            222.6,
+            226.8
+          ]
+        },
+        "H116_football_FINAL.pdf": {
+          "pages": 7,
+          "nonblank_pages": 7,
+          "mean_gray": [
+            223.9,
+            216.8,
+            223.1,
+            216.9,
+            218.5,
+            222.0,
+            226.6
+          ]
+        },
+        "H116_handmade_FINAL.pdf": {
+          "pages": 7,
+          "nonblank_pages": 7,
+          "mean_gray": [
+            223.9,
+            216.9,
+            223.1,
+            217.0,
+            218.6,
+            222.0,
+            226.6
+          ]
+        },
+        "H116_running_FINAL.pdf": {
+          "pages": 7,
+          "nonblank_pages": 7,
+          "mean_gray": [
+            224.4,
+            219.7,
+            224.6,
+            219.8,
+            220.1,
+            223.6,
+            227.0
+          ]
+        },
+        "H116_shuttle_FINAL.pdf": {
+          "pages": 7,
+          "nonblank_pages": 7,
+          "mean_gray": [
+            224.0,
+            217.5,
+            223.4,
+            217.5,
+            218.9,
+            222.3,
+            226.7
+          ]
+        },
+        "H116_volleyball_FINAL.pdf": {
+          "pages": 7,
+          "nonblank_pages": 7,
+          "mean_gray": [
+            223.7,
+            215.8,
+            222.5,
+            215.9,
+            218.0,
+            221.4,
+            226.5
+          ]
+        }
+      }
+    },
+    "sport_ppt_templates": {
+      "badminton-topkey-report.pptx": {
+        "valid": true,
+        "slides": 9,
+        "unchanged_h116": true
+      },
+      "cooking-topkey-report.pptx": {
+        "valid": true,
+        "slides": 9,
+        "unchanged_h116": true
+      },
+      "football-topkey-report.pptx": {
+        "valid": true,
+        "slides": 9,
+        "unchanged_h116": true
+      },
+      "handmade-topkey-report.pptx": {
+        "valid": true,
+        "slides": 9,
+        "unchanged_h116": true
+      },
+      "running-topkey-report.pptx": {
+        "valid": true,
+        "slides": 9,
+        "unchanged_h116": true
+      },
+      "shuttle-topkey-report.pptx": {
+        "valid": true,
+        "slides": 9,
+        "unchanged_h116": true
+      },
+      "shuttlecock-topkey-report.pptx": {
+        "valid": true,
+        "slides": 9,
+        "unchanged_h116": true
+      },
+      "volleyball-topkey-report.pptx": {
+        "valid": true,
+        "slides": 9,
+        "unchanged_h116": true
+      }
+    }
+  },
+  "limits": [
+    "No signed-in Firebase staging or EdgeOne production browser test in this environment",
+    "Historical test suite contains obsolete hardcoded versions and browser-only tests",
+    "No cross-device concurrent live tournament closure verification",
+    "No real Firebase Storage CORS/large PDF receipt smoke test",
+    "No quantitative measured production TTI, memory, or WebRTC/camera performance",
+    "H117 does not change scoring algorithms or Firebase Security Rules"
+  ]
+}

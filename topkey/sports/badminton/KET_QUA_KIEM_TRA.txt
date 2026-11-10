@@ -1,0 +1,57 @@
+TOPKEY UPGRADE118 — KET QUA KIEM TRA CUOI
+=========================================
+Build: upgrade118
+Version: 2026.10.31-vnext-featureparity15-upgrade118-production-artifact-cleanup
+
+Regression + deterministic VM: 62/62 PASS
+JavaScript syntax: 180/180 PASS
+JSON/webmanifest parse: 17/17 PASS
+SW precache: 10/10 PASS
+Hashed asset filename/content: PASS
+Admin JS manifest/source order rebuild: PASS
+Admin CSS manifest/source order rebuild: PASS
+HTML current asset refs: PASS
+Historical versioned asset directories shipped: 0 (only u118)
+Stale runtime Replay u116 dependency: REMOVED
+Sensitive byte comparison vs Upgrade117: 22/22 PASS
+
+Chromium application acceptance:
+- Admin boot/login: PASS
+- Logout -> login again: PASS
+- credential query leak/reload loop: PASS (khong xuat hien)
+- 11 Admin tabs: PASS
+- Replay/Storage/QR lazy load: PASS
+- Schedule collapse/DOM safety: PASS
+- Umpire +1 score: PASS
+- one atomic activeMatches+event+commentary payload: PASS
+- 200 tab switches: PASS, 0 new console/page errors
+- Viewer schedule/standings/live/search/collapse/announcement/BLV: PASS
+- Viewer console/page errors: 0
+
+Local HTTP shell/assets:
+- index/build/sw/manifest/current Admin/Viewer/Replay assets: HTTP 200 + MIME correct
+- Playwright page.goto(localhost): NOT-RUN / BLOCKED BY ENVIRONMENT (ERR_BLOCKED_BY_ADMINISTRATOR)
+  Browser acceptance used final DOM/bundles in Chromium; HTTP path/MIME checked separately.
+
+Live EdgeOne/Firebase/TURN network acceptance:
+- NOT-RUN in this container because live production/external network is inaccessible.
+- Do not interpret this as a code failure.
+
+Package size:
+- Upgrade117 release artifact ~33.6 MB
+- Upgrade118 release tree ~5.7 MB
+
+Firebase Rules changed: NO
+TURN changed: NO
+Scoring semantics changed: NO
+Viewer bundle changed: NO
+Replay bundle bytes changed: NO
+
+FINAL DECISION: GO — Upgrade118 is the production baseline.
+
+[2026-11-05] H51 Ranking Explain Report
+- node --check upgrade122-hotfix51.js: PASS
+- h45_core_standings_authority_test.js: PASS
+- h48_ranking_mini_league_test.js: PASS
+- h51_ranking_explain_report_test.js: PASS
+- Admin-only report button; no Firebase writes; Hotfix50 no-auto-reload preserved.

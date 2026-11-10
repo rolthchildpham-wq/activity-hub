@@ -1,0 +1,27 @@
+{
+  "pass": true,
+  "reason": "In-memory mocked network only, not browser throughput measurements",
+  "results": [
+    {
+      "worker": "sw.js",
+      "oldStaticRequests": 2,
+      "newStaticRequests": 1,
+      "oldInterceptsExternal": true,
+      "newInterceptsExternal": false
+    },
+    {
+      "worker": "sports/badminton/sw.js",
+      "oldStaticRequests": 2,
+      "newStaticRequests": 1,
+      "oldInterceptsExternal": true,
+      "newInterceptsExternal": false
+    },
+    {
+      "worker": "sports/vnext/sw.js",
+      "oldStaticRequests": 2,
+      "newStaticRequests": 1,
+      "oldInterceptsExternal": true,
+      "newInterceptsExternal": false
+    }
+  ]
+}

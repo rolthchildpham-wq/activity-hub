@@ -1,0 +1,806 @@
+{
+  "schemaVersion": 1,
+  "generatedFor": "upgrade117",
+  "generatedAt": "2026-10-31T00:00:00+07:00",
+  "note": "Mechanical source index only. Semantic invariants live in FEATURE_REGISTRY.json. Upgrade117 adds production hardening single-flight/serialized recovery plus long-session soak tests; Viewer/Replay/Rules remain unchanged.",
+  "entries": [
+    {
+      "file": "src/app.js",
+      "upgrade": null,
+      "version": "",
+      "sha256": "cb53e08986c86afe9380c1e23c7b949a62a43402995597156469d9d7461badc3",
+      "header": "(() => { 'use strict'; const T=window.Topkey,U=T.U; const App=T.App={ spectatorOffs:[], spectatorStarted:false, state:{config:{title:'GIẢI CẦU LÔNG TOPKEY VNEXT',location:'',rules:T.DEFAULT_RULES},teams:{},matches:{},courts:{},activeMatches:{},finance:{},announcements:{},registrations:{},audit:{},commentary:{},users:{},health:{}}, offs:[], currentTab:'overview', currentCourt:'court_1', selectedMatch:null, audioUnlocked:false, rtcTimer:null, lastSpokenCommentId:null, livePaused:false, scoreNarrative:{}, async init(){ const publicViewer=location.hash.startsWith('#spectator'); if(publicViewer){ document.documentElement.classList.add('tk-public-spectator-boot'); document.getElementById('login-screen')?.classList.add('hidden'); document.getElementById('app-shell')?.classList.add('hidden'); document.getElementById('public-spectator')?.classList.remove('hidden');"
+    },
+    {
+      "file": "src/auth.js",
+      "upgrade": null,
+      "version": "",
+      "sha256": "b051a6caeee72c31c52eb6f6b798b81d83ad911fe7ef9d08b7b245b22b5524d6",
+      "header": "(() => { 'use strict'; const T=window.Topkey, U=T.U; class AuthService{ constructor(){this.user=null;this.profile=null;this.mode='SECURE';this.profileRef=null;this.profileHandler=null;this.sessionUid=null;} normalizeProfile(raw,user){ const p=(raw&&typeof raw==='object')?{...raw}:{}; const role=String(p.role||'VIEWER').trim().toUpperCase(); p.role=Object.prototype.hasOwnProperty.call(T.ROLES,role)?role:'VIEWER'; p.uid=p.uid||user?.uid||''; p.email=p.email||user?.email||''; p.displayName=p.displayName||user?.displayName||user?.email||'User'; p.active=p.active!==false; return p; } detachProfile(){ if(this.profileRef&&this.profileHandler)this.profileRef.off('value',this.profileHandler); this.profileRef=null;this.profileHandler=null;this.sessionUid=null; } async init(){ if(!T.Data.auth){this.mode='L"
+    },
+    {
+      "file": "src/config.js",
+      "upgrade": null,
+      "version": "2026.10.29-vnext-featureparity15-upgrade58-match-focus-pwa",
+      "sha256": "738b4aac4d79ce5ec6d91e0a32b272ab6cf91432c6b17076ef92a7802a0ea032",
+      "header": "(() => { 'use strict'; const T = window.Topkey = window.Topkey || {}; T.VERSION = '2026.10.29-vnext-featureparity15-upgrade58-match-focus-pwa'; T.CONFIG_VERSION = T.VERSION; T.SCHEMA_VERSION = 3; T.FIREBASE_CONFIG = { apiKey: 'AIzaSyBSr7buP3bMf6HTg_YDWH_Xk5aNhyvfSRg', authDomain: 'topkey-badminton.firebaseapp.com', databaseURL: 'https://topkey-badminton-default-rtdb.asia-southeast1.firebasedatabase.app', projectId: 'topkey-badminton', storageBucket: 'topkey-badminton.firebasestorage.app', messagingSenderId: '907878800245', appId: '1:907878800245:web:aa77e4846656a0ba84913c', measurementId: 'G-E4M8XDJ26J' }; T.ROOT = 'topkey_badminton_vnext_2026'; T.LEGACY_ROOT = 'topkey_badminton_app_ai'; T.DEFAULT_RULES = { winPoints: 3, lossPoints: 0, walkoverWinPoints: 3, tieBreakers: ['headToHead','setDiff','pointDiff','name'], minRestMin"
+    },
+    {
+      "file": "src/core/data-runtime.js",
+      "upgrade": null,
+      "version": "",
+      "sha256": "b1f1be662431c60d693ff200f2d6bf62ebd40e58d537595e2c6e8c5e670b634c",
+      "header": "(()=>{ 'use strict'; const T=window.Topkey,App=T?.App,U90=window.TopkeyUpgrade90; if(!T||!App||!T.Data||window.TopkeyCoreDataRuntime115?.installed)return; App.__upgrade102Installed=true;App.__upgrade103Installed=true; const $=id=>document.getElementById(id),raf=window.requestAnimationFrame?.bind(window)||((fn)=>setTimeout(fn,16)),now=()=>window.performance?.now?.()||Date.now(); const L={coreOffs:[],tabOffs:[],subscribed:false,activeTab:'',adminDirty:new Set(),adminRenderPending:false,metrics:{corePaths:0,dynamicPaths:0,publicPaths:0,adminRenderFlushes:0,publicScheduleFlushes:0,publicLiveFlushes:0,childEvents:0,inactiveBranchSkips:0,hiddenRenderDefers:0,overviewSkips:0}}; const R={scoreSeq:0,pendingScore:null,metrics:{localScoreRenderMs:0,firebaseScoreWriteMs:0,viewerFirebaseReceiveMs:0,overviewSkips:0,legacyPollersStopped:0,healthRenders:0}}; const TAB_BRANCHES={ overview:new Set(['conf"
+    },
+    {
+      "file": "src/core/production-hardening.js",
+      "upgrade": null,
+      "version": "2026.10.31-vnext-featureparity15-upgrade117-production-hardening",
+      "sha256": "23954093cecce0e2cc768dea0e011b3e8e8b0cbae79767a8a3537fed14052eca",
+      "header": "(()=>{ 'use strict'; const T=window.Topkey,App=T?.App,Data=T?.Data,Auth=T?.Auth; if(!T||!App||!Data||!Auth||window.TopkeyProductionHardening117?.installed)return; const VERSION='2026.10.31-vnext-featureparity15-upgrade117-production-hardening',BUILD='upgrade117',CACHE_TAG='u117-20261031'; const $=id=>document.getElementById(id); const S={ installed:true,dataInitRequests:0,dataInitRuns:0,dataInitCoalesced:0,authInitRequests:0,authInitRuns:0,authInitCoalesced:0, flushRequests:0,flushRuns:0,flushCoalesced:0,flushErrors:0,recoveryRequests:0,recoveryRuns:0,recoveryCoalesced:0,recoverySkipped:0, queueHighWater:0,lastFlushSource:'',lastRecoverySource:'',lastSelfCheck:null,selfChecks:0,warnings:0,contracts:['PRODUCTION_HARDENING_SINGLEFLIGHT_001','PRODUCTION_HARDENING_SOAK_001'] }; const emptyReport=()=>({synced:[],failed:[],blocked:[],deferred:[]}); const mergeReport=(a,b)=>{a=a||emptyReport"
+    },
+    {
+      "file": "src/core/runtime-authority.js",
+      "upgrade": null,
+      "version": "2026.10.31-vnext-featureparity15-upgrade117-production-hardening",
+      "sha256": "0928b4d95233a3b9731275bd451e5af339c90a1fe4b554a9c537b2785b36e228",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App;if(!T||!App||window.TopkeyRuntime117?.installed)return; const VERSION='2026.10.31-vnext-featureparity15-upgrade117-production-hardening',BUILD='upgrade117',CACHE_TAG='u117-20261031'; const LEGACY_CONTRACT='CONSOLIDATED_RUNTIME_AUTHORITY_003'; const $=id=>document.getElementById(id); const S={installed:true,settleTicks:0,legacyAuthoritiesPatched:0,settled:false}; function enforce(){ T.VERSION=VERSION;T.CONFIG_VERSION=VERSION;T.RUNTIME_BUILD=VERSION;document.documentElement.dataset.topkeyBuild=BUILD; const h=$('health-version');if(h&&h.textContent!==VERSION)h.textContent=VERSION; const r=$('tk55-runtime-build');if(r&&r.textContent!==VERSION)r.textContent=VERSION; const t=$('tk103-runtime-health')?.querySelector('h3');if(t&&t.textContent!=='⚡ Upgrade117 · Production Hardened')t.textContent='⚡ Upgrade117 · Production Hardened';"
+    },
+    {
+      "file": "src/core/ui-boundary-install.js",
+      "upgrade": null,
+      "version": "",
+      "sha256": "fc00493eb179f2fad0a36a7c7bf30e4ddb211e3cf78ac27462a39e5a26f8b786",
+      "header": "(()=>{'use strict';window.TopkeyUIBoundary?.install?.();})();"
+    },
+    {
+      "file": "src/core/ui-boundary.js",
+      "upgrade": null,
+      "version": "",
+      "sha256": "67229772937cce4c1782f6c82cc9baf9a50e8d7d4529e910a38811f3dca36e3e",
+      "header": "(()=>{ 'use strict'; const T=window.Topkey,App=T?.App;if(!T||!App||window.TopkeyUIBoundary)return; const hooks={tab:[],matches:[],spectator:[]},keys=new Set(); const state={installed:false,dispatch:{tab:0,matches:0,spectator:0},errors:0}; function add(kind,fn,key){if(typeof fn!=='function'||!hooks[kind])return()=>{};const k=String(key||`${kind}:${hooks[kind].length}`);if(keys.has(k))return()=>{};keys.add(k);const row={fn,key:k};hooks[kind].push(row);return()=>{const i=hooks[kind].indexOf(row);if(i>=0)hooks[kind].splice(i,1);keys.delete(k)}} function run(kind,payload){state.dispatch[kind]=(state.dispatch[kind]||0)+1;for(const row of [...(hooks[kind]||[])]){try{row.fn(payload)}catch(e){state.errors++;console.warn('TOPKEY UI boundary hook',kind,row.key,e)}}} function install(){if(state.installed)return true;state.installed=true; const show=App.showTab?.bind(App);if(show&&!App.__u116Bounda"
+    },
+    {
+      "file": "src/features/live/runtime.js",
+      "upgrade": null,
+      "version": "",
+      "sha256": "ac56c6661729171253746ac08e9e0421841ccd72505a5664bda0cffaf743fc8e",
+      "header": "(()=>{ 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U;if(!T||!App||!U||window.TopkeyLiveRuntime)return; App.__upgrade80Installed=true; const $=id=>document.getElementById(id);let facing='environment'; function selectedFacing(){const v=$('tk80-camera-facing')?.value;return v==='user'?'user':'environment'} function videoConstraints(mode='ideal'){facing=selectedFacing();return {width:{ideal:1280},height:{ideal:720},frameRate:{ideal:30,max:60},facingMode:{[mode]:facing}}} async function openPreferredCamera(){const media=navigator.mediaDevices;if(!media?.getUserMedia)throw new Error('Trình duyệt không hỗ trợ camera');try{return await media.getUserMedia({video:videoConstraints('exact'),audio:true})}catch(e){if(!['OverconstrainedError','NotFoundError','TypeError'].includes(e?.name))throw e;return media.getUserMedia({video:videoConstraints('ideal'),audio:true})}} App.cameraVideoConstraint"
+    },
+    {
+      "file": "src/features/schedule/runtime.js",
+      "upgrade": null,
+      "version": "",
+      "sha256": "e1f7d85a668102dde75870ade00a0d3132b34488dfc018985a02de972d04583a",
+      "header": "(()=>{ 'use strict'; const T=window.Topkey,App=T?.App;if(!T||!App||window.TopkeyScheduleRuntime)return; App.__upgrade106Installed=true;App.__upgrade107Installed=true; const $=id=>document.getElementById(id); const txt=(vi,en,zh)=>{const l=window.TopkeyI18n?.language||'vi';return l==='en'?en:l==='zh'?zh:vi}; function label(card){if(!card)return;const stat=card.querySelector('.tk105-collapse-status');if(!stat)return;stat.textContent=card.classList.contains('tk105-collapsed')?txt('Đã thu gọn · xem BXH nhanh','Collapsed · standings ready','已收起 · 快速查看排名'):txt('Lịch đang mở · cuộn trong khung','Schedule open · scroll inside','赛程已展开 · 框内滚动')} function mark(){const pub=$('spectator-schedule')?.closest('.card');if(pub){pub.classList.add('u106-public-scroll');label(pub)}const admin=$('matches-list')?.closest('.card');if(admin){admin.classList.add('u106-admin-scroll');label(admin)}} function repair"
+    },
+    {
+      "file": "src/features/umpire/runtime.js",
+      "upgrade": null,
+      "version": "",
+      "sha256": "7dd12efd031f0a321f0043575d2fd92ba48927576cc2059054f6f421d94945c7",
+      "header": "(()=>{ 'use strict'; const T=window.Topkey,App=T?.App;if(!T||!App||window.TopkeyUmpireRuntime)return; const $=id=>document.getElementById(id); function hardScrollTop(){ try{if('scrollRestoration' in history)history.scrollRestoration='manual'}catch{} const run=()=>{const page=$('page-umpire');try{page?.scrollIntoView({block:'start',inline:'nearest',behavior:'auto'})}catch{};try{window.scrollTo(0,0)}catch{};try{document.documentElement.scrollTop=0}catch{};try{document.body.scrollTop=0}catch{}}; run();requestAnimationFrame(()=>{run();requestAnimationFrame(run)});setTimeout(run,0);setTimeout(run,80);setTimeout(run,240); } function onTab({tab}={}){if(tab==='umpire')hardScrollTop()} window.TopkeyUIBoundary?.onTab?.(onTab,'u116:umpire:scroll-top'); addEventListener('pageshow',()=>{if(App.currentTab==='umpire'&&!$('page-umpire')?.classList.contains('hidden'))hardScrollTop()},{passive:true}"
+    },
+    {
+      "file": "src/firebase.js",
+      "upgrade": null,
+      "version": "",
+      "sha256": "4c95b01b33bf40a892c49a268281c36be16731b227ddec6eb04f0cfc6889add0",
+      "header": "(() => { 'use strict'; const T=window.Topkey, U=T.U; const cleanFirebase=v=>{if(v===undefined)return undefined;if(v===null||typeof v==='string'||typeof v==='boolean')return v;if(typeof v==='number')return Number.isFinite(v)?v:null;if(Array.isArray(v))return v.map(x=>{const c=cleanFirebase(x);return c===undefined?null:c});if(typeof v==='object'){const o={};for(const [k,x] of Object.entries(v)){const c=cleanFirebase(x);if(c!==undefined)o[k]=c}return o}return String(v)}; const errorText=e=>String(e?.code||e?.message||e||'Firebase error'); const isPermissionDenied=e=>/permission[_ -]?denied|PERMISSION_DENIED/i.test(errorText(e)); const isPublicQueueItem=item=>String(item?.meta?.type||'')==='PUBLIC_REGISTRATION'; class DataService{ constructor(){ this.ready=false; this.online=navigator.onLine; this.connected=false; this.app=null; this.db=null; this.auth=null; this.storage=null"
+    },
+    {
+      "file": "src/idb.js",
+      "upgrade": null,
+      "version": "",
+      "sha256": "2ecbe7a67e05032008a31d2749b3008404130d474444fc407910d1559230f343",
+      "header": "(() => { 'use strict'; const T=window.Topkey; class IDBStore{ constructor(){this.dbp=null;} open(){ if(this.dbp)return this.dbp; this.dbp=new Promise((res,rej)=>{ const r=indexedDB.open('topkey_badminton_vnext',3); r.onupgradeneeded=()=>{ const db=r.result; if(!db.objectStoreNames.contains('queue'))db.createObjectStore('queue',{keyPath:'id'}); if(!db.objectStoreNames.contains('receipts'))db.createObjectStore('receipts',{keyPath:'id'}); if(!db.objectStoreNames.contains('cache'))db.createObjectStore('cache',{keyPath:'key'}); }; r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); return this.dbp; } async put(store,v){const db=await this.open(); return new Promise((res,rej)=>{const tx=db.transaction(store,'readwrite');tx.objectStore(store).put(v);tx.oncomplete=()=>res(v);tx.onerror=()=>rej(tx.error)});} async get(store,key){const db=await this.open(); return ne"
+    },
+    {
+      "file": "src/scoring.js",
+      "upgrade": null,
+      "version": "",
+      "sha256": "576643136cd0087d0ed5e7bd5bb40303febe97d34971b272cf4f826d73a11425",
+      "header": "(() => { 'use strict'; const T=window.Topkey, U=T.U; T.Scoring={ isSetWon(a,b,rules){const t=Number(rules.points)||21, cap=Number(rules.cap)||30, by=Number(rules.winBy)||2; return (Math.max(a,b)>=t&&Math.abs(a-b)>=by)||a>=cap||b>=cap;}, setsWon(sets){return (sets||[]).reduce((o,s)=>{if(s.finished){if(s.a>s.b)o.a++;else if(s.b>s.a)o.b++;}return o},{a:0,b:0});}, winner(sets,rules){const w=this.setsWon(sets), need=Math.ceil((Number(rules.bestOf)||3)/2); return w.a>=need?'A':w.b>=need?'B':null;}, initial(match,rules){return {matchId:match.id,courtId:match.courtId||'',teamAId:match.teamAId,teamBId:match.teamBId,sets:[{a:0,b:0,finished:false}],setIndex:0,serverSide:'A',serverPlayer:'p1',positions:{A:{p1:'right',p2:'left'},B:{p1:'right',p2:'left'}},started:false,finished:false,sideSwapped:false,version:1,updatedAt:Date.now()};}, point(state,side,delta,rules){ const"
+    },
+    {
+      "file": "src/upgrade100.js",
+      "upgrade": "upgrade100",
+      "version": "2026.10.30-vnext-featureparity15-upgrade100-viewer-auto-landscape-fullscreen-cleanup",
+      "sha256": "f6999b835b4d9ac4a9dd49b23820c711022a68469163fd90d76186488ebf91c8",
+      "header": "(()=>{ 'use strict'; const T=window.Topkey,App=T?.App;if(!T||!App||App.__upgrade100Installed)return;App.__upgrade100Installed=true; const VERSION='2026.10.30-vnext-featureparity15-upgrade100-viewer-auto-landscape-fullscreen-cleanup',BUILD='upgrade100',CACHE_TAG='u100-20261030'; const $=id=>document.getElementById(id); function enforceVersion(){T.VERSION=VERSION;T.CONFIG_VERSION=VERSION;T.RUNTIME_BUILD=VERSION;document.documentElement.dataset.topkeyBuild=BUILD;const h=$('health-version');if(h&&h.textContent!==VERSION)h.textContent=VERSION;const r=$('tk55-runtime-build');if(r&&r.textContent!==VERSION)r.textContent=VERSION} async function checkServerBuild100(){enforceVersion();try{const u=new URL('./build.json',location.href);u.searchParams.set('__topkey_probe',Date.now()+'_'+Math.random().toString(36).slice(2));const res=await fetch(u,{cache:'no-store',headers:{'Cache-Control':'no-cache'}}"
+    },
+    {
+      "file": "src/upgrade101.js",
+      "upgrade": "upgrade101",
+      "version": "2026.10.30-vnext-featureparity15-upgrade101-webrtc-signaling-resilience",
+      "sha256": "e8d0d1fc6174b7ef743f5d96b00d4ab623ea2e8c8ad3f5d2a7ac8041cefe4b8d",
+      "header": "(()=>{ 'use strict'; const T=window.Topkey,App=T?.App;if(!T||!App||App.__upgrade101Installed)return;App.__upgrade101Installed=true; const VERSION='2026.10.30-vnext-featureparity15-upgrade101-webrtc-signaling-resilience',BUILD='upgrade101',CACHE_TAG='u101-20261030'; const $=id=>document.getElementById(id); function enforceVersion(){T.VERSION=VERSION;T.CONFIG_VERSION=VERSION;T.RUNTIME_BUILD=VERSION;document.documentElement.dataset.topkeyBuild=BUILD;const h=$('health-version');if(h&&h.textContent!==VERSION)h.textContent=VERSION;const r=$('tk55-runtime-build');if(r&&r.textContent!==VERSION)r.textContent=VERSION} async function checkServerBuild101(){enforceVersion();try{const u=new URL('./build.json',location.href);u.searchParams.set('__topkey_probe',Date.now()+'_'+Math.random().toString(36).slice(2));const res=await fetch(u,{cache:'no-store',headers:{'Cache-Control':'no-cache'}});if(!res.ok)"
+    },
+    {
+      "file": "src/upgrade102.js",
+      "upgrade": "upgrade102",
+      "version": "2026.10.30-vnext-featureparity15-upgrade102-firebase-latency",
+      "sha256": "0f4d751f68df1fcfde31770e83ab31d7aba9305f7fce6e56f86fd6947e5bb1b0",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U88=window.TopkeyUpgrade88,U94=window.TopkeyUpgrade94; if(!T||!App||App.__upgrade102Installed)return; App.__upgrade102Installed=true; const VERSION='2026.10.30-vnext-featureparity15-upgrade102-firebase-latency'; const BUILD='upgrade102',CACHE_TAG='u102-20261030'; const $=id=>document.getElementById(id); const raf=window.requestAnimationFrame?.bind(window)||((fn)=>setTimeout(fn,16)); const S={ coreOffs:[],tabOffs:[],publicOffs:[],subscribed:false,activeTab:'', adminDirty:new Set(),adminRenderPending:false,publicSchedulePending:false,publicLivePending:false, metrics:{corePaths:0,dynamicPaths:0,publicPaths:0,adminRenderFlushes:0,publicScheduleFlushes:0,publicLiveFlushes:0,childEvents:0,inactiveBranchSkips:0,hiddenRenderDefers:0,overviewSkips:0}, contracts:['FIREBASE_LATENCY_U102','TAB_SCOPED_LISTENERS_001','PUBLIC_VIEWER_INCREM"
+    },
+    {
+      "file": "src/upgrade103.js",
+      "upgrade": "upgrade103",
+      "version": "2026.10.30-vnext-featureparity15-upgrade103-render-runtime-stability",
+      "sha256": "a9d95e7d418dbc459e5448a88314674f369a55b350ad115e34264499e1c94e22",
+      "header": "(()=>{ 'use strict'; const T=window.Topkey,App=T?.App,U102=window.TopkeyUpgrade102,U90=window.TopkeyUpgrade90,U94=window.TopkeyUpgrade94; if(!T||!App||App.__upgrade103Installed)return;App.__upgrade103Installed=true; const VERSION='2026.10.30-vnext-featureparity15-upgrade103-render-runtime-stability',BUILD='upgrade103',CACHE_TAG='u103-20261030'; const $=id=>document.getElementById(id),now=()=>window.performance?.now?.()||Date.now(); const S={scoreSeq:0,pendingScore:null,metrics:{localScoreRenderMs:0,firebaseScoreWriteMs:0,viewerFirebaseReceiveMs:0,overviewSkips:0,legacyPollersStopped:0,healthRenders:0},contracts:['RENDER_RUNTIME_STABILITY_U103','LATENCY_METRICS_U103','LEGACY_POLLER_RETIRE_U103']}; // U94 is the canonical Viewer BLV engine. Retire U90's legacy polling/listener path. try{U90?.stopLegacyPolling?.();S.metrics.legacyPollersStopped=1}catch{} // renderOverview is only visible"
+    },
+    {
+      "file": "src/upgrade105.js",
+      "upgrade": "upgrade105",
+      "version": "2026.10.30-vnext-featureparity15-upgrade105-scoring-fast-lane-schedule-collapse",
+      "sha256": "6bbe05310737fa5412c0ee1679bc9b767b33ae924956ab3b7519f2fe64aeba86",
+      "header": "(()=>{ 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,U103=window.TopkeyUpgrade103; if(!T||!App||!T.Data||App.__upgrade105Installed)return;App.__upgrade105Installed=true; const VERSION='2026.10.30-vnext-featureparity15-upgrade105-scoring-fast-lane-schedule-collapse',BUILD='upgrade105',CACHE_TAG='u105-20261030'; const $=id=>document.getElementById(id),perf=()=>window.performance?.now?.()||Date.now(); const S={directOk:0,fallbackQueued:0,blocked:0,queuedScoreKeys:new Set(),lastMode:'—',lastDispatchMs:0,lastAckMs:0,lastError:'',contracts:['SCORING_FAST_LANE_001','SCHEDULE_COLLAPSE_001']}; const clean=v=>{if(v===undefined)return undefined;if(v===null||typeof v==='string'||typeof v==='boolean')return v;if(typeof v==='number')return Number.isFinite(v)?v:null;if(Array.isArray(v))return v.map(x=>{const c=clean(x);return c===undefined?null:c});if(typeof v==='object'){const o={};for(const ["
+    },
+    {
+      "file": "src/upgrade106.js",
+      "upgrade": "upgrade106",
+      "version": "2026.10.30-vnext-featureparity15-upgrade106-schedule-internal-scroll",
+      "sha256": "5df834f42b3c5141c44327baae324f9459016f333ddc55613605542b73747da9",
+      "header": "(()=>{ 'use strict'; const T=window.Topkey,App=T?.App; if(!T||!App||App.__upgrade106Installed)return;App.__upgrade106Installed=true; const VERSION='2026.10.30-vnext-featureparity15-upgrade106-schedule-internal-scroll',BUILD='upgrade106',CACHE_TAG='u106-20261030'; const $=id=>document.getElementById(id); const txt=(vi,en,zh)=>{const l=window.TopkeyI18n?.language||'vi';return l==='en'?en:l==='zh'?zh:vi}; function label(card){ if(!card)return; const stat=card.querySelector('.tk105-collapse-status'); if(!stat)return; stat.textContent=card.classList.contains('tk105-collapsed') ?txt('Đã thu gọn · xem BXH nhanh','Collapsed · standings ready','已收起 · 快速查看排名') :txt('Lịch đang mở · cuộn trong khung','Schedule open · scroll inside','赛程已展开 · 框内滚动'); } function mark(){ const pub=$('spectator-schedule')?.closest('.card'); if(pub){pub.classList.add('u106-public-scroll');label(pub)}"
+    },
+    {
+      "file": "src/upgrade107.js",
+      "upgrade": "upgrade107",
+      "version": "2026.10.30-vnext-featureparity15-upgrade107-schedule-dom-safety",
+      "sha256": "9c0dee545bcf3ef0a60ccd51ed4c78981506740559c314eff67d84f5555a8c15",
+      "header": "(()=>{ 'use strict'; const T=window.Topkey,App=T?.App; if(!T||!App||App.__upgrade107Installed)return;App.__upgrade107Installed=true; const VERSION='2026.10.30-vnext-featureparity15-upgrade107-schedule-dom-safety',BUILD='upgrade107',CACHE_TAG='u107-20261030'; const $=id=>document.getElementById(id); function repairSearchParents(){ const admin=$('matches-list'),adminBar=$('tk16-admin-search'); if(admin&&adminBar){const wrap=admin.closest('.table-wrap')||admin.parentElement,parent=wrap?.parentElement;if(parent&&adminBar.parentElement!==parent)parent.insertBefore(adminBar,wrap||null);} const pub=$('spectator-schedule'),pubBar=$('tk16-public-search'); if(pub&&pubBar){const parent=pub.parentElement;if(parent&&pubBar.parentElement!==parent)parent.insertBefore(pubBar,pub);} } function enforceVersion(){T.VERSION=VERSION;T.CONFIG_VERSION=VERSION;T.RUNTIME_BUILD=VERSION;document.documentEle"
+    },
+    {
+      "file": "src/upgrade11.js",
+      "upgrade": "upgrade11",
+      "version": "",
+      "sha256": "535407cfb3f5cdeebf9717d80e8a562e020b25e576d4aa4f3a7984256b6adc06",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U; if(!T||!App||!U)return; const $=id=>document.getElementById(id),esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[c])); const ACTION_TEXT={CHECKIN:'Đã cập nhật check-in',ASSIGN_UMPIRE:'Đã lưu phân công trọng tài',MATCH_START:'Đã bắt đầu trận đấu',SCORE:'Đã lưu điểm',NEXT_SET:'Đã chuyển sang set tiếp theo',UNDO:'Đã hoàn tác điểm',RESET_SET:'Đã reset set',FINANCE_APPROVAL:'Đã cập nhật trạng thái tài chính',ANNOUNCEMENT:'Đã đăng thông báo',KNOCKOUT:'Đã tạo lịch vòng trong',LEGACY_CSV_MIGRATION:'Đã nhập dữ liệu giải từ CSV'}; function installFeedback(){ if(T.Data.__upgrade11Feedback)return;T.Data.__upgrade11Feedback=true; const base=T.Data.queueMulti.bind(T.Data); T.Data.queueMulti=async(updates,meta={})=>{try{const item=await base(updates,meta);const msg=ACTION_TEXT[S"
+    },
+    {
+      "file": "src/upgrade111.js",
+      "upgrade": "upgrade111",
+      "version": "2026.10.30-vnext-featureparity15-upgrade111-feature-code-splitting",
+      "sha256": "46ab25cd46277a7f35cbeb03646146d8c7e982097723e9984958914353d34bdb",
+      "header": "(()=>{ 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U; if(!T||!App||App.__upgrade111Installed)return;App.__upgrade111Installed=true; const VERSION='2026.10.30-vnext-featureparity15-upgrade111-feature-code-splitting',BUILD='upgrade111',CACHE_TAG='u111-20261030'; const $=id=>document.getElementById(id); const S={replayLoaded:false,replayLoading:false,storageLoaded:typeof firebase?.storage==='function',qrLoaded:typeof window.QRCode==='function',jszipLoaded:typeof window.JSZip==='function',replayLoads:0,storageLoads:0,qrLoads:0}; const promises=new Map(); function loadScript(src,globalName){ if(globalName&&window[globalName])return Promise.resolve(window[globalName]);if(promises.has(src))return promises.get(src); const p=new Promise((resolve,reject)=>{const old=[...document.scripts].find(x=>x.src===new URL(src,location.href).href);if(old){if(globalName&&window[globalName])return r"
+    },
+    {
+      "file": "src/upgrade113.js",
+      "upgrade": "upgrade113",
+      "version": "2026.10.31-vnext-featureparity15-upgrade113-atomic-score-pipeline",
+      "sha256": "5532e6a2f4cd72a6d6f6f90a04be2dc7b4901b191eec30f6ae817d692da4a52c",
+      "header": "(()=>{ 'use strict'; const T=window.Topkey,App=T?.App,U105=window.TopkeyUpgrade105; if(!T||!App||!T.Data||App.__upgrade113Installed)return;App.__upgrade113Installed=true; const VERSION='2026.10.31-vnext-featureparity15-upgrade113-atomic-score-pipeline',BUILD='upgrade113',CACHE_TAG='u113-20261031'; const $=id=>document.getElementById(id); const S={pending:new Map(),joined:0,scoreOnly:0,lastJoinMs:0,lastCourt:'',lastCommentId:'',contracts:['ATOMIC_SCORE_PIPELINE_001']}; const scoreCourt=updates=>{for(const k of Object.keys(updates||{})){const m=String(k).match(/\\/activeMatches\\/([^/]+)$/);if(m)return m[1]}return''}; const scoreEvent=updates=>Object.entries(updates||{}).find(([k,v])=>/\\/events\\/[^/]+\\/[^/]+$/.test(String(k))&&v&&typeof v==='object')?.[1]||null; const commentaryEntry=updates=>Object.entries(updates||{}).find(([k,v])=>/\\/commentary\\/[^/]+\\/latest$/.test(String(k))&&v&&typeof"
+    },
+    {
+      "file": "src/upgrade12.js",
+      "upgrade": "upgrade12",
+      "version": "",
+      "sha256": "33470fe57f48cd7a2986b2aeaecd9e8d0277050efc33ef061a81d2efc9c25abc",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U; if(!T||!App||!U)return; const $=id=>document.getElementById(id); const esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[c])); const DONE=new Set(['FINISHED','WALKOVER','RETIRED','DISQUALIFIED']); const STATUS_LABEL={SCHEDULED:'Chưa thi đấu',CHECK_IN:'Check-in',READY:'Sẵn sàng',CALLED_TO_COURT:'Gọi ra sân',WARM_UP:'Khởi động',LIVE:'Đang thi đấu',INTERVAL:'Nghỉ giữa set',SUSPENDED:'Tạm dừng',FINISHED:'Đã kết thúc',WALKOVER:'Thắng WO',RETIRED:'Bỏ cuộc',DISQUALIFIED:'Loại',CANCELLED:'Đã hủy'}; const CAT_LABEL={MEN:'Đôi Nam',WOMEN:'Đôi Nữ',MIX:'Đôi Nam Nữ (混雙)',OPEN:'Mở rộng'}; function localISO(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;} function dateLabel(s){if(!s)return 'CHƯA XẾP NGÀY'"
+    },
+    {
+      "file": "src/upgrade13.js",
+      "upgrade": "upgrade13",
+      "version": "",
+      "sha256": "1ec44687c737296295e0f3dcdce7c2384a5228e24ce12a7596f7c288815a3bbd",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U; if(!T||!App||!U)return; const $=id=>document.getElementById(id); const esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[c])); // Firebase rejects undefined/NaN/Infinity. Keep the payload JSON-safe before every direct migration write. function clean(value){ if(value===undefined)return undefined; if(value===null||typeof value==='string'||typeof value==='boolean')return value; if(typeof value==='number')return Number.isFinite(value)?value:null; if(Array.isArray(value))return value.map(v=>clean(v)===undefined?null:clean(v)); if(typeof value==='object'){ const out={}; for(const [k,v] of Object.entries(value)){const c=clean(v);if(c!==undefined)out[k]=c;} return out; } return String(value); } async function bundledData(){ const r=await fetch('./da"
+    },
+    {
+      "file": "src/upgrade14.js",
+      "upgrade": "upgrade14",
+      "version": "",
+      "sha256": "baf78c836e8af0a6202c462743eafb1109e1f2b2ed326b88e5688e5da7fe3d8f",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U; if(!T||!App||!U)return; const $=id=>document.getElementById(id); const esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[c])); const sportName=()=>T.SPORT?.name||'Cầu lông'; const isAdmin=()=>T.Auth?.role?.()==='ADMIN'; function withTournament(hash,extra={}){ const u=new URL(location.href); u.hash=''; u.searchParams.set('tid',T.Data.tid); Object.entries(extra).forEach(([k,v])=>{if(v===undefined||v===null||v==='')u.searchParams.delete(k);else u.searchParams.set(k,String(v));}); u.hash=hash; return u.toString(); } function spectatorUrl(){return withTournament('spectator',{reg:null});} function registrationUrl(){ const cfg=window.TopkeyUpgrade9?.registrationConfig?.()||App.state.config?.registration||{}; return withTournament('register',{reg:cfg.token||''})"
+    },
+    {
+      "file": "src/upgrade15.js",
+      "upgrade": "upgrade15",
+      "version": "",
+      "sha256": "4d4ddda0390ac3d14e650b53dbb9e1f9485034a9ef31444939d119929ed737e1",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U; if(!T||!App||!U)return; const $=id=>document.getElementById(id); const esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[c])); function physicalNumber(half,row){ // Fixed physical court numbers requested by TOPKEY: // LEFT half: 1 top / 2 bottom. RIGHT half: 2 top / 1 bottom. return half==='left'?(row===0?'1':'2'):(row===0?'2':'1'); } function ensurePositions(s){ s.positions=s.positions||{}; for(const side of ['A','B']){ const p=s.positions[side]||(s.positions[side]={p1:'right',p2:'left'}); if(!['right','left'].includes(p.p1)||!['right','left'].includes(p.p2)||p.p1===p.p2){p.p1='right';p.p2='left';} } } function playerAt(s,side,pos){ ensurePositions(s); return s.positions[side].p1===pos?'p1':'p2'; } function normalizeOpeningServer(s){ ensurePos"
+    },
+    {
+      "file": "src/upgrade16.js",
+      "upgrade": "upgrade16",
+      "version": "",
+      "sha256": "ae06aa57af00a0278217955b5d1b84d3b4f883417b3e12ac2b2d2f8ed65e73d1",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App; if(!T||!App)return; const $=id=>document.getElementById(id); const fold=v=>String(v??'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').toLowerCase().replace(/\\s+/g,' ').trim(); function primitiveText(value,depth=0){ if(value==null||depth>5)return''; if(['string','number','boolean'].includes(typeof value))return String(value); if(Array.isArray(value))return value.map(x=>primitiveText(x,depth+1)).join(' '); if(typeof value==='object')return Object.entries(value).filter(([k])=>!['createdAt','updatedAt','checkInAt'].includes(k)).map(([,v])=>primitiveText(v,depth+1)).join(' '); return''; } function matchSearchText(app,m){ const a=app.state.teams?.[m.teamAId]||{},b=app.state.teams?.[m.teamBId]||{}; const label=typeof app.matchLabel==='function'?app.matchLabel(m):`${app.teamName?.(m.team"
+    },
+    {
+      "file": "src/upgrade17.js",
+      "upgrade": "upgrade17",
+      "version": "",
+      "sha256": "0883fa9a88042ce55446140dd36f8fab56fea2e49a6edd0ed9eac7a7043f96c0",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,Up=window.TopkeyUpgrade9; if(!T||!App||!U||!Up||App.__upgrade17SchedulerInstalled)return; App.__upgrade17SchedulerInstalled=true; const $=id=>document.getElementById(id); const esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[c])); const teamName=id=>App.teamName?App.teamName(id):(App.state.teams?.[id]?.name||id); const fmtDate=v=>{const p=String(v||'').split('-');return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:String(v||'')}; const exactLimit=r=>r&&r.from&&r.from===r.to&&Number(r.max)>1; const normName=v=>String(v||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim(); const nameMatches=(a,b)=>{a=normName(a);b=normName(b);if(!a||!b)return false;if(a===b)return true;return Math.min(a.length,b.length)>=3&&(a.includes(b)||b.inclu"
+    },
+    {
+      "file": "src/upgrade18.js",
+      "upgrade": "upgrade18",
+      "version": "",
+      "sha256": "19f79d076027a6b7867be35c8c49d4a5c0d223e1a81dc4416d4b7b0f83e538aa",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U; if(!T||!App||!U||App.__upgrade18ResultsInstalled)return; App.__upgrade18ResultsInstalled=true; const $=id=>document.getElementById(id); const esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[c])); const clone=v=>JSON.parse(JSON.stringify(v??null)); const TERMINAL_COUNTED=new Set(['FINISHED','WALKOVER','RETIRED','DISQUALIFIED']); const UNPLAYED=new Set(['SCHEDULED','CHECK_IN','READY','CALLED_TO_COURT','WARM_UP']); const POLICY_LABEL={ CANCEL_ALL:'Hủy toàn bộ kết quả', KEEP_PLAYED_WO:'Giữ trận đã đấu · trận chưa đấu xử WO 11–0, 11–0', KEEP_PLAYED_CANCEL:'Giữ trận đã đấu · trận chưa đấu không tính điểm' }; const STATUS_LABEL={SCHEDULED:'Chưa thi đấu',CHECK_IN:'Check-in',READY:'Sẵn sàng',CALLED_TO_COURT:'Gọi ra sân',WARM_UP:'Khởi động',LIVE:'Đang thi đấu',INTERVAL:'Ng"
+    },
+    {
+      "file": "src/upgrade19.js",
+      "upgrade": "upgrade19",
+      "version": "",
+      "sha256": "c510b94b1c9cb292df8212040f6aa7707f19fc3ee13c178ca9ac87ecf8b7d335",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U; if(!T||!App||!U||App.__upgrade19ReliabilityInstalled)return; App.__upgrade19ReliabilityInstalled=true; const $=id=>document.getElementById(id); const UNPLAYED=new Set(['SCHEDULED','CHECK_IN','READY','CALLED_TO_COURT','WARM_UP']); const COUNTED=new Set(['FINISHED','WALKOVER','RETIRED','DISQUALIFIED']); const PUBLIC_BRANCHES=['config','teams','matches','courts','activeMatches','commentary']; const clone=v=>JSON.parse(JSON.stringify(v??null)); function isWithdrawn(id){return !!App.state.teams?.[id]?.withdrawn;} function hasWithdrawn(m){return isWithdrawn(m?.teamAId)||isWithdrawn(m?.teamBId);} function opponent(m,teamId){return m.teamAId===teamId?m.teamBId:m.teamAId;} function policyOf(t){return t?.withdrawalPolicy?.mode||'KEEP_PLAYED_CANCEL';} function woSets(m,teamId){return m.teamAId===teamId?[{a:0,b:11,finished:true},{a:0,b:"
+    },
+    {
+      "file": "src/upgrade20.js",
+      "upgrade": "upgrade20",
+      "version": "",
+      "sha256": "82e4435c813b494a4d60dca86a144283bcd6af153b54826f6bbc231ac2f0727f",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,Up9=window.TopkeyUpgrade9,Up17=window.TopkeyUpgrade17; if(!T||!App||!U||App.__upgrade20Installed)return; App.__upgrade20Installed=true; const $=id=>document.getElementById(id); const TERMINAL=new Set(['FINISHED','CANCELLED','WALKOVER','RETIRED','DISQUALIFIED']); const esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[c])); const fold=v=>String(v??'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').toLowerCase().replace(/[^\\p{L}\\p{N}]+/gu,' ').trim(); const nameMatches=(a,b)=>{a=fold(a);b=fold(b);if(!a||!b)return false;if(a===b)return true;return Math.min(a.length,b.length)>=2&&(a.includes(b)||b.includes(a));}; const localISO=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()"
+    },
+    {
+      "file": "src/upgrade21.js",
+      "upgrade": "upgrade21",
+      "version": "",
+      "sha256": "bde4e7fd4b7f825b7a45bd73eb9da97b181d54abbca2e49d1f2e68c65a248bea",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,Up9=window.TopkeyUpgrade9; if(!T||!App||!U||!Up9||App.__upgrade21Installed)return; App.__upgrade21Installed=true; const $=id=>document.getElementById(id); const fmt=v=>{const p=String(v||'').split('-');return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:String(v||'')}; let raf=0; function range(){const from=$('auto-date')?.value||'',to=$('auto-end-date')?.value||from,includeSunday=$('auto-sunday')?.checked!==false;return{from,to,includeSunday};} function validRange(r){return !!r.from&&!!r.to&&r.to>=r.from;} function updateDateBounds(r){ if(!validRange(r))return; ['busy-date','tk9-player-date','tk9-limit-date','tk17-limit-date','lock-date','priority-from','priority-to','limit-from','limit-to','tk20-player-window-from-date','tk20-player-window-to-date'].forEach(id=>{ const el=$(id);if(!el||el.type!=='date')return;el.min=r.fro"
+    },
+    {
+      "file": "src/upgrade22.js",
+      "upgrade": "upgrade22",
+      "version": "",
+      "sha256": "51c8f2ecc692a990a99053ab8a37b1c0b41e6fec512bd13c150a2fb7c8cef2ff",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U; if(!T||!App||!U||App.__upgrade22Installed)return; App.__upgrade22Installed=true; const $=id=>document.getElementById(id); function teamForSide(m,side){ if(!m)return{}; return App.state.teams?.[side==='A'?m.teamAId:m.teamBId]||{}; } function scoreForSide(set,side){return side==='A'?(Number(set?.a)||0):(Number(set?.b)||0);} function syncScoreButtons(left,right,m){ const actions=$('umpire-plus-a')?.parentElement; if(!actions)return; const ids={A:{plus:'umpire-plus-a',minus:'umpire-minus-a'},B:{plus:'umpire-plus-b',minus:'umpire-minus-b'}}; const decorate=(side,physical,orderBase)=>{ const team=teamForSide(m,side),name=team.name||`Đội ${side}`; const plus=$(ids[side].plus),minus=$(ids[side].minus); if(plus){plus.style.order=String(orderBase);plus.textContent=`+1 ${side} · ${physical}`;plus.title=`Cộng 1"
+    },
+    {
+      "file": "src/upgrade23.js",
+      "upgrade": "upgrade23",
+      "version": "",
+      "sha256": "37223c48b3b47f524e6195e3cdabbd3ea592506e24e65f2f9f2c8fed76c179e7",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U; if(!T||!App||!U||App.__upgrade23Installed)return; App.__upgrade23Installed=true; const $=id=>document.getElementById(id); const esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[c])); function ensurePositions(s){ s.positions=s.positions||{}; for(const side of ['A','B']){ const p=s.positions[side]||(s.positions[side]={p1:'right',p2:'left'}); if(!['right','left'].includes(p.p1)||!['right','left'].includes(p.p2)||p.p1===p.p2){p.p1='right';p.p2='left';} } } function currentSet(s){return s?.sets?.[Number(s?.setIndex)||0]||{a:0,b:0,finished:false};} function isZeroZero(s){const set=currentSet(s);return (Number(set.a)||0)===0&&(Number(set.b)||0)===0&&!set.finished;} function playerAt(s,side,pos){ensurePositions(s);return s.positions[side].p1===pos?'p1':'p2';} fun"
+    },
+    {
+      "file": "src/upgrade24.js",
+      "upgrade": "upgrade24",
+      "version": "",
+      "sha256": "5fc8ede66ef75dffc7486b17119d4ec303c50d8c09bc0fbe3f3aea7c38c3d4c0",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U; if(!T||!App||!U||App.__upgrade24Installed)return; App.__upgrade24Installed=true; const $=id=>document.getElementById(id); const TERMINAL=new Set(['FINISHED','CANCELLED','WALKOVER','RETIRED','DISQUALIFIED']); const esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[c])); const fold=v=>String(v??'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').toLowerCase().replace(/[^\\p{L}\\p{N}]+/gu,' ').trim(); const tokens=v=>fold(v).split(/\\s+/).filter(Boolean); function primitiveText(value,depth=0){ if(value==null||depth>4)return''; if(['string','number','boolean'].includes(typeof value))return String(value); if(Array.isArray(value))return value.map(x=>primitiveText(x,depth+1)).join(' '); if(typeof value==='object')return Object.entries(va"
+    },
+    {
+      "file": "src/upgrade25.js",
+      "upgrade": "upgrade25",
+      "version": "",
+      "sha256": "42c3399c0b385d9fe53d7c7921d6019f833eecd37db31ac7428a59fc17bdd3f2",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,$=id=>document.getElementById(id); if(!T||!App||!U)return; const U9=window.TopkeyUpgrade9; const CLOUD_VOICES=[ ['Charon','Nam AI · Charon'], ['Achird','Nam AI · Achird'], ['Fenrir','Nam AI · Fenrir'], ['Orus','Nam AI · Orus'], ['Iapetus','Nam AI · Iapetus'], ['Schedar','Nam AI · Schedar'], ['Aoede','Nữ AI · Aoede'], ['Kore','Nữ AI · Kore'] ]; const DEFAULT_VOICE='Charon'; const sleep=ms=>new Promise(r=>setTimeout(r,ms)); const clamp=(n,a,b)=>Math.min(b,Math.max(a,Number(n)||a)); function setText(id,text){const el=$(id);if(el)el.textContent=text;} function appearanceStatus(text,state='info'){ const el=$('tk25-appearance-status');if(!el)return;el.textContent=text;el.dataset.state=state; } function ttsStatus(text,state='info'){ const el=$('tk25-tts-status');if(!el)return;el.textContent=text;el.dataset.state="
+    },
+    {
+      "file": "src/upgrade26.js",
+      "upgrade": "upgrade26",
+      "version": "",
+      "sha256": "839570b2b29214c61fc4c296beceffa3b0f829cf7d675da2a9831dc176ae4ea8",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App; if(!T||!App||App.__upgrade26Installed)return; App.__upgrade26Installed=true; const $=id=>document.getElementById(id); const fold=v=>String(v??'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').toLowerCase().replace(/[^\\p{L}\\p{N}]+/gu,' ').trim(); const tokens=v=>fold(v).split(/\\s+/).filter(Boolean); function teamText(id){ const t=App.state.teams?.[id]||{}; return [t.code,t.name,t.p1,t.p2,t.dept].filter(Boolean).join(' '); } function matchText(m){ if(!m)return''; return fold([m.code,m.id,m.category,m.stage,m.round,m.date,m.time,teamText(m.teamAId),teamText(m.teamBId)].filter(Boolean).join(' ')); } function matchPass(m,q){ const qs=tokens(q);if(!qs.length)return true; const hay=matchText(m);return qs.every(x=>hay.includes(x)); } function findMatchForCard(card){ const code=card?.query"
+    },
+    {
+      "file": "src/upgrade27.js",
+      "upgrade": "upgrade27",
+      "version": "",
+      "sha256": "a62ae38815886e767a09e8d7964a3cd5e73e68a1d311bbabfaa3dbcda0aa7bbb",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,U9=window.TopkeyUpgrade9; if(!T||!App||!U||!U9||App.__upgrade27Installed)return; App.__upgrade27Installed=true; const $=id=>document.getElementById(id); const AUTH_ROOT=T.AUTH_ROOT||T.ROOT; const BUILTIN=['ADMIN','UMPIRE','VIEWER','LIVE_ONLY']; const MODULE_KEYS=['overview','control','teams','schedule','umpire','live','finance','announcements','audit','health','settings']; const BUILTIN_MODULES={ ADMIN:Object.fromEntries(MODULE_KEYS.map(k=>[k,'edit'])), UMPIRE:{overview:'view',control:'edit',teams:'none',schedule:'view',umpire:'edit',live:'edit',finance:'none',announcements:'view',audit:'none',health:'view',settings:'none'}, VIEWER:{overview:'view',control:'none',teams:'none',schedule:'view',umpire:'none',live:'view',finance:'none',announcements:'view',audit:'none',health:'none',settings:'none'}, LIVE_ONLY:{overview:'none"
+    },
+    {
+      "file": "src/upgrade28.js",
+      "upgrade": "upgrade28",
+      "version": "",
+      "sha256": "16690f249e7249824f70fd6c213aa0cb6be828217cc2443fc1b733b887ea3561",
+      "header": "(()=>{'use strict'; const KEY='topkey_ui_language_v1'; const SUPPORTED=['vi','zh','en']; const META={vi:{html:'vi',flag:'🇻🇳',short:'VI',name:'Tiếng Việt',native:'Mặc định'},zh:{html:'zh-CN',flag:'🇨🇳',short:'中',name:'中文',native:'简体中文'},en:{html:'en',flag:'🇬🇧',short:'EN',name:'English',native:'English'}}; const D={ 'Đăng xuất':{en:'Sign out',zh:'退出登录'},'Đăng nhập':{en:'Sign in',zh:'登录'},'Đăng nhập an toàn':{en:'Secure sign in',zh:'安全登录'},'Email':{en:'Email',zh:'邮箱'},'Mật khẩu':{en:'Password',zh:'密码'},'Mật khẩu mạnh':{en:'Strong password',zh:'强密码'},'Tên':{en:'Name',zh:'名称'},'Tên hiển thị':{en:'Display name',zh:'显示名称'},'Quyền':{en:'Role',zh:'权限'},'Tạo tài khoản':{en:'Create account',zh:'创建账号'}, 'Tổng quan':{en:'Overview',zh:'总览'},'Điều hành sân':{en:'Court control',zh:'场地管理'},'Đội & Check-in':{en:'Teams & Check-in',zh:'队伍与签到'},'Lịch & BXH':{en:'Schedule & Standings',zh:'赛程与排名'},'Trọng tài':{"
+    },
+    {
+      "file": "src/upgrade29.js",
+      "upgrade": "upgrade29",
+      "version": "",
+      "sha256": "90daf694d28fcdd7890e4e3157e07c91e6521e6e4371dbb09ac07a18a7ac16fe",
+      "header": "(()=>{'use strict'; const KEY='topkey_ui_language_v1'; const SUPPORTED=['vi','zh','en']; const META={vi:{html:'vi',flag:'🇻🇳',short:'VI',name:'Tiếng Việt',native:'Mặc định'},zh:{html:'zh-CN',flag:'🇨🇳',short:'中',name:'中文',native:'简体中文'},en:{html:'en',flag:'🇬🇧',short:'EN',name:'English',native:'English'}}; const D={ 'Đăng xuất':{en:'Sign out',zh:'退出登录'},'Đăng nhập':{en:'Sign in',zh:'登录'},'Đăng nhập an toàn':{en:'Secure sign in',zh:'安全登录'},'Email':{en:'Email',zh:'邮箱'},'Mật khẩu':{en:'Password',zh:'密码'},'Mật khẩu mạnh':{en:'Strong password',zh:'强密码'},'Tên':{en:'Name',zh:'名称'},'Tên hiển thị':{en:'Display name',zh:'显示名称'},'Quyền':{en:'Role',zh:'权限'},'Tạo tài khoản':{en:'Create account',zh:'创建账号'}, 'Tổng quan':{en:'Overview',zh:'总览'},'Điều hành sân':{en:'Court control',zh:'场地管理'},'Đội & Check-in':{en:'Teams & Check-in',zh:'队伍与签到'},'Lịch & BXH':{en:'Schedule & Standings',zh:'赛程与排名'},'Trọng tài':{"
+    },
+    {
+      "file": "src/upgrade30.js",
+      "upgrade": "upgrade30",
+      "version": "",
+      "sha256": "d328d9973e4afaca882216102276c8738c834f5229b12f7bc3524e0fdcbcc746",
+      "header": "(()=>{'use strict'; const KEY='topkey_ui_language_v1'; const SUPPORTED=['vi','zh','en']; const META={vi:{html:'vi',flag:'🇻🇳',short:'VI',name:'Tiếng Việt',native:'Mặc định'},zh:{html:'zh-CN',flag:'🇨🇳',short:'中',name:'中文',native:'简体中文'},en:{html:'en',flag:'🇬🇧',short:'EN',name:'English',native:'English'}}; const D={ 'Đăng xuất':{en:'Sign out',zh:'退出登录'},'Đăng nhập':{en:'Sign in',zh:'登录'},'Đăng nhập an toàn':{en:'Secure sign in',zh:'安全登录'},'Email':{en:'Email',zh:'邮箱'},'Mật khẩu':{en:'Password',zh:'密码'},'Mật khẩu mạnh':{en:'Strong password',zh:'强密码'},'Tên':{en:'Name',zh:'名称'},'Tên hiển thị':{en:'Display name',zh:'显示名称'},'Quyền':{en:'Role',zh:'权限'},'Tạo tài khoản':{en:'Create account',zh:'创建账号'}, 'Tổng quan':{en:'Overview',zh:'总览'},'Điều hành sân':{en:'Court control',zh:'场地管理'},'Đội & Check-in':{en:'Teams & Check-in',zh:'队伍与签到'},'Lịch & BXH':{en:'Schedule & Standings',zh:'赛程与排名'},'Trọng tài':{"
+    },
+    {
+      "file": "src/upgrade31.js",
+      "upgrade": "upgrade31",
+      "version": "",
+      "sha256": "79b5efc23f8e561eba628a0564247dc57b1f3ec472b5d0729173ec8877c9a411",
+      "header": "(() => { 'use strict'; const T=window.Topkey, App=T?.App, U=T?.U; if(!T||!App||!U||App.__upgrade31WithdrawFlowInstalled)return; App.__upgrade31WithdrawFlowInstalled=true; const $=id=>document.getElementById(id); const UNPLAYED=new Set(['SCHEDULED','CHECK_IN','READY','CALLED_TO_COURT','WARM_UP']); const COUNTED=new Set(['FINISHED','WALKOVER','RETIRED','DISQUALIFIED']); const POLICY_LABEL=window.TopkeyUpgrade18?.POLICY_LABEL||{ CANCEL_ALL:'Hủy toàn bộ kết quả', KEEP_PLAYED_WO:'Giữ trận đã đấu · trận chưa đấu xử WO 11–0, 11–0', KEEP_PLAYED_CANCEL:'Giữ trận đã đấu · trận chưa đấu không tính điểm' }; const clone=v=>JSON.parse(JSON.stringify(v??null)); const lang=()=>window.TopkeyI18n?.language||'vi'; const tr=(vi,en,zh)=>lang()==='zh'?zh:lang()==='en'?en:vi; const clean=window.TopkeyUpgrade13?.clean||((v)=>v); function withTimeout(p,ms,label){let timer;return Promise.race([p,new Promise"
+    },
+    {
+      "file": "src/upgrade32.js",
+      "upgrade": "upgrade32",
+      "version": "",
+      "sha256": "e6a0a69bd3b481226d65b40095dafe73eed2f7266be81cf3214e000aa0f9c93c",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App; if(!T||!App||App.__upgrade32Installed)return; App.__upgrade32Installed=true; const $=id=>document.getElementById(id); const DONE=new Set(['FINISHED','WALKOVER','RETIRED','DISQUALIFIED']); const CANCELLED='CANCELLED'; const DRAFT_VALUE_IDS=[ 'adv-category','auto-date','auto-end-date','auto-time','auto-interval','auto-max-day','auto-sunday','auto-reschedule', 'lock-date','busy-date','priority-from','priority-to','limit-from','limit-to','limit-count', 'tk20-player-window-name','tk20-player-window-from-date','tk20-player-window-to-date','tk20-player-window-from-time','tk20-player-window-to-time','tk20-player-window-limit','tk20-player-window-early' ]; const DRAFT_PICKERS=['busy-team-grid','priority-team-grid','limit-team-grid']; let saveTimer=0; function lang(){return window.TopkeyI18n?.language||'vi';} function tr(vi,en,zh){cons"
+    },
+    {
+      "file": "src/upgrade33.js",
+      "upgrade": "upgrade33",
+      "version": "",
+      "sha256": "546d0b2780d8630e4a1e172ec807a9a5d0948ac27bc0b9fbfcfde2cbfad87f18",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,Up9=window.TopkeyUpgrade9,Up20=window.TopkeyUpgrade20; if(!T||!App||!U||App.__upgrade33Installed)return; App.__upgrade33Installed=true; const $=id=>document.getElementById(id); const esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[c])); const fold=v=>String(v??'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').toLowerCase().replace(/[^\\p{L}\\p{N}]+/gu,' ').trim(); const samePlayer=(a,b)=>!!fold(a)&&fold(a)===fold(b); const fmtDate=v=>{const p=String(v||'').split('-');return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:String(v||'')}; const localISO=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}; const lang=()=>window.TopkeyI18n?.language||'vi'; const tr=("
+    },
+    {
+      "file": "src/upgrade34.js",
+      "upgrade": "upgrade34",
+      "version": "",
+      "sha256": "d2b65632a5fac53c6c81702f3aa987ff9964f5760167ffae189dc1fee4ee0bcc",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App; if(!T||!App||App.__upgrade34Installed)return; App.__upgrade34Installed=true; const $=id=>document.getElementById(id); const VERSION=T.CONFIG_VERSION||T.VERSION; function lang(){return window.TopkeyI18n?.language||'vi';} function tr(vi,en,zh){const l=lang();return l==='en'?en:l==='zh'?zh:vi;} // Version must have exactly one source of truth. config.js owns the version; // this guard also repairs sessions that loaded a stale Upgrade 25 script before Upgrade 34. function repairVersion(){ if(T.VERSION!==VERSION)T.VERSION=VERSION; const health=$('health-version');if(health)health.textContent=VERSION; const repair=$('tk19-repair-card')?.querySelector('.pill');if(repair)repair.textContent=VERSION; } function patchHealth(){ const base=App.renderHealth?.bind(App);if(base&&!App.__u34Health){App.__u34Health=true;App.renderHealth=func"
+    },
+    {
+      "file": "src/upgrade35.js",
+      "upgrade": "upgrade35",
+      "version": "",
+      "sha256": "acfa35a42fc35166dffb412a5f950287ffec1e713ab135c1a45bd94eeda94198",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App; if(!T||!App||App.__upgrade35Installed)return; App.__upgrade35Installed=true; const VERSION=T.CONFIG_VERSION||T.VERSION; const $=id=>document.getElementById(id); const isVisible=el=>!!el&&!el.classList.contains('hidden')&&!el.classList.contains('tk28-hidden'); const overlaySelector=[ '.modal:not(.hidden)', '.tk28-language-modal:not(.tk28-hidden)', '.tk9-draw-modal:not(.hidden)', '.public-register:not(.hidden)', '.audio-overlay:not(.hidden)', '.video-box.pseudo-full', '.tk9-unlock-pop:not(.hidden)' ].join(','); function visibleOverlay(){ return Array.from(document.querySelectorAll(overlaySelector)).find(isVisible)||null; } function syncOverlayState(){ const open=!!visibleOverlay(); document.body.classList.toggle('tk35-overlay-open',open); return open; } function repairVersion(){ if(VERSION&&T.VERSION!==VERSION"
+    },
+    {
+      "file": "src/upgrade36.js",
+      "upgrade": "upgrade36",
+      "version": "",
+      "sha256": "4405ea52368d6e8a6ea6dbece299e95eed35a77c330cdb6e135fefb5023087f2",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,Up20=window.TopkeyUpgrade20,Up33=window.TopkeyUpgrade33; if(!T||!App||!U||App.__upgrade36Installed)return; App.__upgrade36Installed=true; const VERSION=T.CONFIG_VERSION||T.VERSION; const $=id=>document.getElementById(id); const fold=v=>String(v??'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').toLowerCase().replace(/[^\\p{L}\\p{N}]+/gu,' ').trim(); const samePlayer=(a,b)=>!!fold(a)&&fold(a)===fold(b); const tr=(vi,en,zh)=>{const l=window.TopkeyI18n?.language||'vi';return l==='en'?en:l==='zh'?zh:vi;}; const toMin=t=>{const[a,b]=String(t||'00:00').split(':').map(Number);return(a||0)*60+(b||0)}; const minToTime=n=>`${String(Math.floor(n/60)).padStart(2,'0')}:${String(n%60).padStart(2,'0')}`; const key=(d,id)=>`${d}|${id}`; const participants=m=>[m?.teamAId,m?.teamBId].filter(Boolean); const t"
+    },
+    {
+      "file": "src/upgrade37.js",
+      "upgrade": "upgrade37",
+      "version": "",
+      "sha256": "4c7308f8a065f7e5428f785d3af10af00d468501c43be2c17a63d29971b443a4",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,Up20=window.TopkeyUpgrade20,Up33=window.TopkeyUpgrade33,Up36=window.TopkeyUpgrade36; if(!T||!App||!U||!Up36||App.__upgrade37Installed)return; App.__upgrade37Installed=true; const VERSION=T.CONFIG_VERSION||T.VERSION; const $=id=>document.getElementById(id); const tr=(vi,en,zh)=>{const l=window.TopkeyI18n?.language||'vi';return l==='en'?en:l==='zh'?zh:vi;}; const fold=v=>String(v??'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').toLowerCase().replace(/[^\\p{L}\\p{N}]+/gu,' ').trim(); const samePlayer=(a,b)=>!!fold(a)&&fold(a)===fold(b); const toMin=t=>{const[a,b]=String(t||'00:00').split(':').map(Number);return(a||0)*60+(b||0)}; const minToTime=n=>`${String(Math.floor(n/60)).padStart(2,'0')}:${String(n%60).padStart(2,'0')}`; const key=(d,id)=>`${d}|${id}`; const participants=m=>[m?.teamAId,m"
+    },
+    {
+      "file": "src/upgrade38.js",
+      "upgrade": "upgrade38",
+      "version": "",
+      "sha256": "1c2767c45c007022f661ab97426444db5cb71057750827e95c02067ab3e6ba4c",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U; if(!T||!App||!U||App.__upgrade38Installed)return; App.__upgrade38Installed=true; const VERSION=T.CONFIG_VERSION||T.VERSION; const tr=(vi,en,zh)=>{const l=window.TopkeyI18n?.language||'vi';return l==='en'?en:l==='zh'?zh:vi;}; const fold=v=>String(v??'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').toLowerCase().replace(/[^\\p{L}\\p{N}]+/gu,' ').trim(); let persistPromise=null,lastMigration=null; function hideLegacyTeamBusy(){ const card=document.querySelector('#page-schedule .scheduler-busy'); if(!card)return; card.classList.add('tk38-legacy-team-busy-hidden'); card.setAttribute('aria-hidden','true'); try{card.inert=true;}catch{} } function normalizePlayerBusy(rows){ const map=new Map(); (rows||[]).forEach(r=>{ const name=String(r?.name||'').trim(),date=String(r?.date||'"
+    },
+    {
+      "file": "src/upgrade39.js",
+      "upgrade": "upgrade39",
+      "version": "",
+      "sha256": "6473b1e2f81d5eeacd0906e3601e8d2d4cfbaa0396ac592c30adce6020a3b1d2",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,Up20=window.TopkeyUpgrade20,Up33=window.TopkeyUpgrade33,Up36=window.TopkeyUpgrade36; if(!T||!App||!U||!Up33||!Up36||App.__upgrade39Installed)return; App.__upgrade39Installed=true; const VERSION=T.CONFIG_VERSION||T.VERSION; const $=id=>document.getElementById(id); const fold=v=>String(v??'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/\\u0111/g,'d').replace(/\\u0110/g,'D').toLowerCase().replace(/[^\\p{L}\\p{N}]+/gu,' ').trim(); const samePlayer=(a,b)=>!!fold(a)&&fold(a)===fold(b); const tr=(vi,en,zh)=>{const l=window.TopkeyI18n?.language||'vi';return l==='en'?en:l==='zh'?zh:vi;}; const toMin=t=>{const[a,b]=String(t||'00:00').split(':').map(Number);return(a||0)*60+(b||0)}; const minToTime=n=>`${String(Math.floor(n/60)).padStart(2,'0')}:${String(n%60).padStart(2,'0')}`; const fmtDate=d=>{if(!d)return'';const[a,b,c]=Stri"
+    },
+    {
+      "file": "src/upgrade40.js",
+      "upgrade": "upgrade40",
+      "version": "",
+      "sha256": "6c0006b8dbc94d6d2344a29e6ac1f0e3119aba327fbbce77a3fc174b27fa5e81",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,Up20=window.TopkeyUpgrade20,Up33=window.TopkeyUpgrade33,Up36=window.TopkeyUpgrade36,Up39=window.TopkeyUpgrade39; if(!T||!App||!U||!Up33||!Up36||!Up39||App.__upgrade40Installed)return; App.__upgrade40Installed=true; const VERSION=T.CONFIG_VERSION||T.VERSION; const $=id=>document.getElementById(id); const fold=v=>String(v??'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').toLowerCase().replace(/[^\\p{L}\\p{N}]+/gu,' ').trim(); const samePlayer=(a,b)=>!!fold(a)&&fold(a)===fold(b); const tr=(vi,en,zh)=>{const l=window.TopkeyI18n?.language||'vi';return l==='en'?en:l==='zh'?zh:vi;}; const toMin=t=>{const[a,b]=String(t||'00:00').split(':').map(Number);return(a||0)*60+(b||0)}; const minToTime=n=>`${String(Math.floor(n/60)).padStart(2,'0')}:${String(n%60).padStart(2,'0')}`; const fmtDate=d=>{if(!d)r"
+    },
+    {
+      "file": "src/upgrade41.js",
+      "upgrade": "upgrade41",
+      "version": "",
+      "sha256": "4e1942a558a9bac83c2e1fc74400c99e12c8a1a4f7f97e01326505fdf4049276",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,Up39=window.TopkeyUpgrade39,Up40=window.TopkeyUpgrade40; if(!T||!App||!U||!Up39||!Up40||App.__upgrade41Installed)return; App.__upgrade41Installed=true; const VERSION=T.CONFIG_VERSION||T.VERSION; const $=id=>document.getElementById(id); const tr=(vi,en,zh)=>{const l=window.TopkeyI18n?.language||'vi';return l==='en'?en:l==='zh'?zh:vi;}; const protectedStatuses=new Set(['LIVE','FINISHED','WALKOVER','RETIRED','DISQUALIFIED','SUSPENDED']); const baseBuildSchedulePlan=Up39.buildSchedulePlan; const baseAutoSchedule40=Up40.autoSchedule40; function deleteMode(){return document.querySelector('input[name=\"tk41-delete-mode\"]:checked')?.value||'clear';} function isProtectedMatch(m,activeIds){return activeIds.has(m.id)||protectedStatuses.has(m.status)||(m.sets||[]).length>0||!!m.startedAt||!!m.finishedAt;} function matchFilter(m,category,"
+    },
+    {
+      "file": "src/upgrade42.js",
+      "upgrade": "upgrade42",
+      "version": "2026.10.28-vnext-featureparity15-upgrade42",
+      "sha256": "e4d90fba963c02a4ca7de550415cf2ae6e6dba3463d8c4df9c9e70a209f3a3c3",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U; if(!T||!App||!U||App.__upgrade42Installed)return; const configuredVersion=String(T.CONFIG_VERSION||T.VERSION||''); if(configuredVersion.includes('upgrade43')){App.__upgrade42Installed=true;window.TopkeyUpgrade42={installed:true,VERSION:configuredVersion,compat:true};return;} App.__upgrade42Installed=true; const VERSION='2026.10.28-vnext-featureparity15-upgrade42'; T.CONFIG_VERSION=VERSION;T.VERSION=VERSION;T.RUNTIME_BUILD=VERSION; const baseRenderHealth=App.renderHealth?.bind(App); App.renderHealth=function(...args){ const out=baseRenderHealth?.(...args); U.setText('health-version',VERSION); const badge=document.querySelector('#tk19-repair-card .pill, #page-health .health-upgrade-badge, #page-health [data-version-badge]'); if(badge)badge.textContent=VERSION; document.querySelectorAll('#page-health .version-badge, #"
+    },
+    {
+      "file": "src/upgrade43.js",
+      "upgrade": "upgrade43",
+      "version": "2026.10.28-vnext-featureparity15-upgrade43",
+      "sha256": "a4b77e689c08ab6181b2dac9565ee4aab713e1c5e9aae14e030ebef60780c8f2",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,Up36=window.TopkeyUpgrade36,Up39=window.TopkeyUpgrade39,Up40=window.TopkeyUpgrade40,Up41=window.TopkeyUpgrade41; if(!T||!App||!U||!Up36||!Up39||!Up40||!Up41||App.__upgrade43Installed)return; App.__upgrade43Installed=true; const VERSION='2026.10.28-vnext-featureparity15-upgrade43'; T.CONFIG_VERSION=VERSION;T.VERSION=VERSION;T.RUNTIME_BUILD=VERSION; const $=id=>document.getElementById(id); const tr=(vi,en,zh)=>{const l=window.TopkeyI18n?.language||'vi';return l==='en'?en:l==='zh'?zh:vi;}; const fmtDate=d=>{if(!d)return'';const[a,b,c]=String(d).split('-');return c&&b?`${c}/${b}/${a}`:d;}; const teamName=id=>App.teamName?.(id)||App.state.teams?.[id]?.name||id||''; const courtName=id=>Up36.resolveCourt?.(id)?.name||App.state.courts?.[id]?.name||id||''; const hardTypes=new Set(['LOCKED_DATE','PLAYER_BUSY','TEAM_BUSY','TIME_WINDOW']"
+    },
+    {
+      "file": "src/upgrade44.js",
+      "upgrade": "upgrade44",
+      "version": "2026.10.28-vnext-featureparity15-upgrade44",
+      "sha256": "d16921705919e644937f29c36b387fe70e9d7704cffb834c9f6e75da5261635c",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U; if(!T||!App||!U||App.__upgrade44Installed)return; App.__upgrade44Installed=true; const VERSION='2026.10.28-vnext-featureparity15-upgrade44'; const CACHE_TAG='u44-20261028'; T.CONFIG_VERSION=VERSION;T.VERSION=VERSION;T.RUNTIME_BUILD=VERSION; const $=id=>document.getElementById(id); const tr=(vi,en,zh)=>{const l=window.TopkeyI18n?.language||'vi';return l==='en'?en:l==='zh'?zh:vi;}; function pad(n){return String(n).padStart(2,'0');} function localParts(ms){const d=new Date(Number(ms)||Date.now());return{date:`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`,time:`${pad(d.getHours())}:${pad(d.getMinutes())}`};} function fmtDate(v){const p=String(v||'').split('-');return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:String(v||'');} function actualParts(m){ if(!m?.actualFinishedAt||m.actualFinishSource!=='UMPIRE_SAVE_END'"
+    },
+    {
+      "file": "src/upgrade45.js",
+      "upgrade": "upgrade45",
+      "version": "2026.10.28-vnext-featureparity15-upgrade45",
+      "sha256": "7dd4d2b0bc8164a30c4e711ea30e3838546b58af2317e54d3fcb17c79aa36f21",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U; if(!T||!App||!U||!T.Data||!T.Auth||App.__upgrade45Installed)return; App.__upgrade45Installed=true; const VERSION='2026.10.28-vnext-featureparity15-upgrade45'; const CACHE_TAG='u45-20261028'; T.CONFIG_VERSION=VERSION;T.VERSION=VERSION;T.RUNTIME_BUILD=VERSION; const $=id=>document.getElementById(id); const SESSION_PREFIX='topkey_u45_access_'; const EXPLICIT_KEY='topkey_u45_explicit_login'; const tabLabels={overview:'Tổng quan',control:'Điều hành sân',teams:'Đội & Check-in',schedule:'Lịch & BXH',umpire:'Trọng tài',live:'Live & BLV',finance:'Tài chính',announcements:'Thông báo',audit:'Audit',health:'Health',settings:'Cài đặt'}; function sessionKey(uid=T.Auth.user?.uid||''){return SESSION_PREFIX+String(T.Data.tid||'main_2026')+'_'+uid;} function makeId(){try{return crypto.randomUUID()}catch{return 'sess_'+Date.now()+'_'+Math.rand"
+    },
+    {
+      "file": "src/upgrade46.js",
+      "upgrade": "upgrade46",
+      "version": "2026.10.29-vnext-featureparity15-upgrade46",
+      "sha256": "909f0366d1d3e614c17b1615744d0b5b14026ea956a9e0b30c06799e3044a1b2",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U; if(!T||!App||!U||App.__upgrade46Installed)return; App.__upgrade46Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade46'; const CACHE_TAG='u46-20261029'; const SETTINGS_KEY='topkey_u46_local_blv_settings'; const DICT_KEY='topkey_u46_pronunciation'; const $=id=>document.getElementById(id); T.CONFIG_VERSION=VERSION;T.VERSION=VERSION;T.RUNTIME_BUILD=VERSION; // Keep Upgrade45 access-audit context, but stamp new rows with the actual Upgrade46 build. if(T.Data?.audit){ T.Data.audit=async function(action,entityType,entityId,before=null,after=null){ const id=U.id('audit'),uid=T.Auth?.user?.uid||'local',profile=T.Auth?.profile||{},session=window.TopkeyUpgrade45?.getSession?.(); const row={id,action,entityType,entityId,uid,actor:profile.displayName||profile.username||T.Auth?.user?.displayName||T.Auth?.us"
+    },
+    {
+      "file": "src/upgrade47.js",
+      "upgrade": "upgrade47",
+      "version": "2026.10.29-vnext-featureparity15-upgrade47",
+      "sha256": "61de64ec4f7337dda9a4210b843a24942660fa623cc44ac9fc2b6e04b05d59ec",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,U46=window.TopkeyUpgrade46; if(!T||!App||!U||!U46||App.__upgrade47Installed)return; App.__upgrade47Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade47'; const CACHE_TAG='u47-20261029'; const SETTINGS_KEY='topkey_u47_android_voice_settings'; const PIPER_VOICE='vi_VN-vais1000-medium'; const PIPER_LABEL='TOPKEY Offline Voice · Việt Nam · vais1000 medium'; const PIPER_SIZE=63201294; const PIPER_MODULE='https://cdn.jsdelivr.net/npm/@diffusionstudio/vits-web@1.0.3/+esm'; const $=id=>document.getElementById(id); const Engine=U46.Engine; T.CONFIG_VERSION=VERSION;T.VERSION=VERSION;T.RUNTIME_BUILD=VERSION; function readSettings(){let x={mode:'AUTO'};try{x={...x,...JSON.parse(localStorage.getItem(SETTINGS_KEY)||'{}')}}catch{}return x} function saveSettings(patch){const x={...readSettings(),...patch};try{localStora"
+    },
+    {
+      "file": "src/upgrade48.js",
+      "upgrade": "upgrade48",
+      "version": "2026.10.29-vnext-featureparity15-upgrade48",
+      "sha256": "439752deeb4dfbb9a5859e3a5983151ba764312b0c7e5e475e7b556993604cd6",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,U46=window.TopkeyUpgrade46,U47=window.TopkeyUpgrade47; if(!T||!App||!U||!U46||!U47||App.__upgrade48Installed)return; App.__upgrade48Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade48'; const CACHE_TAG='u48-20261029'; const FAST_PIPER_MODULE='https://cdn.jsdelivr.net/npm/@mintplex-labs/piper-tts-web@1.0.5/+esm'; const PIPER_VOICE=U47.PIPER_VOICE||'vi_VN-vais1000-medium'; const RT_KEY='topkey_u48_realtime_blv'; const $=id=>document.getElementById(id); const Engine=U46.Engine,Piper=U47.Piper; T.CONFIG_VERSION=VERSION;T.VERSION=VERSION;T.RUNTIME_BUILD=VERSION; function rtSettings(){let x={enabled:true,shortScore:true,interruptStale:true,systemFastPath:false};try{x={...x,...JSON.parse(localStorage.getItem(RT_KEY)||'{}')}}catch{}return x} function saveRt(p){const x={...rtSettings(),...p};try{localStorage.set"
+    },
+    {
+      "file": "src/upgrade49.js",
+      "upgrade": "upgrade49",
+      "version": "2026.10.29-vnext-featureparity15-upgrade49",
+      "sha256": "abb09f3777596c1543e1f66f1290e3301610218d02f8515d6a65f1422ecfe4be",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,U46=window.TopkeyUpgrade46,U47=window.TopkeyUpgrade47,U48=window.TopkeyUpgrade48; if(!T||!App||!U||!U46||!U47||!U48||App.__upgrade49Installed)return; App.__upgrade49Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade49'; const CACHE_TAG='u49-20261029'; const SETTINGS_KEY='topkey_u49_voice_autostart'; const $=id=>document.getElementById(id); const Engine=U46.Engine,Piper=U47.Piper; T.CONFIG_VERSION=VERSION;T.VERSION=VERSION;T.RUNTIME_BUILD=VERSION; function readSettings(){let x={enabled:true,autoCommentary:true,lastEngine:'',activatedAt:0};try{x={...x,...JSON.parse(localStorage.getItem(SETTINGS_KEY)||'{}')}}catch{}return x} function saveSettings(patch){const x={...readSettings(),...patch};try{localStorage.setItem(SETTINGS_KEY,JSON.stringify(x))}catch{}return x} function eligible(){return !!T.Auth?.user&&!!"
+    },
+    {
+      "file": "src/upgrade50.js",
+      "upgrade": "upgrade50",
+      "version": "2026.10.29-vnext-featureparity15-upgrade50",
+      "sha256": "3d205ea1a60e0ad60724acdb52a360899ece8c8fe3ec44b21a92cc733a504efb",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,U46=window.TopkeyUpgrade46,U47=window.TopkeyUpgrade47,U48=window.TopkeyUpgrade48,U49=window.TopkeyUpgrade49; if(!T||!App||!U||!U46||!U47||!U48||!U49||App.__upgrade50Installed)return; App.__upgrade50Installed=true; window.__TOPKEY_U50_AUDIO_GATE=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade50'; const CACHE_TAG='u50-20261029'; const $=id=>document.getElementById(id); const Engine=U46.Engine,Piper=U47.Piper; const GATE_KEY='topkey_u50_audio_gate'; T.CONFIG_VERSION=VERSION;T.VERSION=VERSION;T.RUNTIME_BUILD=VERSION; function gateState(){let x={verified:false,engine:'',verifiedAt:0,lastError:'',lastTestAt:0};try{x={...x,...JSON.parse(localStorage.getItem(GATE_KEY)||'{}')}}catch{}return x} function saveGate(p){const x={...gateState(),...p};try{localStorage.setItem(GATE_KEY,JSON.stringify(x))}catch{}return x} functio"
+    },
+    {
+      "file": "src/upgrade51.js",
+      "upgrade": "upgrade51",
+      "version": "2026.10.29-vnext-featureparity15-upgrade51",
+      "sha256": "7945c271ee6c6506eb229dcdfb1bb78e163a87f88b785cc196e8acd08e6e058b",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,U46=window.TopkeyUpgrade46,U47=window.TopkeyUpgrade47,U48=window.TopkeyUpgrade48,U49=window.TopkeyUpgrade49,U50=window.TopkeyUpgrade50; if(!T||!App||!U||!U46||!U47||!U48||!U49||!U50||App.__upgrade51Installed)return; App.__upgrade51Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade51'; const CACHE_TAG='u51-20261029'; const FIXED_PIPER_MODULE='https://cdn.jsdelivr.net/npm/@realtimex/piper-tts-web@1.1.1/+esm'; const ORT_BASE='https://cdn.jsdelivr.net/npm/onnxruntime-web@1.22.0/dist/'; const PHONEMIZE_BASE='https://cdn.jsdelivr.net/npm/@diffusionstudio/piper-wasm@1.0.0/build/piper_phonemize'; const PIPER_VOICE=U47.PIPER_VOICE||'vi_VN-vais1000-medium'; const $=id=>document.getElementById(id),Piper=U47.Piper,Engine=U46.Engine; T.CONFIG_VERSION=VERSION;T.VERSION=VERSION;T.RUNTIME_BUILD=VERSION; // U50 exposed t"
+    },
+    {
+      "file": "src/upgrade52.js",
+      "upgrade": "upgrade52",
+      "version": "2026.10.29-vnext-featureparity15-upgrade52",
+      "sha256": "651e633a66b117a979d5a35d6b460ea42eb321caed2c97f85b6b9574bead4a42",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,U46=window.TopkeyUpgrade46; if(!T||!App||!U||!U46||App.__upgrade52Installed)return; App.__upgrade52Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade52'; const CACHE_TAG='u52-20261029'; const DICT_KEY='topkey_u46_pronunciation'; const META_KEY='topkey_u52_pronunciation_sync_meta'; const CLOUD_PATH='pronunciationDictionary'; const FALLBACK_RELATIVE_PATH='config/pronunciationDictionary'; const MAX_RAW=20000; const $=id=>document.getElementById(id); T.CONFIG_VERSION=VERSION;T.VERSION=VERSION;T.RUNTIME_BUILD=VERSION; let offCloud=null,cloudRow=null,lastAppliedRaw='',migrating=false,saving=false,listenerUid='',cloudMode='PRIMARY'; function readLocal(){try{return String(localStorage.getItem(DICT_KEY)||'')}catch{return''}} function writeLocal(raw){raw=String(raw||'');try{localStorage.setItem(DICT_KEY,raw)}catch"
+    },
+    {
+      "file": "src/upgrade53.js",
+      "upgrade": "upgrade53",
+      "version": "2026.10.29-vnext-featureparity15-upgrade53",
+      "sha256": "606ef9a39d6e1ee3045f9ce8938a5e30acbac47100788144a30b66f0d8b7c29b",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U; if(!T||!App||App.__upgrade53Installed)return; App.__upgrade53Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade53'; const CACHE_TAG='u58-20261029'; T.CONFIG_VERSION=VERSION;T.VERSION=VERSION;T.RUNTIME_BUILD=VERSION; let installPrompt=null; const isStandalone=()=>window.matchMedia?.('(display-mode: standalone)').matches||navigator.standalone===true; function ensureViewport(){let m=document.querySelector('meta[name=\"viewport\"]');if(!m){m=document.createElement('meta');m.name='viewport';document.head.appendChild(m)}m.content='width=device-width,initial-scale=1,maximum-scale=5,viewport-fit=cover';document.documentElement.style.setProperty('--tk53-vw',`${window.visualViewport?.width||innerWidth}px`)} function setInstallText(text,disabled=false){const b=document.getElementById('tk53-install');if(b){b.textConte"
+    },
+    {
+      "file": "src/upgrade54.js",
+      "upgrade": "upgrade54",
+      "version": "2026.10.29-vnext-featureparity15-upgrade54",
+      "sha256": "dc383bc677d97e8534c3e6f769a5bff296a4d2ce1a983c72bd46b6b3663a02ee",
+      "header": "(()=>{'use strict'; const T=window.Topkey,App=T?.App;if(!T||!App||App.__upgrade54Installed)return; App.__upgrade54Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade54'; function stamp(){T.CONFIG_VERSION=VERSION;T.VERSION=VERSION;T.RUNTIME_BUILD=VERSION;document.documentElement.dataset.topkeyBuild='upgrade54';try{App.renderHealth?.()}catch{}const h=document.getElementById('health-version');if(h)h.textContent=VERSION} stamp();setTimeout(stamp,0);setTimeout(stamp,700);window.addEventListener('focus',stamp); })();"
+    },
+    {
+      "file": "src/upgrade55.js",
+      "upgrade": "upgrade55",
+      "version": "2026.10.29-vnext-featureparity15-upgrade55",
+      "sha256": "f024609d28934eb0e213eb67aa9ab9c2093e0a73bfb6a1e9ef98139ec172b1ea",
+      "header": "(()=>{'use strict'; const T=window.Topkey,App=T?.App,U=T?.U;if(!T||!App||App.__upgrade55Installed)return; App.__upgrade55Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade55'; const CACHE_TAG='u55-20261029'; const BUILD='upgrade55'; const RUNTIME_CACHE='topkey-piper-runtime-ort122-phonemize100'; const $=id=>document.getElementById(id); const upgradeNo=v=>{const m=String(v||'').match(/upgrade(\\d+)/i);return m?Number(m[1]):-1}; // From U55 onward, a delayed timer/focus handler from an older upgrade is not allowed // to downgrade the visible/runtime version. Future upgrades (56+) are still allowed. function lockVersionField(key){ let value=VERSION; try{ const d=Object.getOwnPropertyDescriptor(T,key); if(d&&!d.configurable){T[key]=VERSION;return} Object.defineProperty(T,key,{configurable:true,enumerable:true,get(){return value},set(next){const n=String(n"
+    },
+    {
+      "file": "src/upgrade56.js",
+      "upgrade": "upgrade56",
+      "version": "2026.10.29-vnext-featureparity15-upgrade56-fixer",
+      "sha256": "19931f5005021f0654adef34f052f008ca50825d730c7d090c495bfe378eee16",
+      "header": "(()=>{'use strict'; const T=window.Topkey,App=T?.App,U=T?.U;if(!T||!App||!U||App.__upgrade56Installed)return; App.__upgrade56Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade56-fixer'; const CACHE_TAG='u56-20261029'; const BUILD='upgrade56'; const $=id=>document.getElementById(id); function stamp(){T.VERSION=VERSION;T.CONFIG_VERSION=VERSION;T.RUNTIME_BUILD=VERSION;document.documentElement.dataset.topkeyBuild=BUILD;const h=$('health-version');if(h)h.textContent=VERSION} function isLegacyPronunciationQueue(item){ if(String(item?.meta?.type||'')==='PRONUNCIATION_DICTIONARY_SYNC')return true; return Object.keys(item?.updates||{}).some(k=>String(k).replace(/^\\//,'')===`${T.ROOT}/pronunciationDictionary`); } async function clearLegacyPronunciationQueue(){ try{ const removed=await T.Data?.removeQueuedWhere?.(isLegacyPronunciationQueue)||0; if(removed){"
+    },
+    {
+      "file": "src/upgrade57.js",
+      "upgrade": "upgrade57",
+      "version": "2026.10.29-vnext-featureparity15-upgrade57-referee-focus",
+      "sha256": "a5547fa6882da0c1cab89e1141c5448270314339d4a364ea1274f2a58afc0c1f",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U; if(!T||!App||!U||App.__upgrade57Installed)return; App.__upgrade57Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade57-referee-focus'; const CACHE_TAG='u57-20261029'; const BUILD='upgrade57'; const $=id=>document.getElementById(id); let focus=false,nativeFullscreen=false; function stamp(){ T.VERSION=VERSION;T.CONFIG_VERSION=VERSION;T.RUNTIME_BUILD=VERSION; document.documentElement.dataset.topkeyBuild=BUILD; const h=$('health-version');if(h)h.textContent=VERSION; } function viewportInfo(){ const vv=window.visualViewport,w=Math.round(vv?.width||innerWidth||document.documentElement.clientWidth||0),h=Math.round(vv?.height||innerHeight||document.documentElement.clientHeight||0); const orientation=w>=h?'ngang':'dọc'; const profile=(w>=1400&&h>=800)?'màn lớn':(w>=900?'laptop/tablet lớn':(w>=600?'tab"
+    },
+    {
+      "file": "src/upgrade58.js",
+      "upgrade": "upgrade58",
+      "version": "2026.10.29-vnext-featureparity15-upgrade58-match-focus-pwa",
+      "sha256": "84c7c03ea2203aa5f4479c1eef93f3b51ace0e2e4632380621a605b849561f44",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U; if(!T||!App||!U||App.__upgrade58Installed)return; App.__upgrade58Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade58-match-focus-pwa'; const CACHE_TAG='u58-20261029'; const BUILD='upgrade58'; const $=id=>document.getElementById(id); let scoreFocus=false,nativeFullscreen=false; function stamp(){ T.VERSION=VERSION;T.CONFIG_VERSION=VERSION;T.RUNTIME_BUILD=VERSION; document.documentElement.dataset.topkeyBuild=BUILD; const h=$('health-version');if(h)h.textContent=VERSION; } function ensureExit(){ let b=$('tk58-focus-exit');if(b)return b; b=document.createElement('button');b.id='tk58-focus-exit';b.type='button';b.title='Thu nhỏ màn hình trọng tài';b.setAttribute('aria-label','Thu nhỏ màn hình trọng tài');b.textContent='↙'; b.addEventListener('click',()=>exitScoreFocus());document.body.appendChild"
+    },
+    {
+      "file": "src/upgrade59.js",
+      "upgrade": "upgrade59",
+      "version": "2026.10.29-vnext-featureparity15-upgrade59-focus-webapk",
+      "sha256": "c436e811a35840e27f8b73c62c5e11e00dc0b1e6bd95a55b2be7fd9429f1a449",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U; if(!T||!App||!U||App.__upgrade59Installed)return; App.__upgrade59Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade59-focus-webapk'; const CACHE_TAG='u59-20261029'; const BUILD='upgrade59'; const $=id=>document.getElementById(id); let installPrompt59=null; function stamp(){ T.VERSION=VERSION;T.CONFIG_VERSION=VERSION;T.RUNTIME_BUILD=VERSION; document.documentElement.dataset.topkeyBuild=BUILD; const h=$('health-version');if(h)h.textContent=VERSION; } function isStandalone(){return matchMedia?.('(display-mode: standalone)').matches||navigator.standalone===true} function uaInfo(){ const ua=navigator.userAgent||'',android=/Android/i.test(ua),samsung=/SamsungBrowser/i.test(ua),edge=/EdgA|EdgiOS/i.test(ua),opera=/OPR\\//i.test(ua),firefox=/Firefox|FxiOS/i.test(ua),vendor=/VivoBrowser|HeyTapBrowser|OppoB"
+    },
+    {
+      "file": "src/upgrade60.js",
+      "upgrade": "upgrade60",
+      "version": "2026.10.29-vnext-featureparity15-upgrade60-score-first",
+      "sha256": "4b09cf5d40e37d2140800b0e03dd26149cdf1ad6fc764b4bd56e801a163b4fda",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U46=window.TopkeyUpgrade46; if(!T||!App||!U46?.Engine||App.__upgrade60Installed)return; App.__upgrade60Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade60-score-first'; const CACHE_TAG='u60-20261029'; const BUILD='upgrade60'; const Engine=U46.Engine; function scoreFirstPair(a,b,side,separator=' - '){ a=Number(a)||0;b=Number(b)||0; if(a===b)return `${a} đều`; return String(side||'A').toUpperCase()==='B'?`${b}${separator}${a}`:`${a}${separator}${b}`; } function escapeRe(s){return String(s).replace(/[.*+?^${}()|[\\]\\\\]/g,'\\\\$&')} function scorerFirstText(text,a,b,side){ text=String(text||'');a=Number(a)||0;b=Number(b)||0;side=String(side||'A').toUpperCase(); if(!text||a===b||side!=='B')return text; const A=escapeRe(a),B=escapeRe(b); // Upgrade46 full commentary uses hyphens; Upgrade48 realtime uses c"
+    },
+    {
+      "file": "src/upgrade61.js",
+      "upgrade": "upgrade61",
+      "version": "2026.10.29-vnext-featureparity15-upgrade61-manual-refocus",
+      "sha256": "8561d73a3a394687bffdde158b76467df27c6d2f415ac6b25beee3788b13e5a7",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,U58=window.TopkeyUpgrade58; if(!T||!App||!U||!U58?.enterScoreFocus||App.__upgrade61Installed)return; App.__upgrade61Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade61-manual-refocus'; const CACHE_TAG='u61-20261029'; const BUILD='upgrade61'; const $=id=>document.getElementById(id); function stamp(){ T.VERSION=VERSION;T.CONFIG_VERSION=VERSION;T.RUNTIME_BUILD=VERSION; document.documentElement.dataset.topkeyBuild=BUILD; const h=$('health-version');if(h)h.textContent=VERSION; } function activeStartedMatch(){ const s=App.state?.activeMatches?.[App.currentCourt]; return s?.started?s:null; } function manualRefocus(){ const s=activeStartedMatch(); if(!s){try{U.toast('Bắt đầu trận trước khi mở toàn màn hình chấm điểm.','info')}catch{};return false} U58.enterScoreFocus().catch(e=>{try{U.toast('Khô"
+    },
+    {
+      "file": "src/upgrade62.js",
+      "upgrade": "upgrade62",
+      "version": "2026.10.29-vnext-featureparity15-upgrade62-compact-header",
+      "sha256": "3ed5326cbedc3956a60eec70070e158913e6252b06944f30182c8c7b07b1c28b",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U; if(!T||!App||!U||App.__upgrade62Installed)return; App.__upgrade62Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade62-compact-header'; const CACHE_TAG='u62-20261029'; const BUILD='upgrade62'; const KEY='topkey_u62_header_collapsed'; const $=id=>document.getElementById(id); const TAB_LABEL={overview:'Tổng quan',control:'Điều hành sân',teams:'Đội & Check-in',schedule:'Lịch & BXH',umpire:'Trọng tài',live:'Live & BLV',finance:'Tài chính',announcements:'Thông báo',audit:'Audit',health:'Health',settings:'Cài đặt'}; let currentTab='umpire'; function stamp(){ T.VERSION=VERSION;T.CONFIG_VERSION=VERSION;T.RUNTIME_BUILD=VERSION; document.documentElement.dataset.topkeyBuild=BUILD; const h=$('health-version');if(h)h.textContent=VERSION; } function storedCollapsed(){try{return sessionStorage.getItem(KEY)==='1'}"
+    },
+    {
+      "file": "src/upgrade63.js",
+      "upgrade": "upgrade63",
+      "version": "2026.10.29-vnext-featureparity15-upgrade63-auto-set-rotation",
+      "sha256": "ce2c5cd38c4607f760f73de24b099cdbcabe2808597d1239b5a7e58d735d793d",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U; if(!T||!App||!U||!T.Scoring||App.__upgrade63Installed)return; App.__upgrade63Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade63-auto-set-rotation'; const CACHE_TAG='u63-20261029'; const BUILD='upgrade63'; const $=id=>document.getElementById(id); function ensurePositions(s){ s.positions=s.positions||{}; for(const side of ['A','B']){ const p=s.positions[side]||(s.positions[side]={p1:'right',p2:'left'}); if(!['right','left'].includes(p.p1)||!['right','left'].includes(p.p2)||p.p1===p.p2){p.p1='right';p.p2='left';} } return s.positions; } function playerAt(s,side,pos='right'){ ensurePositions(s); return s.positions[side].p1===pos?'p1':'p2'; } function opposite(side){return String(side||'A').toUpperCase()==='B'?'A':'B';} function openingAnchor(s){ if(['A','B'].includes(s?.openingServer"
+    },
+    {
+      "file": "src/upgrade64.js",
+      "upgrade": "upgrade64",
+      "version": "2026.10.29-vnext-featureparity15-upgrade64-set-commit-fix",
+      "sha256": "0293c1f274f55dad2a5f781a947895904e85acf58c44e934ff90eaf50b564099",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,U63=window.TopkeyUpgrade63; if(!T||!App||!U||!T.Scoring||App.__upgrade64Installed)return; App.__upgrade64Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade64-set-commit-fix'; const CACHE_TAG='u64-20261029'; const BUILD='upgrade64'; const $=id=>document.getElementById(id); let committing=false; function rules(){return {...(T.DEFAULT_RULES||{}),...(App.state.config?.rules||{})};} function clone(v){return U.clone?U.clone(v):JSON.parse(JSON.stringify(v));} function currentSet(s){return s?.sets?.[Number(s?.setIndex)||0]||null;} function completedSets(s){return (s?.sets||[]).filter(x=>x?.finished).map(x=>({a:Number(x.a)||0,b:Number(x.b)||0,finished:true}));} function matchWinner(s){return T.Scoring.winner(s?.sets||[],rules());} function opposite(side){return String(side||'A').toUpperCase()==='B'?'A':'B';} func"
+    },
+    {
+      "file": "src/upgrade65.js",
+      "upgrade": "upgrade65",
+      "version": "2026.10.29-vnext-featureparity15-upgrade65-opening-server-fix",
+      "sha256": "fc08d95226e5613b849763089e2f5689ff7731ebb3dc5a93390e662fa16d010a",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,U63=window.TopkeyUpgrade63,U64=window.TopkeyUpgrade64; if(!T||!App||!U||!T.Scoring||App.__upgrade65Installed)return; App.__upgrade65Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade65-opening-server-fix'; const CACHE_TAG='u65-20261029'; const BUILD='upgrade65'; const $=id=>document.getElementById(id); const esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[c])); let repairPersisting=false; function clone(v){return U.clone?U.clone(v):JSON.parse(JSON.stringify(v));} function opposite(side){return String(side||'A').toUpperCase()==='B'?'A':'B';} function ensurePositions(s){ s.positions=s.positions||{}; for(const side of ['A','B']){ const p=s.positions[side]||(s.positions[side]={p1:'right',p2:'left'}); if(!['right','left'].includes(p.p1)||!['"
+    },
+    {
+      "file": "src/upgrade66.js",
+      "upgrade": "upgrade66",
+      "version": "2026.10.29-vnext-featureparity15-upgrade67-start-gate-blv-fx",
+      "sha256": "5d07a24ced8803290abb6d2d2bbb093901363855694c0b2800be998b68ef1f2d",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,U58=window.TopkeyUpgrade58; if(!T||!App||!U||App.__upgrade66Installed)return; App.__upgrade66Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade67-start-gate-blv-fx'; const CACHE_TAG='u67-20261029'; const BUILD='upgrade66'; const $=id=>document.getElementById(id); function currentSet(s){return s?.sets?.[Number(s?.setIndex)||0]||null;} function ensurePositions(s){ s.positions=s.positions||{}; for(const side of ['A','B']){ const p=s.positions[side]||(s.positions[side]={p1:'right',p2:'left'}); if(!['right','left'].includes(p.p1)||!['right','left'].includes(p.p2)||p.p1===p.p2){p.p1='right';p.p2='left';} } return s.positions; } function prestartServerValid(s){ if(!s||s.started||Number(s.setIndex||0)!==0)return false; const set=currentSet(s); if(!set||set.finished||(Number(set.a)||0)!==0||"
+    },
+    {
+      "file": "src/upgrade67.js",
+      "upgrade": "upgrade67",
+      "version": "2026.10.29-vnext-featureparity15-upgrade67-start-gate-blv-fx",
+      "sha256": "15dbb0d0399b3fbeaa3212a94acba688f1bac2b32da2a9cbf0c54f2372e79e5b",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,U58=window.TopkeyUpgrade58,U60=window.TopkeyUpgrade60,U46=window.TopkeyUpgrade46; if(!T||!App||!U||App.__upgrade67Installed)return; App.__upgrade67Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade67-start-gate-blv-fx'; const CACHE_TAG='u67-20261029'; const BUILD='upgrade67'; const $=id=>document.getElementById(id); const SCORE_IDS=['umpire-plus-a','umpire-minus-a','umpire-plus-b','umpire-minus-b']; let exitingPrestartFocus=false,fxCtx=null,lastFxKey='',lastFxAt=0; function currentSet(s){return s?.sets?.[Number(s?.setIndex)||0]||null;} function ensurePositions(s){ s.positions=s.positions||{}; for(const side of ['A','B']){ const p=s.positions[side]||(s.positions[side]={p1:'right',p2:'left'}); if(!['right','left'].includes(p.p1)||!['right','left'].includes(p.p2)||p.p1===p.p2){p.p1='right';p.p2="
+    },
+    {
+      "file": "src/upgrade68.js",
+      "upgrade": "upgrade68",
+      "version": "2026.10.29-vnext-featureparity15-upgrade68-admin-result-reset-fix",
+      "sha256": "3ca0f0a61d6ce9210cd8aee5d761790adc8742190b10d8e56414830d60fafc14",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U; if(!T||!App||!U||App.__upgrade68Installed)return; App.__upgrade68Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade68-admin-result-reset-fix'; const CACHE_TAG='u68-20261029'; const BUILD='upgrade68'; const $=id=>document.getElementById(id); const UNPLAYED=new Set(['SCHEDULED','CHECK_IN','READY','CALLED_TO_COURT','WARM_UP']); const RESULT_FIELDS=[ 'winnerId','finishedAt','startedAt','liveSetIndex','manualResult','manualResultBy', 'actualFinishedAt','actualFinishedDate','actualFinishedTime','actualFinishedTimezoneOffset','actualFinishedBy','actualFinishSource', 'retiredTeamId','walkoverTeamId','walkoverReason','cancelReason','withdrawnTeamId','withdrawnTeamIds','disqualifiedTeamId' ]; function clone(v){return U.clone?U.clone(v):JSON.parse(JSON.stringify(v));} function activeEntries(matchId){return Ob"
+    },
+    {
+      "file": "src/upgrade69.js",
+      "upgrade": "upgrade69",
+      "version": "2026.10.29-vnext-featureparity15-upgrade69-opening-server-ledger",
+      "sha256": "1b06976b75e07c4f6785ed037388148f27eaa13a027fc2c72bd02a7d760c4e32",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,U63=window.TopkeyUpgrade63; if(!T||!App||!U||!T.Scoring||App.__upgrade69Installed)return; App.__upgrade69Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade69-opening-server-ledger'; const CACHE_TAG='u69-20261029'; const BUILD='upgrade69'; const $=id=>document.getElementById(id); const esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[c])); let recovering=false,persisting=false; function clone(v){return U.clone?U.clone(v):JSON.parse(JSON.stringify(v));} function opposite(side){return String(side||'').toUpperCase()==='A'?'B':String(side||'').toUpperCase()==='B'?'A':'';} function ensurePositions(s){ s.positions=s.positions||{}; for(const side of ['A','B']){ const p=s.positions[side]||(s.positions[side]={p1:'right',p2:'left'}); if(!['right','"
+    },
+    {
+      "file": "src/upgrade70.js",
+      "upgrade": "upgrade70",
+      "version": "2026.10.29-vnext-featureparity15-upgrade70-responsive-referee-fullscreen",
+      "sha256": "89da4c6410891938174537790b5e84089925e3e2ce1189b4940e93dc7a387398",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App; if(!T||!App||App.__upgrade70Installed)return; App.__upgrade70Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade70-responsive-referee-fullscreen'; const CACHE_TAG='u70-20261029',BUILD='upgrade70'; function viewportKind(){ const vv=window.visualViewport,w=Math.round(vv?.width||innerWidth||document.documentElement.clientWidth||0),h=Math.round(vv?.height||innerHeight||document.documentElement.clientHeight||0),land=w>h; let kind='desktop'; if(!land&&w<=430)kind='phone-portrait'; else if(!land&&w<=900)kind='tablet-portrait'; else if(land&&h<=500)kind='phone-landscape'; else if(land&&h<=650)kind='compact-landscape'; else if(w>=1600&&w/h>=2.05)kind='ultrawide'; else if(w>=1280&&h>=720)kind='desktop-large'; else if(w<=1100)kind='tablet'; return{kind,w,h,landscape:land}; } function syncViewport(){"
+    },
+    {
+      "file": "src/upgrade71.js",
+      "upgrade": "upgrade71",
+      "version": "2026.10.29-vnext-featureparity15-upgrade71-set-history-strip",
+      "sha256": "047798468aa88e511258f191e808cc6b8406068722e9eda0bd6f048cc4078057",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App; if(!T||!App||App.__upgrade71Installed)return; App.__upgrade71Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade71-set-history-strip'; const CACHE_TAG='u71-20261029',BUILD='upgrade71'; const $=id=>document.getElementById(id); function rules(){return {...(T.DEFAULT_RULES||{}),...(App.state.config?.rules||{})};} function esc(v){return App.escape?.(String(v??''))??String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[c]));} function teamName(m,side){const id=side==='A'?m?.teamAId:m?.teamBId;return String(App.state.teams?.[id]?.name||`Đội ${side}`);} function normalizedSet(x){if(!x)return null;return {a:Number(x.a)||0,b:Number(x.b)||0,finished:!!x.finished};} function isCompleted(x){const s=normalizedSet(x);if(!s)return false;if(s.finished)return true;try{return !!T.Scori"
+    },
+    {
+      "file": "src/upgrade72.js",
+      "upgrade": "upgrade72",
+      "version": "2026.10.29-vnext-featureparity15-upgrade72-auto-voice-bootstrap",
+      "sha256": "829b6fdfbcd8fb68a5f445a25826e718ff1ca38a788a10dfbe032f999b8d45f6",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,U46=window.TopkeyUpgrade46,U47=window.TopkeyUpgrade47,U49=window.TopkeyUpgrade49,U50=window.TopkeyUpgrade50,U51=window.TopkeyUpgrade51; if(!T||!App||!U||!U46||!U47||!U49||!U50||!U51||App.__upgrade72Installed)return; App.__upgrade72Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade72-auto-voice-bootstrap'; const CACHE_TAG='u72-20261029',BUILD='upgrade72'; const STATE_KEY='topkey_u72_voice_bootstrap'; const $=id=>document.getElementById(id),Piper=U47.Piper,Engine=U46.Engine; T.CONFIG_VERSION=VERSION;T.VERSION=VERSION;T.RUNTIME_BUILD=VERSION; function state(){let x={autoInstall:true,lastAttemptAt:0,lastSuccessAt:0,lastError:'',mediaPrimedAt:0,engine:'',phase:'idle'};try{x={...x,...JSON.parse(localStorage.getItem(STATE_KEY)||'{}')}}catch{}return x} function save(p){const x={...state(),...p};try{localStorage."
+    },
+    {
+      "file": "src/upgrade73-preboot.js",
+      "upgrade": "upgrade73",
+      "version": "",
+      "sha256": "9318128e0e97031dd90ff87d1d5a1c698161923ccd440765387453b4ec30197e",
+      "header": "(() => { 'use strict'; if(window.__TOPKEY_U73_PREBOOT)return; window.__TOPKEY_U73_PREBOOT=true; window.__TOPKEY_AUDIO_SESSION_PRIMED=false; // Older upgrade layers all ask the same Service Worker to register/update. Coalesce // those calls before app.js loads so one page load/focus cannot trigger dozens of // redundant SW network checks. const sw=navigator.serviceWorker; if(!sw||typeof sw.register!=='function')return; try{ const nativeRegister=sw.register.bind(sw); let registerPromise=null,updatePromise=null,lastUpdateAt=0,registerCalls=0,updateCalls=0; const latestUrl=()=>{const u=new URL('./sw.js',location.href);u.searchParams.set('v',window.__TOPKEY_BOOT_CACHE||'u88-20261030');return u.href;}; const wrap=reg=>new Proxy(reg,{get(target,prop){ if(prop==='update')return async()=>{ const now=Date.now(); if(updatePromise)return updatePromise; if(lastUpdateAt&"
+    },
+    {
+      "file": "src/upgrade73.js",
+      "upgrade": "upgrade73",
+      "version": "2026.10.29-vnext-featureparity15-upgrade73-latency-conflict-audit",
+      "sha256": "dd190585583758e996192d1a5d93b032d17ffb25e025b67b63e7247c17b18862",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,U46=window.TopkeyUpgrade46,U47=window.TopkeyUpgrade47,U48=window.TopkeyUpgrade48,U72=window.TopkeyUpgrade72; if(!T||!App||!U||!U46||!U47||!U48||!U72||App.__upgrade73Installed)return; App.__upgrade73Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade73-latency-conflict-audit'; const CACHE_TAG='u73-20261029',BUILD='upgrade73'; const $=id=>document.getElementById(id),Piper=U47.Piper,Engine=U46.Engine; T.CONFIG_VERSION=VERSION;T.VERSION=VERSION;T.RUNTIME_BUILD=VERSION; const perf={lastEventAt:0,lastSpeakAt:0,lastDoneAt:0,lastStartLatency:0,lastSynthMs:0,lastTotalMs:0,samples:[]}; function record(item,start){ const eventAt=Number(item?.eventAt||item?.createdAt||Date.now()),done=Date.now(),lat=Number(Piper.lastStartLatency)||Math.max(0,done-eventAt),synth=Number(Piper.lastSynthMs)||0,total=Math.round(performa"
+    },
+    {
+      "file": "src/upgrade74.js",
+      "upgrade": "upgrade74",
+      "version": "2026.10.29-vnext-featureparity15-upgrade74-mobile-score-contract-registry",
+      "sha256": "a58b432849403e524e084636fc495cd24c2b62afd2f6787702c1f648c620fbd3",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App; if(!T||!App||App.__upgrade74Installed)return; App.__upgrade74Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade74-mobile-score-contract-registry'; const CACHE_TAG='u74-20261029',BUILD='upgrade74'; function viewport(){const vv=window.visualViewport;return{w:Math.round(vv?.width||innerWidth||document.documentElement.clientWidth||0),h:Math.round(vv?.height||innerHeight||document.documentElement.clientHeight||0)};} function scoreVisibility(){ const head=document.querySelector('#umpire-board>.score-head'); if(!head)return{ok:true,reason:'no-score-head'}; const v=viewport(),parts=[head.children[0],head.children[2]].filter(Boolean),tol=2; const rects=parts.map(el=>{const r=el.getBoundingClientRect();return{left:r.left,right:r.right,width:r.width}}); const ok=rects.every(r=>r.left>=-tol&&r.right<=v.w+tol&&r."
+    },
+    {
+      "file": "src/upgrade75.js",
+      "upgrade": "upgrade75",
+      "version": "2026.10.29-vnext-featureparity15-upgrade75-mandarin-pinyin-voice",
+      "sha256": "05e8bade7d21ef2dbd0b9ca9dc6f91946ccc51537e95415b7fbf02ad4319f171",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,U46=window.TopkeyUpgrade46,U47=window.TopkeyUpgrade47,U48=window.TopkeyUpgrade48,U51=window.TopkeyUpgrade51; if(!T||!App||!U||!U46||!U47||!U48||!U51||App.__upgrade75Installed)return; App.__upgrade75Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade75-mandarin-pinyin-voice'; const CACHE_TAG='u75-20261029'; const BUILD='upgrade75'; const DICT_KEY='topkey_u46_pronunciation'; const SETTINGS_KEY='topkey_u75_pinyin_voice'; const ZH_VOICE='zh_CN-huayan-x_low'; const ZH_LABEL='TOPKEY Mandarin · Huayan x_low'; const ZH_SIZE=20628813; const $=id=>document.getElementById(id),Engine=U46.Engine,Piper=U47.Piper; T.CONFIG_VERSION=VERSION;T.VERSION=VERSION;T.RUNTIME_BUILD=VERSION; const state={installed:false,checking:false,installing:false,progress:0,lastError:'',session:null,sessionPromise:null,audio:null,audioDone:nu"
+    },
+    {
+      "file": "src/upgrade76.js",
+      "upgrade": "upgrade76",
+      "version": "2026.10.29-vnext-featureparity15-upgrade76-natural-crowd-applause",
+      "sha256": "7bdf263212bf3c40b001c3687a7c8716e354e4f770f47c56b24a051fe19908f7",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U; if(!T||!App||!U||App.__upgrade76Installed)return; App.__upgrade76Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade76-natural-crowd-applause'; const CACHE_TAG='u76-20261029'; const BUILD='upgrade76'; const SETTINGS_KEY='topkey_u76_crowd_fx'; const $=id=>document.getElementById(id); const ASSETS={TIE:'./assets/audio/applause-tie.ogg',SET_FINISH:'./assets/audio/applause-set.ogg',MATCH_FINISH:'./assets/audio/applause-match.ogg'}; const KIND_GAIN={TIE:.62,SET_FINISH:.82,MATCH_FINISH:1}; let ctx=null,master=null,loading=null,lastKind='',lastAt=0; const buffers=new Map(),activeSources=new Set(); const state={ready:false,loading:false,lastError:'',lastPlayed:'',lastPlayedAt:0}; function readSettings(){try{return{enabled:true,volume:.78,...JSON.parse(localStorage.getItem(SETTINGS_KEY)||'{}')}}catch{return{enable"
+    },
+    {
+      "file": "src/upgrade77.js",
+      "upgrade": "upgrade77",
+      "version": "2026.10.29-vnext-featureparity15-upgrade77-ai-shuttle-replay",
+      "sha256": "61ae160c5649c2ba5e6fdd5b94c89edebb22885ecc95e2303cd16bb302381591",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U;if(!T||!App||!U||App.__upgrade77Installed)return; App.__upgrade77Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade77-ai-shuttle-replay'; const CACHE_TAG='u77-20261029'; const BUILD='upgrade77'; const AI_ENDPOINT='/api/ai-shuttle-analyze'; const SETTINGS_KEY='topkey_u77_replay_settings'; const DB_NAME='topkey_badminton_replays_v1',STORE='clips',META_STORE='clip_meta',DB_VERSION=2; const PRE_MS=6000,POST_MS=4000,SEGMENT_MS=3000,KEEP_MS=26000,MAX_CLIPS=24,LIST_CLIPS=8; const $=id=>document.getElementById(id); const state={enabled:false,recording:false,detecting:false,aiConfigured:false,aiModel:'',lastError:'',segments:[],recorder:null,recTimer:0,stream:null,detectTimer:0,frameTimer:0,prevGray:null,track:[],frameRing:[],lastCandidateAt:0,lastAiAt:0,lastSavedAt:0,hotUntil:0,clips:[],db:null,dbp:null,currentRe"
+    },
+    {
+      "file": "src/upgrade78.js",
+      "upgrade": "upgrade78",
+      "version": "2026.10.29-vnext-featureparity15-upgrade78-blv-live-session-gate",
+      "sha256": "b4a64d35fef331bfed815b9f95a626464e9f0c0b66f0d4016e72fe8d26957528",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,U46=window.TopkeyUpgrade46,U47=window.TopkeyUpgrade47,U75=window.TopkeyUpgrade75,U76=window.TopkeyUpgrade76; if(!T||!App||!U||!U46||!U47||App.__upgrade78Installed)return; App.__upgrade78Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade78-blv-live-session-gate'; const CACHE_TAG='u78-20261029',BUILD='upgrade78'; const SETTINGS_KEY='topkey_u78_blv_live_gate'; const $=id=>document.getElementById(id),Engine=U46.Engine,Piper=U47.Piper; const TAB_ID=(globalThis.crypto?.randomUUID?.()||`tab_${Date.now()}_${Math.random().toString(36).slice(2)}`); const state={active:false,armedAt:0,tab:'',courtId:'',matchId:'',baselineId:'',reason:'BOOT_MUTED',ownerId:'',lastStopAt:0,lastStopReason:'',dropped:0}; let channel=null,stopping=false; T.CONFIG_VERSION=VERSION;T.VERSION=VERSION;T.RUNTIME_BUILD=VERSION; function readSet"
+    },
+    {
+      "file": "src/upgrade79.js",
+      "upgrade": "upgrade79",
+      "version": "2026.10.29-vnext-featureparity15-upgrade79-ai-endpoint-root-fix",
+      "sha256": "0e7778f82c4951108b1815b4d4e02226efc7e383a146be0ea371fa402372f092",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U77=window.TopkeyUpgrade77;if(!T||!App||!U77||App.__upgrade79Installed)return; App.__upgrade79Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade79-ai-endpoint-root-fix'; const CACHE_TAG='u79-20261029',BUILD='upgrade79',AI_ENDPOINT='/api/ai-shuttle-analyze'; T.CONFIG_VERSION=VERSION;T.VERSION=VERSION;T.RUNTIME_BUILD=VERSION;document.documentElement.dataset.topkeyBuild=BUILD; const baseHealth=App.renderHealth?.bind(App);if(baseHealth)App.renderHealth=function(...args){const out=baseHealth(...args);const h=document.getElementById('health-version');if(h)h.textContent=VERSION;return out}; async function refreshSW(){if(!('serviceWorker'in navigator)||!location.protocol.startsWith('http'))return;try{const reg=await navigator.serviceWorker.register(`./sw.js?v=${CACHE_TAG}`,{updateViaCache:'none'});try{await reg.update()"
+    },
+    {
+      "file": "src/upgrade80.js",
+      "upgrade": "upgrade80",
+      "version": "2026.10.29-vnext-featureparity15-upgrade80-rear-camera-default",
+      "sha256": "aee5aa6f1606290865f942f726dde6c55e26180df51bfca40364ea0dde52a475",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U;if(!T||!App||!U||App.__upgrade80Installed)return; App.__upgrade80Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade80-rear-camera-default'; const CACHE_TAG='u80-20261029',BUILD='upgrade80'; const $=id=>document.getElementById(id); let facing='environment'; function selectedFacing(){const v=$('tk80-camera-facing')?.value;return v==='user'?'user':'environment'} function videoConstraints(mode='ideal'){facing=selectedFacing();return {width:{ideal:1280},height:{ideal:720},frameRate:{ideal:30,max:60},facingMode:{[mode]:facing}}} async function openPreferredCamera(){const media=navigator.mediaDevices;if(!media?.getUserMedia)throw new Error('Trình duyệt không hỗ trợ camera');try{return await media.getUserMedia({video:videoConstraints('exact'),audio:true})}catch(e){if(!['OverconstrainedError','NotFoundError','Type"
+    },
+    {
+      "file": "src/upgrade81.js",
+      "upgrade": "upgrade81",
+      "version": "2026.10.29-vnext-featureparity15-upgrade81-continuous-replay-10s",
+      "sha256": "8a73245b8cdf64a246b4e6f83b33f158327e33109158eca6bf83a105a1918677",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U77=window.TopkeyUpgrade77,U80=window.TopkeyUpgrade80; if(!T||!App||!U77||!U80||App.__upgrade81Installed)return; App.__upgrade81Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade81-continuous-replay-10s'; const CACHE_TAG='u81-20261029',BUILD='upgrade81'; T.CONFIG_VERSION=VERSION;T.VERSION=VERSION;T.RUNTIME_BUILD=VERSION; document.documentElement.dataset.topkeyBuild=BUILD; function stamp(){ const h=document.getElementById('health-version'); if(h)h.textContent=VERSION; const line=document.getElementById('tk77-status'); if(line)line.dataset.replayContract='continuous-10s'; } const baseHealth=App.renderHealth?.bind(App); if(baseHealth)App.renderHealth=function(...args){const out=baseHealth(...args);stamp();return out}; setTimeout(stamp,0);setTimeout(stamp,900); try{navigator.serviceWorker?.getRegistration?.("
+    },
+    {
+      "file": "src/upgrade82.js",
+      "upgrade": "upgrade82",
+      "version": "2026.10.29-vnext-featureparity15-upgrade82-replay-orientation-fit",
+      "sha256": "aa6827f8b75d7475e1777789f9ac91430d041c200432ff167721a05659512a16",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U77=window.TopkeyUpgrade77,U80=window.TopkeyUpgrade80,U81=window.TopkeyUpgrade81; if(!T||!App||!U77||!U80||!U81||App.__upgrade82Installed)return; App.__upgrade82Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade82-replay-orientation-fit'; const CACHE_TAG='u82-20261029',BUILD='upgrade82'; const $=id=>document.getElementById(id); const manualRotation=new Map(); function normDeg(n){n=Number(n)||0;return ((n%360)+360)%360} function desiredOrientation(rec,v){const c=rec?.capture||{};if(c.orientation==='landscape'||c.orientation==='portrait')return c.orientation;if(String(c.screenType||'').startsWith('landscape'))return'landscape';if(String(c.screenType||'').startsWith('portrait'))return'portrait';if(Number(c.viewportWidth)>0&&Number(c.viewportHeight)>0)return Number(c.viewportWidth)>=Number(c.viewportHeight)?'landsca"
+    },
+    {
+      "file": "src/upgrade83.js",
+      "upgrade": "upgrade83",
+      "version": "2026.10.29-vnext-featureparity15-upgrade83-replay-performance-guard",
+      "sha256": "9bc2198a283bae54067c83216a962d3616a96087238c3bec1c7923feb552fe63",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U77=window.TopkeyUpgrade77,U82=window.TopkeyUpgrade82; if(!T||!App||!U77||!U82||App.__upgrade83Installed)return; App.__upgrade83Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade83-replay-performance-guard'; const CACHE_TAG='u83-20261029',BUILD='upgrade83'; T.CONFIG_VERSION=VERSION;T.VERSION=VERSION;T.RUNTIME_BUILD=VERSION; document.documentElement.dataset.topkeyBuild=BUILD; function stamp(){ const h=document.getElementById('health-version');if(h)h.textContent=VERSION; const s=document.getElementById('tk77-status');if(s){s.dataset.replayPerformance='guarded';s.dataset.replayRamList=String(U77.LIST_CLIPS||8);s.dataset.replayDbMax=String(U77.MAX_CLIPS||24)} } const baseHealth=App.renderHealth?.bind(App);if(baseHealth)App.renderHealth=function(...args){const out=baseHealth(...args);stamp();return out}; stamp();"
+    },
+    {
+      "file": "src/upgrade84.js",
+      "upgrade": "upgrade84",
+      "version": "2026.10.29-vnext-featureparity15-upgrade84-live-first-focus",
+      "sha256": "ce1ba7c5090bd06edee1c35fd85d0c0055f5dd22f3c96a8fdad26c2f9c289267",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,U77=window.TopkeyUpgrade77,U83=window.TopkeyUpgrade83; if(!T||!App||!U||!U77||!U83||App.__upgrade84Installed)return; App.__upgrade84Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade84-live-first-focus'; const CACHE_TAG='u84-20261029',BUILD='upgrade84'; const $=id=>document.getElementById(id); const state={focus:false,nativeRequested:false,scrollY:0}; function ensureLayout(){ const page=$('page-live');if(!page)return false; const grid=page.querySelector(':scope > .grid.g3')||page.querySelector('.grid.g3');if(!grid)return false; const children=[...grid.children];let viewer=$('tk84-viewer-card')||children.find(x=>x.querySelector?.('#video-box'))||$('video-box')?.closest('.card'); let blv=$('tk84-blv-card')||children.find(x=>x!==viewer&&x.querySelector?.('#auto-commentary'))||$('auto-commentary')?.cl"
+    },
+    {
+      "file": "src/upgrade85.js",
+      "upgrade": "upgrade85",
+      "version": "2026.10.29-vnext-featureparity15-upgrade85-disk-lazy-replay",
+      "sha256": "ad06b4b00154ea509268b0a7118c1379ce0f2eef0f44f0f1efb8d2d617b5146e",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,U77=window.TopkeyUpgrade77,U84=window.TopkeyUpgrade84; if(!T||!App||!U||!U77||!U84||App.__upgrade85Installed)return; App.__upgrade85Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade85-disk-lazy-replay'; const CACHE_TAG='u85-20261029',BUILD='upgrade85'; const libs=new Map(); function loadScriptOnce(src,globalName){ if(globalName&&window[globalName])return Promise.resolve(window[globalName]); if(libs.has(src))return libs.get(src); const p=new Promise((resolve,reject)=>{ const existing=[...document.scripts].find(s=>s.src===src); if(existing){existing.addEventListener('load',()=>resolve(globalName?window[globalName]:true),{once:true});existing.addEventListener('error',()=>reject(new Error('Không tải được '+src)),{once:true});return} const s=document.createElement('script');s.src=src;s.async"
+    },
+    {
+      "file": "src/upgrade86.js",
+      "upgrade": "upgrade86",
+      "version": "2026.10.29-vnext-featureparity15-upgrade86-live-layout-race-guard",
+      "sha256": "226523c5fb4aba19ffbd4329e024a1cadee832771b1d206f6a3403573d8c283b",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U84=window.TopkeyUpgrade84,U85=window.TopkeyUpgrade85; if(!T||!App||!U84||!U85||App.__upgrade86Installed)return; App.__upgrade86Installed=true; const VERSION='2026.10.29-vnext-featureparity15-upgrade86-live-layout-race-guard'; const CACHE_TAG='u86-20261029',BUILD='upgrade86'; const $=id=>document.getElementById(id); let pending=false,observer=null; function ensureLayout(){ try{U84.ensureLayout?.()}catch{} const page=$('page-live'),left=$('tk84-live-left'),viewer=$('tk84-viewer-card'),source=$('tk84-source-card'),replay=$('tk77-replay-card'),blv=$('tk84-blv-card'),grid=$('tk84-live-layout'); if(!page||!left||!viewer||!source||!grid)return false; if(viewer.parentElement!==left)left.insertBefore(viewer,left.firstChild||null); if(source.parentElement!==left)left.appendChild(source); if(replay&&replay.parentElement!==left)lef"
+    },
+    {
+      "file": "src/upgrade87.js",
+      "upgrade": "upgrade87",
+      "version": "2026.10.30-vnext-featureparity15-upgrade87-audio-reset-ux",
+      "sha256": "9eb654df977e7a682fcfbd63b7b937ad111a45566d52b14239fba80b2bc7b89f",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,U46=window.TopkeyUpgrade46,U47=window.TopkeyUpgrade47,U49=window.TopkeyUpgrade49,U50=window.TopkeyUpgrade50,U68=window.TopkeyUpgrade68,U76=window.TopkeyUpgrade76,U78=window.TopkeyUpgrade78; if(!T||!App||!U||!U46||!U47||!U49||!U50||!U68||!U76||!U78||App.__upgrade87Installed)return; App.__upgrade87Installed=true; const VERSION='2026.10.30-vnext-featureparity15-upgrade87-audio-reset-ux'; const CACHE_TAG='u87-20261030'; const BUILD='upgrade87'; const SETTINGS_KEY='topkey_u87_audio_reset_ux'; const CROWD_URL='https://upload.wikimedia.org/wikipedia/commons/0/09/Applause_ii.ogg'; const $=id=>document.getElementById(id),Engine=U46.Engine; const baseChooseVoice=App.chooseVoice?.bind(App),baseSelectedEngine=U47.selectedEngine?.bind(U47),baseResetSet=App.resetSet?.bind(App),baseCrowdPlay=U76.playApplause?.bind(U76),baseCrowdStop=U76.sto"
+    },
+    {
+      "file": "src/upgrade88.js",
+      "upgrade": "upgrade88",
+      "version": "2026.10.30-vnext-featureparity15-upgrade88d-cloudflare-turn-announcement",
+      "sha256": "0f3f8336bf1c972badd27543a452781ceea065b466c15a6fbb82f01c66971c34",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,U77=window.TopkeyUpgrade77,U78=window.TopkeyUpgrade78,U85=window.TopkeyUpgrade85,U86=window.TopkeyUpgrade86,U87=window.TopkeyUpgrade87; if(!T||!App||!U||!U77||!U78||!U85||!U86||!U87||App.__upgrade88Installed)return; App.__upgrade88Installed=true; const VERSION='2026.10.30-vnext-featureparity15-upgrade88d-cloudflare-turn-announcement'; const CACHE_TAG='u88d-20261030',BUILD='upgrade88d'; const $=id=>document.getElementById(id); const state={broadcast:null,broadcastHeartbeatTimer:0,broadcastHealTimer:0,publicRtc:null,publicHls:null,publicCourt:'',publicKey:'',publicRetry:{},viewerConnecting:false,viewerKey:'',lastClaimCourt:'',lastClaimAt:0,publicCollapsed:false,turnConfig:null,turnProvider:'stun-only',announcementOpen:false}; const esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'"
+    },
+    {
+      "file": "src/upgrade89.js",
+      "upgrade": "upgrade89",
+      "version": "",
+      "sha256": "71c3da7d86c2517b1da0e08af5926f639680d3e4dc1677335dfab8557fc68656",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U; if(!T||!App||!U||App.__upgrade89Installed)return; App.__upgrade89Installed=true; const $=id=>document.getElementById(id); function isViewer(){return ['VIEWER','LIVE_ONLY'].includes(String(T.Auth?.role?.()||'').toUpperCase())||location.hash==='#spectator'} function unmuteViewer(){ if(!isViewer())return; const v=$('live-video'); if(v){v.muted=false;v.defaultMuted=false;v.volume=1;v.play?.().catch(()=>{});} const p=$('tk88-public-video'); if(p){p.muted=false;p.defaultMuted=false;p.volume=1;p.play?.().catch(()=>{});} } function ensureAudioButton(){ if(!isViewer())return; const host=$('video-box')||$('tk88-public-live-card')||$('page-live');if(!host||$('tk89-viewer-audio'))return; const b=document.createElement('button');b.id='tk89-viewer-audio';b.type='button';b.className='btn mini'; b.textContent=App.audioUnlo"
+    },
+    {
+      "file": "src/upgrade9.js",
+      "upgrade": "upgrade9",
+      "version": "",
+      "sha256": "8a3d1a92c95cfdcfbf5e4407698d6158e2e31fd12ae8d36c010184d8e92feca5",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U; if(!T||!App||!U)return; const S=T.SPORT||{key:'badminton',name:'Cầu lông',title:'TOPKEY BADMINTON VNEXT',icon:'🏸',categories:['MIX','MEN','WOMEN'],mode:'sets',participantLabel:'Đội',member1Label:'VĐV 1',member2Label:'VĐV 2',venueLabel:'Sân',eventLabel:'Trận',rules:T.DEFAULT_RULES}; const SPORT_KEY=S.key||'badminton',PAIRING_ENABLED=['badminton','shuttle'].includes(SPORT_KEY),AUTH_ROOT=T.AUTH_ROOT||T.ROOT; const TERMINAL=new Set(['FINISHED','WALKOVER','RETIRED','DISQUALIFIED','CANCELLED']); const $=id=>document.getElementById(id),esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[c])); const clone=v=>JSON.parse(JSON.stringify(v??null)); const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,"
+    },
+    {
+      "file": "src/upgrade90.js",
+      "upgrade": "upgrade90",
+      "version": "",
+      "sha256": "4d07ee8a6a50948bfb32d7b5a16c0941642040de08c48ab792056f0e39d311bb",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U;if(!T||!App||!U||App.__upgrade90Installed)return;App.__upgrade90Installed=true; const $=id=>document.getElementById(id);const S={enabled:false,lastId:'',lastCourt:'',lastAt:0}; function viewer(){return ['VIEWER','LIVE_ONLY'].includes(String(T.Auth?.role?.()||'').toUpperCase())||location.hash==='#spectator'} function court(){return $('stream-court')?.value||App.currentCourt||Object.keys(App.state?.activeMatches||{})[0]||Object.keys(App.state?.courts||{}).find(k=>String(App.state.courts[k]?.stream?.status||'').toUpperCase()==='LIVE')||'court_1'} function row(){const c=court();return App.state?.commentary?.[c]?.latest||null} function status(text,state='info'){let e=$('tk90-viewer-audio-status');if(!e){const b=$('tk89-viewer-audio'),host=b?.parentElement||$('video-box')||$('page-live');if(!host)return;e=document.createElement('di"
+    },
+    {
+      "file": "src/upgrade92.js",
+      "upgrade": "upgrade92",
+      "version": "2026.10.30-vnext-featureparity15-upgrade92-stability-public-viewer",
+      "sha256": "8422409b4e7dc1f3ac2769c8747458211c1bd6f90fd30f593a5f9fe56bf246d4",
+      "header": "(()=>{'use strict'; const bootRank=Number((String(window.__TOPKEY_BOOT_BUILD||'').match(/upgrade(\\d+)/i)||[])[1]||0);if(bootRank>92)return; const T=window.Topkey,App=T?.App;if(!T||!App||App.__upgrade92Installed)return;App.__upgrade92Installed=true; const VERSION='2026.10.30-vnext-featureparity15-upgrade92-stability-public-viewer',BUILD='upgrade92',CACHE_TAG='u92-20261030'; const $=id=>document.getElementById(id),RUNTIME_CACHE='topkey-piper-runtime-ort122-phonemize100',CROWD_CACHE='topkey-natural-crowd-public-domain-v1'; const isSpectator=()=>location.hash.startsWith('#spectator'); function enforcePublicSurface(){if(!isSpectator())return;document.documentElement.classList.add('tk-public-spectator-boot');$('login-screen')?.classList.add('hidden');$('app-shell')?.classList.add('hidden');$('public-spectator')?.classList.remove('hidden')} function enforceVersion(){ try{T.VERSION=VERSION;T.C"
+    },
+    {
+      "file": "src/upgrade93.js",
+      "upgrade": "upgrade93",
+      "version": "2026.10.30-vnext-featureparity15-upgrade93-public-viewer-bootstrap-stability",
+      "sha256": "d8700c686cf4a23c1b82e8c22ba95cc1bc61ddcd8cf3d0a727188a4e905a65b3",
+      "header": "(()=>{'use strict'; const T=window.Topkey,App=T?.App;if(!T||!App||App.__upgrade93Installed)return;App.__upgrade93Installed=true; const VERSION='2026.10.30-vnext-featureparity15-upgrade93-public-viewer-bootstrap-stability',BUILD='upgrade93',CACHE_TAG='u93-20261030'; const $=id=>document.getElementById(id),RUNTIME_CACHE='topkey-piper-runtime-ort122-phonemize100',CROWD_CACHE='topkey-natural-crowd-public-domain-v1'; const isSpectator=()=>location.hash.startsWith('#spectator'); function enforcePublicSurface(){ if(!isSpectator())return false; document.documentElement.classList.add('tk-public-spectator-boot'); $('login-screen')?.classList.add('hidden');$('app-shell')?.classList.add('hidden');$('public-spectator')?.classList.remove('hidden'); return true; } function enforceVersion(){ if(window.TopkeyUpgrade94?.installed){window.TopkeyUpgrade94.enforceVersion?.();return} try{if(T.VERS"
+    },
+    {
+      "file": "src/upgrade94.js",
+      "upgrade": "upgrade94",
+      "version": "2026.10.30-vnext-featureparity15-upgrade94-viewer-blv-audio-stability",
+      "sha256": "b9bfb8cd4e0bcce9c2b4434bc04ba35dfbfa83e572e88c45c1a1a1c5e16742b0",
+      "header": "(() => { 'use strict'; const T=window.Topkey,App=T?.App,U=T?.U,U88=window.TopkeyUpgrade88,U47=window.TopkeyUpgrade47; if(!T||!App||!U||App.__upgrade94Installed)return; App.__upgrade94Installed=true; const VERSION='2026.10.30-vnext-featureparity15-upgrade94-viewer-blv-audio-stability'; const BUILD='upgrade94',CACHE_TAG='u94-20261030'; const $=id=>document.getElementById(id); const S={enabled:false,court:'',lastCommentId:'',lastSpokenAt:0,lastScore:{},fallbackTimer:0,offs:[],voiceStarted:false,lastSeenByCourt:{},lastSpokenByCourt:{}}; const isViewer=()=>location.hash.startsWith('#spectator')||['VIEWER','LIVE_ONLY'].includes(String(T.Auth?.role?.()||'').toUpperCase()); function selectedCourt(){ if(location.hash.startsWith('#spectator')){ const c=String(U88?.state?.publicCourt||''); if(c)return c; try{const p=U88?.preferredLiveCourt?.();if(p)return p}catch{} } return $('str"
+    },
+    {
+      "file": "src/upgrade95.js",
+      "upgrade": "upgrade95",
+      "version": "2026.10.30-vnext-featureparity15-upgrade95-performance-safe",
+      "sha256": "f8c5fa7f5cbb97c342367a9af1400b6c8eadf00b4bcb57b78422086917576599",
+      "header": "(()=>{ 'use strict'; const T=window.Topkey,App=T?.App;if(!T||!App||App.__upgrade95Installed)return;App.__upgrade95Installed=true; const VERSION='2026.10.30-vnext-featureparity15-upgrade95-performance-safe',BUILD='upgrade95',CACHE_TAG='u95-20261030'; const $=id=>document.getElementById(id); function enforceVersion(){ T.VERSION=VERSION;T.CONFIG_VERSION=VERSION;T.RUNTIME_BUILD=VERSION;document.documentElement.dataset.topkeyBuild=BUILD; const h=$('health-version');if(h)h.textContent=VERSION;const r=$('tk55-runtime-build');if(r)r.textContent=VERSION; } async function checkServerBuild95(){ enforceVersion();try{const u=new URL('./build.json',location.href);u.searchParams.set('__topkey_probe',Date.now()+'_'+Math.random().toString(36).slice(2));const res=await fetch(u,{cache:'no-store',headers:{'Cache-Control':'no-cache'}});if(!res.ok)throw new Error('HTTP '+res.status);const x=await res.js"
+    },
+    {
+      "file": "src/upgrade96.js",
+      "upgrade": "upgrade96",
+      "version": "2026.10.30-vnext-featureparity15-upgrade96-performance-safe-blv-lifecycle",
+      "sha256": "cc7fcf844e1b6c80da9b452e9813b12747fb740190678ace568774c11205fe3e",
+      "header": "(()=>{ 'use strict'; const T=window.Topkey,App=T?.App;if(!T||!App||App.__upgrade96Installed)return;App.__upgrade96Installed=true; const VERSION='2026.10.30-vnext-featureparity15-upgrade96-performance-safe-blv-lifecycle',BUILD='upgrade96',CACHE_TAG='u96-20261030'; const $=id=>document.getElementById(id); function enforceVersion(){ T.VERSION=VERSION;T.CONFIG_VERSION=VERSION;T.RUNTIME_BUILD=VERSION;document.documentElement.dataset.topkeyBuild=BUILD; const h=$('health-version');if(h)h.textContent=VERSION;const r=$('tk55-runtime-build');if(r)r.textContent=VERSION; } async function checkServerBuild96(){ enforceVersion();try{const u=new URL('./build.json',location.href);u.searchParams.set('__topkey_probe',Date.now()+'_'+Math.random().toString(36).slice(2));const res=await fetch(u,{cache:'no-store',headers:{'Cache-Control':'no-cache'}});if(!res.ok)throw new Error('HTTP '+res.status);const"
+    },
+    {
+      "file": "src/upgrade97.js",
+      "upgrade": "upgrade97",
+      "version": "2026.10.30-vnext-featureparity15-upgrade97-viewer-orientation-guard",
+      "sha256": "e8bdef8eccc521591eb6a4eedb0eeb9d7c6111e4137dc38451772d24a0f1be54",
+      "header": "(()=>{ 'use strict'; const T=window.Topkey,App=T?.App;if(!T||!App||App.__upgrade97Installed)return;App.__upgrade97Installed=true; const VERSION='2026.10.30-vnext-featureparity15-upgrade97-viewer-orientation-guard',BUILD='upgrade97',CACHE_TAG='u97-20261030'; const $=id=>document.getElementById(id); const state={focus:false}; function isSpectator(){return location.hash==='#spectator'||document.documentElement.classList.contains('tk-public-spectator-boot')} function enforceVersion(){ T.VERSION=VERSION;T.CONFIG_VERSION=VERSION;T.RUNTIME_BUILD=VERSION;document.documentElement.dataset.topkeyBuild=BUILD; const h=$('health-version');if(h)h.textContent=VERSION;const r=$('tk55-runtime-build');if(r)r.textContent=VERSION; } async function checkServerBuild97(){ enforceVersion();try{const u=new URL('./build.json',location.href);u.searchParams.set('__topkey_probe',Date.now()+'_'+Math.random().toS"
+    },
+    {
+      "file": "src/upgrade98.js",
+      "upgrade": "upgrade98",
+      "version": "2026.10.30-vnext-featureparity15-upgrade100-viewer-auto-landscape-fullscreen-cleanup",
+      "sha256": "a21f27b018c841c72f77179ec9f40c7566768e8091b69a5789939c222d8c5d04",
+      "header": "(()=>{ 'use strict'; const T=window.Topkey,App=T?.App;if(!T||!App||App.__upgrade98Installed)return;App.__upgrade98Installed=true; const VERSION='2026.10.30-vnext-featureparity15-upgrade100-viewer-auto-landscape-fullscreen-cleanup',BUILD='upgrade100',CACHE_TAG='u100-20261030'; const $=id=>document.getElementById(id); const state={fullscreen:false,rotation:null,boundVideo:null,resizeObserver:null,viewerObserver:null}; function isSpectator(){return location.hash==='#spectator'||document.documentElement.classList.contains('tk-public-spectator-boot')} function enforceVersion(){T.VERSION=VERSION;T.CONFIG_VERSION=VERSION;T.RUNTIME_BUILD=VERSION;document.documentElement.dataset.topkeyBuild=BUILD;const h=$('health-version');if(h&&h.textContent!==VERSION)h.textContent=VERSION;const r=$('tk55-runtime-build');if(r&&r.textContent!==VERSION)r.textContent=VERSION} async function checkServerBuild100(){e"
+    },
+    {
+      "file": "src/upgrade99.js",
+      "upgrade": "upgrade99",
+      "version": "2026.10.30-vnext-featureparity15-upgrade99-viewer-freeze-fix",
+      "sha256": "f14a9ab32f4d412804b1a049d8f24a124eeaabc07fbc419700fd6331976fe390",
+      "header": "(()=>{ 'use strict'; const T=window.Topkey,App=T?.App;if(!T||!App||App.__upgrade99Installed)return;App.__upgrade99Installed=true; const VERSION='2026.10.30-vnext-featureparity15-upgrade99-viewer-freeze-fix',BUILD='upgrade99',CACHE_TAG='u99-20261030'; const $=id=>document.getElementById(id); function enforceVersion(){T.VERSION=VERSION;T.CONFIG_VERSION=VERSION;T.RUNTIME_BUILD=VERSION;document.documentElement.dataset.topkeyBuild=BUILD;const h=$('health-version');if(h&&h.textContent!==VERSION)h.textContent=VERSION;const r=$('tk55-runtime-build');if(r&&r.textContent!==VERSION)r.textContent=VERSION} async function checkServerBuild99(){enforceVersion();try{const u=new URL('./build.json',location.href);u.searchParams.set('__topkey_probe',Date.now()+'_'+Math.random().toString(36).slice(2));const res=await fetch(u,{cache:'no-store',headers:{'Cache-Control':'no-cache'}});if(!res.ok)throw new Error("
+    },
+    {
+      "file": "src/utils.js",
+      "upgrade": null,
+      "version": "",
+      "sha256": "63863c11b997078dfb0d642eb3b9ae4da246fcb346ad5cb628a0c1e97b188357",
+      "header": "(() => { 'use strict'; const T=window.Topkey; T.U = { id(prefix='id'){ return prefix+'_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,9); }, now(){ return Date.now(); }, clone(v){ return v == null ? v : JSON.parse(JSON.stringify(v)); }, safe(v){ return String(v ?? ''); }, money(v){ return new Intl.NumberFormat('vi-VN').format(Number(v)||0)+' VNĐ'; }, dateTime(ts){ return ts ? new Date(ts).toLocaleString('vi-VN') : '—'; }, debounce(fn,ms=150){ let t; return (...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms)}; }, download(name, blob){ const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000); }, csv(rows){ if(!rows.length) return ''; const keys=Object.keys(rows[0]); const esc=v=>'\"'+String(v??'').replaceAll('\"','\"\"')+'\"'"
+    }
+  ]
+}

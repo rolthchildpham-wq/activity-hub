@@ -1,0 +1,5 @@
+/* Upgrade 48 · Realtime Vietnamese BLV */
+.tk48-realtime{margin-top:12px;padding:12px;border:1px solid #1d6b8d;border-radius:14px;background:rgba(3,31,52,.72)}
+.tk48-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.tk48-head b{font-size:15px}.tk48-badge{padding:4px 8px;border-radius:999px;border:1px solid #37647c;font-size:11px;font-weight:800;white-space:nowrap}.tk48-badge[data-state="ok"]{border-color:#18b87b;color:#65efbd}.tk48-badge[data-state="working"]{border-color:#e3a72f;color:#ffd36c}
+.tk48-options{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:10px}.tk48-options label{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700}.tk48-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;margin-top:10px;font-size:11px;color:#a9c7d8}.tk48-note{margin-top:9px;font-size:11px;line-height:1.45;color:#8eb0c4}
+@media(max-width:720px){.tk48-head{align-items:center}.tk48-options{display:grid;grid-template-columns:1fr}.tk48-actions{align-items:stretch}.tk48-actions .btn{width:100%}}

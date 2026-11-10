@@ -1,0 +1,27 @@
+(() => {
+  'use strict'; const T=window.Topkey;
+  class IDBStore{
+    constructor(){this.dbp=null;}
+    open(){
+      if(this.dbp)return this.dbp;
+      this.dbp=new Promise((res,rej)=>{
+        let settled=false;
+        let timer=null;
+        const fail=err=>{if(settled)return;settled=true;if(timer)clearTimeout(timer);this.dbp=null;rej(err instanceof Error?err:new Error(String(err||'IndexedDB unavailable')))};
+        timer=setTimeout(()=>fail(new Error('IndexedDB open timeout')),3500);
+        let r;
+        try{r=indexedDB.open('topkey_badminton_vnext',3)}catch(e){fail(e);return}
+        r.onupgradeneeded=()=>{ const db=r.result; if(!db.objectStoreNames.contains('queue'))db.createObjectStore('queue',{keyPath:'id'}); if(!db.objectStoreNames.contains('receipts'))db.createObjectStore('receipts',{keyPath:'id'}); if(!db.objectStoreNames.contains('cache'))db.createObjectStore('cache',{keyPath:'key'}); };
+        r.onsuccess=()=>{if(settled){try{r.result.close()}catch{};return}settled=true;if(timer)clearTimeout(timer);res(r.result)};
+        r.onerror=()=>fail(r.error||new Error('IndexedDB open failed'));
+        r.onblocked=()=>console.warn('IndexedDB upgrade blocked; boot will continue after timeout');
+      });
+      return this.dbp;
+    }
+    async put(store,v){const db=await this.open(); return new Promise((res,rej)=>{const tx=db.transaction(store,'readwrite');tx.objectStore(store).put(v);tx.oncomplete=()=>res(v);tx.onerror=()=>rej(tx.error)});}
+    async get(store,key){const db=await this.open(); return new Promise((res,rej)=>{const r=db.transaction(store).objectStore(store).get(key);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});}
+    async all(store){const db=await this.open(); return new Promise((res,rej)=>{const r=db.transaction(store).objectStore(store).getAll();r.onsuccess=()=>res(r.result||[]);r.onerror=()=>rej(r.error)});}
+    async del(store,key){const db=await this.open(); return new Promise((res,rej)=>{const tx=db.transaction(store,'readwrite');tx.objectStore(store).delete(key);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error)});}
+  }
+  T.idb=new IDBStore();
+})();

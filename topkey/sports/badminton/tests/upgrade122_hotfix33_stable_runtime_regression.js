@@ -1,0 +1,14 @@
+const fs=require('fs'),path=require('path'),crypto=require('crypto'),assert=require('assert');
+const root=path.resolve(__dirname,'..');
+const read=f=>fs.readFileSync(path.join(root,f),'utf8');
+const build=JSON.parse(read('build.json'));assert.strictEqual(build.build,'upgrade122');assert.strictEqual(build.cacheTag,'u122h33-20261103');assert(/hotfix33-stable-runtime$/.test(build.version));
+const html=read('index.html');assert(html.includes("root:'./assets/u122/'"));assert(html.includes("contract:'STABLE_BOOTSTRAP_001'"));
+const am=html.match(/adminJs:'\.\/assets\/u122\/(admin-core\.[a-f0-9]{12}\.js)'/);assert(am,'current admin core missing');const coreFile='assets/u122/'+am[1];const core=read(coreFile);const sha=crypto.createHash('sha256').update(core).digest('hex');assert(am[1].includes(sha.slice(0,12)),'core hash filename mismatch');
+const manifest=JSON.parse(read('assets/u122/bundle-manifest.json'));assert.strictEqual(manifest.build,'upgrade122');assert.strictEqual(manifest.cacheTag,build.cacheTag);assert.strictEqual(manifest.admin.js,am[1]);assert.strictEqual(manifest.adminCore.js,am[1]);assert.strictEqual(manifest.js.file,'./'+coreFile);assert.strictEqual(manifest.js.sha256,sha);
+for(const needle of ['ensureFirebase(){','this._initPromise','this._networkBound','this._connectionBound','ensureAuth(){','const auth=this.ensureAuth();'])assert(core.includes(needle),'core contract missing '+needle);
+const runtimeMatch=html.match(/const runtime=\[(.*?)\];/s);assert(runtimeMatch,'runtime list missing');const runtime=runtimeMatch[1];
+for(const req of ['hotfix5','hotfix6','hotfix7','hotfix10','hotfix11','hotfix14','hotfix15','hotfix18','hotfix20','hotfix21','hotfix22','hotfix25','hotfix26','hotfix27','hotfix28','hotfix29','hotfix30'])assert(runtime.includes(req),`runtime missing ${req}`);
+for(const retired of ['hotfix3.js','hotfix4.js','hotfix12.js','hotfix13.js','hotfix16.js','hotfix17.js','hotfix23.js','hotfix24.js','hotfix31.js','hotfix32.js'])assert(!runtime.includes(retired),`retired runtime still loaded ${retired}`);
+const sw=read('sw.js'),assets=JSON.parse(sw.match(/const ASSETS=(\[[\s\S]*?\]);/)[1]);assert(assets.length<=12,'SW foundation precache too large');assert(!assets.some(x=>/admin-core/.test(x)),'admin core must not be viewer-first precached');assert(sw.includes('cdnjs.cloudflare.com')&&sw.includes('www.gstatic.com'),'Firebase CDN failover cache missing');
+const h18=read('upgrade122-hotfix18.js');assert(h18.includes('./assets/u122/'+am[1]),'offline readiness uses stale core');assert(h18.includes('RUNTIME_ASSETS'),'offline readiness must cache runtime');
+console.log('PASS Hotfix33 stable runtime regression', {core:am[1],precache:assets.length});

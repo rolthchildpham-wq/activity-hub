@@ -1,0 +1,613 @@
+{
+  "release": "H116",
+  "baseline": "H115",
+  "releaseType": "STAGING",
+  "testedAt": "2026-11-09",
+  "changes": [
+    "PDF: validate first then allow actual download; remove automatic browser print",
+    "Final report awards consistency on preview, PDF, PPT",
+    "PPT: native sports templates, optional custom edited PPTX per-sport in browser IndexedDB",
+    "Admin-only EdgeOne AI Chat Assistant integration slot; server-side stats API NOT provided",
+    "Test Lab uses same shared report exporters as Production; no Firebase mutation by synthetic tests"
+  ],
+  "tests": [
+    {
+      "id": "JS_HTML_RELEASE",
+      "result": "PASS_LOCAL",
+      "evidence": "39/39 kiem tra statics; 419 JS file; four HTML entrypoints"
+    },
+    {
+      "id": "PDF_SEVEN_SPORTS",
+      "result": "PASS_SIMULATED_BROWSER",
+      "evidence": "7/7 PDF synthetic Test Lab, section Prize Structure present"
+    },
+    {
+      "id": "PDF_PAGES_VISIBLE",
+      "result": "PASS_RENDERED",
+      "evidence": "49/49 pages inspected with MuPDF, all nonblank body"
+    },
+    {
+      "id": "PDF_NO_DOWNLOAD_BEFORE_VALIDATE",
+      "result": "PASS_STATIC_FLOW",
+      "evidence": "UI calls createPdf → assertPdf → downloadPdf; no early window.print"
+    },
+    {
+      "id": "PPT_ALL_SPORTS",
+      "result": "PASS_SIMULATED_BROWSER",
+      "evidence": "7/7 PPTX per-sport original nine-slide templates, each generated 11 slides from test data"
+    },
+    {
+      "id": "PPT_USER_EDITED_TEMPLATE",
+      "result": "PASS_SIMULATED_BROWSER",
+      "evidence": "Custom compatible templateBlob export preserved and origin=custom"
+    },
+    {
+      "id": "AWARDS_FINAL_REPORT",
+      "result": "PASS_LOCAL_CONTRACT",
+      "evidence": "H107 contract verifies source and archive report prizes for all 7 sports"
+    },
+    {
+      "id": "LOGIN_PROFILE_AUTH",
+      "result": "PASS_LOCAL_MOCK",
+      "evidence": "H108 auth regression, denied errors do not grant admin"
+    },
+    {
+      "id": "ADMIN_AI_INTEGRATION_UI",
+      "result": "IMPLEMENTED_UNCONNECTED",
+      "evidence": "ADMIN-only embed slot for externally deployed EdgeOne AI Chat Assistant; requires URL/Agent configuration; no stats API"
+    },
+    {
+      "id": "PRODUCTION_FIREBASE_AUTH",
+      "result": "NOT_TESTED",
+      "evidence": "No authenticated staging account or write-enabled environment in this session"
+    },
+    {
+      "id": "EDGEONE_LIVE_DEPLOY",
+      "result": "NOT_TESTED",
+      "evidence": "H116 not deployed by this task; public Hub observed previous version label H103 in web retrieval"
+    },
+    {
+      "id": "ALL_185_TESTLAB_FEATURES",
+      "result": "NOT_FULLY_TESTED",
+      "evidence": "Full feature matrix from H115; selected report/export regression only"
+    },
+    {
+      "id": "LEGACY_AUTH_BOOTSTRAP_H93",
+      "result": "LEGACY_FAIL",
+      "evidence": "Test expects exact H96 URL and fails on H116; outdated assertion"
+    },
+    {
+      "id": "LEGACY_RELEASE_PARITY_H108",
+      "result": "LEGACY_FAIL",
+      "evidence": "Test expects exact H108 cache version and fails on H116; outdated assertion"
+    }
+  ],
+  "staticQA": {
+    "passed": 39,
+    "total": 39
+  },
+  "browserMock": {
+    "cases": [
+      {
+        "sport": "badminton",
+        "pptx": "PASS",
+        "slides": 11,
+        "pptOrigin": "built-in"
+      },
+      {
+        "sport": "football",
+        "pptx": "PASS",
+        "slides": 11,
+        "pptOrigin": "built-in"
+      },
+      {
+        "sport": "volleyball",
+        "pptx": "PASS",
+        "slides": 11,
+        "pptOrigin": "built-in"
+      },
+      {
+        "sport": "running",
+        "pptx": "PASS",
+        "slides": 11,
+        "pptOrigin": "built-in"
+      },
+      {
+        "sport": "handmade",
+        "pptx": "PASS",
+        "slides": 11,
+        "pptOrigin": "built-in"
+      },
+      {
+        "sport": "shuttle",
+        "pptx": "PASS",
+        "slides": 11,
+        "pptOrigin": "built-in"
+      },
+      {
+        "sport": "cooking",
+        "pptx": "PASS",
+        "slides": 11,
+        "pptOrigin": "built-in"
+      },
+      {
+        "sport": "badminton",
+        "pdf": "PASS",
+        "pages": 7,
+        "bytes": 1323871,
+        "sections": [
+          "Tổng quan giải đấu",
+          "Thành tích chung cuộc",
+          "Cơ cấu giải thưởng",
+          "Bảng xếp hạng",
+          "Lịch thi đấu và kết quả",
+          "Tài chính toàn giải",
+          "Ký xác nhận và kết thúc"
+        ]
+      },
+      {
+        "sport": "football",
+        "pdf": "PASS",
+        "pages": 7,
+        "bytes": 1296516,
+        "sections": [
+          "Tổng quan giải đấu",
+          "Thành tích chung cuộc",
+          "Cơ cấu giải thưởng",
+          "Bảng xếp hạng",
+          "Lịch thi đấu và kết quả",
+          "Tài chính toàn giải",
+          "Ký xác nhận và kết thúc"
+        ]
+      },
+      {
+        "sport": "volleyball",
+        "pdf": "PASS",
+        "pages": 7,
+        "bytes": 1291429,
+        "sections": [
+          "Tổng quan giải đấu",
+          "Thành tích chung cuộc",
+          "Cơ cấu giải thưởng",
+          "Bảng xếp hạng",
+          "Lịch thi đấu và kết quả",
+          "Tài chính toàn giải",
+          "Ký xác nhận và kết thúc"
+        ]
+      },
+      {
+        "sport": "running",
+        "pdf": "PASS",
+        "pages": 7,
+        "bytes": 1321695,
+        "sections": [
+          "Tổng quan giải đấu",
+          "Thành tích chung cuộc",
+          "Cơ cấu giải thưởng",
+          "Bảng xếp hạng",
+          "Lịch thi đấu và kết quả",
+          "Tài chính toàn giải",
+          "Ký xác nhận và kết thúc"
+        ]
+      },
+      {
+        "sport": "handmade",
+        "pdf": "PASS",
+        "pages": 7,
+        "bytes": 1280491,
+        "sections": [
+          "Tổng quan giải đấu",
+          "Thành tích chung cuộc",
+          "Cơ cấu giải thưởng",
+          "Bảng xếp hạng",
+          "Lịch thi đấu và kết quả",
+          "Tài chính toàn giải",
+          "Ký xác nhận và kết thúc"
+        ]
+      },
+      {
+        "sport": "shuttle",
+        "pdf": "PASS",
+        "pages": 7,
+        "bytes": 1308308,
+        "sections": [
+          "Tổng quan giải đấu",
+          "Thành tích chung cuộc",
+          "Cơ cấu giải thưởng",
+          "Bảng xếp hạng",
+          "Lịch thi đấu và kết quả",
+          "Tài chính toàn giải",
+          "Ký xác nhận và kết thúc"
+        ]
+      },
+      {
+        "sport": "cooking",
+        "pdf": "PASS",
+        "pages": 7,
+        "bytes": 1302774,
+        "sections": [
+          "Tổng quan giải đấu",
+          "Thành tích chung cuộc",
+          "Cơ cấu giải thưởng",
+          "Bảng xếp hạng",
+          "Lịch thi đấu và kết quả",
+          "Tài chính toàn giải",
+          "Ký xác nhận và kết thúc"
+        ]
+      },
+      {
+        "sport": "football",
+        "pptCustom": "PASS",
+        "origin": "custom"
+      }
+    ],
+    "pageErrors": []
+  },
+  "pdfRenderAudit": [
+    {
+      "sport": "badminton",
+      "pages": 7,
+      "pages_passed": 7,
+      "all_pass": true,
+      "bytes": 1323871,
+      "page_metrics": [
+        {
+          "page": 1,
+          "nonwhite": 12782,
+          "nonwhite_body": 2495,
+          "pass": true
+        },
+        {
+          "page": 2,
+          "nonwhite": 17348,
+          "nonwhite_body": 7048,
+          "pass": true
+        },
+        {
+          "page": 3,
+          "nonwhite": 14159,
+          "nonwhite_body": 3883,
+          "pass": true
+        },
+        {
+          "page": 4,
+          "nonwhite": 17524,
+          "nonwhite_body": 7284,
+          "pass": true
+        },
+        {
+          "page": 5,
+          "nonwhite": 17245,
+          "nonwhite_body": 6950,
+          "pass": true
+        },
+        {
+          "page": 6,
+          "nonwhite": 14690,
+          "nonwhite_body": 4421,
+          "pass": true
+        },
+        {
+          "page": 7,
+          "nonwhite": 11807,
+          "nonwhite_body": 1508,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "sport": "football",
+      "pages": 7,
+      "pages_passed": 7,
+      "all_pass": true,
+      "bytes": 1296516,
+      "page_metrics": [
+        {
+          "page": 1,
+          "nonwhite": 12732,
+          "nonwhite_body": 2447,
+          "pass": true
+        },
+        {
+          "page": 2,
+          "nonwhite": 17346,
+          "nonwhite_body": 7046,
+          "pass": true
+        },
+        {
+          "page": 3,
+          "nonwhite": 14159,
+          "nonwhite_body": 3883,
+          "pass": true
+        },
+        {
+          "page": 4,
+          "nonwhite": 17521,
+          "nonwhite_body": 7281,
+          "pass": true
+        },
+        {
+          "page": 5,
+          "nonwhite": 17245,
+          "nonwhite_body": 6950,
+          "pass": true
+        },
+        {
+          "page": 6,
+          "nonwhite": 14687,
+          "nonwhite_body": 4419,
+          "pass": true
+        },
+        {
+          "page": 7,
+          "nonwhite": 11804,
+          "nonwhite_body": 1507,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "sport": "volleyball",
+      "pages": 7,
+      "pages_passed": 7,
+      "all_pass": true,
+      "bytes": 1291429,
+      "page_metrics": [
+        {
+          "page": 1,
+          "nonwhite": 12662,
+          "nonwhite_body": 2397,
+          "pass": true
+        },
+        {
+          "page": 2,
+          "nonwhite": 17288,
+          "nonwhite_body": 7006,
+          "pass": true
+        },
+        {
+          "page": 3,
+          "nonwhite": 14132,
+          "nonwhite_body": 3877,
+          "pass": true
+        },
+        {
+          "page": 4,
+          "nonwhite": 17463,
+          "nonwhite_body": 7236,
+          "pass": true
+        },
+        {
+          "page": 5,
+          "nonwhite": 17205,
+          "nonwhite_body": 6925,
+          "pass": true
+        },
+        {
+          "page": 6,
+          "nonwhite": 14309,
+          "nonwhite_body": 4057,
+          "pass": true
+        },
+        {
+          "page": 7,
+          "nonwhite": 11758,
+          "nonwhite_body": 1481,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "sport": "running",
+      "pages": 7,
+      "pages_passed": 7,
+      "all_pass": true,
+      "bytes": 1321695,
+      "page_metrics": [
+        {
+          "page": 1,
+          "nonwhite": 12729,
+          "nonwhite_body": 2439,
+          "pass": true
+        },
+        {
+          "page": 2,
+          "nonwhite": 17371,
+          "nonwhite_body": 7066,
+          "pass": true
+        },
+        {
+          "page": 3,
+          "nonwhite": 14171,
+          "nonwhite_body": 3892,
+          "pass": true
+        },
+        {
+          "page": 4,
+          "nonwhite": 17552,
+          "nonwhite_body": 7302,
+          "pass": true
+        },
+        {
+          "page": 5,
+          "nonwhite": 17255,
+          "nonwhite_body": 6954,
+          "pass": true
+        },
+        {
+          "page": 6,
+          "nonwhite": 14366,
+          "nonwhite_body": 4095,
+          "pass": true
+        },
+        {
+          "page": 7,
+          "nonwhite": 11809,
+          "nonwhite_body": 1504,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "sport": "handmade",
+      "pages": 7,
+      "pages_passed": 7,
+      "all_pass": true,
+      "bytes": 1280491,
+      "page_metrics": [
+        {
+          "page": 1,
+          "nonwhite": 12647,
+          "nonwhite_body": 2386,
+          "pass": true
+        },
+        {
+          "page": 2,
+          "nonwhite": 16973,
+          "nonwhite_body": 6693,
+          "pass": true
+        },
+        {
+          "page": 3,
+          "nonwhite": 14128,
+          "nonwhite_body": 3876,
+          "pass": true
+        },
+        {
+          "page": 4,
+          "nonwhite": 17148,
+          "nonwhite_body": 6923,
+          "pass": true
+        },
+        {
+          "page": 5,
+          "nonwhite": 17195,
+          "nonwhite_body": 6918,
+          "pass": true
+        },
+        {
+          "page": 6,
+          "nonwhite": 14266,
+          "nonwhite_body": 4021,
+          "pass": true
+        },
+        {
+          "page": 7,
+          "nonwhite": 11754,
+          "nonwhite_body": 1479,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "sport": "shuttle",
+      "pages": 7,
+      "pages_passed": 7,
+      "all_pass": true,
+      "bytes": 1308308,
+      "page_metrics": [
+        {
+          "page": 1,
+          "nonwhite": 12691,
+          "nonwhite_body": 2409,
+          "pass": true
+        },
+        {
+          "page": 2,
+          "nonwhite": 17338,
+          "nonwhite_body": 7043,
+          "pass": true
+        },
+        {
+          "page": 3,
+          "nonwhite": 14151,
+          "nonwhite_body": 3881,
+          "pass": true
+        },
+        {
+          "page": 4,
+          "nonwhite": 17513,
+          "nonwhite_body": 7276,
+          "pass": true
+        },
+        {
+          "page": 5,
+          "nonwhite": 17235,
+          "nonwhite_body": 6942,
+          "pass": true
+        },
+        {
+          "page": 6,
+          "nonwhite": 14677,
+          "nonwhite_body": 4415,
+          "pass": true
+        },
+        {
+          "page": 7,
+          "nonwhite": 11800,
+          "nonwhite_body": 1504,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "sport": "cooking",
+      "pages": 7,
+      "pages_passed": 7,
+      "all_pass": true,
+      "bytes": 1302774,
+      "page_metrics": [
+        {
+          "page": 1,
+          "nonwhite": 12641,
+          "nonwhite_body": 2370,
+          "pass": true
+        },
+        {
+          "page": 2,
+          "nonwhite": 17299,
+          "nonwhite_body": 7014,
+          "pass": true
+        },
+        {
+          "page": 3,
+          "nonwhite": 14138,
+          "nonwhite_body": 3876,
+          "pass": true
+        },
+        {
+          "page": 4,
+          "nonwhite": 17480,
+          "nonwhite_body": 7249,
+          "pass": true
+        },
+        {
+          "page": 5,
+          "nonwhite": 17209,
+          "nonwhite_body": 6926,
+          "pass": true
+        },
+        {
+          "page": 6,
+          "nonwhite": 14294,
+          "nonwhite_body": 4037,
+          "pass": true
+        },
+        {
+          "page": 7,
+          "nonwhite": 11765,
+          "nonwhite_body": 1484,
+          "pass": true
+        }
+      ]
+    }
+  ],
+  "releaseLimits": [
+    "No actual signed-in EdgeOne production/staging testing",
+    "No external EdgeOne AI Chat Assistant deployment credentials or URL provided",
+    "Modified PPTX compatible with nine-slide placeholder structure required; stored only in current browser",
+    "PDF is image-backed; not text-searchable",
+    "Production/Test Lab need on-site Firebase read/write permission and cache validation before deploy"
+  ],
+  "deploymentStatus": "STAGING_NOT_PRODUCTION_CERTIFIED"
+}

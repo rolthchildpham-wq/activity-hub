@@ -1,0 +1,13 @@
+/* U122 Hotfix3: keep fun commentary visible in referee score-focus and select only active A1/A2/B1/B2 court players. */
+.tk122h3-funbar{margin:6px 0 0;padding:7px;border:1px solid rgba(45,212,191,.45);border-radius:10px;background:rgba(3,20,34,.92);display:grid;grid-template-columns:auto minmax(180px,.9fr) minmax(260px,1.8fr) auto auto;gap:6px;align-items:center}
+.tk122h3-title{font-weight:900;font-size:12px;white-space:nowrap;color:#7dd3fc}.tk122h3-funbar select{min-width:0;width:100%;min-height:38px;padding:6px 8px}.tk122h3-funbar .btn{min-height:38px;padding:6px 12px}.tk122h3-preview{grid-column:2/-1;font-size:11px;color:#a9bed3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* Upgrade59 previously hid every extra referee widget during score focus. Explicitly allow this one. */
+body.tk58-score-focus #page-umpire>.card>#tk122h3-funbar{display:grid!important}
+body.tk58-score-focus #page-umpire>.card{grid-template-rows:minmax(0,1fr) auto auto!important}
+body.tk58-score-focus #tk122h3-funbar{margin:0!important;padding:4px 6px!important;grid-template-columns:auto minmax(180px,.9fr) minmax(250px,1.7fr) auto auto;gap:4px}
+body.tk58-score-focus #tk122h3-funbar select,body.tk58-score-focus #tk122h3-funbar .btn{min-height:36px!important;height:36px!important;font-size:11px!important;padding:4px 7px!important}
+body.tk58-score-focus #tk122h3-funbar .tk122h3-preview{display:none!important}
+@media(max-width:900px){.tk122h3-funbar{grid-template-columns:1fr 1fr auto auto}.tk122h3-title{display:none}.tk122h3-preview{grid-column:1/-1}body.tk58-score-focus #tk122h3-funbar{grid-template-columns:minmax(120px,.9fr) minmax(150px,1.2fr) auto auto}}
+@media(max-width:620px), (max-height:520px){body.tk58-score-focus #page-umpire>.card{overflow-y:auto!important;grid-template-rows:auto auto auto!important}body.tk58-score-focus #tk122h3-funbar{position:sticky;bottom:0;z-index:9;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr) 42px 42px;padding:4px!important;background:rgba(3,20,34,.98)}body.tk58-score-focus #tk122h3-funbar select{font-size:10px!important;padding:3px 5px!important}body.tk58-score-focus #tk122h3-funbar .btn{font-size:0!important;padding:0!important}body.tk58-score-focus #tk122h3-fun-speak::after{content:'🎙';font-size:17px}body.tk58-score-focus #tk122h3-fun-random::after{content:'🎲';font-size:17px}}
+/* Replace the older U121 roster-style selector with the court-position selector everywhere. */
+#tk121-fun-commentary{display:none!important}

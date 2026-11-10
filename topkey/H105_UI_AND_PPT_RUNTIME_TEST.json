@@ -1,0 +1,58 @@
+[
+  {
+    "sport": "badminton",
+    "prize_saved": true,
+    "report_contains_prize": true,
+    "config_locked": true,
+    "slide_count": 8,
+    "js_errors": []
+  },
+  {
+    "sport": "football",
+    "prize_saved": true,
+    "report_contains_prize": true,
+    "config_locked": true,
+    "slide_count": 7,
+    "js_errors": []
+  },
+  {
+    "sport": "volleyball",
+    "prize_saved": true,
+    "report_contains_prize": true,
+    "config_locked": true,
+    "slide_count": 7,
+    "js_errors": []
+  },
+  {
+    "sport": "running",
+    "prize_saved": true,
+    "report_contains_prize": true,
+    "config_locked": true,
+    "slide_count": 7,
+    "js_errors": []
+  },
+  {
+    "sport": "handmade",
+    "prize_saved": true,
+    "report_contains_prize": true,
+    "config_locked": true,
+    "slide_count": 7,
+    "js_errors": []
+  },
+  {
+    "sport": "shuttle",
+    "prize_saved": true,
+    "report_contains_prize": true,
+    "config_locked": true,
+    "slide_count": 7,
+    "js_errors": []
+  },
+  {
+    "sport": "cooking",
+    "prize_saved": true,
+    "report_contains_prize": true,
+    "config_locked": true,
+    "slide_count": 7,
+    "js_errors": []
+  }
+]

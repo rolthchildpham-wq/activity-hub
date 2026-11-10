@@ -1,0 +1,167 @@
+{
+  "release": "H107",
+  "based_on": "H106",
+  "scope": "Award structure in HTML preview, legacy HTML export and final PDF report for 7 sports",
+  "js_syntax_files": 400,
+  "js_syntax_pass": true,
+  "manifests_match": true,
+  "missing_html_assets": [],
+  "html_report_tests": [
+    {
+      "sport": "badminton",
+      "legacy_html": "PASS",
+      "new_preview": "PASS",
+      "archived_snapshot": "PASS",
+      "empty_fallback": "PASS",
+      "js_errors": []
+    },
+    {
+      "sport": "football",
+      "legacy_html": "PASS",
+      "new_preview": "PASS",
+      "archived_snapshot": "PASS",
+      "empty_fallback": "PASS",
+      "js_errors": []
+    },
+    {
+      "sport": "volleyball",
+      "legacy_html": "PASS",
+      "new_preview": "PASS",
+      "archived_snapshot": "PASS",
+      "empty_fallback": "PASS",
+      "js_errors": []
+    },
+    {
+      "sport": "running",
+      "legacy_html": "PASS",
+      "new_preview": "PASS",
+      "archived_snapshot": "PASS",
+      "empty_fallback": "PASS",
+      "js_errors": []
+    },
+    {
+      "sport": "handmade",
+      "legacy_html": "PASS",
+      "new_preview": "PASS",
+      "archived_snapshot": "PASS",
+      "empty_fallback": "PASS",
+      "js_errors": []
+    },
+    {
+      "sport": "shuttle",
+      "legacy_html": "PASS",
+      "new_preview": "PASS",
+      "archived_snapshot": "PASS",
+      "empty_fallback": "PASS",
+      "js_errors": []
+    },
+    {
+      "sport": "cooking",
+      "legacy_html": "PASS",
+      "new_preview": "PASS",
+      "archived_snapshot": "PASS",
+      "empty_fallback": "PASS",
+      "js_errors": []
+    }
+  ],
+  "pdf_button_tests": {
+    "badminton": {
+      "pages": 7,
+      "bytes": 1087731,
+      "status": "Đã kiểm tra và tải PDF 7 trang (1063 KB)."
+    },
+    "football": {
+      "pages": 7,
+      "bytes": 1063452,
+      "status": "Đã kiểm tra và tải PDF 7 trang (1039 KB)."
+    },
+    "volleyball": {
+      "pages": 7,
+      "bytes": 1057044,
+      "status": "Đã kiểm tra và tải PDF 7 trang (1033 KB)."
+    },
+    "running": {
+      "pages": 7,
+      "bytes": 1086107,
+      "status": "Đã kiểm tra và tải PDF 7 trang (1061 KB)."
+    },
+    "handmade": {
+      "pages": 7,
+      "bytes": 1046748,
+      "status": "Đã kiểm tra và tải PDF 7 trang (1023 KB)."
+    },
+    "shuttle": {
+      "pages": 7,
+      "bytes": 1074590,
+      "status": "Đã kiểm tra và tải PDF 7 trang (1050 KB)."
+    },
+    "cooking": {
+      "pages": 7,
+      "bytes": 1067860,
+      "status": "Đã kiểm tra và tải PDF 7 trang (1043 KB)."
+    }
+  },
+  "ppt_smoke_tests": [
+    {
+      "sport": "badminton",
+      "prize_saved": true,
+      "report_contains_prize": true,
+      "config_locked": true,
+      "slide_count": 8,
+      "js_errors": []
+    },
+    {
+      "sport": "football",
+      "prize_saved": true,
+      "report_contains_prize": true,
+      "config_locked": true,
+      "slide_count": 7,
+      "js_errors": []
+    },
+    {
+      "sport": "volleyball",
+      "prize_saved": true,
+      "report_contains_prize": true,
+      "config_locked": true,
+      "slide_count": 7,
+      "js_errors": []
+    },
+    {
+      "sport": "running",
+      "prize_saved": true,
+      "report_contains_prize": true,
+      "config_locked": true,
+      "slide_count": 7,
+      "js_errors": []
+    },
+    {
+      "sport": "handmade",
+      "prize_saved": true,
+      "report_contains_prize": true,
+      "config_locked": true,
+      "slide_count": 7,
+      "js_errors": []
+    },
+    {
+      "sport": "shuttle",
+      "prize_saved": true,
+      "report_contains_prize": true,
+      "config_locked": true,
+      "slide_count": 7,
+      "js_errors": []
+    },
+    {
+      "sport": "cooking",
+      "prize_saved": true,
+      "report_contains_prize": true,
+      "config_locked": true,
+      "slide_count": 7,
+      "js_errors": []
+    }
+  ],
+  "pdf_prize_section_page": 3,
+  "pdf_prize_example_pages": 7,
+  "verified_browsers": "Local headless Chromium only",
+  "actual_firebase_auth": "NOT TESTED",
+  "edgeone_production": "NOT TESTED"
+}

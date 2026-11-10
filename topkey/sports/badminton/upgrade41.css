@@ -1,0 +1,9 @@
+/* Upgrade 41: separate schedule clearing from match/stage deletion. */
+#tk41-delete-mode-wrap{display:grid;gap:9px;margin:14px 0;padding:12px;border:1px solid #31597a;border-radius:14px;background:#071a2d}
+.tk41-delete-mode-title{font-weight:900;color:#dcecff}
+.tk41-mode-card{display:flex;gap:10px;align-items:flex-start;padding:11px 12px;border:1px solid #31597a;border-radius:12px;background:#0a2238;cursor:pointer}
+.tk41-mode-card:has(input:checked){border-color:#22d3ee;box-shadow:0 0 0 1px rgba(34,211,238,.28) inset}
+.tk41-mode-card.danger:has(input:checked){border-color:#fb7185;box-shadow:0 0 0 1px rgba(251,113,133,.28) inset}
+.tk41-mode-card input{margin-top:4px}.tk41-mode-card span{display:grid;gap:4px}.tk41-mode-card small{color:#9fb5c9;line-height:1.4}
+.tk41-scope-disabled{opacity:.48;pointer-events:none}.tk41-keep-structure{color:#67e8f9;font-weight:800}.tk41-unscheduled-count{color:#fbbf24;font-weight:800}
+#auto-reschedule:disabled{opacity:1;accent-color:#22d3ee}#auto-reschedule:disabled+*{opacity:1}

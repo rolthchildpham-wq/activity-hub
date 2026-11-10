@@ -1,0 +1,10 @@
+const fs=require('fs'),assert=require('assert');
+const files=['sports/badminton/assets/u122/admin-core.h85full.js','sports/vnext/src/auth.js','sports/vnext/src/app.js','system-admin.js'];
+const all=files.map(f=>fs.readFileSync(f,'utf8')).join('\n');
+assert(/signInWithEmailAndPassword/.test(all),'Firebase Email/Password sign-in missing');
+assert(!/usernameInput\.toLowerCase\(\)\.includes\(['\"]admin/.test(all),'client-side role guessing present');
+assert(!/response\s*&&\s*response\.ok[\s\S]{0,1200}else\s*\{[\s\S]{0,500}role:\s*username/.test(all),'offline/mock auth fallback present');
+assert(!/token:\s*['\"]tok_['\"]\s*\+\s*Math\.random/.test(all),'random local auth token fallback present');
+assert(/__loginBusy/.test(fs.readFileSync('sports/vnext/src/app.js','utf8')),'VNext double-submit guard missing');
+assert(/__loginBusy/.test(fs.readFileSync('sports/badminton/assets/u122/admin-core.h85full.js','utf8')),'Badminton double-submit guard missing');
+console.log('SECURITY_CONTRACT_H86_OK 6');

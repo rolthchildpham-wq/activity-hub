@@ -1,0 +1,62 @@
+/* Upgrade 57 · Referee Focus Mode: fullscreen + adaptive scoring layout */
+.tk57-referee-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 10px;padding:9px 11px;border:1px solid #315270;border-radius:12px;background:linear-gradient(135deg,#081a2e,#0c2944)}
+.tk57-referee-toolbar-main{display:flex;align-items:center;gap:10px;min-width:0}.tk57-referee-icon{font-size:22px;line-height:1}.tk57-referee-copy{display:grid;gap:2px;min-width:0}.tk57-referee-copy strong{font-size:13px}.tk57-referee-copy small{color:#8fb5d9;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tk57-referee-toolbar .btn{flex:0 0 auto;white-space:nowrap;min-width:148px}
+#page-umpire .tk22-umpire-access-note{display:none!important}
+html.tk57-referee-focus,body.tk57-referee-focus{width:100%;height:100%;overflow:hidden!important;overscroll-behavior:none;background:#06101f}
+body.tk57-referee-focus .topbar{display:none!important}
+body.tk57-referee-focus #app-shell{width:100vw!important;height:100dvh!important;overflow:hidden!important}
+body.tk57-referee-focus .shell{width:100%!important;max-width:none!important;height:100dvh!important;margin:0!important;padding:max(6px,env(safe-area-inset-top)) max(7px,env(safe-area-inset-right)) max(6px,env(safe-area-inset-bottom)) max(7px,env(safe-area-inset-left))!important;overflow:hidden!important}
+body.tk57-referee-focus .shell>.page:not(#page-umpire){display:none!important}
+body.tk57-referee-focus #page-umpire{display:block!important;width:100%!important;height:100%!important;margin:0!important;animation:none!important;overflow:hidden!important}
+body.tk57-referee-focus #page-umpire>.card{width:100%!important;height:100%!important;max-width:none!important;margin:0!important;padding:8px!important;border-radius:12px!important;display:grid!important;grid-template-rows:auto auto minmax(0,1fr) auto;gap:7px;overflow:hidden!important;background:rgba(7,22,39,.985);box-shadow:none}
+body.tk57-referee-focus .tk57-referee-toolbar{margin:0;padding:6px 9px;min-height:38px}
+body.tk57-referee-focus .tk57-referee-toolbar .btn{min-height:34px;padding:6px 11px}
+body.tk57-referee-focus #page-umpire>.card>.form-grid{margin:0!important;gap:7px!important;align-items:end}
+body.tk57-referee-focus #page-umpire .field{gap:3px}body.tk57-referee-focus #page-umpire .field label{font-size:10px}body.tk57-referee-focus #page-umpire select,body.tk57-referee-focus #page-umpire input{padding:7px 8px!important;min-height:36px!important}
+body.tk57-referee-focus #page-umpire .form-grid>.btn{min-height:36px!important;padding:7px 10px!important}
+body.tk57-referee-focus #tk20-umpire-match-count{margin-top:2px!important;min-height:0!important;font-size:9px!important;line-height:1.15}
+body.tk57-referee-focus .tk22-umpire-access-note{display:none!important}
+body.tk57-referee-focus #umpire-board{margin:0!important;min-height:0!important;overflow:hidden!important;display:flex;flex-direction:column;gap:6px}
+body.tk57-referee-focus #umpire-board>.score-head{flex:0 0 auto;margin:0!important;gap:7px!important}
+body.tk57-referee-focus #umpire-board>.score-head div{padding:5px 8px!important}body.tk57-referee-focus #umpire-board>.score-head strong{font-size:clamp(28px,5.2vh,48px)!important;line-height:1}body.tk57-referee-focus #umpire-board>.score-head small{font-size:9px}body.tk57-referee-focus #umpire-board>.score-head>span{font-size:clamp(11px,1.4vw,15px);line-height:1.2}
+body.tk57-referee-focus #umpire-board>.tk11-service-line{flex:0 0 auto;margin:0!important;padding:5px 8px!important;min-height:34px;gap:6px;font-size:clamp(10px,1.2vw,12px)}body.tk57-referee-focus #umpire-board>.tk11-service-line .btn{padding:5px 9px!important;min-height:30px}body.tk57-referee-focus #umpire-board>.tk11-service-line .tk13-court-legend{padding:3px 6px;font-size:9px}
+body.tk57-referee-focus #umpire-board>.court{flex:1 1 auto;min-height:0!important;height:auto!important;width:100%;border-width:3px;border-radius:12px}
+body.tk57-referee-focus #umpire-board .court-half{padding:7px 10px!important;gap:6px!important;min-height:0;justify-content:space-around}body.tk57-referee-focus #umpire-board .tk11-team-head{gap:6px}body.tk57-referee-focus #umpire-board .tk11-team-head>b{font-size:clamp(11px,1.4vw,15px);overflow-wrap:anywhere}body.tk57-referee-focus #umpire-board .tk11-swap-pos{padding:5px 8px!important;min-height:30px;font-size:10px}
+body.tk57-referee-focus #umpire-board .player{padding:clamp(6px,1.2vh,12px) clamp(6px,1vw,12px)!important;min-height:0;font-size:clamp(10px,1.25vw,14px);line-height:1.15}body.tk57-referee-focus #umpire-board .tk11-player-no{width:clamp(27px,3.3vw,34px)!important;height:clamp(27px,3.3vw,34px)!important;font-size:clamp(17px,2.2vw,23px)!important}body.tk57-referee-focus #umpire-board .tk11-player small{font-size:clamp(8px,.9vw,10px)}
+body.tk57-referee-focus .score-actions{margin:0!important;gap:6px!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;background:rgba(7,22,39,.98);padding:0}
+body.tk57-referee-focus .score-actions .btn{min-width:0!important;min-height:39px!important;padding:7px 6px!important;font-size:clamp(10px,1.05vw,12px)!important;line-height:1.1;white-space:normal}
+body.tk57-referee-focus .toast-box{right:max(8px,env(safe-area-inset-right));bottom:max(8px,env(safe-area-inset-bottom))}
+
+/* Phone/tablet portrait: remove search/date clutter, keep match/court/scoring controls large enough to tap. */
+@media (max-width:720px) and (orientation:portrait){
+ body.tk57-referee-focus #page-umpire>.card{padding:6px!important;gap:6px;overflow:auto!important;grid-template-rows:auto auto auto auto}
+ body.tk57-referee-focus .tk57-referee-toolbar-copy-wide{display:none}body.tk57-referee-focus .tk57-referee-toolbar{gap:6px}body.tk57-referee-focus .tk57-referee-toolbar .btn{min-width:128px}
+ body.tk57-referee-focus #page-umpire .tk20-umpire-filter{display:none!important}
+ body.tk57-referee-focus #page-umpire>.card>.form-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important}
+ body.tk57-referee-focus #page-umpire .tk57-match-field{grid-column:1/-1}body.tk57-referee-focus #page-umpire .tk57-court-field{grid-column:1/2}
+ body.tk57-referee-focus #umpire-start{grid-column:1/-1}
+ body.tk57-referee-focus #umpire-board{overflow:visible!important;display:block}
+ body.tk57-referee-focus #umpire-board>.score-head{margin-bottom:5px!important}body.tk57-referee-focus #umpire-board>.score-head strong{font-size:clamp(32px,10vw,48px)!important}
+ body.tk57-referee-focus #umpire-board>.tk11-service-line{margin:5px 0!important}body.tk57-referee-focus #umpire-board>.tk11-service-line .tk13-court-legend{width:100%;order:3;text-align:center}
+ body.tk57-referee-focus #umpire-board>.court{min-height:clamp(195px,24dvh,230px)!important;height:clamp(195px,24dvh,230px)!important}
+ body.tk57-referee-focus #umpire-board .court-half{padding:7px 5px!important}body.tk57-referee-focus #umpire-board .tk11-team-head{align-items:stretch!important;flex-direction:column!important}body.tk57-referee-focus #umpire-board .tk11-swap-pos{width:100%}
+ body.tk57-referee-focus .score-actions{grid-template-columns:repeat(2,minmax(0,1fr))!important;padding-bottom:max(2px,env(safe-area-inset-bottom))}body.tk57-referee-focus .score-actions .btn{min-height:46px!important;font-size:11px!important}
+}
+
+/* Short landscape phones and small referee tablets: fit the complete scoring console in one viewport. */
+@media (orientation:landscape) and (max-height:650px){
+ body.tk57-referee-focus #page-umpire>.card{padding:5px!important;gap:4px;border-radius:8px!important}
+ body.tk57-referee-focus .tk57-referee-toolbar{min-height:32px;padding:3px 7px}body.tk57-referee-focus .tk57-referee-toolbar-main{gap:6px}body.tk57-referee-focus .tk57-referee-icon{font-size:17px}body.tk57-referee-focus .tk57-referee-copy strong{font-size:11px}body.tk57-referee-focus .tk57-referee-copy small{font-size:8px}body.tk57-referee-focus .tk57-referee-toolbar .btn{min-height:30px!important;padding:4px 8px!important;font-size:10px;min-width:112px}
+ body.tk57-referee-focus #page-umpire .tk20-umpire-filter{display:none!important}
+ body.tk57-referee-focus #page-umpire>.card>.form-grid{grid-template-columns:minmax(240px,2fr) minmax(100px,.75fr) auto auto!important;gap:5px!important}
+ body.tk57-referee-focus #page-umpire .field label{display:none}body.tk57-referee-focus #page-umpire select,body.tk57-referee-focus #page-umpire input,body.tk57-referee-focus #page-umpire .form-grid>.btn{min-height:31px!important;padding:4px 7px!important;font-size:10px}body.tk57-referee-focus #tk20-umpire-match-count{display:none!important}
+ body.tk57-referee-focus #umpire-board{gap:3px}body.tk57-referee-focus #umpire-board>.score-head{gap:4px!important}body.tk57-referee-focus #umpire-board>.score-head div{padding:2px 6px!important}body.tk57-referee-focus #umpire-board>.score-head strong{font-size:26px!important}body.tk57-referee-focus #umpire-board>.score-head small{font-size:7px}body.tk57-referee-focus #umpire-board>.score-head>span{font-size:9px}
+ body.tk57-referee-focus #umpire-board>.tk11-service-line{padding:2px 6px!important;min-height:27px;font-size:9px;flex-wrap:nowrap!important}body.tk57-referee-focus #umpire-board>.tk11-service-line .tk13-court-legend{font-size:7px;padding:2px 4px;white-space:nowrap}body.tk57-referee-focus #umpire-board>.tk11-service-line .btn{min-height:25px!important;padding:3px 6px!important;font-size:9px}
+ body.tk57-referee-focus #umpire-board>.court{border-width:2px;min-height:0!important}body.tk57-referee-focus #umpire-board .court-half{padding:3px 7px!important;gap:3px!important}body.tk57-referee-focus #umpire-board .tk11-team-head{flex-direction:row!important;align-items:center!important}body.tk57-referee-focus #umpire-board .tk11-team-head>b{font-size:9px}body.tk57-referee-focus #umpire-board .tk11-swap-pos{min-height:23px!important;padding:2px 5px!important;font-size:8px;width:auto!important}body.tk57-referee-focus #umpire-board .player{padding:3px 6px!important;font-size:9px!important;gap:5px!important}body.tk57-referee-focus #umpire-board .tk11-player-no{width:23px!important;height:23px!important;font-size:15px!important}body.tk57-referee-focus #umpire-board .tk11-player small{font-size:7px!important}
+ body.tk57-referee-focus .score-actions{gap:4px!important}body.tk57-referee-focus .score-actions .btn{min-height:31px!important;padding:4px!important;font-size:9px!important}
+}
+
+/* Large referee screens: use the extra space for legibility rather than empty margins. */
+@media (min-width:1400px) and (min-height:800px){
+ body.tk57-referee-focus #page-umpire>.card{padding:12px 18px!important;gap:10px}body.tk57-referee-focus #umpire-board>.score-head strong{font-size:56px!important}body.tk57-referee-focus #umpire-board .player{font-size:16px;padding:15px!important}body.tk57-referee-focus .score-actions .btn{min-height:52px!important;font-size:14px!important}
+}

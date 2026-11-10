@@ -1,0 +1,83 @@
+{
+  "releaseId": "H110",
+  "base": "H109",
+  "status": "STAGING_LOCAL_TESTED_NOT_PRODUCTION_CERTIFIED",
+  "rootCause": "Public spectator and public registration called ensureFirebase() before loading src/config.js; Firebase App initialization failed.",
+  "changes": [
+    "Shared idempotent ensureConfig before public/admin SDK bootstrap",
+    "One Service Worker registration on spectator bootstrap",
+    "Viewer cache/version resolves from shared TopkeyRelease",
+    "H110 manifest/build/cache/runtime synchronization",
+    "Build generator stamps version and cacheTag"
+  ],
+  "tests": [
+    {
+      "name": "H109 original spectator fails as reported in Chromium mock",
+      "result": "CONFIRMED",
+      "error": "Firebase config chưa sẵn sàng trước khi khởi tạo Auth"
+    },
+    {
+      "name": "H109 original register fails similarly",
+      "result": "CONFIRMED"
+    },
+    {
+      "name": "H110 spectator bootstrap in Chromium DOM",
+      "result": "PASS"
+    },
+    {
+      "name": "H110 register bootstrap in Chromium DOM",
+      "result": "PASS"
+    },
+    {
+      "name": "H110 actual viewer with mocked Firebase Database",
+      "result": "PASS",
+      "databaseSubscriptions": 29
+    },
+    {
+      "name": "JavaScript syntax",
+      "result": "PASS",
+      "passed": 407,
+      "total": 407
+    },
+    {
+      "name": "HTML inline scripts",
+      "result": "PASS",
+      "passed": 16
+    },
+    {
+      "name": "Local asset paths",
+      "result": "PASS",
+      "checked": 78
+    },
+    {
+      "name": "Auth integration",
+      "result": "PASS",
+      "passed": 8,
+      "total": 8
+    },
+    {
+      "name": "Role/session matrix",
+      "result": "PASS",
+      "passed": 26,
+      "total": 26
+    },
+    {
+      "name": "Prize report contract",
+      "result": "PASS"
+    },
+    {
+      "name": "H111 future release build simulation",
+      "result": "PASS"
+    }
+  ],
+  "unverified": [
+    "Real EdgeOne/Firebase Auth login and RTDB read",
+    "Live WebRTC and Anonymous Auth on production",
+    "Actual page navigation on Chromium, blocked by policy",
+    "Performance under high load"
+  ],
+  "productionApproved": false,
+  "rulesChanged": false,
+  "sourceDataChanged": false,
+  "clientAuthBypass": false
+}

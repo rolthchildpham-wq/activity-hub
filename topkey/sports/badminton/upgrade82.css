@@ -1,0 +1,12 @@
+/* Upgrade82 · replay orientation follows capture orientation and fills a proper landscape stage */
+#tk82-replay-stage{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#000;border-radius:12px;margin-top:8px;max-height:min(72vh,720px)}
+#tk82-replay-stage .tk77-player{position:absolute!important;left:50%;top:50%;margin:0!important;max-width:none!important;max-height:none!important;aspect-ratio:auto!important;background:#000;border-radius:0;transform-origin:center center;transition:none}
+#tk82-replay-stage.tk82-fill .tk77-player{object-fit:cover!important}
+.tk82-replay-tools{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:7px;padding:7px 9px;border:1px solid #24425f;border-radius:10px;background:#091b30}
+#tk82-orientation-status{min-width:0;flex:1;color:#9fc3dc;font-size:11px;font-weight:800}
+.tk82-replay-tools .btn{white-space:nowrap}
+@media(max-width:650px){.tk77-modal-box{width:100%!important;max-width:100%!important;padding:12px!important}.tk82-replay-tools{display:grid;grid-template-columns:1fr 1fr}.tk82-replay-tools #tk82-orientation-status{grid-column:1/-1}.tk82-replay-tools .btn{width:100%}#tk82-replay-stage[data-capture-orientation="landscape"]{aspect-ratio:16/9;max-height:none}}
+@media(orientation:landscape) and (max-height:650px){#tk77-replay-modal{padding:6px!important}.tk77-modal-box{width:min(1180px,100%)!important;max-height:98vh!important;padding:10px!important}#tk82-replay-stage[data-capture-orientation="landscape"]{height:min(76vh,calc(100vw * 9 / 16));width:auto;max-width:100%;aspect-ratio:16/9;margin-inline:auto}.tk82-replay-tools{margin-top:4px;padding:4px 7px}.tk77-ai-note{font-size:9px}}
+#tk82-replay-stage:fullscreen{width:100vw;height:100vh;max-height:none;aspect-ratio:auto!important;border-radius:0;background:#000}
+#tk82-replay-stage:fullscreen .tk77-player{background:#000}
+@media(max-width:650px){.tk82-replay-tools{grid-template-columns:repeat(3,minmax(0,1fr))}.tk82-replay-tools .btn{padding-inline:5px;font-size:11px}}

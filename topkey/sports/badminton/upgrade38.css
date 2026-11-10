@@ -1,0 +1,4 @@
+/* Upgrade 38: one busy-day source only — player name. Keep legacy DOM for app.js static bindings, but never show/focus it. */
+#page-schedule .scheduler-busy.tk38-legacy-team-busy-hidden,
+#page-schedule .scheduler-busy{display:none!important;visibility:hidden!important;pointer-events:none!important;}
+#tk33-player-busy-card{order:0;}

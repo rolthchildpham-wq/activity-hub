@@ -1,0 +1,8 @@
+/* Upgrade 27: dynamic Firebase role presets */
+#tk27-role-card{grid-column:1/-1}
+.tk27-role-create,.tk27-manage{display:flex;gap:10px;align-items:end;flex-wrap:wrap;margin-top:12px}
+.tk27-role-create>.field,.tk27-manage>.field{min-width:180px}.tk27-grow{flex:1 1 260px}
+.tk27-status{margin-top:12px;padding:10px 12px;border:1px solid #31506d;border-radius:10px;background:#07182a;color:#cbd5e1;font-size:12px;line-height:1.45}
+.tk27-status[data-state="ok"]{border-color:#10b981;color:#a7f3d0}.tk27-status[data-state="working"]{border-color:#0ea5e9;color:#bae6fd}.tk27-status[data-state="err"]{border-color:#ef4444;color:#fecaca}
+.tk27-role-list{display:grid;gap:8px;margin-top:10px}.tk27-role-row{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:10px 12px;border:1px solid #284762;border-radius:10px;background:#081a2e}.tk27-small{font-size:11px;color:#a9bfd3;margin-top:3px}
+@media(max-width:760px){.tk27-role-create,.tk27-manage{display:grid;grid-template-columns:1fr}.tk27-role-create>.field,.tk27-manage>.field{min-width:0}.tk27-role-row{align-items:flex-start}}

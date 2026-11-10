@@ -1,0 +1,48 @@
+{
+  "release": "H118",
+  "cacheTag": "u122h118-20261109",
+  "basis": "Uploaded H117 production-stability ZIP",
+  "scope": [
+    "Common Firebase Auth implementation for 7 sports",
+    "One Hub session guard used by Badminton and VNext",
+    "Server-verified roles, no global signout on wrong sport",
+    "Login latency improvements and in-place retry",
+    "Canonical Firebase Database and Storage rules mirrored to Badminton snapshot",
+    "Atomic H118 release stamps, SW freshness"
+  ],
+  "localChecks": {
+    "sharedAuthVm": {
+      "pass": true,
+      "checks": 29
+    },
+    "rulesAndAssets": {
+      "pass": true,
+      "checks": 28
+    },
+    "domBrowserMock": {
+      "pass": true,
+      "checks": 3
+    },
+    "javascriptSyntax": {
+      "pass": true,
+      "files": 422
+    },
+    "jsonParsing": {
+      "pass": true,
+      "files": 55
+    },
+    "h117AuthRestore": "PASS",
+    "h117ClubConcurrency": "14/14 PASS",
+    "h117ProductionLoader": "PASS",
+    "h117ReleaseIntegrity": "38/38 PASS",
+    "h117InlineSyntax": "14/14 PASS"
+  },
+  "notVerified": [
+    "Live EdgeOne deploy",
+    "Actual Firebase authentication and RTDB security emulator",
+    "Production mobile browsers or network latency",
+    "End-to-end functionality for every scoring/finance/reporting use case"
+  ],
+  "externalBrowserLimitation": "Playwright direct HTTP(s) navigation blocked by administrator; Chromium DOM mock tests still completed",
+  "releaseDecision": "Staging candidate; requires real deployment and acceptance gates, not certified production success"
+}

@@ -1,0 +1,56 @@
+
+/* H93 compact sport picker */
+.cards.compact-sports{display:grid;grid-template-columns:repeat(7,minmax(105px,1fr));gap:10px;margin:0 0 18px;padding:12px;background:#0d2036e8;border:1px solid #24425f;border-radius:18px}
+.cards.compact-sports .sport{min-height:82px;padding:12px 8px;align-items:center;justify-content:center;text-align:center;border-radius:14px;gap:6px}
+.cards.compact-sports .sport .emoji{font-size:28px;line-height:1}
+.cards.compact-sports .sport h3{font-size:14px;margin:0;font-weight:900}
+.cards.compact-sports .sport p,.cards.compact-sports .sport .badge,.cards.compact-sports .sport .open{display:none!important}
+.cards.compact-sports .sport:hover{transform:translateY(-2px)}
+.sport-picker-note{grid-column:1/-1;color:#fcd34d;font-size:12px;padding:0 4px 2px}
+body.hub-custom-bg{background-image:linear-gradient(rgba(5,12,23,.80),rgba(5,12,23,.90)),var(--hub-bg-image)!important;background-size:cover!important;background-position:center!important;background-attachment:fixed!important}
+.hub-bg-preview{height:130px;border:1px dashed #315a78;border-radius:12px;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;color:#9bb0c8;margin-top:8px}
+.hub-header-toggle{display:none;width:38px;height:38px;padding:0;border:1px solid #315270;border-radius:8px;background:#0b2238;color:#eaf4ff;font-size:22px;font-weight:800;line-height:1;align-items:center;justify-content:center;cursor:pointer}
+@media(max-width:1100px){.cards.compact-sports{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:650px){.cards.compact-sports{grid-template-columns:repeat(2,1fr);gap:8px;padding:9px}.cards.compact-sports .sport{min-height:72px}.cards.compact-sports .sport .emoji{font-size:24px}.cards.compact-sports .sport h3{font-size:13px}}
+
+/* H96 header: reference two-line primary title with subtitle below */
+.top .brand{max-width:1680px;align-items:center}
+.top .brand-main{flex:1 1 auto;min-width:0;gap:24px}
+.top .brand-title{display:flex;flex-direction:column;justify-content:center;min-width:0;flex:1 1 auto}
+.top .brand-title h1{order:1;margin:0;font-size:clamp(22px,1.72vw,32px);line-height:1.08;letter-spacing:.15px;white-space:normal;overflow-wrap:anywhere;text-transform:uppercase}
+.top .brand-title .hub-title-line{display:block;white-space:nowrap}
+.top .brand-title .eyebrow{order:2;margin-top:9px;font-size:11px;line-height:1.3;letter-spacing:1.6px;color:#6ee7b7;white-space:nowrap}
+.top .status{flex:0 0 auto;justify-content:flex-end;align-items:center;max-width:650px}
+@media(max-width:1680px){
+  .top .brand-title h1{font-size:clamp(20px,1.7vw,27px)}
+  .top .brand-logo-wrap{width:215px;min-width:215px;height:80px}
+  .top .status{max-width:460px}
+}
+@media(max-width:1320px){
+  .top .brand{align-items:flex-start;flex-direction:column}
+  .top .brand-main{width:100%}
+  .top .brand-title h1{font-size:clamp(22px,3.2vw,30px)}
+  .top .brand-title .eyebrow{white-space:normal}
+  .top .status{width:100%;max-width:none;justify-content:flex-start}
+}
+@media(max-width:900px){
+  .top .brand-title .hub-title-line{white-space:normal}
+}
+@media(max-width:650px){
+  .top{position:relative;padding:12px 56px 12px 12px}
+  .hub-header-toggle{display:flex;position:absolute;right:10px;top:10px;z-index:2}
+  .top.hub-header-collapsed{padding-top:9px;padding-bottom:9px}
+  .top.hub-header-collapsed .brand{display:block}
+  .top.hub-header-collapsed .brand-main{display:flex;flex-direction:row;align-items:center;gap:10px;width:100%}
+  .top.hub-header-collapsed .brand-logo-wrap{width:104px;min-width:104px;height:42px;padding:4px 7px;border-radius:8px}
+  .top.hub-header-collapsed .brand-title{display:block;width:auto;min-width:0;padding:0 0 0 10px;border-top:0;border-left:1px solid #5c7188}
+  .top.hub-header-collapsed .brand-title h1{display:block;margin:0;font-size:12px;line-height:1.18;white-space:normal;overflow:hidden}
+  .top.hub-header-collapsed .brand-title .hub-title-line{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .top.hub-header-collapsed .brand-title .eyebrow,.top.hub-header-collapsed .status{display:none!important}
+  .top .brand-main{align-items:center}
+  .top .brand-title h1{font-size:clamp(18px,5.2vw,25px);line-height:1.12}
+  .top .brand-title .eyebrow{font-size:9px;letter-spacing:1px;margin-top:6px}
+}
+
+/* H98 release sync: wide-screen single-line heading and compact status panel */
+@media(min-width:1500px){.brand-main{min-width:0;flex:1 1 auto}.brand-title h1{white-space:nowrap;font-size:clamp(18px,1.55vw,29px)}.brand-title h1 .hub-title-line{display:inline!important}.brand-title h1 .hub-title-line:first-child::after{content:" "}.brand .status{flex:0 0 260px;max-width:260px;display:grid;grid-template-columns:1fr 1fr;gap:5px;align-content:center}.brand .status .pill{font-size:9px;min-width:0;white-space:normal;text-align:center}}

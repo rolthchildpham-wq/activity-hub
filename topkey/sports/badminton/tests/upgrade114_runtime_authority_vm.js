@@ -1,0 +1,11 @@
+const fs=require('fs'),path=require('path'),vm=require('vm'),assert=require('assert');
+const root=path.resolve(__dirname,'..'),src=fs.readFileSync(path.join(root,'src/core/runtime-authority.js'),'utf8'),build=JSON.parse(fs.readFileSync(path.join(root,'build.json'),'utf8'));
+const nodes={'health-version':{textContent:''},'tk55-runtime-build':{textContent:''},'tk55-server-build':{textContent:''},'tk55-update-state':{textContent:''},'tk103-runtime-health':{querySelector(){return {textContent:''}},appendChild(){}},'tk55-check-update':{}};
+const doc={documentElement:{dataset:{}},getElementById:id=>nodes[id]||null,createElement(){return {className:'',style:{},innerHTML:'',id:''}}};let intervals=[];
+const sandbox={console,window:null,document:doc,location:{href:'https://x.test/sports/badminton/'},URL,Math,Date,queueMicrotask:fn=>fn(),setTimeout:fn=>{fn();return 1},clearTimeout(){},setInterval:fn=>{intervals.push(fn);return intervals.length},clearInterval(){},fetch:async()=>({ok:true,json:async()=>({build:build.build,version:build.version})})};
+sandbox.window=sandbox;sandbox.window.Topkey={App:{renderHealth(){return'ok'}},VERSION:'old',CONFIG_VERSION:'old',RUNTIME_BUILD:'old'};sandbox.window.addEventListener=()=>{};sandbox.window.TopkeyUpgrade113={enforce(){sandbox.window.Topkey.VERSION='upgrade113'},checkServerBuild113(){}};
+vm.createContext(sandbox);vm.runInContext(src,sandbox);
+assert.strictEqual(sandbox.window.Topkey.VERSION,build.version);assert.strictEqual(doc.documentElement.dataset.topkeyBuild,build.build);
+sandbox.window.Topkey.VERSION='upgrade106';doc.documentElement.dataset.topkeyBuild='upgrade106';assert(intervals.length>=1);intervals[0]();assert.strictEqual(sandbox.window.Topkey.VERSION,build.version);assert.strictEqual(doc.documentElement.dataset.topkeyBuild,build.build);
+const authority=sandbox.window.TopkeyRuntime115||sandbox.window.TopkeyRuntime114;assert(authority?.installed,'runtime authority export missing');assert.strictEqual(sandbox.window.TopkeyUpgrade113.checkServerBuild113,authority.checkServerBuild);
+console.log('PASS upgrade114 runtime authority invariant on current build');

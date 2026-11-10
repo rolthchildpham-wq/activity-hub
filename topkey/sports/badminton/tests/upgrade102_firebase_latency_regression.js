@@ -1,0 +1,16 @@
+const fs=require('fs'),path=require('path'),assert=require('assert'),crypto=require('crypto');
+const root=path.resolve(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8');
+const u102=read('src/upgrade102.js'),u101=read('src/upgrade101.js');
+assert(u102.includes('FIREBASE_LATENCY_INCREMENTAL_TAB_SCOPED_001'),'U102 latency contract missing');
+assert(u102.includes("for(const branch of ['teams','matches','courts','activeMatches'])"),'core branches must use incremental map listeners');
+assert(u102.includes("case 'finance':return['finance']"),'finance must be tab-scoped');
+assert(u102.includes("case 'audit':return['audit']"),'audit must be tab-scoped');
+assert(u102.includes("case 'live':case 'umpire':return['commentary']"),'commentary must be tab-scoped for authenticated UI');
+assert(u102.includes("Public Viewer no longer subscribes to the whole commentary tree"),'public full commentary suppression marker missing');
+assert(!/listenValue\(['\"]commentary['\"]/.test(u102),'public viewer must not attach whole commentary value listener');
+assert(u102.includes('suppressLegacyViewerGlobalListeners'),'Upgrade94 duplicate global viewer listeners must be suppressed');
+assert(u102.includes('adminRenderPending'),'admin Firebase callbacks must be render-coalesced');
+assert(u102.includes('publicLivePending')&&u102.includes('publicSchedulePending'),'public schedule/live rendering must be independently coalesced');
+for(const f of ['firebase.database.rules.json','turn-config.json','src/upgrade88.js','src/upgrade94.js','src/upgrade96.js','src/upgrade100.js','src/upgrade101.js'])assert(fs.existsSync(path.join(root,f)),f+' missing');
+assert(u101.includes('WEBRTC_SIGNALING_RESILIENCE_HEARTBEAT_SELFHEAL_001'),'U101 signaling baseline missing');
+console.log('upgrade102 firebase latency regression: PASS');

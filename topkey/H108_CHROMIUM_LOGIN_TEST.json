@@ -1,0 +1,32 @@
+{
+  "results": [
+    {
+      "case": "wrong password / double submit / no access",
+      "result": {
+        "signin": 1,
+        "status": "Email hoặc mật khẩu không đúng.",
+        "hidden": true
+      },
+      "pass": true
+    },
+    {
+      "case": "verified Firebase user + verified profile enters app",
+      "result": {
+        "signin": 2,
+        "verified": "firebase-uid-123",
+        "hidden": false,
+        "profile": "ADMIN"
+      },
+      "pass": true
+    },
+    {
+      "case": "profile read unavailable / forged cache gives no admin",
+      "result": {
+        "verified": "",
+        "hidden": true,
+        "status": "Không thể đọc quyền tài khoản từ Firebase. Hãy kiểm tra kết nối Database / Security Rules rồi thử lại."
+      },
+      "pass": true
+    }
+  ]
+}

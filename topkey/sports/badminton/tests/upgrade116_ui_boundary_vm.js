@@ -1,0 +1,14 @@
+const fs=require('fs'),path=require('path'),vm=require('vm'),assert=require('assert');
+const root=path.resolve(__dirname,'..');
+const code=fs.readFileSync(path.join(root,'src/core/ui-boundary.js'),'utf8');
+let baseTabs=0,baseMatches=0,baseSpectator=0,tabHook=0,matchHook=0,specHook=0;
+const App={showTab(tab){baseTabs++;this.currentTab=tab;return 'tab:'+tab},renderMatches(){baseMatches++;return 'matches'},renderSpectator(){baseSpectator++;return 'spectator'}};
+const ctx={window:null,Topkey:{App},console,setTimeout,clearTimeout};ctx.window=ctx;vm.createContext(ctx);vm.runInContext(code,ctx);
+assert(ctx.TopkeyUIBoundary&&!ctx.TopkeyUIBoundary.installed,'boundary should register before install');
+ctx.TopkeyUIBoundary.onTab(({tab})=>{if(tab==='live')tabHook++},'t');
+ctx.TopkeyUIBoundary.afterMatches(()=>matchHook++,'m');ctx.TopkeyUIBoundary.afterSpectator(()=>specHook++,'s');
+assert(ctx.TopkeyUIBoundary.install());assert(ctx.TopkeyUIBoundary.installed);
+assert.strictEqual(App.showTab('live'),'tab:live');assert.strictEqual(App.renderMatches(),'matches');assert.strictEqual(App.renderSpectator(),'spectator');
+assert.deepStrictEqual([baseTabs,baseMatches,baseSpectator],[1,1,1]);assert.deepStrictEqual([tabHook,matchHook,specHook],[1,1,1]);
+ctx.TopkeyUIBoundary.install();App.showTab('schedule');assert.strictEqual(baseTabs,2,'install must be idempotent');assert.strictEqual(tabHook,1);
+console.log('PASS upgrade116 UI boundary VM');

@@ -1,0 +1,20 @@
+/* Upgrade 59 · strict match-only referee focus + reliable Android install guidance */
+/* In score focus, the referee page must contain ONLY the scoring card. Upgrade49 injects
+   an Auto-BLV card as a direct sibling of the scoring card; hide every such sibling. */
+body.tk58-score-focus #page-umpire > :not(.card){display:none!important}
+body.tk58-score-focus #page-umpire > .tk49-auto-voice{display:none!important}
+/* Inside the scoring card, keep only board + score actions. This is intentionally stricter
+   than Upgrade58 so later injected setup widgets cannot leak into the match viewport. */
+body.tk58-score-focus #page-umpire > .card > :not(#umpire-board):not(.score-actions){display:none!important}
+body.tk58-score-focus #page-umpire > .card{overflow-y:auto!important;overflow-x:hidden!important;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;scrollbar-gutter:stable}
+body.tk58-score-focus #umpire-board{scroll-margin-top:0}
+/* Keep the score console reachable on unusually short portrait devices. */
+@media (max-width:720px) and (orientation:portrait){
+ body.tk58-score-focus #page-umpire{overflow:hidden!important}
+ body.tk58-score-focus #page-umpire > .card{height:100%!important;max-height:100dvh!important;overflow-y:auto!important;touch-action:pan-y!important}
+ body.tk58-score-focus .score-actions{position:relative!important;z-index:2}
+}
+/* Android install diagnostics / Chrome handoff */
+.tk59-install-note{display:block;margin-top:5px;color:#9ec5e8;font-size:10px;line-height:1.4;grid-column:1/-1}
+.tk59-install-note.ok{color:#7ef0bd}.tk59-install-note.warn{color:#ffd479}.tk59-install-note.bad{color:#ff9fb1}
+.tk59-install-secondary{grid-column:1/-1;width:100%;margin-top:4px}

@@ -1,0 +1,18 @@
+const fs=require('fs'),path=require('path'),assert=require('assert');
+const root=path.resolve(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8');
+const build=JSON.parse(read('build.json')),no=Number((String(build.build).match(/upgrade(\d+)/)||[])[1]||0);assert(no>=116,'build must preserve Upgrade116+ Phase3');
+const m=JSON.parse(read(`assets/u${no}/bundle-manifest.json`)),files=new Set(m.adminCore.sources);
+for(const f of ['src/core/ui-boundary.js','src/core/ui-boundary-install.js','src/features/schedule/runtime.js','src/features/umpire/runtime.js','src/features/live/runtime.js'])assert(files.has(f),'missing Phase3 runtime '+f);
+for(const f of ['src/upgrade80.js','src/upgrade106.js','src/upgrade107.js'])assert(!files.has(f),'legacy feature runtime still executes '+f);
+for(const f of ['src/upgrade80.js','src/upgrade106.js','src/upgrade107.js'])assert(fs.existsSync(path.join(root,f)),'legacy audit source missing '+f);
+const bus=read('src/core/ui-boundary.js'),schedule=read('src/features/schedule/runtime.js'),umpire=read('src/features/umpire/runtime.js'),live=read('src/features/live/runtime.js');
+assert((bus.match(/App\.showTab=function/g)||[]).length===1,'UI boundary must own one showTab wrapper');
+assert((bus.match(/App\.renderMatches=function/g)||[]).length===1,'UI boundary must own one renderMatches wrapper');
+assert(bus.includes("onTab:(fn,key)=>add('tab'")&&bus.includes("afterMatches:(fn,key)=>add('matches'"),'UI boundary registry missing');
+assert(schedule.includes('SCHEDULE_FEATURE_BOUNDARY_001')&&schedule.includes('window.TopkeyUpgrade106')&&schedule.includes('window.TopkeyUpgrade107'),'schedule compatibility missing');
+assert(umpire.includes('UMPIRE_FEATURE_BOUNDARY_001')&&umpire.includes("u116:umpire:scroll-top"),'umpire boundary missing');
+assert(live.includes('REAR_CAMERA_DEFAULT_001')&&live.includes('window.TopkeyUpgrade80=api'),'live compatibility missing');
+for(const f of ['src/upgrade24.js','src/upgrade87.js','src/upgrade111.js'])assert(read(f).includes('TopkeyUIBoundary'),'legacy hook not migrated to boundary '+f);
+const authority=read('src/core/runtime-authority.js');assert(authority.includes(`BUILD='upgrade${no}'`)&&authority.includes('CONSOLIDATED_RUNTIME_AUTHORITY_003'),'Phase3 authority compatibility missing');
+const html=read('index.html');assert(html.includes(`./assets/u${no}/`+m.adminCore.js)&&html.includes(`./assets/u${no}/`+m.adminCore.css),'index not using current admin assets');assert(html.includes(`./assets/u${no}/`+m.viewer.js)&&html.includes(`./assets/u${no}/`+m.viewer.css),'index not using current viewer assets');
+console.log('PASS upgrade116 consolidation phase3 invariant on current build');

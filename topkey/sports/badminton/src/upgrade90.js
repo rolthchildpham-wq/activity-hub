@@ -1,0 +1,22 @@
+(() => {
+'use strict';
+const T=window.Topkey,App=T?.App,U=T?.U;if(!T||!App||!U||App.__upgrade90Installed)return;App.__upgrade90Installed=true;
+const $=id=>document.getElementById(id);const S={enabled:false,lastId:'',lastCourt:'',lastAt:0};
+function viewer(){return ['VIEWER','LIVE_ONLY'].includes(String(T.Auth?.role?.()||'').toUpperCase())||location.hash==='#spectator'}
+function court(){return $('stream-court')?.value||App.currentCourt||Object.keys(App.state?.activeMatches||{})[0]||Object.keys(App.state?.courts||{}).find(k=>String(App.state.courts[k]?.stream?.status||'').toUpperCase()==='LIVE')||'court_1'}
+function row(){const c=court();return App.state?.commentary?.[c]?.latest||null}
+function status(text,state='info'){let e=$('tk90-viewer-audio-status');if(!e){const b=$('tk89-viewer-audio'),host=b?.parentElement||$('video-box')||$('page-live');if(!host)return;e=document.createElement('div');e.id='tk90-viewer-audio-status';e.style.cssText='position:absolute;z-index:34;right:12px;bottom:48px;max-width:min(88%,420px);padding:6px 9px;border-radius:8px;background:rgba(3,15,28,.86);color:#d8efff;font-size:11px;line-height:1.35;pointer-events:none';host.appendChild(e)}e.dataset.state=state;e.textContent=text}
+function chooseVi(){try{const vs=speechSynthesis.getVoices();return vs.find(v=>/^vi([-_]|$)/i.test(v.lang||''))||vs.find(v=>/vietnam|vietnamese|hoai|nam|minh/i.test(v.name||''))||null}catch{return null}}
+function speak(r,{force=false}={}){if(!viewer()||!S.enabled||!r?.id||!r.text)return false;if(!force&&r.id===S.lastId)return false;if(!('speechSynthesis'in window)){status('❌ Viewer không hỗ trợ SpeechSynthesis.','err');return false}try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(String(r.text));u.lang='vi-VN';u.rate=Number($('blv-rate')?.value)||1.08;u.pitch=Number($('blv-pitch')?.value)||.98;u.volume=1;const v=chooseVi();if(v)u.voice=v;u.onstart=()=>status('🔊 Đang đọc BLV · '+String(r.text).slice(0,90),'ok');u.onend=()=>status('✓ Đã đọc BLV mới · '+new Date().toLocaleTimeString('vi-VN'),'ok');u.onerror=e=>status('❌ Lỗi phát BLV Viewer: '+(e.error||'speech error'),'err');S.lastId=r.id;S.lastCourt=r.courtId||court();S.lastAt=Date.now();speechSynthesis.speak(u);return true}catch(e){status('❌ Không phát được BLV Viewer: '+(e?.message||e),'err');return false}}
+function enable(){S.enabled=true;App.audioUnlocked=true;try{speechSynthesis.resume()}catch{};const r=row();status(r?'✓ Audio Viewer ON · đã nhận bình luận Firebase. Chờ điểm mới…':'✓ Audio Viewer ON · đang chờ bình luận Firebase…','ok');const b=$('tk89-viewer-audio');if(b)b.textContent='🔊 Âm thanh Viewer đang bật';return true}
+// Upgrade89 button is the required user gesture. Enable viewer-local TTS on that exact gesture.
+document.addEventListener('click',e=>{if(!viewer()||!e.target?.closest?.('#tk89-viewer-audio'))return;enable();setTimeout(()=>{const r=row();if(r)status('✓ Audio Viewer ON · câu hiện tại đã nhận; sẽ đọc từ ĐIỂM MỚI tiếp theo.','ok')},250)},true);
+// Firebase render path: every new commentary row is independently spoken on Viewer.
+const baseRender=App.renderCommentary?.bind(App);if(baseRender)App.renderCommentary=function(...args){const out=baseRender(...args);if(viewer()){const r=row();if(S.enabled&&r?.id!==S.lastId)speak(r);else if(S.enabled&&!r)status('Audio Viewer ON · chưa nhận commentary Firebase cho '+court()+'.','working')}return out};
+// Direct Firebase listener is a second path, independent from historical BLV gate wrappers.
+let off=null,lastListen='',pollTimer=0;function bind(){if(window.TopkeyUpgrade94?.installed)return false;if(!viewer()||!T.Data?.listen)return false;const c=court();if(c===lastListen)return true;try{off?.()}catch{};lastListen=c;off=T.Data.listen('commentary/'+c+'/latest',r=>{if(!viewer()||!S.enabled||!r)return;if(r.id!==S.lastId)speak(r)});return true}
+function stopLegacyPolling(){if(pollTimer){clearInterval(pollTimer);pollTimer=0}try{off?.()}catch{};off=null;lastListen=''}
+pollTimer=setInterval(()=>{if(window.TopkeyUpgrade94?.installed){stopLegacyPolling();return}if(viewer()){bind();if(S.enabled){const r=row();if(r&&r.id!==S.lastId)speak(r)}}},900);
+window.addEventListener('hashchange',()=>{if(window.TopkeyUpgrade94?.installed){stopLegacyPolling();return}setTimeout(bind,100)});
+window.TopkeyUpgrade90={installed:true,state:S,enable,speak,row,bind,stopLegacyPolling,get pollTimer(){return pollTimer}};
+})();

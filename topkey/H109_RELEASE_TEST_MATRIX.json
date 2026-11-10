@@ -1,0 +1,33 @@
+{
+  "releaseId": "H109",
+  "base": "H108",
+  "version": "2026.11.09-vnext-upgrade122-hotfix109-release-architecture",
+  "cacheTag": "u122h109-20261109",
+  "releaseStatus": "STAGING_LOCAL_TESTED_NOT_PRODUCTION_CERTIFIED",
+  "localTests": [
+    {"name": "JavaScript syntax", "passed": 407, "total": 407, "status": "PASS"},
+    {"name": "Inline HTML script syntax", "passed": 16, "total": 16, "status": "PASS"},
+    {"name": "Local HTML referenced assets", "passed": 78, "total": 78, "status": "PASS"},
+    {"name": "Release/Guard/Hub routing architecture", "passed": 60, "total": 60, "status": "PASS_NODE_VM"},
+    {"name": "Scoped Service Worker old cache cleanup", "passed": 3, "total": 3, "status": "PASS_NODE_VM"},
+    {"name": "Legacy Auth integration", "passed": 8, "total": 8, "status": "PASS_NODE_VM"},
+    {"name": "Legacy role/session matrix", "passed": 26, "total": 26, "status": "PASS_NODE_VM"},
+    {"name": "Profile-based Auth security", "passed": 4, "total": 4, "status": "PASS_NODE_VM"},
+    {"name": "Release and Planning Chromium DOM simulation", "passed": 10, "total": 10, "status": "PASS_DOM_MOCK"},
+    {"name": "Firebase v2 pagination/aggregates", "records": 36000, "status": "PASS_SIMULATED"},
+    {"name": "H107 prizes report contract", "status": "PASS"},
+    {"name": "H88 PPT export and report HTML", "status": "PASS"},
+    {"name": "H88 security contract", "status": "PASS"},
+    {"name": "H95 finite runtime lifecycle", "status": "PASS"},
+    {"name": "Generator simulating H110 update", "status": "PASS"}
+  ],
+  "unresolved": [
+    {"name": "H95 legacy performance test", "status": "FAIL_INHERITED", "reason": "Original test expects old pre-H97 subscription API"},
+    {"name": "Chromium real URL navigation", "status": "BLOCKED_ENVIRONMENT", "reason": "net::ERR_BLOCKED_BY_ADMINISTRATOR"},
+    {"name": "Real Firebase staging login and Database queries", "status": "NOT_TESTED"},
+    {"name": "Actual EdgeOne performance and update behavior", "status": "NOT_TESTED"}
+  ],
+  "databaseRulesChanged": false,
+  "productionApproved": false,
+  "clientPrivilegeBypass": false
+}

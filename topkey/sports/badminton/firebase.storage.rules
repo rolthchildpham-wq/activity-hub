@@ -1,0 +1,65 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /topkey_badminton_vnext_2026/{tid}/receipts/{uid}/{fileName} {
+      allow write: if request.auth != null && request.auth.uid == uid && request.resource.size < 10 * 1024 * 1024;
+      allow read: if request.auth != null && request.auth.uid == uid;
+    }
+    match /topkey_football_vnext_2026/{tid}/receipts/{uid}/{fileName} {
+      allow write: if request.auth != null && request.auth.uid == uid && request.resource.size < 10 * 1024 * 1024;
+      allow read: if request.auth != null && request.auth.uid == uid;
+    }
+    match /topkey_volleyball_vnext_2026/{tid}/receipts/{uid}/{fileName} {
+      allow write: if request.auth != null && request.auth.uid == uid && request.resource.size < 10 * 1024 * 1024;
+      allow read: if request.auth != null && request.auth.uid == uid;
+    }
+    match /topkey_running_vnext_2026/{tid}/receipts/{uid}/{fileName} {
+      allow write: if request.auth != null && request.auth.uid == uid && request.resource.size < 10 * 1024 * 1024;
+      allow read: if request.auth != null && request.auth.uid == uid;
+    }
+    match /topkey_handmade_vnext_2026/{tid}/receipts/{uid}/{fileName} {
+      allow write: if request.auth != null && request.auth.uid == uid && request.resource.size < 10 * 1024 * 1024;
+      allow read: if request.auth != null && request.auth.uid == uid;
+    }
+    match /topkey_shuttle_vnext_2026/{tid}/receipts/{uid}/{fileName} {
+      allow write: if request.auth != null && request.auth.uid == uid && request.resource.size < 10 * 1024 * 1024;
+      allow read: if request.auth != null && request.auth.uid == uid;
+    }
+    match /topkey_cooking_vnext_2026/{tid}/receipts/{uid}/{fileName} {
+      allow write: if request.auth != null && request.auth.uid == uid && request.resource.size < 10 * 1024 * 1024;
+      allow read: if request.auth != null && request.auth.uid == uid;
+    }
+    match /topkey_badminton_vnext_2026/{tid}/appearance/background/{uid}/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == uid && request.resource.size < 5 * 1024 * 1024 && request.resource.contentType.matches('image/.*');
+    }
+    match /topkey_badminton_vnext_2026/{tid}/commentary-audio/{fileName} {
+      allow read: if true;
+      allow write: if false; // Cloud Function/Admin SDK only.
+    }
+    match /topkey_football_vnext_2026/{tid}/appearance/background/{uid}/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == uid && request.resource.size < 5 * 1024 * 1024 && request.resource.contentType.matches('image/.*');
+    }
+    match /topkey_volleyball_vnext_2026/{tid}/appearance/background/{uid}/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == uid && request.resource.size < 5 * 1024 * 1024 && request.resource.contentType.matches('image/.*');
+    }
+    match /topkey_running_vnext_2026/{tid}/appearance/background/{uid}/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == uid && request.resource.size < 5 * 1024 * 1024 && request.resource.contentType.matches('image/.*');
+    }
+    match /topkey_handmade_vnext_2026/{tid}/appearance/background/{uid}/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == uid && request.resource.size < 5 * 1024 * 1024 && request.resource.contentType.matches('image/.*');
+    }
+    match /topkey_shuttle_vnext_2026/{tid}/appearance/background/{uid}/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == uid && request.resource.size < 5 * 1024 * 1024 && request.resource.contentType.matches('image/.*');
+    }
+    match /topkey_cooking_vnext_2026/{tid}/appearance/background/{uid}/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == uid && request.resource.size < 5 * 1024 * 1024 && request.resource.contentType.matches('image/.*');
+    }
+  }
+}

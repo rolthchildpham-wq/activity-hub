@@ -1,0 +1,9 @@
+/* Upgrade 39: flexible vs required exact player/day match rules. */
+#tk33-player-limit-card .tk33-rule-toolbar{grid-template-columns:minmax(150px,1fr) minmax(150px,1fr) minmax(150px,.8fr) minmax(180px,1fr) auto}
+#tk39-limit-mode-field select,.tk39-add-mode{background:#081a2e;color:#fff;border:1px solid #31506d;border-radius:8px;padding:7px 9px}
+.tk33-date-chip.tk39-flexible{border-color:#315b7e;background:#123554}
+.tk33-date-chip.tk39-required{border-color:#f59e0b;background:rgba(245,158,11,.16);color:#fff3c4}
+.tk39-required-summary{margin:8px 0 12px;padding:10px 12px;border:1px solid #f59e0b;border-radius:12px;background:rgba(91,52,3,.28);display:grid;gap:7px}
+.tk39-required-chips{display:flex;flex-wrap:wrap;gap:7px}.tk39-required-result{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;border:1px solid #6b7280;font-size:12px;font-weight:900}.tk39-required-result.ok{border-color:#00c58e;background:rgba(0,197,142,.13)}.tk39-required-result.bad{border-color:#ef476f;background:rgba(239,71,111,.14)}
+@media(max-width:1150px){#tk33-player-limit-card .tk33-rule-toolbar{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){#tk33-player-limit-card .tk33-rule-toolbar{grid-template-columns:1fr}.tk39-add-mode{flex:1}}

@@ -1,0 +1,14 @@
+const fs=require('fs'),path=require('path'),assert=require('assert');
+const root=path.resolve(__dirname,'..');
+const u77=fs.readFileSync(path.join(root,'src/upgrade77.js'),'utf8');
+const u79=fs.readFileSync(path.join(root,'src/upgrade79.js'),'utf8');
+const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
+assert(u77.includes("const AI_ENDPOINT='/api/ai-shuttle-analyze'"),'U77 must define origin-root AI endpoint');
+assert(!u77.includes("fetch('./api/ai-shuttle-analyze'"),'Relative AI endpoint regression returned');
+assert((u77.match(/fetch\(AI_ENDPOINT/g)||[]).length>=2,'Both AI health GET and analysis POST must use AI_ENDPOINT');
+assert(u77.includes('AI_ENDPOINT};'),'U77 must expose AI endpoint for health/debug');
+assert.strictEqual(new URL('/api/ai-shuttle-analyze','https://topkey.example/sports/badminton/index.html?v=u79').pathname,'/api/ai-shuttle-analyze');
+assert(u79.includes("AI_ENDPOINT='/api/ai-shuttle-analyze'"),'U79 release marker endpoint missing');
+assert(html.indexOf('src/upgrade79.js')>html.indexOf('src/upgrade78.js'),'U79 must load after U78');
+const cache=(html.match(/src\/upgrade79\.js\?v=(u(\d+)-[0-9]+)/)||[]);assert(cache[1]&&Number(cache[2])>=79,'U79 must remain loaded under the current release cache tag');
+console.log('upgrade79 AI endpoint root regression: PASS · nested Badminton page -> /api/ai-shuttle-analyze for GET + POST');

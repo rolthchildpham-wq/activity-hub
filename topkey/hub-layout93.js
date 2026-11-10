@@ -1,0 +1,9 @@
+(()=>{'use strict';
+const AUTH_ROOT='topkey_badminton_vnext_2026';
+function compact(){const cards=document.querySelector('.cards'),exec=document.querySelector('#executive-dashboard');if(!cards||!exec)return;cards.classList.add('compact-sports');if(cards.nextElementSibling!==exec)exec.parentNode.insertBefore(cards,exec);const p=new URLSearchParams(location.search);if(p.get('reason')==='select-sport'){let n=cards.querySelector('.sport-picker-note');if(!n){n=document.createElement('div');n.className='sport-picker-note';cards.prepend(n)}n.textContent='ℹ️ Phiên chọn môn cũ đã hết hạn. Chọn lại môn để tiếp tục.';document.querySelectorAll('main.wrap>section.panel').forEach(x=>{if(/Hãy chọn môn từ Hub/.test(x.textContent||''))x.remove()})}}
+function applyAppearance(v={}){const a=v.hubAppearance||v;const title=String(a.title||'').trim(),eyebrow=String(a.eyebrow||'').trim(),bg=String(a.background||'').trim();const h=document.querySelector('.brand-title h1'),e=document.querySelector('.brand-title .eyebrow');if(h&&title)h.textContent=title;if(e&&eyebrow)e.textContent=eyebrow;if(bg){document.body.style.setProperty('--hub-bg-image',`url(${JSON.stringify(bg)})`);document.body.classList.add('hub-custom-bg')}else document.body.classList.remove('hub-custom-bg')}
+async function loadAppearance(){if(!window.firebase)return;try{const db=firebase.database(),s=await db.ref(`${AUTH_ROOT}/associationDashboard/hubAppearance`).once('value');applyAppearance(s.val()||{})}catch(e){console.warn('Hub appearance',e?.message||e)}}
+function boot(){compact();loadAppearance();}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+window.TopkeyHubLayout93={compact,applyAppearance};
+})();

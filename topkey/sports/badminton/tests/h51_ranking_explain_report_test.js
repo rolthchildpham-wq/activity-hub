@@ -1,0 +1,14 @@
+const fs=require('fs'),assert=require('assert');
+const p=__dirname+'/../upgrade122-hotfix51.js',s=fs.readFileSync(p,'utf8');
+assert(s.includes("role()==='ADMIN'"),'button must be ADMIN-only');
+assert(s.includes('🧾 Giải trình BXH'),'missing report button');
+assert(s.includes('App.ranking({category:cat})'),'report must use active App.ranking');
+assert(s.includes('Điểm → H2H (2 đội) / Mini-league (3+ đội) → HS set → HS điểm → Set thắng → Điểm ghi được'),'rule text missing');
+assert(s.includes('miniStats(pointGroup,matches)'),'mini-league explanation missing');
+assert(s.includes('BÁO CÁO GIẢI TRÌNH BẢNG XẾP HẠNG'),'report output missing');
+assert(s.includes('Báo cáo HTML')&&s.includes('CSV')&&s.includes('In / PDF'),'export actions missing');
+const idx=fs.readFileSync(__dirname+'/../index.html','utf8');
+assert(idx.includes('./upgrade122-hotfix51.js?v=u122h51-20261105'),'H51 runtime not loaded');
+const build=JSON.parse(fs.readFileSync(__dirname+'/../build.json','utf8'));
+assert.equal(build.cacheTag,'u122h51-20261105');
+console.log('H51 ranking explain report: PASS');

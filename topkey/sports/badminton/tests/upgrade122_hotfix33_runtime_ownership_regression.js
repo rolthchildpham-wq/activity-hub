@@ -1,0 +1,15 @@
+const fs=require('fs'),path=require('path'),assert=require('assert');
+const root=path.join(__dirname,'..');
+const read=f=>fs.readFileSync(path.join(root,f),'utf8');
+const h15=read('upgrade122-hotfix15.js'),h21=read('upgrade122-hotfix21.js'),h26=read('upgrade122-hotfix26.js'),h27=read('upgrade122-hotfix27.js'),h28=read('upgrade122-hotfix28.js'),h29=read('upgrade122-hotfix29.js'),h30=read('upgrade122-hotfix30.js');
+assert(/H33: Hotfix21 is the single owner of day-header buttons/.test(h15),'H15 must not own schedule-header mounting');
+assert(!/setInterval\(\(\)=>\{if\(!\$\('tk-h15-modal'/.test(h15),'H15 steady remount timer still active');
+assert(/\['renderMatches','renderAll','applyRole','afterLogin','showTab'\]/.test(h21),'H21 must own schedule lifecycle hook');
+assert(!/setInterval\(\(\)=>\{hookApp\(\)/.test(h21),'H21 steady self-heal timer still active');
+assert(!/installed=true;patchConfirm\(\);hook\(\);watch/.test(h27),'H27 must not wrap App render lifecycle');
+assert(!/setInterval\(\(\)=>\{patchConfirm\(\);hook\(\);mount/.test(h27),'H27 steady patch timer still active');
+assert(!/timer=setInterval\(cleanBind,500\)/.test(h26),'H26 steady bind timer still active');
+assert(!/setInterval\(\(\)=>\{patchScore\(\);patchRender/.test(h28),'H28 steady patch timer still active');
+assert(!/setInterval\(\(\)=>\{patchEngine\(\);patchCommentary/.test(h29),'H29 steady patch timer still active');
+assert(!/setInterval\(\(\)=>\{ensureUi\(\);patchScore/.test(h30),'H30 steady patch timer still active');
+console.log('PASS Hotfix33 runtime ownership · no schedule wrapper fight · no commentary self-heal timers');

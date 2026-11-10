@@ -1,0 +1,5 @@
+/* Upgrade 26: public spectator search must visually hide filtered cards.
+   Upgrade 12 assigns display:grid/flex, so relying on the HTML hidden attribute alone is not sufficient. */
+#spectator-schedule > .tk26-search-hidden,
+#spectator-schedule > .tk12-public-match[hidden],
+#spectator-schedule > .tk12-public-day[hidden]{display:none!important}

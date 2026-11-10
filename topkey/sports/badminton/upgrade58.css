@@ -1,0 +1,64 @@
+/* Upgrade 58 · Referee Match Focus + Android PWA install feedback */
+body.tk58-score-focus .tk57-referee-toolbar,
+body.tk58-score-focus #page-umpire>.card>.form-grid,
+body.tk58-score-focus #page-umpire .tk20-umpire-filter,
+body.tk58-score-focus #tk20-umpire-match-count,
+body.tk58-score-focus #page-umpire .tk22-umpire-access-note{display:none!important}
+
+html.tk58-score-focus,body.tk58-score-focus{width:100%;height:100%;overflow:hidden!important;overscroll-behavior:none;background:#06101f}
+body.tk58-score-focus .topbar{display:none!important}
+body.tk58-score-focus #app-shell{width:100vw!important;height:100dvh!important;overflow:hidden!important}
+body.tk58-score-focus .shell{width:100%!important;max-width:none!important;height:100dvh!important;margin:0!important;padding:max(4px,env(safe-area-inset-top)) max(5px,env(safe-area-inset-right)) max(4px,env(safe-area-inset-bottom)) max(5px,env(safe-area-inset-left))!important;overflow:hidden!important}
+body.tk58-score-focus .shell>.page:not(#page-umpire){display:none!important}
+body.tk58-score-focus #page-umpire{display:block!important;width:100%!important;height:100%!important;margin:0!important;overflow:hidden!important;animation:none!important}
+body.tk58-score-focus #page-umpire>.card{width:100%!important;height:100%!important;max-width:none!important;margin:0!important;padding:5px!important;border-radius:9px!important;display:grid!important;grid-template-rows:minmax(0,1fr) auto!important;gap:5px!important;overflow:hidden!important;background:rgba(7,22,39,.99);box-shadow:none!important}
+body.tk58-score-focus #umpire-board{grid-row:1!important;margin:0!important;min-height:0!important;overflow:hidden!important;display:flex!important;flex-direction:column!important;gap:5px!important}
+body.tk58-score-focus .score-actions{grid-row:2!important;margin:0!important;gap:5px!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;padding:0!important;background:transparent!important}
+body.tk58-score-focus .score-actions .btn{min-width:0!important;min-height:40px!important;padding:7px 5px!important;font-size:clamp(10px,1.05vw,13px)!important;line-height:1.1!important;white-space:normal!important}
+body.tk58-score-focus #umpire-board>.score-head{flex:0 0 auto!important;margin:0!important;gap:5px!important}
+body.tk58-score-focus #umpire-board>.score-head div{padding:4px 7px!important}
+body.tk58-score-focus #umpire-board>.score-head strong{font-size:clamp(34px,7vh,62px)!important;line-height:.95!important}
+body.tk58-score-focus #umpire-board>.score-head small{font-size:9px!important}
+body.tk58-score-focus #umpire-board>.score-head>span{font-size:clamp(11px,1.45vw,16px)!important;line-height:1.15!important}
+body.tk58-score-focus #umpire-board>.tk11-service-line{flex:0 0 auto!important;margin:0!important;padding:4px 7px!important;min-height:32px!important;gap:5px!important;font-size:clamp(9px,1.1vw,12px)!important}
+body.tk58-score-focus #umpire-board>.tk11-service-line .btn{min-height:28px!important;padding:4px 7px!important}
+body.tk58-score-focus #umpire-board>.tk11-service-line .tk13-court-legend{padding:2px 5px!important;font-size:8px!important}
+body.tk58-score-focus #umpire-board>.court{flex:1 1 auto!important;min-height:0!important;height:auto!important;width:100%!important;border-width:3px!important;border-radius:11px!important}
+body.tk58-score-focus #umpire-board .court-half{padding:6px 9px!important;gap:5px!important;min-height:0!important;justify-content:space-around!important}
+body.tk58-score-focus #umpire-board .tk11-team-head{gap:5px!important}
+body.tk58-score-focus #umpire-board .tk11-team-head>b{font-size:clamp(11px,1.5vw,16px)!important;overflow-wrap:anywhere}
+body.tk58-score-focus #umpire-board .tk11-swap-pos{padding:4px 7px!important;min-height:28px!important;font-size:9px!important}
+body.tk58-score-focus #umpire-board .player{padding:clamp(6px,1.25vh,13px) clamp(6px,1vw,12px)!important;min-height:0!important;font-size:clamp(10px,1.3vw,15px)!important;line-height:1.12!important}
+body.tk58-score-focus #umpire-board .tk11-player-no{width:clamp(27px,3.4vw,36px)!important;height:clamp(27px,3.4vw,36px)!important;font-size:clamp(17px,2.3vw,24px)!important}
+body.tk58-score-focus #umpire-board .tk11-player small{font-size:clamp(8px,.9vw,10px)!important}
+
+#tk58-focus-exit{display:none;position:fixed;z-index:10020;top:max(6px,env(safe-area-inset-top));right:max(6px,env(safe-area-inset-right));width:38px;height:38px;padding:0!important;border-radius:12px!important;border:1px solid #6b8cab!important;background:rgba(7,28,48,.88)!important;color:#d9efff!important;box-shadow:0 3px 12px #0008;font-size:18px!important;line-height:1!important;backdrop-filter:blur(8px)}
+body.tk58-score-focus #tk58-focus-exit{display:grid!important;place-items:center}
+body.tk58-score-focus .toast-box{right:max(8px,env(safe-area-inset-right));bottom:max(8px,env(safe-area-inset-bottom))}
+
+/* Portrait phone: score + court + actions only. Scroll is allowed only if the physical screen is unusually short. */
+@media (max-width:720px) and (orientation:portrait){
+ body.tk58-score-focus #page-umpire>.card{padding:4px!important;gap:4px!important;overflow:auto!important;grid-template-rows:auto auto!important}
+ body.tk58-score-focus #umpire-board{overflow:visible!important;display:block!important}
+ body.tk58-score-focus #umpire-board>.score-head{margin-bottom:4px!important}body.tk58-score-focus #umpire-board>.score-head strong{font-size:clamp(36px,12vw,54px)!important}
+ body.tk58-score-focus #umpire-board>.tk11-service-line{margin:4px 0!important;flex-wrap:wrap!important}body.tk58-score-focus #umpire-board>.tk11-service-line .tk13-court-legend{width:100%;order:3;text-align:center}
+ body.tk58-score-focus #umpire-board>.court{min-height:clamp(300px,48dvh,430px)!important;height:clamp(300px,48dvh,430px)!important}
+ body.tk58-score-focus #umpire-board .court-half{padding:7px 5px!important}body.tk58-score-focus #umpire-board .tk11-team-head{align-items:stretch!important;flex-direction:column!important}body.tk58-score-focus #umpire-board .tk11-swap-pos{width:100%!important}
+ body.tk58-score-focus .score-actions{grid-template-columns:repeat(2,minmax(0,1fr))!important;padding-bottom:max(2px,env(safe-area-inset-bottom))!important}body.tk58-score-focus .score-actions .btn{min-height:48px!important;font-size:11px!important}
+ #tk58-focus-exit{width:34px;height:34px;font-size:16px}
+}
+
+/* Landscape phones: fit the complete scoring console in one physical viewport. */
+@media (orientation:landscape) and (max-height:650px){
+ body.tk58-score-focus #page-umpire>.card{padding:3px!important;gap:3px!important;border-radius:7px!important}
+ body.tk58-score-focus #umpire-board{gap:2px!important}
+ body.tk58-score-focus #umpire-board>.score-head{gap:3px!important}body.tk58-score-focus #umpire-board>.score-head div{padding:1px 5px!important}body.tk58-score-focus #umpire-board>.score-head strong{font-size:27px!important}body.tk58-score-focus #umpire-board>.score-head small{font-size:7px!important}body.tk58-score-focus #umpire-board>.score-head>span{font-size:9px!important}
+ body.tk58-score-focus #umpire-board>.tk11-service-line{padding:2px 5px!important;min-height:26px!important;font-size:8px!important;flex-wrap:nowrap!important}body.tk58-score-focus #umpire-board>.tk11-service-line .tk13-court-legend{font-size:7px!important;padding:1px 3px!important;white-space:nowrap}body.tk58-score-focus #umpire-board>.tk11-service-line .btn{min-height:23px!important;padding:2px 5px!important;font-size:8px!important}
+ body.tk58-score-focus #umpire-board>.court{border-width:2px!important;min-height:0!important}body.tk58-score-focus #umpire-board .court-half{padding:3px 6px!important;gap:3px!important}body.tk58-score-focus #umpire-board .tk11-team-head{flex-direction:row!important;align-items:center!important}body.tk58-score-focus #umpire-board .tk11-team-head>b{font-size:9px!important}body.tk58-score-focus #umpire-board .tk11-swap-pos{min-height:22px!important;padding:2px 5px!important;font-size:8px!important;width:auto!important}body.tk58-score-focus #umpire-board .player{padding:3px 5px!important;font-size:9px!important;gap:4px!important}body.tk58-score-focus #umpire-board .tk11-player-no{width:22px!important;height:22px!important;font-size:14px!important}body.tk58-score-focus #umpire-board .tk11-player small{font-size:7px!important}
+ body.tk58-score-focus .score-actions{gap:3px!important}body.tk58-score-focus .score-actions .btn{min-height:31px!important;padding:3px!important;font-size:9px!important}
+ #tk58-focus-exit{width:30px;height:30px;top:max(3px,env(safe-area-inset-top));right:max(3px,env(safe-area-inset-right));font-size:14px;border-radius:9px!important}
+}
+
+/* Install status shown only when useful. */
+.tk58-install-note{display:block;margin-top:4px;color:#9ec5e8;font-size:10px;line-height:1.3;grid-column:1/-1}
+.tk58-install-note.ok{color:#7ef0bd}.tk58-install-note.warn{color:#ffd479}

@@ -1,0 +1,36 @@
+{
+  "release": "H120",
+  "cacheTag": "u122h120-20261110",
+  "version": "2026.11.10-vnext-upgrade122-hotfix120-auth-shell-mobile-header",
+  "basis": "H119 Unified Platform Auth & MultiSport Policy",
+  "localChecks": {
+    "unifiedAuthShell": "PASS",
+    "mobileHeaderToggle": "PASS",
+    "h120ReleaseIntegrity": "36/36 PASS",
+    "platformBootstrap": "10/10 PASS",
+    "authStateMachine": "12/12 PASS",
+    "policyRulesParity": "69/69 PASS",
+    "sharedAuthRegression": "29/29 PASS",
+    "unifiedRulesAssets": "28/28 PASS",
+    "releaseIntegrity": "38/38 PASS",
+    "clubPlanConcurrency": "14/14 PASS",
+    "publicRoutes": "9/9 PASS",
+    "securityContract": "6/6 PASS",
+    "judgingContract": "PASS",
+    "awardsContract": "PASS",
+    "javascriptSyntax": "421 files PASS",
+    "jsonParsing": "59 files PASS",
+    "inlineScriptSyntax": "14/14 PASS"
+  },
+  "knownHarnessLimitations": [
+    "The historical H96 header fixture pins an obsolete H96 service-worker cache namespace and is not a current release gate.",
+    "The production browser smoke cannot run because no Chromium executable is installed in the container."
+  ],
+  "notVerified": [
+    "Actual deployment to EdgeOne",
+    "Actual Firebase Email/Password sign-in and production RTDB rules",
+    "Real mobile and desktop browser network timing",
+    "Production CDN cache invalidation"
+  ],
+  "releaseDecision": "Deployable H120 candidate. Production certification requires the post-deploy checklist in H120_READ_ME_FIRST.md."
+}

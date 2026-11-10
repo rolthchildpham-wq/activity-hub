@@ -1,0 +1,5 @@
+{
+  "checks": 29,
+  "pass": true,
+  "context": "Node vm with mocked Firebase/DOM (no production access)"
+}

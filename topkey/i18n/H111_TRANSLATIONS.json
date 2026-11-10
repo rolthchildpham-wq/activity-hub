@@ -1,0 +1,592 @@
+{
+  "🏸 Topkey Badminton Live": {
+    "vi": "🏸 Topkey Badminton Live",
+    "en": "🏸 Topkey Badminton Live",
+    "zh": "🏸 TOPKEY 羽毛球直播"
+  },
+  "Cổng khán giả · Live · lịch thi đấu · BXH · BLV": {
+    "vi": "Cổng khán giả · Live · lịch thi đấu · BXH · BLV",
+    "en": "Public spectator portal · Live · Schedule · Standings · Commentary",
+    "zh": "观众公开入口 · 直播 · 赛程 · 排名 · 解说"
+  },
+  "← Sports Hub": {
+    "vi": "← Sports Hub",
+    "en": "← Sports Hub",
+    "zh": "← 体育中心"
+  },
+  "🔴 Trận đang Live": {
+    "vi": "🔴 Trận đang Live",
+    "en": "🔴 Live matches",
+    "zh": "🔴 正在直播的比赛"
+  },
+  "Đang dò nguồn Live…": {
+    "vi": "Đang dò nguồn Live…",
+    "en": "Detecting live stream…",
+    "zh": "正在寻找直播源…"
+  },
+  "Đang dò trận LIVE…": {
+    "vi": "Đang dò trận LIVE…",
+    "en": "Looking for live matches…",
+    "zh": "正在查找直播比赛…"
+  },
+  "▾ Thu nhỏ Live": {
+    "vi": "▾ Thu nhỏ Live",
+    "en": "▾ Collapse Live",
+    "zh": "▾ 收起直播"
+  },
+  "▸ Hiện Live": {
+    "vi": "▸ Hiện Live",
+    "en": "▸ Show Live",
+    "zh": "▸ 展开直播"
+  },
+  "🔊 Bật tiếng + BLV": {
+    "vi": "🔊 Bật tiếng + BLV",
+    "en": "🔊 Enable sound + commentary",
+    "zh": "🔊 开启声音与解说"
+  },
+  "✓ Tiếng + BLV đã bật": {
+    "vi": "✓ Tiếng + BLV đã bật",
+    "en": "✓ Sound + commentary enabled",
+    "zh": "✓ 已开启声音与解说"
+  },
+  "↻ Xoay hình": {
+    "vi": "↻ Xoay hình",
+    "en": "↻ Rotate video",
+    "zh": "↻ 旋转画面"
+  },
+  "⛶ Toàn màn hình": {
+    "vi": "⛶ Toàn màn hình",
+    "en": "⛶ Fullscreen",
+    "zh": "⛶ 全屏"
+  },
+  "↙ Thoát toàn màn hình": {
+    "vi": "↙ Thoát toàn màn hình",
+    "en": "↙ Exit fullscreen",
+    "zh": "↙ 退出全屏"
+  },
+  "📅 Lịch thi đấu & Kết quả": {
+    "vi": "📅 Lịch thi đấu & Kết quả",
+    "en": "📅 Schedule & Results",
+    "zh": "📅 赛程与结果"
+  },
+  "Ngày sắp thi đấu ở trên; lịch đã qua ở dưới.": {
+    "vi": "Ngày sắp thi đấu ở trên; lịch đã qua ở dưới.",
+    "en": "Upcoming matches first; past matches below.",
+    "zh": "即将进行的比赛在上方，已结束的比赛在下方。"
+  },
+  "↑ Thu gọn": {
+    "vi": "↑ Thu gọn",
+    "en": "↑ Collapse",
+    "zh": "↑ 收起"
+  },
+  "↓ Mở rộng": {
+    "vi": "↓ Mở rộng",
+    "en": "↓ Expand",
+    "zh": "↓ 展开"
+  },
+  "Tìm tên VĐV / đội / mã trận": {
+    "vi": "Tìm tên VĐV / đội / mã trận",
+    "en": "Search player / team / match code",
+    "zh": "搜索运动员 / 队伍 / 比赛编号"
+  },
+  "× Xóa tìm": {
+    "vi": "× Xóa tìm",
+    "en": "× Clear search",
+    "zh": "× 清除搜索"
+  },
+  "🏆 Bảng xếp hạng": {
+    "vi": "🏆 Bảng xếp hạng",
+    "en": "🏆 Standings",
+    "zh": "🏆 排名"
+  },
+  "📣 Thông báo mới": {
+    "vi": "📣 Thông báo mới",
+    "en": "📣 New announcement",
+    "zh": "📣 新通知"
+  },
+  "📣 Thông báo mới nhất": {
+    "vi": "📣 Thông báo mới nhất",
+    "en": "📣 Latest announcement",
+    "zh": "📣 最新通知"
+  },
+  "✕ Đóng": {
+    "vi": "✕ Đóng",
+    "en": "✕ Close",
+    "zh": "✕ 关闭"
+  },
+  "⭐ HÔM NAY · ": {
+    "vi": "⭐ HÔM NAY · ",
+    "en": "⭐ TODAY · ",
+    "zh": "⭐ 今天 · "
+  },
+  "CHƯA XẾP NGÀY": {
+    "vi": "CHƯA XẾP NGÀY",
+    "en": "DATE NOT SET",
+    "zh": "未安排日期"
+  },
+  "Chưa gán sân": {
+    "vi": "Chưa gán sân",
+    "en": "Court not assigned",
+    "zh": "未安排场地"
+  },
+  "Không có trận phù hợp.": {
+    "vi": "Không có trận phù hợp.",
+    "en": "No matching matches.",
+    "zh": "没有符合条件的比赛。"
+  },
+  "Chưa có dữ liệu BXH.": {
+    "vi": "Chưa có dữ liệu BXH.",
+    "en": "No standings data yet.",
+    "zh": "暂无排名数据。"
+  },
+  "Chưa có VĐV / đội": {
+    "vi": "Chưa có VĐV / đội",
+    "en": "No players / teams yet",
+    "zh": "暂无运动员 / 队伍"
+  },
+  "Chưa thi đấu": {
+    "vi": "Chưa thi đấu",
+    "en": "Not started",
+    "zh": "未开始"
+  },
+  "Check-in": {
+    "vi": "Check-in",
+    "en": "Check-in",
+    "zh": "签到"
+  },
+  "Sẵn sàng": {
+    "vi": "Sẵn sàng",
+    "en": "Ready",
+    "zh": "就绪"
+  },
+  "Gọi ra sân": {
+    "vi": "Gọi ra sân",
+    "en": "Called to court",
+    "zh": "已呼叫上场"
+  },
+  "Khởi động": {
+    "vi": "Khởi động",
+    "en": "Warm-up",
+    "zh": "热身"
+  },
+  "Đang thi đấu": {
+    "vi": "Đang thi đấu",
+    "en": "In progress",
+    "zh": "比赛进行中"
+  },
+  "Nghỉ giữa set": {
+    "vi": "Nghỉ giữa set",
+    "en": "Set break",
+    "zh": "局间休息"
+  },
+  "Tạm dừng": {
+    "vi": "Tạm dừng",
+    "en": "Paused",
+    "zh": "暂停"
+  },
+  "Đã kết thúc": {
+    "vi": "Đã kết thúc",
+    "en": "Finished",
+    "zh": "已结束"
+  },
+  "Thắng WO": {
+    "vi": "Thắng WO",
+    "en": "Walkover win",
+    "zh": "弃权获胜"
+  },
+  "Bỏ cuộc": {
+    "vi": "Bỏ cuộc",
+    "en": "Retired",
+    "zh": "退赛"
+  },
+  "Loại": {
+    "vi": "Loại",
+    "en": "Disqualified",
+    "zh": "取消资格"
+  },
+  "Đã hủy": {
+    "vi": "Đã hủy",
+    "en": "Cancelled",
+    "zh": "已取消"
+  },
+  "Đôi Nam": {
+    "vi": "Đôi Nam",
+    "en": "Men’s doubles",
+    "zh": "男子双打"
+  },
+  "Đôi Nữ": {
+    "vi": "Đôi Nữ",
+    "en": "Women’s doubles",
+    "zh": "女子双打"
+  },
+  "Đôi Nam Nữ": {
+    "vi": "Đôi Nam Nữ",
+    "en": "Mixed doubles",
+    "zh": "混合双打"
+  },
+  "Mở rộng": {
+    "vi": "Mở rộng",
+    "en": "Expand",
+    "zh": "展开"
+  },
+  "Đang mở nguồn Live…": {
+    "vi": "Đang mở nguồn Live…",
+    "en": "Opening live stream…",
+    "zh": "正在打开直播源…"
+  },
+  "Đang kết nối camera WebRTC…": {
+    "vi": "Đang kết nối camera WebRTC…",
+    "en": "Connecting WebRTC camera…",
+    "zh": "正在连接 WebRTC 摄像头…"
+  },
+  "Đang bật phiên Live bảo mật…": {
+    "vi": "Đang bật phiên Live bảo mật…",
+    "en": "Starting secure live session…",
+    "zh": "正在启动安全直播会话…"
+  },
+  "Lịch/BXH vẫn xem công khai; WebRTC Live cần Anonymous Auth.": {
+    "vi": "Lịch/BXH vẫn xem công khai; WebRTC Live cần Anonymous Auth.",
+    "en": "Schedule and standings are public; WebRTC needs anonymous authentication.",
+    "zh": "赛程和排名可公开查看；WebRTC 需要匿名身份验证。"
+  },
+  "Camera BTC đã ngắt/reload · hãy mở lại Camera/Live trên máy BTC.": {
+    "vi": "Camera BTC đã ngắt/reload · hãy mở lại Camera/Live trên máy BTC.",
+    "en": "Organizer camera disconnected/reloaded · restart Camera/Live on the organizer device.",
+    "zh": "组委会摄像头已断开或重新加载，请在管理设备上重启直播。"
+  },
+  "WebRTC answer lỗi: ": {
+    "vi": "WebRTC answer lỗi: ",
+    "en": "WebRTC response error: ",
+    "zh": "WebRTC 响应错误："
+  },
+  "WebRTC ICE thất bại · đang dùng TURN nếu khả dụng.": {
+    "vi": "WebRTC ICE thất bại · đang dùng TURN nếu khả dụng.",
+    "en": "WebRTC ICE failed · attempting TURN if available.",
+    "zh": "WebRTC ICE 失败，正在尝试可用的 TURN。"
+  },
+  "Không mở được HLS trên trình duyệt này.": {
+    "vi": "Không mở được HLS trên trình duyệt này.",
+    "en": "HLS cannot be played in this browser.",
+    "zh": "此浏览器无法播放 HLS。"
+  },
+  "Nguồn Live chưa sẵn sàng.": {
+    "vi": "Nguồn Live chưa sẵn sàng.",
+    "en": "Live stream is not available yet.",
+    "zh": "直播源尚未就绪。"
+  },
+  "Camera/nguồn Live đang phát": {
+    "vi": "Camera/nguồn Live đang phát",
+    "en": "Camera/live source is streaming",
+    "zh": "摄像头/直播源正在播放"
+  },
+  "▶ Xem LIVE": {
+    "vi": "▶ Xem LIVE",
+    "en": "▶ Watch LIVE",
+    "zh": "▶ 观看直播"
+  },
+  "Không kết nối được Firebase: ": {
+    "vi": "Không kết nối được Firebase: ",
+    "en": "Could not connect to Firebase: ",
+    "zh": "无法连接 Firebase："
+  },
+  "Firebase Database tải quá chậm hoặc bị chặn": {
+    "vi": "Firebase Database tải quá chậm hoặc bị chặn",
+    "en": "Firebase Database is slow or blocked",
+    "zh": "Firebase 数据库加载缓慢或被阻止"
+  },
+  "Âm thanh bình luận tỷ số đã bật.": {
+    "vi": "Âm thanh bình luận tỷ số đã bật.",
+    "en": "Score commentary audio enabled.",
+    "zh": "比分解说音频已开启。"
+  },
+  "Không phát được BLV: ": {
+    "vi": "Không phát được BLV: ",
+    "en": "Commentary audio failed: ",
+    "zh": "解说音频播放失败："
+  },
+  "Thiết bị không có SpeechSynthesis.": {
+    "vi": "Thiết bị không có SpeechSynthesis.",
+    "en": "Speech synthesis is unavailable on this device.",
+    "zh": "此设备不支持语音合成。"
+  },
+  "✓ Đã phát BLV tỷ số": {
+    "vi": "✓ Đã phát BLV tỷ số",
+    "en": "✓ Score commentary played",
+    "zh": "✓ 已播放比分解说"
+  },
+  "Đã bật BLV": {
+    "vi": "Đã bật BLV",
+    "en": "Commentary enabled",
+    "zh": "解说已开启"
+  },
+  "TTS Viewer lỗi: ": {
+    "vi": "TTS Viewer lỗi: ",
+    "en": "Viewer TTS error: ",
+    "zh": "观众端语音合成错误："
+  },
+  "🔔 CƠ CẤU GIẢI THƯỞNG": {
+    "vi": "🔔 CƠ CẤU GIẢI THƯỞNG",
+    "en": "🔔 PRIZE STRUCTURE",
+    "zh": "🔔 奖项设置"
+  },
+  "🏆 CƠ CẤU GIẢI THƯỞNG": {
+    "vi": "🏆 CƠ CẤU GIẢI THƯỞNG",
+    "en": "🏆 PRIZE STRUCTURE",
+    "zh": "🏆 奖项设置"
+  },
+  "🎁 CƠ CẤU GIẢI THƯỞNG": {
+    "vi": "🎁 CƠ CẤU GIẢI THƯỞNG",
+    "en": "🎁 PRIZE STRUCTURE",
+    "zh": "🎁 奖项设置"
+  },
+  "Giải Nhất": {
+    "vi": "Giải Nhất",
+    "en": "First prize",
+    "zh": "一等奖"
+  },
+  "Giải Nhì": {
+    "vi": "Giải Nhì",
+    "en": "Second prize",
+    "zh": "二等奖"
+  },
+  "Giải Ba": {
+    "vi": "Giải Ba",
+    "en": "Third prize",
+    "zh": "三等奖"
+  },
+  "Giải khuyến khích": {
+    "vi": "Giải khuyến khích",
+    "en": "Consolation prize",
+    "zh": "鼓励奖"
+  },
+  "Tổng giải thưởng": {
+    "vi": "Tổng giải thưởng",
+    "en": "Total prizes",
+    "zh": "奖项总数"
+  },
+  "Cơ cấu giải thưởng": {
+    "vi": "Cơ cấu giải thưởng",
+    "en": "Prize structure",
+    "zh": "奖项设置"
+  },
+  "Giải thưởng": {
+    "vi": "Giải thưởng",
+    "en": "Prizes",
+    "zh": "奖项"
+  },
+  "Bảng xếp hạng · MEN": {
+    "vi": "Bảng xếp hạng · MEN",
+    "en": "Men’s doubles standings",
+    "zh": "男子双打排名"
+  },
+  "Bảng xếp hạng · WOMEN": {
+    "vi": "Bảng xếp hạng · WOMEN",
+    "en": "Women’s doubles standings",
+    "zh": "女子双打排名"
+  },
+  "Bảng xếp hạng · MIX": {
+    "vi": "Bảng xếp hạng · MIX",
+    "en": "Mixed doubles standings",
+    "zh": "混合双打排名"
+  },
+  "Lịch & kết quả": {
+    "vi": "Lịch & kết quả",
+    "en": "Schedule & results",
+    "zh": "赛程与结果"
+  },
+  "Người tham gia": {
+    "vi": "Người tham gia",
+    "en": "Participants",
+    "zh": "参赛人员"
+  },
+  "Vòng bảng": {
+    "vi": "Vòng bảng",
+    "en": "Group stage",
+    "zh": "小组赛"
+  },
+  "Vòng loại trực tiếp": {
+    "vi": "Vòng loại trực tiếp",
+    "en": "Knockout stage",
+    "zh": "淘汰赛"
+  },
+  "Cập nhật dữ liệu": {
+    "vi": "Cập nhật dữ liệu",
+    "en": "Refresh data",
+    "zh": "刷新数据"
+  },
+  "Thể thao": {
+    "vi": "Thể thao",
+    "en": "Sports",
+    "zh": "体育"
+  },
+  "VĐV/người tham gia": {
+    "vi": "VĐV/người tham gia",
+    "en": "Players / participants",
+    "zh": "运动员 / 参赛人员"
+  },
+  "Người xem": {
+    "vi": "Người xem",
+    "en": "Spectators",
+    "zh": "观众"
+  },
+  "Bảng xếp hạng": {
+    "vi": "Bảng xếp hạng",
+    "en": "Standings",
+    "zh": "排名"
+  },
+  "Đội thi": {
+    "vi": "Đội thi",
+    "en": "Teams",
+    "zh": "参赛队伍"
+  },
+  "Trận đấu": {
+    "vi": "Trận đấu",
+    "en": "Matches",
+    "zh": "比赛"
+  },
+  "Tỷ số": {
+    "vi": "Tỷ số",
+    "en": "Score",
+    "zh": "比分"
+  },
+  "Trạng thái": {
+    "vi": "Trạng thái",
+    "en": "Status",
+    "zh": "状态"
+  },
+  "Nội dung": {
+    "vi": "Nội dung",
+    "en": "Category",
+    "zh": "项目"
+  },
+  "Vòng": {
+    "vi": "Vòng",
+    "en": "Round",
+    "zh": "轮次"
+  },
+  "Tên giải": {
+    "vi": "Tên giải",
+    "en": "Tournament name",
+    "zh": "赛事名称"
+  },
+  "Thời gian": {
+    "vi": "Thời gian",
+    "en": "Time",
+    "zh": "时间"
+  },
+  "Tìm kiếm": {
+    "vi": "Tìm kiếm",
+    "en": "Search",
+    "zh": "搜索"
+  },
+  "Lịch thi đấu & Kết quả": {
+    "vi": "Lịch thi đấu & Kết quả",
+    "en": "Schedule & Results",
+    "zh": "赛程与结果"
+  },
+  "Thu gọn": {
+    "vi": "Thu gọn",
+    "en": "Collapse",
+    "zh": "收起"
+  },
+  "Đã hoàn thành": {
+    "vi": "Đã hoàn thành",
+    "en": "Completed",
+    "zh": "已完成"
+  },
+  "Chưa có dữ liệu": {
+    "vi": "Chưa có dữ liệu",
+    "en": "No data yet",
+    "zh": "暂无数据"
+  },
+  "Đang tải dữ liệu": {
+    "vi": "Đang tải dữ liệu",
+    "en": "Loading data",
+    "zh": "正在加载数据"
+  },
+  "Không tải được dữ liệu": {
+    "vi": "Không tải được dữ liệu",
+    "en": "Could not load data",
+    "zh": "无法加载数据"
+  },
+  "Ngày hôm nay": {
+    "vi": "Ngày hôm nay",
+    "en": "Today",
+    "zh": "今天"
+  },
+  "Báo cáo cuối giải": {
+    "vi": "Báo cáo cuối giải",
+    "en": "Final tournament report",
+    "zh": "赛事总结报告"
+  },
+  "Xuất báo cáo": {
+    "vi": "Xuất báo cáo",
+    "en": "Export report",
+    "zh": "导出报告"
+  },
+  "Đăng ký công khai": {
+    "vi": "Đăng ký công khai",
+    "en": "Public registration",
+    "zh": "公开报名"
+  },
+  "Không cần đăng nhập": {
+    "vi": "Không cần đăng nhập",
+    "en": "No sign-in required",
+    "zh": "无需登录"
+  },
+  "Chọn nội dung": {
+    "vi": "Chọn nội dung",
+    "en": "Select category",
+    "zh": "选择项目"
+  },
+  "Chọn ngày": {
+    "vi": "Chọn ngày",
+    "en": "Select date",
+    "zh": "选择日期"
+  },
+  "Kết quả cuối cùng": {
+    "vi": "Kết quả cuối cùng",
+    "en": "Final results",
+    "zh": "最终结果"
+  },
+  "Đang tải...": {
+    "vi": "Đang tải...",
+    "en": "Loading…",
+    "zh": "加载中…"
+  },
+  "Thủ công": {
+    "vi": "Thủ công",
+    "en": "Handmade / DIY",
+    "zh": "手工制作"
+  },
+  "DIY / Handmade": {
+    "vi": "DIY / Handmade",
+    "en": "DIY / Handmade",
+    "zh": "手工制作"
+  },
+  "⭐ HÔM NAY ·": {
+    "vi": "⭐ HÔM NAY ·",
+    "en": "⭐ TODAY ·",
+    "zh": "⭐ 今天 ·"
+  },
+  "WebRTC answer lỗi:": {
+    "vi": "WebRTC answer lỗi:",
+    "en": "WebRTC response error:",
+    "zh": "WebRTC 响应错误："
+  },
+  "Không kết nối được Firebase:": {
+    "vi": "Không kết nối được Firebase:",
+    "en": "Could not connect to Firebase:",
+    "zh": "无法连接 Firebase："
+  },
+  "Không phát được BLV:": {
+    "vi": "Không phát được BLV:",
+    "en": "Commentary audio failed:",
+    "zh": "解说音频播放失败："
+  },
+  "TTS Viewer lỗi:": {
+    "vi": "TTS Viewer lỗi:",
+    "en": "Viewer TTS error:",
+    "zh": "观众端语音合成错误："
+  }
+}

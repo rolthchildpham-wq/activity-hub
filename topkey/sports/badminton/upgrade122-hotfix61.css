@@ -1,0 +1,7 @@
+.tk61-permission-hidden,.tk61-empty-shell{display:none!important;visibility:hidden!important;pointer-events:none!important;margin:0!important;padding:0!important;border:0!important;min-width:0!important;min-height:0!important;width:0!important;height:0!important;overflow:hidden!important}
+.tk61-readonly{opacity:.88}.tk61-readonly input,.tk61-readonly select,.tk61-readonly textarea,.tk61-readonly button:not([data-view-ok="true"]){pointer-events:none!important;opacity:.55!important}
+.tk61-auto-layout .grid.g2,.tk61-auto-layout .grid.g3,.tk61-auto-layout .grid.g4,.tk61-auto-layout .tk9-grid,.tk61-auto-layout .tk9-grid3{grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))!important;align-items:start}
+.tk61-auto-layout .form-grid,.tk61-auto-layout .scheduler-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr))!important}
+.tk61-auto-layout .action-bar,.tk61-auto-layout .tk9-actions,.tk61-auto-layout .split{flex-wrap:wrap!important}
+.tk61-auto-layout .nav{display:flex!important;flex-wrap:wrap!important;gap:6px!important}.tk61-auto-layout .nav>[data-tab]:not(.tk61-permission-hidden){flex:0 1 auto}
+@media(max-width:760px){.tk61-auto-layout .grid.g2,.tk61-auto-layout .grid.g3,.tk61-auto-layout .grid.g4,.tk61-auto-layout .tk9-grid,.tk61-auto-layout .tk9-grid3,.tk61-auto-layout .form-grid,.tk61-auto-layout .scheduler-grid{grid-template-columns:1fr!important}.tk61-auto-layout .card{min-width:0!important;max-width:100%!important}.tk61-auto-layout .table-wrap{max-width:100%;overflow:auto}}

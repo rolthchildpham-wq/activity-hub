@@ -1,0 +1,6 @@
+/* Upgrade 66 · hard gate: choose Set-1 opening server before Start / Match Focus */
+#umpire-start.tk66-start-locked:disabled{
+  opacity:1!important;cursor:not-allowed!important;background:#5d3b08!important;border-color:#d59a2a!important;color:#ffe1a3!important;box-shadow:inset 0 0 0 1px #ffcb5a55!important
+}
+#umpire-start.tk66-start-ready{box-shadow:0 0 0 2px #4ef0a455,0 0 18px #18c97d33!important}
+@media(max-width:720px){#umpire-start.tk66-start-locked:disabled{font-size:12px!important;line-height:1.15!important}}

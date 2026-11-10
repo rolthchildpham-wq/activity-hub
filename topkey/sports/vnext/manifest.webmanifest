@@ -1,0 +1,29 @@
+{
+  "name": "TOPKEY Sports VNext",
+  "short_name": "TOPKEY VNext",
+  "id": "./",
+  "start_url": "./index.html?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "background_color": "#071426",
+  "theme_color": "#071426",
+  "lang": "vi",
+  "icons": [
+    {
+      "src": "./icons/topkey-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/topkey-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

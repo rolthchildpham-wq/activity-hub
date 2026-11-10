@@ -1,0 +1,9 @@
+/* H109 - release-aware offline shell; no automatic page reload on SW takeover. */
+const CACHE='topkey-h120-hub-shell';
+const SHELL=['./topkey-dynamic-i18n.js?v=u122h120-20261110', './i18n/H115_TRANSLATIONS.json?v=u122h120-20261110', './index.html', './release.json', './build.json', './release-runtime.js?v=u122h120-20261110', './hub-auth-flow.js?v=u122h120-20261110', './release-coordinator.js?v=u122h120-20261110', './styles.css?v=u122h120-20261110', './executive-dashboard.js?v=u122h120-20261110', './club-planning.js?v=u122h120-20261110'];
+self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>Promise.allSettled(SHELL.map(x=>c.add(x))))));
+self.addEventListener('activate',e=>e.waitUntil(Promise.all([caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE&&(k.startsWith('topkey-h')&&k.includes('-hub-shell')||k.startsWith('topkey-sports-hub-')||k==='topkey-h98-sw.js')).map(k=>caches.delete(k)))),self.clients.claim()])));
+async function cacheFirst(req){const c=await caches.open(CACHE);const hit=await c.match(req);if(hit)return hit;const res=await fetch(req);if(res.ok)c.put(req,res.clone()).catch(()=>{});return res}
+async function networkFirst(req){const c=await caches.open(CACHE);try{const res=await fetch(req,{cache:'no-store'});if(res.ok)c.put(req,res.clone()).catch(()=>{});return res}catch{return await c.match(req)||Response.error()}}
+self.addEventListener('fetch',e=>{const req=e.request;if(req.method!=='GET')return;const url=new URL(req.url);if(url.origin!==self.location.origin)return;const fresh=req.mode==='navigate'||/\/(?:build|release)\.json$/.test(url.pathname)||/\/(?:hub-auth-flow|hub-entry-guard|release-runtime|release-coordinator|club-planning|topkey-dynamic-i18n|h108-auth-guard)\.js$/.test(url.pathname);e.respondWith(fresh?networkFirst(req):cacheFirst(req))});
+self.addEventListener('message',e=>{if(e.data?.type==='SKIP_WAITING')self.skipWaiting()});

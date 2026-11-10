@@ -1,0 +1,5 @@
+/* Upgrade88C Viewer Live UX */
+.tk88-public-live-card.hidden{display:none!important}
+.tk88-live-collapsed .tk88-public-player{display:none!important}
+.tk88-live-collapsed-card #spectator-live{display:none!important}
+.tk88-live-collapsed .tk88-public-toolbar{border-top:0}

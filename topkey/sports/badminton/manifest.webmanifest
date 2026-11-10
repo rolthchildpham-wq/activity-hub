@@ -1,0 +1,39 @@
+{
+  "name": "TOPKEY Badminton",
+  "short_name": "TOPKEY Badminton",
+  "id": "/sports/badminton/",
+  "start_url": "/sports/badminton/?source=pwa",
+  "scope": "/sports/badminton/",
+  "display": "standalone",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "background_color": "#071426",
+  "theme_color": "#071426",
+  "lang": "vi",
+  "categories": [
+    "sports",
+    "productivity"
+  ],
+  "icons": [
+    {
+      "src": "./icons/topkey-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/topkey-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "description": "TOPKEY Badminton VNext - trọng tài, lịch thi đấu, Live và vận hành giải.",
+  "orientation": "any",
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "prefer_related_applications": false
+}

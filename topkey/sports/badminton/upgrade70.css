@@ -1,0 +1,131 @@
+/* Upgrade 70 · Responsive Referee Fullscreen
+   Scale the match console to the physical viewport instead of stretching only the court. */
+body.tk58-score-focus{
+  --tk70-gap:clamp(5px,.7vmin,11px);
+  --tk70-score:clamp(58px,9.6dvh,112px);
+  --tk70-score-label:clamp(12px,.92vw,18px);
+  --tk70-match-name:clamp(16px,1.55vw,30px);
+  --tk70-note:clamp(10px,.78vw,14px);
+  --tk70-service:clamp(12px,1.02vw,19px);
+  --tk70-team:clamp(16px,1.35vw,26px);
+  --tk70-player:clamp(16px,1.32vw,25px);
+  --tk70-player-note:clamp(11px,.92vw,16px);
+  --tk70-player-no:clamp(38px,3.15vw,58px);
+  --tk70-action:clamp(13px,1.08vw,20px);
+}
+body.tk58-score-focus #page-umpire>.card{padding:var(--tk70-gap)!important;gap:var(--tk70-gap)!important}
+body.tk58-score-focus #umpire-board{gap:var(--tk70-gap)!important}
+body.tk58-score-focus #umpire-board>.score-head{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) minmax(260px,34vw) minmax(0,1fr)!important;
+  gap:var(--tk70-gap)!important;
+  min-height:clamp(92px,13.5dvh,154px);
+}
+body.tk58-score-focus #umpire-board>.score-head>div{
+  min-height:100%;padding:clamp(7px,1dvh,14px) clamp(10px,1vw,18px)!important;
+  display:grid!important;align-content:center!important;justify-items:center!important;
+}
+body.tk58-score-focus #umpire-board>.score-head strong{font-size:var(--tk70-score)!important;line-height:.82!important;letter-spacing:-.045em}
+body.tk58-score-focus #umpire-board>.score-head small{font-size:var(--tk70-score-label)!important;line-height:1.15!important}
+body.tk58-score-focus #umpire-board>.score-head>span{font-size:var(--tk70-match-name)!important;line-height:1.12!important;min-width:0!important;max-width:34vw;text-wrap:balance}
+body.tk58-score-focus #umpire-board>.score-head>span>b{font-size:inherit!important}
+body.tk58-score-focus #umpire-board .tk22-vs{font-size:clamp(18px,1.65vw,31px)!important;line-height:1!important}
+body.tk58-score-focus #umpire-board .tk22-side-note{font-size:var(--tk70-note)!important;line-height:1.2!important}
+body.tk58-score-focus #umpire-board>.tk11-service-line{
+  min-height:clamp(42px,5.6dvh,66px)!important;padding:clamp(6px,.75dvh,10px) clamp(10px,.9vw,16px)!important;
+  font-size:var(--tk70-service)!important;line-height:1.2!important;gap:clamp(6px,.7vw,12px)!important
+}
+body.tk58-score-focus #umpire-board>.tk11-service-line .btn{min-height:clamp(34px,4.3dvh,48px)!important;padding:5px clamp(9px,.8vw,15px)!important;font-size:clamp(11px,.85vw,16px)!important}
+body.tk58-score-focus #umpire-board>.tk11-service-line .tk13-court-legend{font-size:clamp(9px,.7vw,13px)!important;padding:4px 8px!important}
+body.tk58-score-focus #umpire-board>.tk69-opening-history{
+  flex:0 0 auto;margin:0!important;padding:clamp(5px,.65dvh,9px) clamp(9px,.8vw,14px)!important;
+  font-size:clamp(10px,.82vw,15px)!important;line-height:1.25!important
+}
+body.tk58-score-focus #umpire-board>.tk69-opening-history small{font-size:.9em!important}
+body.tk58-score-focus #umpire-board>.court{border-width:clamp(3px,.25vw,5px)!important;border-radius:clamp(10px,.8vw,16px)!important}
+body.tk58-score-focus #umpire-board .court-half{
+  padding:clamp(8px,1.1dvh,15px) clamp(10px,1vw,18px)!important;gap:clamp(7px,1dvh,14px)!important;
+  display:grid!important;grid-template-rows:auto minmax(0,1fr) minmax(0,1fr)!important;align-items:center!important;justify-content:stretch!important
+}
+body.tk58-score-focus #umpire-board .tk11-team-head{gap:clamp(8px,.8vw,14px)!important;min-height:clamp(38px,5.2dvh,58px)}
+body.tk58-score-focus #umpire-board .tk11-team-head>b{font-size:var(--tk70-team)!important;line-height:1.12!important}
+body.tk58-score-focus #umpire-board .tk11-swap-pos{min-height:clamp(32px,4.2dvh,46px)!important;padding:5px clamp(8px,.75vw,14px)!important;font-size:clamp(10px,.78vw,15px)!important}
+body.tk58-score-focus #umpire-board .player{
+  width:100%!important;min-height:clamp(62px,10dvh,112px)!important;padding:clamp(9px,1.35dvh,17px) clamp(10px,1.1vw,20px)!important;
+  gap:clamp(8px,.9vw,16px)!important;font-size:var(--tk70-player)!important;line-height:1.08!important;align-self:center!important
+}
+body.tk58-score-focus #umpire-board .tk11-player-no{width:var(--tk70-player-no)!important;height:var(--tk70-player-no)!important;font-size:calc(var(--tk70-player-no) * .62)!important}
+body.tk58-score-focus #umpire-board .tk11-player small{font-size:var(--tk70-player-note)!important;line-height:1.12!important}
+body.tk58-score-focus #umpire-board .tk63-opening-badge{font-size:clamp(10px,.76vw,14px)!important;padding:4px 9px!important}
+body.tk58-score-focus .score-actions{gap:var(--tk70-gap)!important}
+body.tk58-score-focus .score-actions .btn{
+  min-height:clamp(48px,6.6dvh,72px)!important;padding:clamp(7px,1dvh,12px) clamp(6px,.7vw,12px)!important;
+  font-size:var(--tk70-action)!important;line-height:1.12!important
+}
+body.tk58-score-focus #tk58-focus-exit{width:clamp(38px,3.1vw,52px)!important;height:clamp(38px,3.1vw,52px)!important;font-size:clamp(18px,1.5vw,25px)!important}
+
+/* Large laptop / desktop: use the available 16:9 space for information, not empty court. */
+@media (min-width:1280px) and (min-height:720px){
+ body.tk58-score-focus #umpire-board>.court{min-height:0!important}
+ body.tk58-score-focus #umpire-board .player{max-width:none!important}
+}
+
+/* Ultra-wide screens: stop the middle label from becoming tiny between enormous empty halves. */
+@media (min-aspect-ratio:19/9) and (min-width:1200px){
+ body.tk58-score-focus{--tk70-score:clamp(60px,10.2dvh,118px);--tk70-match-name:clamp(18px,1.35vw,29px);--tk70-player:clamp(17px,1.15vw,25px);--tk70-team:clamp(17px,1.18vw,25px)}
+ body.tk58-score-focus #umpire-board>.score-head{grid-template-columns:minmax(0,1fr) minmax(340px,30vw) minmax(0,1fr)!important}
+ body.tk58-score-focus #umpire-board>.score-head>span{max-width:30vw}
+ body.tk58-score-focus #umpire-board .court-half{padding-inline:clamp(14px,1.6vw,30px)!important}
+}
+
+/* Tablet portrait and large phones: keep two physical court sides but make score/player text touch-readable. */
+@media (max-width:900px) and (orientation:portrait){
+ body.tk58-score-focus{--tk70-score:clamp(52px,13vw,92px);--tk70-score-label:clamp(10px,2.2vw,15px);--tk70-match-name:clamp(13px,2.9vw,22px);--tk70-note:clamp(8px,1.8vw,12px);--tk70-service:clamp(11px,2.45vw,17px);--tk70-team:clamp(13px,2.9vw,21px);--tk70-player:clamp(14px,3vw,22px);--tk70-player-note:clamp(9px,2.05vw,14px);--tk70-player-no:clamp(34px,8vw,52px);--tk70-action:clamp(12px,2.7vw,18px)}
+ body.tk58-score-focus #page-umpire>.card{overflow-y:auto!important;grid-template-rows:auto auto!important}
+ body.tk58-score-focus #umpire-board{display:flex!important;overflow:visible!important}
+ body.tk58-score-focus #umpire-board>.score-head{grid-template-columns:minmax(0,1fr) minmax(145px,38vw) minmax(0,1fr)!important;min-height:clamp(82px,10.5dvh,126px);margin:0!important}
+ body.tk58-score-focus #umpire-board>.score-head>span{max-width:38vw!important;min-width:0!important}
+ body.tk58-score-focus #umpire-board>.tk11-service-line{min-height:auto!important;flex-wrap:wrap!important}
+ body.tk58-score-focus #umpire-board>.tk11-service-line>span:first-child{flex:1 1 100%}
+ body.tk58-score-focus #umpire-board>.tk11-service-line .tk13-court-legend{width:auto!important;order:initial!important}
+ body.tk58-score-focus #umpire-board>.court{height:clamp(300px,42dvh,520px)!important;min-height:clamp(300px,42dvh,520px)!important;flex:none!important}
+ body.tk58-score-focus #umpire-board .court-half{padding:clamp(7px,1.1dvh,13px) clamp(6px,1.6vw,12px)!important}
+ body.tk58-score-focus #umpire-board .tk11-team-head{align-items:stretch!important;flex-direction:column!important;min-height:auto}
+ body.tk58-score-focus #umpire-board .tk11-swap-pos{width:100%!important}
+ body.tk58-score-focus #umpire-board .player{min-height:clamp(78px,10dvh,128px)!important}
+ body.tk58-score-focus .score-actions{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ body.tk58-score-focus .score-actions .btn{min-height:clamp(50px,6.4dvh,68px)!important}
+}
+
+/* Short landscape phones: scale by height. The old fixed 9px console was unreadable. */
+@media (orientation:landscape) and (max-height:650px){
+ body.tk58-score-focus{--tk70-gap:clamp(3px,.8dvh,6px);--tk70-score:clamp(34px,10.5dvh,52px);--tk70-score-label:clamp(8px,2.1dvh,11px);--tk70-match-name:clamp(10px,2.8dvh,15px);--tk70-note:clamp(7px,1.8dvh,10px);--tk70-service:clamp(9px,2.35dvh,13px);--tk70-team:clamp(10px,2.65dvh,15px);--tk70-player:clamp(10px,2.8dvh,16px);--tk70-player-note:clamp(7px,1.95dvh,11px);--tk70-player-no:clamp(25px,7dvh,36px);--tk70-action:clamp(9px,2.45dvh,13px)}
+ body.tk58-score-focus #page-umpire>.card{padding:3px!important;gap:var(--tk70-gap)!important;overflow:hidden!important}
+ body.tk58-score-focus #umpire-board{gap:var(--tk70-gap)!important}
+ body.tk58-score-focus #umpire-board>.score-head{grid-template-columns:minmax(0,1fr) minmax(180px,34vw) minmax(0,1fr)!important;min-height:clamp(48px,14dvh,72px)!important;gap:var(--tk70-gap)!important}
+ body.tk58-score-focus #umpire-board>.score-head>div{padding:2px 6px!important}
+ body.tk58-score-focus #umpire-board>.score-head>span{font-size:var(--tk70-match-name)!important;max-width:34vw!important}
+ body.tk58-score-focus #umpire-board>.tk11-service-line{min-height:clamp(28px,7.2dvh,38px)!important;padding:2px 6px!important;font-size:var(--tk70-service)!important;flex-wrap:nowrap!important}
+ body.tk58-score-focus #umpire-board>.tk11-service-line .btn{min-height:clamp(24px,6dvh,32px)!important;font-size:clamp(8px,2dvh,11px)!important;padding:2px 6px!important}
+ body.tk58-score-focus #umpire-board>.tk11-service-line .tk13-court-legend{font-size:clamp(7px,1.7dvh,9px)!important;padding:2px 4px!important;white-space:nowrap}
+ body.tk58-score-focus #umpire-board>.tk69-opening-history{padding:2px 6px!important;font-size:clamp(7px,1.8dvh,10px)!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ body.tk58-score-focus #umpire-board>.court{border-width:2px!important}
+ body.tk58-score-focus #umpire-board .court-half{padding:3px 7px!important;gap:3px!important;grid-template-rows:auto minmax(0,1fr) minmax(0,1fr)!important}
+ body.tk58-score-focus #umpire-board .tk11-team-head{min-height:clamp(24px,6.4dvh,32px)!important;flex-direction:row!important;align-items:center!important}
+ body.tk58-score-focus #umpire-board .tk11-team-head>b{font-size:var(--tk70-team)!important}
+ body.tk58-score-focus #umpire-board .tk11-swap-pos{min-height:clamp(22px,5.7dvh,29px)!important;font-size:clamp(7px,1.9dvh,10px)!important;width:auto!important;padding:2px 5px!important}
+ body.tk58-score-focus #umpire-board .player{min-height:clamp(42px,12.5dvh,64px)!important;padding:4px 7px!important;font-size:var(--tk70-player)!important;gap:5px!important}
+ body.tk58-score-focus #umpire-board .tk11-player small{font-size:var(--tk70-player-note)!important}
+ body.tk58-score-focus .score-actions{gap:var(--tk70-gap)!important}
+ body.tk58-score-focus .score-actions .btn{min-height:clamp(32px,8.4dvh,43px)!important;padding:3px 4px!important;font-size:var(--tk70-action)!important}
+ body.tk58-score-focus #tk58-focus-exit{width:clamp(30px,8dvh,38px)!important;height:clamp(30px,8dvh,38px)!important;font-size:clamp(14px,3.7dvh,19px)!important}
+}
+
+/* Very narrow portrait phones: protect the center match label and avoid horizontal overflow. */
+@media (max-width:430px) and (orientation:portrait){
+ body.tk58-score-focus #umpire-board>.score-head{grid-template-columns:minmax(0,1fr) minmax(116px,36vw) minmax(0,1fr)!important}
+ body.tk58-score-focus #umpire-board>.score-head>span{max-width:36vw!important}
+ body.tk58-score-focus #umpire-board>.score-head strong{font-size:clamp(44px,14vw,64px)!important}
+ body.tk58-score-focus #umpire-board .tk22-side-note{display:none!important}
+ body.tk58-score-focus #umpire-board .tk69-opening-history small{display:none}
+}

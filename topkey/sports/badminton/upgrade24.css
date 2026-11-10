@@ -1,0 +1,5 @@
+/* Upgrade 24: stable umpire top position + resilient match search */
+#tk20-umpire-search{scroll-margin-top:120px}
+#page-umpire{scroll-margin-top:0}
+#tk20-umpire-search:focus,#tk16-admin-search-input:focus,#tk16-public-search-input:focus{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.16);outline:none}
+#tk20-umpire-match-count{min-height:18px}

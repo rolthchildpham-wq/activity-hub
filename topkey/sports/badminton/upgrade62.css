@@ -1,0 +1,19 @@
+/* Upgrade 62 · compact application header for small referee screens */
+#tk62-header-toggle{position:sticky;right:6px;z-index:4;margin-left:auto;flex:0 0 auto;border-color:#5eead4!important;background:#073d46!important;color:#bffbf2!important;box-shadow:-10px 0 14px rgba(5,15,29,.92);white-space:nowrap}
+#tk62-compactbar{display:none;min-height:42px;align-items:center;justify-content:space-between;gap:8px;padding:max(5px,env(safe-area-inset-top)) 8px 5px 10px;background:rgba(5,15,29,.98);border-bottom:1px solid #24425f}
+#tk62-compactbar .tk62-compact-title{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;font-weight:900;color:#dffcff;letter-spacing:.01em}
+#tk62-header-expand{flex:0 0 auto;min-height:30px;padding:5px 9px!important;border-color:#5eead4!important;background:#073d46!important;color:#bffbf2!important}
+body.tk62-header-collapsed:not(.tk58-score-focus):not(.tk57-referee-focus) .topbar>.brand,
+body.tk62-header-collapsed:not(.tk58-score-focus):not(.tk57-referee-focus) .topbar>.nav{display:none!important}
+body.tk62-header-collapsed:not(.tk58-score-focus):not(.tk57-referee-focus) #tk62-compactbar{display:flex!important}
+body.tk62-header-collapsed:not(.tk58-score-focus):not(.tk57-referee-focus) .topbar{min-height:42px!important}
+@media(max-width:650px){
+  #tk62-header-toggle{font-size:11px!important;padding:6px 8px!important;min-height:31px}
+  body.tk62-header-collapsed:not(.tk58-score-focus):not(.tk57-referee-focus) .shell{padding-top:6px!important}
+}
+@media(max-width:430px){
+  #tk62-compactbar{min-height:38px;padding-top:max(3px,env(safe-area-inset-top));padding-bottom:3px}
+  #tk62-compactbar .tk62-compact-title{font-size:11px}
+  #tk62-header-expand{min-height:28px;padding:4px 8px!important;font-size:10px!important}
+  body.tk62-header-collapsed:not(.tk58-score-focus):not(.tk57-referee-focus) .topbar{min-height:38px!important}
+}

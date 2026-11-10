@@ -1,0 +1,20 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert'),path=require('path');
+const idx=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8');
+const m=idx.match(/adminJs:'\.\/assets\/u122\/([^']+)'/);assert(m,'admin core ref');
+const core=fs.readFileSync(path.join(__dirname,'../assets/u122',m[1].split('?')[0]),'utf8');
+for(const n of [38,40,43,44])assert(!new RegExp(`upgrade122-hotfix${n}\\.js\\?v=`).test(idx),`legacy standings H${n} must not load`);
+const a=core.indexOf(' ranking(arg={}){'), b=core.indexOf(' rankingEligible(arg={})',a);assert(a>=0&&b>a,'core canonical ranking method');
+let fnSrc=core.slice(a,b).trim();fnSrc=fnSrc.replace(/^ranking\(arg=\{\}\)\{/,'function ranking(arg={}){').replace(/,\s*$/,'');
+const teams={c:{id:'c',name:'Chen',category:'MEN'},t:{id:'t',name:'TU',category:'MEN'},n:{id:'n',name:'TAN',category:'MEN'},b:{id:'b',name:'BAC',category:'MEN'},h:{id:'h',name:'HU',category:'MEN'},d:{id:'d',name:'DAT',category:'MEN'},q:{id:'q',name:'Q',category:'MEN'},z:{id:'z',name:'Z',category:'MEN'}};
+let id=0;const matches={};
+function add(a,b,w,status='FINISHED',extra={}){const k='m'+(++id);matches[k]={id:k,stage:'GROUP',category:'MEN',teamAId:a,teamBId:b,status,winnerId:w,sets:status==='WALKOVER'?[{a:11,b:0,finished:true},{a:11,b:0,finished:true}]:[{a:w===a?21:15,b:w===a?15:21,finished:true},{a:w===a?21:17,b:w===a?17:21,finished:true}],...extra};}
+add('c','t','c');add('c','n','c');add('c','h','c');add('c','d','c');
+add('b','t','b');add('b','n','b');add('b','h','b');add('b','d','b');add('b','q','b','WALKOVER');add('b','z','z');
+add('c','t','c','WALKOVER',{virtualStandingOnly:true,updatedAt:999999});
+const T={DEFAULT_RULES:{winPoints:3,lossPoints:1,walkoverWinPoints:3,tieBreakers:['setDiff','pointDiff','name']},Scoring:{isSetWon:(a,b)=>a!==b}};
+const App={state:{teams,matches,config:{rules:{winPoints:2,lossPoints:1,walkoverWinPoints:3,tieBreakers:['setDiff','pointDiff','name']}}}};
+const ctx={T};vm.createContext(ctx);const ranking=vm.runInContext('('+fnSrc+')',ctx);const rows=ranking.call(App,'MEN'),by=Object.fromEntries(rows.map(r=>[r.id,r]));
+assert.equal(by.c.played,4);assert.equal(by.c.w,4);assert.equal(by.c.points,4);
+assert.equal(by.b.played,6);assert.equal(by.b.w,5);assert.equal(by.b.l,1);assert.equal(by.b.points,5);
+for(const r of rows)assert.equal(r.points,r.w,'points must equal wins');
+console.log('H45 core standings authority: PASS',rows.map(r=>({id:r.id,p:r.played,wl:r.w+'-'+r.l,pts:r.points})));

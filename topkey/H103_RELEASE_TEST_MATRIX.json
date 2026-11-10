@@ -1,0 +1,230 @@
+{
+  "base": "H102 source files",
+  "sourceVersion": {
+    "build": "upgrade122-hotfix98",
+    "cacheTag": "u122h98-20261108",
+    "version": "2026.11.08-vnext-upgrade122-hotfix98-release-sync",
+    "release": "H98 Fullscreen Header Release Sync"
+  },
+  "newVersion": {
+    "build": "upgrade122-hotfix103",
+    "cacheTag": "u122h105-20261108",
+    "version": "2026.11.08-vnext-upgrade122-hotfix105-awards-editable-ppt",
+    "release": "H103 Runtime Stability on H102"
+  },
+  "changedFiles": 36,
+  "changed": [
+    {
+      "path": "change-password.html",
+      "bytes": 4891,
+      "sha256": "ea160506a9035d570ed561aaeb13579b8e5e9c4ad7c85d88ba5d800dcc03f1dd"
+    },
+    {
+      "path": "H103_RUNTIME_DIAG_AND_TEST_PLAN.md",
+      "bytes": 2170,
+      "sha256": "1db37541a3815c5533dfc1a1f5144628bb336a1fd160f9990c5a0f7a24ae0c23"
+    },
+    {
+      "path": "H103_SW_CACHE_VM.json",
+      "bytes": 665,
+      "sha256": "6ea78beb96d627f626b2663f173b67dc10a93bab67aad0a70d3faad728843f87"
+    },
+    {
+      "path": "executive-dashboard.js",
+      "bytes": 13739,
+      "sha256": "3bccd37adebf432c7a5aa64a0d475e448c13cb3db37e769b43af4383a68841e5"
+    },
+    {
+      "path": "club-planning.js",
+      "bytes": 27000,
+      "sha256": "a41252189a1020d41c146590afe8f3f7fcef8eb3a7c88c3a9ce0d62431aceb95"
+    },
+    {
+      "path": "H103_DOM_BROWSER_TESTS.json",
+      "bytes": 736,
+      "sha256": "ba02f00d8b23bff0a185e7c4d8e97f40b20e4ea0fa4d662999743e9babdf47f8"
+    },
+    {
+      "path": "build.json",
+      "bytes": 192,
+      "sha256": "206b9d3a04b2b6e4d92964c10374d4602570f9c60c3f90604f14f8fecee9fc56"
+    },
+    {
+      "path": "sw.js",
+      "bytes": 1700,
+      "sha256": "ed4ac2c48c577f5a4b864092dc586e24a1c61029fe8b5aff79b7f8ba6825d595"
+    },
+    {
+      "path": "TOPKEY_PACKAGE_MANIFEST.json",
+      "bytes": 4871,
+      "sha256": "1fffbe75a7848cea0c1068ec89d03cf5f4bb71a7e9c76881c1769b984f93d396"
+    },
+    {
+      "path": "release-coordinator.js",
+      "bytes": 4542,
+      "sha256": "f4958db253d1058439ae9785ff852230881db28ad1daf8c5b9eab1ab57406e5b"
+    },
+    {
+      "path": "hub-auth-flow.js",
+      "bytes": 2421,
+      "sha256": "ab7ffe427aa183a00678e084f89f984c154e7dbfe8170d0455415359e47723a5"
+    },
+    {
+      "path": "release.json",
+      "bytes": 390,
+      "sha256": "25e454591e4905c6a1919fab7fbdc35e18bbddf74ccbcba2f3be7527276ea31f"
+    },
+    {
+      "path": "system-admin.html",
+      "bytes": 14052,
+      "sha256": "34573d0661939a8fd29c0cbecdf11cb048b2b90882281ee09a50394e5949aa22"
+    },
+    {
+      "path": "H103_STATIC_REGRESSION.json",
+      "bytes": 6308,
+      "sha256": "5c63155c30af1de7ee8c984f4a865a7b704dd86aacf364194c55319f5ff2a9ae"
+    },
+    {
+      "path": "index.html",
+      "bytes": 12907,
+      "sha256": "680e7ba4ed8d81dff6f9573ae9650bccae49591ae855be9336c2fa6ac6f1be16"
+    },
+    {
+      "path": "sports/badminton/hub-entry-guard.js",
+      "bytes": 6922,
+      "sha256": "b4673ddbcfc7770ad4a166a78d3f70eb442c59e9ddaaad56354c13064ad5e378"
+    },
+    {
+      "path": "sports/badminton/build.json",
+      "bytes": 192,
+      "sha256": "206b9d3a04b2b6e4d92964c10374d4602570f9c60c3f90604f14f8fecee9fc56"
+    },
+    {
+      "path": "sports/badminton/sw.js",
+      "bytes": 1717,
+      "sha256": "0896502dc56e63ec150260c4f9ba95503f5139482874bb961851e945df986134"
+    },
+    {
+      "path": "sports/badminton/upgrade122-hotfix80.js",
+      "bytes": 61114,
+      "sha256": "88d5e9dde9228033044993aea38bc952f315a8856ce86f3768633cbbb202568e"
+    },
+    {
+      "path": "sports/badminton/testlab-preboot122-hotfix.js",
+      "bytes": 1203,
+      "sha256": "d50378c731d20ba64a54ade701d7086399e222d5b73248340b982b022ff0ce7a"
+    },
+    {
+      "path": "sports/badminton/upgrade122-hotfix85.js",
+      "bytes": 6823,
+      "sha256": "bdbd00f329001c751884c2187d2893257c26caf21451f1a66aaf68ffecd288c9"
+    },
+    {
+      "path": "sports/badminton/index.html",
+      "bytes": 74732,
+      "sha256": "2e363bab7ceb80b1329e9292c844a88642251d56129b69b23549a6dfc73778c0"
+    },
+    {
+      "path": "sports/vnext/hub-entry-guard.js",
+      "bytes": 6922,
+      "sha256": "b4673ddbcfc7770ad4a166a78d3f70eb442c59e9ddaaad56354c13064ad5e378"
+    },
+    {
+      "path": "sports/vnext/h97-vnext.bundle.js",
+      "bytes": 737211,
+      "sha256": "178fea8f54338ebb71ff3cdc78d269c5e70062754c2e6b03853c98cb1f159193"
+    },
+    {
+      "path": "sports/vnext/build.json",
+      "bytes": 192,
+      "sha256": "206b9d3a04b2b6e4d92964c10374d4602570f9c60c3f90604f14f8fecee9fc56"
+    },
+    {
+      "path": "sports/vnext/sw.js",
+      "bytes": 1585,
+      "sha256": "549018e5cf2fde77f706cd2a294f7a91d7ba98d286f63fb1a8a392e776151547"
+    },
+    {
+      "path": "sports/vnext/index.html",
+      "bytes": 27861,
+      "sha256": "5f0e7a0facc14a3757513c67c905f664f150e32164a33fad70343efdfd9f045e"
+    },
+    {
+      "path": "sports/vnext/src/upgrade122-hotfix86.js",
+      "bytes": 19208,
+      "sha256": "b3b359229f7bd13e14e201f1436681954b536af96a8037425e52fc5f64104b97"
+    },
+    {
+      "path": "sports/vnext/src/upgrade122-hotfix80.js",
+      "bytes": 61114,
+      "sha256": "88d5e9dde9228033044993aea38bc952f315a8856ce86f3768633cbbb202568e"
+    },
+    {
+      "path": "sports/vnext/src/testlab-preboot122-hotfix.js",
+      "bytes": 1252,
+      "sha256": "39fcef072464586c7c798127a80ac9ebb88e611a8ffb23e2573de5721c5fc632"
+    },
+    {
+      "path": "sports/vnext/src/upgrade122-hotfix85.js",
+      "bytes": 6823,
+      "sha256": "bdbd00f329001c751884c2187d2893257c26caf21451f1a66aaf68ffecd288c9"
+    },
+    {
+      "path": "sports/vnext/src/app.js",
+      "bytes": 72545,
+      "sha256": "e5f2e74d11f05b2c164649a3c8a60191740fac471fbfd77133ee09824a59b27b"
+    },
+    {
+      "path": "sports/vnext/src/upgrade122-hotfix68.js",
+      "bytes": 1459,
+      "sha256": "cfebc59640c089762d74eddd214837e8ab4915a6da0485b8b054adfc82e0afd7"
+    },
+    {
+      "path": "sports/vnext/src/config.js",
+      "bytes": 6032,
+      "sha256": "14b530f970b3667b0ce8e3d0361550438b9ea5c95f60b6d6817414b9a80d74e5"
+    },
+    {
+      "path": "sports/badminton/src/config.js",
+      "bytes": 1744,
+      "sha256": "95021af9b2e949ebbb4dbfca46d671949eac646f5c826ee18a0fa984e04d783c"
+    },
+    {
+      "path": "sports/badminton/assets/u122/admin-core.h85full.js",
+      "bytes": 1266817,
+      "sha256": "a263d0cbf6adde80e1511ad621221dfacd6e9f80a5888659b59725760eeb900b"
+    }
+  ],
+  "testSummary": {
+    "static": {
+      "pass": 52,
+      "fail": 0
+    },
+    "chromium_dom": {
+      "pass": 5,
+      "fail": 0
+    },
+    "sw_cache_vm": true
+  },
+  "script_ref_count": {
+    "H96R3": 47,
+    "H102": 11
+  },
+  "sw_precache_counts": {
+    "sw.js": {
+      "before": 28,
+      "after": 12
+    },
+    "sports/badminton/sw.js": {
+      "before": 36,
+      "after": 8
+    },
+    "sports/vnext/sw.js": {
+      "before": 72,
+      "after": 7
+    }
+  },
+  "liveBrowserNavigation": "BLOCKED_BY_ADMINISTRATOR",
+  "realFirebase": "NOT_TESTED",
+  "firebaseSchemaMigration": "NOT_PERFORMED"
+}

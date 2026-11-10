@@ -1,0 +1,75 @@
+{
+  "build": "upgrade117",
+  "phase": 4,
+  "goal": "Final production hardening: serialize recovery paths, prevent duplicate boot listeners, and lock long-session leak/scoring soak invariants.",
+  "phase1Preserved": {
+    "viewerLegacyRemovedFromAdmin": 9,
+    "retainedRefereeCss": "upgrade98.css",
+    "retainedWebRTCBroadcaster": "src/upgrade101.js"
+  },
+  "phase2Preserved": {
+    "legacyDataRuntimeRemoved": [
+      "src/upgrade102.js",
+      "src/upgrade103.js"
+    ],
+    "replacementCore": "src/core/data-runtime.js"
+  },
+  "uiBoundary": [
+    "src/core/ui-boundary.js",
+    "src/core/ui-boundary-install.js"
+  ],
+  "featureBoundaries": {
+    "schedule": "src/features/schedule/runtime.js",
+    "umpire": "src/features/umpire/runtime.js",
+    "live": "src/features/live/runtime.js"
+  },
+  "removedFromAdminRuntime": [
+    "src/upgrade80.js",
+    "src/upgrade106.js",
+    "src/upgrade107.js"
+  ],
+  "refactoredLegacyHooks": [
+    "src/upgrade24.js",
+    "src/upgrade87.js",
+    "src/upgrade111.js"
+  ],
+  "compatibilityExports": [
+    "window.TopkeyUpgrade80",
+    "window.TopkeyUpgrade106",
+    "window.TopkeyUpgrade107",
+    "window.TopkeyUpgrade102",
+    "window.TopkeyUpgrade103"
+  ],
+  "preserved": [
+    "Firebase database paths",
+    "Firebase Rules/Storage Rules",
+    "Scoring Fast Lane Upgrade105",
+    "Atomic Score Pipeline Upgrade113",
+    "TURN/WebRTC signaling",
+    "Viewer standalone bundle",
+    "Replay/AI lazy chunk",
+    "Upgrade24 search semantics",
+    "Upgrade87 reset/audio semantics"
+  ],
+  "nextPhase": "Primary HOÀN THIỆN roadmap complete. Future releases should be driven by production measurements or concrete defects, preserving all regression contracts.",
+  "productionHardening": {
+    "module": "src/core/production-hardening.js",
+    "dataInit": "single-flight",
+    "authInit": "single-flight",
+    "queueFlush": "serialized/coalesced",
+    "resumeRecovery": "coalesced pageshow/visibility/online",
+    "healthSelfCheck": "listener budgets + queue high-water",
+    "soakTests": [
+      "upgrade117_production_hardening_vm.js",
+      "upgrade117_long_session_soak_vm.js",
+      "upgrade117_atomic_score_soak_vm.js"
+    ]
+  },
+  "currentBuild": "upgrade118",
+  "currentVersion": "2026.10.31-vnext-featureparity15-upgrade118-production-artifact-cleanup",
+  "artifactCleanup": {
+    "currentAssetRoot": "assets/u118",
+    "historicalAssetDirsShipped": false,
+    "runtimeFeatureManifest": true
+  }
+}

@@ -1,0 +1,35 @@
+/* Upgrade 35: fullscreen workspace stays below every application overlay/modal. */
+:root{
+  --tk35-workspace-z:8000;
+  --tk35-overlay-z:40000;
+  --tk35-toast-z:40100;
+}
+/* Upgrade 34 uses pseudo-fullscreen (fixed pane), not the browser Fullscreen API.
+   Keep it above the app shell but below all dialogs/overlays. */
+.tk32-schedule-upper.tk34-pane-maximized,
+.tk32-schedule-lower.tk34-pane-maximized{
+  z-index:var(--tk35-workspace-z)!important;
+}
+/* Standard dialogs: confirmDanger, edit team, delete schedule, score entry,
+   withdrawal policy, permissions, QR and future dialogs using .modal. */
+body.tk34-pane-open .modal:not(.hidden){
+  z-index:var(--tk35-overlay-z)!important;
+}
+/* Feedback must never be hidden behind a maximized workspace. */
+body.tk34-pane-open .toast-box{
+  z-index:var(--tk35-toast-z)!important;
+}
+/* Other application overlays that do not use the common .modal class. */
+body.tk34-pane-open .audio-overlay:not(.hidden),
+body.tk34-pane-open .public-register:not(.hidden),
+body.tk34-pane-open .video-box.pseudo-full,
+body.tk34-pane-open .tk9-draw-modal:not(.hidden),
+body.tk34-pane-open .tk9-unlock-pop:not(.hidden),
+body.tk34-pane-open .tk9-firewall-corner{
+  z-index:calc(var(--tk35-overlay-z) + 20)!important;
+}
+/* Language selector intentionally remains at its existing 2.1B z-index. */
+@media(max-width:900px){
+  body.tk34-pane-open .modal{padding:10px!important}
+  body.tk34-pane-open .modal-box{max-height:calc(100dvh - 20px);overflow:auto}
+}

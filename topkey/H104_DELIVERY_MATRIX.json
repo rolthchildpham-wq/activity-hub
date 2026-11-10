@@ -1,0 +1,48 @@
+{
+  "release": "H104 (based on H103)",
+  "status": "STAGING_NOT_PRODUCTION_CERTIFIED",
+  "features": [
+    {
+      "item": "teams",
+      "implementation": "firebase ordered cursor index byName/byCategoryName, 120-row viewport, targeted queue updates",
+      "verification": "Node 12000 + Chromium 330",
+      "productionGate": "Live Firebase Rules not verified"
+    },
+    {
+      "item": "matches",
+      "implementation": "date/status/tid indexes, 120-row viewport, targeted live match listeners, guarded ranking/history",
+      "verification": "Node 12000 + Chromium 330 + real backup 99",
+      "productionGate": "Direct Firebase writes outside queue need backend index update"
+    },
+    {
+      "item": "finance",
+      "implementation": "cursor transaction pages; exact aggregate only if trusted or complete scan",
+      "verification": "real backup 4 + Chromium 330",
+      "productionGate": "Multi-client server aggregate transaction not deployed"
+    },
+    {
+      "item": "v2 migration",
+      "implementation": "ADMIN testlab-only backup/hashes/counts/indexes/two-step activation/rollback",
+      "verification": "Chromium backup fixture migration; no original canonical edits",
+      "productionGate": "No real staging Firebase test"
+    },
+    {
+      "item": "performance",
+      "implementation": "listener scope, 120 DOM initial, 200 max page, SW cache H104, stale query cancellation",
+      "verification": "Chromium synthetic test + JS syntax",
+      "productionGate": "No measured EdgeOne real load time"
+    },
+    {
+      "item": "compatibility",
+      "implementation": "H103 baseline; H98 UX and seven sport routes preserved",
+      "verification": "auth matrices/security contract/report fixture and manifest parity",
+      "productionGate": "No seven-sport real-login E2E"
+    }
+  ],
+  "knownFailingLegacyTests": [
+    "H93 hard-coded old release version; not applicable without migration",
+    "H38 withdrawn standings test also fails on input H103"
+  ],
+  "changedProductionDatabase": false,
+  "privateBackupsInPackage": false
+}
