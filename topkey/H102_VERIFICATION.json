@@ -1,0 +1,18 @@
+{
+  "status": "STAGING_NOT_PRODUCTION_PASS",
+  "manifest_paths": [
+    "release.json",
+    "build.json",
+    "sports/badminton/build.json",
+    "sports/vnext/build.json"
+  ],
+  "manifest_parity": "PASS",
+  "release_coordinator_syntax": "PASS",
+  "live_firebase_auth": "NOT_TESTED",
+  "remote_edgeone_deployment": "NOT_TESTED",
+  "full_7_sport_regression": "NOT_TESTED",
+  "firebase_v2_migration": "NOT_IMPLEMENTED",
+  "auth_bootstrap_h93": "PASS_STATIC",
+  "security_contract_h88": "PASS_STATIC",
+  "update_authority_h93": "PASS_STATIC"
+}

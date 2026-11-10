@@ -1,0 +1,272 @@
+{
+  "artifact": "TOPKEY H104-R1 Schedule Layout Patch",
+  "base": "H104 Indexed Firebase V2 (H103 inherited)",
+  "status": "PASS_LOCAL_LAYOUT_STATIC; LIVE_FIREBASE_NOT_VERIFIED",
+  "testTimeUTC": "2026-11-08T07:56:08.273617+00:00",
+  "layoutChromium": {
+    "1640": {
+      "viewport": 1640,
+      "teamWhiteSpace": "nowrap",
+      "textLineCount": 1,
+      "mainY": [
+        143
+      ],
+      "winnerY": 143,
+      "buttonYs": [
+        120,
+        120,
+        152,
+        152
+      ],
+      "actionDisplay": "table-cell",
+      "scrollWidth": 1424,
+      "clientWidth": 1424,
+      "tdWidth": 456,
+      "tableWidth": 1424,
+      "bodyOverflow": false,
+      "buttonWorking": true
+    },
+    "1280": {
+      "viewport": 1280,
+      "teamWhiteSpace": "nowrap",
+      "textLineCount": 1,
+      "mainY": [
+        143
+      ],
+      "winnerY": 143,
+      "buttonYs": [
+        120,
+        120,
+        152,
+        152
+      ],
+      "actionDisplay": "table-cell",
+      "scrollWidth": 1418,
+      "clientWidth": 1204,
+      "tdWidth": 453,
+      "tableWidth": 1418,
+      "bodyOverflow": false,
+      "buttonWorking": true
+    },
+    "390": {
+      "viewport": 390,
+      "teamWhiteSpace": "nowrap",
+      "textLineCount": 1,
+      "mainY": [
+        119
+      ],
+      "winnerY": 119,
+      "buttonYs": [
+        360,
+        360,
+        400,
+        400
+      ],
+      "actionDisplay": "grid",
+      "scrollWidth": 352,
+      "clientWidth": 352,
+      "tdWidth": 350,
+      "tableWidth": 352,
+      "bodyOverflow": false,
+      "buttonWorking": true
+    }
+  },
+  "H104StaticAcceptance": {
+    "name": "H104 staging acceptance",
+    "testedAt": "2026-11-08T07:55:51.226872+00:00",
+    "status": "PASS_STATIC_AND_SIMULATED_ONLY",
+    "jsFiles": 398,
+    "checks": 28,
+    "failures": [],
+    "results": [
+      {
+        "group": "syntax",
+        "test": "All JS source files",
+        "status": "PASS",
+        "detail": "398 files"
+      },
+      {
+        "group": "json",
+        "test": "All JSON configuration files",
+        "status": "PASS",
+        "detail": "26 files"
+      },
+      {
+        "group": "release",
+        "test": "Hub/Badminton/VNext identical version/cache/build",
+        "status": "PASS",
+        "detail": "[('u122h105-20261108', 'upgrade122-hotfix104'), ('u122h105-20261108', 'upgrade122-hotfix104'), ('u122h105-20261108', 'upgrade122-hotfix104'), ('u122h105-20261108', 'upgrade122-hotfix104')]"
+      },
+      {
+        "group": "release",
+        "test": "H104 release id",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "group": "cache",
+        "test": "sw.js H104 unique cache",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "group": "cache",
+        "test": "sw.js old H103 removed",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "group": "cache",
+        "test": "sports/badminton/sw.js H104 unique cache",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "group": "cache",
+        "test": "sports/badminton/sw.js old H103 removed",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "group": "cache",
+        "test": "sports/vnext/sw.js H104 unique cache",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "group": "cache",
+        "test": "sports/vnext/sw.js old H103 removed",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "group": "encoding",
+        "test": "index.html charset utf-8",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "group": "assets",
+        "test": "index.html static JS refs resolve",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "group": "inline",
+        "test": "index.html inline JS syntax",
+        "status": "PASS",
+        "detail": "3 segments"
+      },
+      {
+        "group": "encoding",
+        "test": "sports/badminton/index.html charset utf-8",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "group": "assets",
+        "test": "sports/badminton/index.html static JS refs resolve",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "group": "inline",
+        "test": "sports/badminton/index.html inline JS syntax",
+        "status": "PASS",
+        "detail": "9 segments"
+      },
+      {
+        "group": "encoding",
+        "test": "sports/vnext/index.html charset utf-8",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "group": "assets",
+        "test": "sports/vnext/index.html static JS refs resolve",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "group": "inline",
+        "test": "sports/vnext/index.html inline JS syntax",
+        "status": "PASS",
+        "detail": "3 segments"
+      },
+      {
+        "group": "rules",
+        "test": "firebase.database.rules.json v2 subtrees",
+        "status": "PASS",
+        "detail": "7 sports"
+      },
+      {
+        "group": "rules",
+        "test": "firebase.database.rules.json canonical permissions unchanged",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "group": "rules",
+        "test": "sports/badminton/firebase.database.rules.json v2 subtrees",
+        "status": "PASS",
+        "detail": "1 sports"
+      },
+      {
+        "group": "rules",
+        "test": "sports/badminton/firebase.database.rules.json canonical permissions unchanged",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "group": "regression",
+        "test": "tests/auth_matrix_h83.js",
+        "status": "PASS",
+        "detail": "AUTH_MATRIX_OK 26"
+      },
+      {
+        "group": "regression",
+        "test": "tests/auth_integration_h83.js",
+        "status": "PASS",
+        "detail": "AUTH_INTEGRATION_OK 8"
+      },
+      {
+        "group": "regression",
+        "test": "tests/report_fixture_h83.js",
+        "status": "PASS",
+        "detail": "REPORT_FIXTURE_OK 6"
+      },
+      {
+        "group": "regression",
+        "test": "tests/security_contract_h88.js",
+        "status": "PASS",
+        "detail": "SECURITY_CONTRACT_H88_OK 6"
+      },
+      {
+        "group": "regression",
+        "test": "sports/badminton/tests/h44_standings_single_result_test.js",
+        "status": "PASS",
+        "detail": "]"
+      }
+    ],
+    "notTested": [
+      "Firebase real staging authentication/Rules deployment",
+      "EdgeOne production network behavior",
+      "7-sport end-to-end real-user workflows",
+      "Cross-client atomic aggregation (needs server-side support)"
+    ]
+  },
+  "H104V2EngineSimulation": "PASS 12000 teams + 12000 matches + 12000 finance and badminton backup 26 teams / 99 matches / 4 finance",
+  "livePublicInspection": {
+    "home": "Accessible to text/web fetch; Hub lists all 7 sports",
+    "badminton": "Accessible HTML page; H103 text label, Hub link version u122h89-20261107",
+    "vnextSixSports": "Accessible HTML pages; VNext H96 text label, Hub link version u122h89-20261107",
+    "caveat": "Static text/links do not prove active JS runtime version. Not an authenticated browser session."
+  },
+  "notVerified": [
+    "Live Firebase sign-in or permission rules",
+    "Interactive CRUD, scheduling, reports, imports and exports on production",
+    "Network/CPU performance timings of deployed website",
+    "Concurrent user effects on scoring and finance"
+  ],
+  "validation": "No canonical data or scoring logic modified by this UI patch"
+}

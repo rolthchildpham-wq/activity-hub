@@ -1,0 +1,143 @@
+{
+  "name": "H105 Prize Structure and Editable PPT Staging",
+  "base": "H104-R1",
+  "releaseId": "H105",
+  "generatedAt": "2026-11-08T08:39:02.682919+00:00",
+  "static": {
+    "status": "PASS_STATIC_AND_SIMULATED_ONLY",
+    "checks": 60,
+    "failed": 0,
+    "javascriptFiles": 399
+  },
+  "chromium": {
+    "status": "PASS_MOCK_ONLY",
+    "testedSports": [
+      "badminton",
+      "football",
+      "volleyball",
+      "running",
+      "handmade",
+      "shuttle",
+      "cooking"
+    ],
+    "items": [
+      {
+        "sport": "badminton",
+        "prize_saved": true,
+        "report_contains_prize": true,
+        "config_locked": true,
+        "slide_count": 8,
+        "js_errors": []
+      },
+      {
+        "sport": "football",
+        "prize_saved": true,
+        "report_contains_prize": true,
+        "config_locked": true,
+        "slide_count": 7,
+        "js_errors": []
+      },
+      {
+        "sport": "volleyball",
+        "prize_saved": true,
+        "report_contains_prize": true,
+        "config_locked": true,
+        "slide_count": 7,
+        "js_errors": []
+      },
+      {
+        "sport": "running",
+        "prize_saved": true,
+        "report_contains_prize": true,
+        "config_locked": true,
+        "slide_count": 7,
+        "js_errors": []
+      },
+      {
+        "sport": "handmade",
+        "prize_saved": true,
+        "report_contains_prize": true,
+        "config_locked": true,
+        "slide_count": 7,
+        "js_errors": []
+      },
+      {
+        "sport": "shuttle",
+        "prize_saved": true,
+        "report_contains_prize": true,
+        "config_locked": true,
+        "slide_count": 7,
+        "js_errors": []
+      },
+      {
+        "sport": "cooking",
+        "prize_saved": true,
+        "report_contains_prize": true,
+        "config_locked": true,
+        "slide_count": 7,
+        "js_errors": []
+      }
+    ]
+  },
+  "dataV2": {
+    "status": "PASS_SIMULATED_ONLY",
+    "tests": "12,000 teams + 12,000 matches + 12,000 finance items, including cursor and filters; existing H104 v2 engine suite"
+  },
+  "slides": {
+    "status": "PASS_LOCAL_FILE_VALIDATION",
+    "templates": {
+      "badminton": {
+        "slides": 9,
+        "overflow": "PASS",
+        "editableText": true
+      },
+      "football": {
+        "slides": 9,
+        "overflow": "PASS",
+        "editableText": true
+      },
+      "volleyball": {
+        "slides": 9,
+        "overflow": "PASS",
+        "editableText": true
+      },
+      "running": {
+        "slides": 9,
+        "overflow": "PASS",
+        "editableText": true
+      },
+      "handmade": {
+        "slides": 9,
+        "overflow": "PASS",
+        "editableText": true
+      },
+      "shuttle": {
+        "slides": 9,
+        "overflow": "PASS",
+        "editableText": true
+      },
+      "cooking": {
+        "slides": 9,
+        "overflow": "PASS",
+        "editableText": true
+      }
+    },
+    "browserExport": {
+      "sport": "volleyball",
+      "slides": 11,
+      "pptx": "valid"
+    }
+  },
+  "releaseConsistency": {
+    "status": "PASS_STATIC",
+    "cacheTag": "u122h105-20261108",
+    "rootBadmintonVNext": "match"
+  },
+  "notTested": [
+    "Firebase staging real authentication and concurrent device transactions",
+    "Live EdgeOne deploy and performance",
+    "Production data mutation/access control on live rules",
+    "User-signed acceptance for all seven sport workflows"
+  ],
+  "deployGate": "STAGING_ONLY"
+}

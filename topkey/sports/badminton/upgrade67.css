@@ -1,0 +1,14 @@
+/* Upgrade 67 · explicit referee state machine: select server -> Start -> LIVE -> score */
+#tk67-start-hint{grid-column:1/-1;border:1px solid #6b4a14;background:#3b2808;color:#ffe1a3;border-radius:10px;padding:8px 10px;font-size:11px;line-height:1.35;font-weight:700}
+#tk67-start-hint[data-state="READY"]{border-color:#15966d;background:#073d32;color:#bff7df}
+#tk67-start-hint[data-state="LIVE"]{border-color:#2576c9;background:#082f55;color:#cce8ff}
+#tk67-start-hint[data-state="FINISHED"]{border-color:#6b7280;background:#252a33;color:#d1d5db}
+#umpire-start.tk67-start-locked{opacity:.42!important;filter:saturate(.55)!important;cursor:not-allowed!important;background:#38506a!important;border-color:#6a7f93!important;color:#e8eef5!important;box-shadow:none!important}
+#umpire-start.tk67-start-ready{opacity:1!important;background:#07865f!important;border-color:#34d399!important;color:#fff!important;box-shadow:0 0 0 2px #4ef0a455,0 0 20px #18c97d44!important;animation:tk67-ready-pulse 1.6s ease-in-out infinite alternate}
+#umpire-start.tk67-start-live{opacity:.72!important}
+@keyframes tk67-ready-pulse{from{filter:brightness(1)}to{filter:brightness(1.16)}}
+.score-actions .tk67-score-locked{opacity:.38!important;filter:grayscale(.28) saturate(.6)!important;cursor:not-allowed!important;box-shadow:inset 0 0 0 1px #8ba0b344!important}
+.score-actions .tk67-score-locked:hover{filter:grayscale(.28) saturate(.6)!important}
+@media(max-width:720px){#tk67-start-hint{font-size:10px;padding:7px 8px}#umpire-start.tk67-start-ready{min-height:50px!important;font-size:13px!important}}
+/* Match Focus is never valid before Start; if a stale browser class survives, keep setup visible until JS exits it. */
+body:not(.tk58-score-focus) #tk67-start-hint{display:block}

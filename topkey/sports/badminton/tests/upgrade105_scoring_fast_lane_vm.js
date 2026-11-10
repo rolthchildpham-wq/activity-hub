@@ -1,0 +1,23 @@
+const fs=require('fs'),path=require('path'),vm=require('vm'),assert=require('assert');
+const code=fs.readFileSync(path.resolve(__dirname,'../src/upgrade105.js'),'utf8');
+let directCalls=0,baseCalls=0,puts=[],allItems=[],failMode='';
+const idb={async all(){return allItems.slice()},async put(store,item){puts.push(item);const i=allItems.findIndex(x=>x.id===item.id);if(i>=0)allItems[i]=item;else allItems.push(item)},async get(){return null}};
+const Data={ready:true,connected:true,auth:{currentUser:{uid:'u1'}},db:{ref(){return{async update(up){directCalls++;if(failMode==='network')throw new Error('network unavailable');if(failMode==='permission'){const e=new Error('PERMISSION_DENIED');e.code='PERMISSION_DENIED';throw e;}return true}}}},async queueMulti(){baseCalls++;return{base:true}},async flushQueue(){return{}},async refreshQueueStats(){}};
+const App={state:{activeMatches:{court_1:{version:1,sets:[{a:1,b:0}]},court_2:{version:1,sets:[{a:0,b:0}]}}},renderHealth(){}};
+const T={App,Data,idb,VERSION:'old',CONFIG_VERSION:'old',RUNTIME_BUILD:'old'};const U={id:()=>`id_${Date.now()}_${Math.random()}`};T.U=U;
+const doc={documentElement:{dataset:{}},getElementById(){return null},querySelectorAll(){return[]},createElement(){return{}},addEventListener(){}};
+const win={Topkey:T,TopkeyUpgrade103:{state:{metrics:{}}},performance:{now:(()=>{let n=0;return()=>++n})()},addEventListener(){},setTimeout,clearTimeout};
+const sandbox={window:win,document:doc,location:{hash:'',href:'https://x/sports/badminton/'},URL,Math,Date,console,setTimeout,clearTimeout,localStorage:{getItem(){return null},setItem(){}},MutationObserver:function(){this.observe=()=>{}},performance:win.performance};win.window=win;win.document=doc;win.location=sandbox.location;win.URL=URL;win.localStorage=sandbox.localStorage;win.MutationObserver=sandbox.MutationObserver;
+vm.createContext(sandbox);vm.runInContext(code,sandbox);
+(async()=>{
+  const key='/root/tournaments/main/activeMatches/court_1';
+  await T.Data.queueMulti({[key]:{version:1}}, {type:'SCORE',eventId:'e1'});
+  assert.strictEqual(directCalls,1,'online SCORE should use direct Firebase update');assert.strictEqual(baseCalls,0,'online SCORE must bypass legacy queueMulti');assert.strictEqual(puts.length,0,'successful direct SCORE must not touch IDB');
+  failMode='network';App.state.activeMatches.court_1={version:3,sets:[{a:3,b:0}]};
+  await T.Data.queueMulti({[key]:{version:2,sets:[{a:2,b:0}]}}, {type:'SCORE',eventId:'e2'});
+  assert.strictEqual(puts.length,1,'failed direct SCORE must queue');assert.strictEqual(puts[0].status,'PENDING');assert.strictEqual(puts[0].updates[key].version,3,'fallback must store newest local active-match snapshot');
+  const before=directCalls;await T.Data.queueMulti({[key]:{version:4}}, {type:'SCORE',eventId:'e3'});assert.strictEqual(directCalls,before,'queued court must not overtake with a new direct write');assert(puts.length>=2,'ordered later SCORE must queue');
+  failMode='permission';const key2='/root/tournaments/main/activeMatches/court_2';let threw=false;try{await T.Data.queueMulti({[key2]:{version:2}}, {type:'SCORE',eventId:'e4'})}catch(e){threw=true}assert(threw,'permission denied SCORE must throw');assert(puts.some(x=>x.id==='e4'&&x.status==='BLOCKED'),'permission denied SCORE must be persisted BLOCKED');
+  failMode='';await T.Data.queueMulti({}, {type:'AUDIT'});assert.strictEqual(baseCalls,1,'non-SCORE writes must preserve legacy queue path');
+  console.log('upgrade105 scoring fast lane VM: PASS');
+})().catch(e=>{console.error(e);process.exit(1)});

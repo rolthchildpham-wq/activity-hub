@@ -1,0 +1,274 @@
+{
+  "source": "H102 Release Diagnostics STAGING",
+  "output": "H103 Runtime Repair STAGING",
+  "checks": [
+    {
+      "name": "manifest_tag_consistency",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "runtime_guard_hub",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "runtime_guard_badminton",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "runtime_guard_vnext",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "safe_check_is_read_only_sports/badminton/upgrade122-hotfix85.js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "updater_release_verified_sports/badminton/upgrade122-hotfix85.js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "safe_check_is_read_only_sports/vnext/src/upgrade122-hotfix85.js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "updater_release_verified_sports/vnext/src/upgrade122-hotfix85.js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "safe_check_is_read_only_sports/vnext/h97-vnext.bundle.js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "updater_release_verified_sports/vnext/h97-vnext.bundle.js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "badminton_hotfix85_first",
+      "pass": true,
+      "detail": "'./upgrade122-hotfix85.js?v=u122h105-20261108','./testlab122.js?v=u122h105-20261108','./upgrade"
+    },
+    {
+      "name": "badminton_hotfix85_once",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "badminton_admin_cache_buster",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "static_refs_index.html",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "sw_no_global_cross_origin_sw.js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "sw_static_cachefirst_sw.js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "sw_shell_resolves_sw.js",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "sw_no_global_cross_origin_sports/badminton/sw.js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "sw_static_cachefirst_sports/badminton/sw.js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "sw_shell_resolves_sports/badminton/sw.js",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "sw_no_global_cross_origin_sports/vnext/sw.js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "sw_static_cachefirst_sports/vnext/sw.js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "sw_shell_resolves_sports/vnext/sw.js",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "static_refs_sports/badminton/index.html",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "sw_no_global_cross_origin_sw.js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "sw_static_cachefirst_sw.js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "sw_shell_resolves_sw.js",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "sw_no_global_cross_origin_sports/badminton/sw.js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "sw_static_cachefirst_sports/badminton/sw.js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "sw_shell_resolves_sports/badminton/sw.js",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "sw_no_global_cross_origin_sports/vnext/sw.js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "sw_static_cachefirst_sports/vnext/sw.js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "sw_shell_resolves_sports/vnext/sw.js",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "static_refs_sports/vnext/index.html",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "sw_no_global_cross_origin_sw.js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "sw_static_cachefirst_sw.js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "sw_shell_resolves_sw.js",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "sw_no_global_cross_origin_sports/badminton/sw.js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "sw_static_cachefirst_sports/badminton/sw.js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "sw_shell_resolves_sports/badminton/sw.js",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "sw_no_global_cross_origin_sports/vnext/sw.js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "sw_static_cachefirst_sports/vnext/sw.js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "sw_shell_resolves_sports/vnext/sw.js",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "firebase_rules_unchanged",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "runtime_data_layer_unmodified",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "old_contract_adapted_hub_guard_h93.js",
+      "pass": true,
+      "detail": "HUB_GUARD_H93_OK"
+    },
+    {
+      "name": "old_contract_adapted_release_atomic_h93.js",
+      "pass": true,
+      "detail": "RELEASE_ATOMIC_H88_OK 4"
+    },
+    {
+      "name": "old_contract_adapted_auth_bootstrap_h93.js",
+      "pass": true,
+      "detail": "AUTH_BOOTSTRAP_H93_OK"
+    },
+    {
+      "name": "old_contract_adapted_auth_i18n_parity_h93.js",
+      "pass": true,
+      "detail": "H93_AUTH_I18N_PARITY_OK"
+    },
+    {
+      "name": "old_contract_adapted_hub_admin_h93.js",
+      "pass": true,
+      "detail": "HUB_ADMIN_H94_OK"
+    },
+    {
+      "name": "all_js_syntax",
+      "pass": true,
+      "detail": "{'total': 394, 'failed': []}"
+    },
+    {
+      "name": "json_syntax",
+      "pass": true,
+      "detail": "{'count': 22, 'failed': []}"
+    }
+  ],
+  "passed": 52,
+  "failed": 0,
+  "limits": [
+    "No live Firebase staging login or data mutation",
+    "No completed production CDN/browser full navigation; Chromium navigation blocked by administrator",
+    "Legacy H93 tests edited only in ephemeral copies to update version expectations, not as acceptance tests.",
+    "Firebase full-tree listeners and v2 migration still unresolved."
+  ]
+}

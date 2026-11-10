@@ -1,0 +1,25 @@
+/* Upgrade 53: responsive shell + Android/PWA installability */
+html,body{width:100%;max-width:100%;overflow-x:clip}#app-shell,.topbar,.shell,.page,.card,.grid,.form-grid,.subcard{min-width:0;max-width:100%}#app-shell{width:100%}.topbar{width:100%;max-width:100vw}.shell{width:min(100%,1500px)}.grid>*,.form-grid>*,.score-head>*,.court-half,.split>*{min-width:0}img,video,canvas,iframe{max-width:100%}input,select,textarea,button{max-width:100%}.table-wrap{width:100%;max-width:100%;overflow-x:auto;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-inline:contain}.table-wrap table{max-width:none}.nav{max-width:100vw;scrollbar-width:thin;overscroll-behavior-inline:contain;scroll-snap-type:x proximity}.nav button{scroll-snap-align:start}.tk53-install{border-color:#10b981!important;color:#9ff7d8!important;background:#063b32!important}.tk53-install.hidden{display:none!important}.tk53-mobile-table-note{display:none}
+@media(max-width:900px){
+  .shell{padding:10px 10px calc(18px + env(safe-area-inset-bottom))!important;margin:0!important;width:100%!important}
+  .page,.card{width:100%!important;max-width:100%!important}
+  .card{padding:12px!important;border-radius:14px}
+  .g2,.g3,.g4,.form-grid,#page-umpire .form-grid,.scheduler-grid,.team-picker,.tk9-grid,.tk9-grid3,.tk9-top3,.tk9-pairs,#page-live .tk46-grid,#page-live .tk47-grid{grid-template-columns:minmax(0,1fr)!important}
+  .brand{padding:10px 12px 7px!important;align-items:flex-start!important;flex-direction:column!important;gap:8px!important}
+  .brand>div{width:100%;min-width:0}.brand h1{font-size:clamp(15px,4.4vw,20px)!important;line-height:1.2;overflow-wrap:anywhere}.brand small{font-size:11px;line-height:1.35}
+  .top-actions{width:100%;display:grid!important;grid-template-columns:minmax(0,1fr) auto;gap:7px!important;align-items:center!important}.top-actions .hub-back{order:0!important;width:auto!important;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.top-actions #user-label{min-width:0;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.top-actions #logout-btn{grid-column:2}.top-actions .tk53-install{grid-column:1/-1;width:100%}
+  .nav{padding:0 10px 8px!important;gap:5px!important}.nav button{padding:9px 11px!important;font-size:12px!important;min-height:40px}
+  #page-umpire>.card{padding:10px!important}#page-umpire .field,#page-umpire select,#page-umpire input{width:100%!important}#page-umpire .form-grid>.btn{width:100%;min-height:46px}#page-umpire #umpire-board{width:100%;max-width:100%;overflow:hidden}
+  .score-head{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)!important;gap:6px!important}.score-head div{padding:8px 5px!important}.score-head strong{font-size:clamp(30px,11vw,46px)!important}.score-head span,.score-head b{overflow-wrap:anywhere}
+  .court{grid-template-columns:minmax(0,1fr) 3px minmax(0,1fr)!important;min-height:250px!important;width:100%;max-width:100%}.court-half{padding:8px 6px!important;gap:7px!important}.player{padding:10px 6px!important;font-size:clamp(11px,3.5vw,15px);overflow-wrap:anywhere}.tk11-player{gap:7px!important}.tk11-player-no{width:30px!important;height:30px!important;font-size:19px!important}
+  .score-actions{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important}.score-actions .btn{min-width:0;min-height:48px;padding:10px 7px!important;font-size:12px;white-space:normal;line-height:1.2}
+  .checkin-row,.list-card{align-items:stretch;flex-direction:column}.action-bar,.action-group,.court-actions{align-items:stretch}.action-bar .btn,.action-bar label.btn,.court-actions .btn{flex:1 1 145px;text-align:center}
+  .modal{padding:8px!important}.modal-box,.modal-box.wide{width:100%!important;max-width:100%!important;max-height:calc(100dvh - 16px);overflow:auto;padding:13px!important}
+  .public-register{padding:12px!important}.video-box{width:100%;max-height:none}.caption{max-width:92%;font-size:12px}
+  .table-wrap{position:relative;border-radius:10px}.table-wrap table{font-size:12px}.table-wrap th,.table-wrap td{padding:8px}.tk53-mobile-table-note{display:block;color:#8fb5d9;font-size:10px;margin:5px 2px 0}
+}
+@media(max-width:520px){
+  .shell{padding-left:7px!important;padding-right:7px!important}.card{padding:10px!important}.top-actions{grid-template-columns:1fr auto}.top-actions #user-label{font-size:10px}.nav{padding-left:7px!important;padding-right:7px!important}
+  .court{min-height:230px!important;border-width:3px}.court-half{padding:6px 4px!important}.player{font-size:11px!important}.score-actions .btn{font-size:11px}.tk22-umpire-access-note{font-size:10px!important}
+}
+@media(min-width:901px){.tk53-install{white-space:nowrap}}

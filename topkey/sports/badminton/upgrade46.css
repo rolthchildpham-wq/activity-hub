@@ -1,0 +1,14 @@
+/* Upgrade 46 · TOPKEY Local Vietnamese Commentary Engine */
+#page-live .tk46-controls{margin-top:12px;padding-top:12px;border-top:1px solid #284a67;display:grid;gap:10px}
+#page-live .tk46-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.85fr) minmax(0,.85fr);gap:8px;align-items:end}
+#page-live .tk46-check{display:flex;align-items:center;gap:8px;min-height:42px;padding:8px 10px;border:1px solid #31506d;border-radius:10px;background:#081a2e;font-size:12px;font-weight:800;color:#c8d8e8}
+#page-live .tk46-meta{display:flex;gap:8px;flex-wrap:wrap;color:#9bb0c8;font-size:11px}
+#page-live .tk46-meta span{padding:4px 7px;border:1px solid #284a67;border-radius:999px;background:#091b30}
+#page-live .tk46-actions{display:flex;gap:7px;flex-wrap:wrap}
+#page-live .tk46-dict textarea{min-height:76px;resize:vertical}
+#page-live .tk46-manual-row{display:grid;grid-template-columns:1fr auto;gap:7px}
+#page-live #tk46-local-status[data-state="ok"]{color:#6ee7b7}
+#page-live #tk46-local-status[data-state="working"]{color:#fbbf24}
+#page-live #tk46-local-status[data-state="err"]{color:#fb7185}
+#page-live #tk46-local-status{margin-top:5px;font-size:11px}
+@media(max-width:900px){#page-live .tk46-grid{grid-template-columns:1fr}#page-live .tk46-manual-row{grid-template-columns:1fr}}

@@ -1,0 +1,133 @@
+{
+  "release": "H106 PDF Verified - local staging",
+  "baseRelease": "H105 Awards & Editable PPT Seven Sports",
+  "status": "PASS_LOCAL_TESTS_NOT_PRODUCTION_CERTIFIED",
+  "tests": {
+    "jsSyntax": {
+      "status": "PASS",
+      "files": 400
+    },
+    "jsonStaticRegression": {
+      "status": "PASS",
+      "checks": 73,
+      "failures": []
+    },
+    "pdfSevenSportsChromium": {
+      "status": "PASS",
+      "details": {
+        "badminton": {
+          "pages": 17,
+          "bytes": 4583746,
+          "min_ink": 0.145,
+          "avg_ink": 0.203,
+          "seconds": 1.08
+        },
+        "football": {
+          "pages": 8,
+          "bytes": 1652777,
+          "min_ink": 0.145,
+          "avg_ink": 0.184,
+          "seconds": 0.43
+        },
+        "volleyball": {
+          "pages": 8,
+          "bytes": 1647832,
+          "min_ink": 0.144,
+          "avg_ink": 0.184,
+          "seconds": 0.4
+        },
+        "running": {
+          "pages": 9,
+          "bytes": 1813391,
+          "min_ink": 0.145,
+          "avg_ink": 0.181,
+          "seconds": 0.46
+        },
+        "handmade": {
+          "pages": 8,
+          "bytes": 1637414,
+          "min_ink": 0.144,
+          "avg_ink": 0.183,
+          "seconds": 0.43
+        },
+        "shuttle": {
+          "pages": 8,
+          "bytes": 1665660,
+          "min_ink": 0.145,
+          "avg_ink": 0.184,
+          "seconds": 0.41
+        },
+        "cooking": {
+          "pages": 9,
+          "bytes": 1791880,
+          "min_ink": 0.144,
+          "avg_ink": 0.179,
+          "seconds": 0.48
+        },
+        "incomplete_data_guard": "PASS"
+      }
+    },
+    "actualPdfButtonBadmintonAndFootball": {
+      "status": "PASS",
+      "details": {
+        "badminton": {
+          "pages": 7,
+          "bytes": 1087731,
+          "status": "Đã kiểm tra và tải PDF 7 trang (1063 KB)."
+        },
+        "football": {
+          "pages": 7,
+          "bytes": 1063452,
+          "status": "Đã kiểm tra và tải PDF 7 trang (1039 KB)."
+        }
+      }
+    },
+    "photosStress": {
+      "status": "PASS",
+      "photos": 12,
+      "pages": 16
+    },
+    "historicalRealDataReadonly": {
+      "status": "PASS",
+      "teams": 26,
+      "matches": 99,
+      "transactions": 4,
+      "pages": 13,
+      "privateOutputNotShipped": true
+    },
+    "firebaseV2Simulated": {
+      "status": "PASS",
+      "recordsPerGroup": 12000,
+      "groups": [
+        "teams",
+        "matches",
+        "finance"
+      ]
+    },
+    "pptExportRegression": {
+      "status": "PASS"
+    },
+    "legacyRankingPdfRegression": {
+      "status": "PASS"
+    },
+    "firebaseActualLoginAndWrites": {
+      "status": "NOT_TESTED"
+    },
+    "edgeOneProduction": {
+      "status": "NOT_TESTED"
+    }
+  },
+  "changes": [
+    "Replaced premature window.print PDF launch in Badminton",
+    "Replaced external CDN html2pdf/html2canvas path in VNext",
+    "Self-contained A4 landscape PDF writer with non-empty page checks",
+    "Consistent seven-sport final report sections, awards, finance, results, photos",
+    "Error instead of blank or partially sourced PDF on detected incomplete matches",
+    "Updated H106 version/cache/release and Service Workers"
+  ],
+  "limits": [
+    "PDF is image-backed, text is not directly selectable/searchable; report HTML print preview remains.",
+    "Firebase real staging/production and EdgeOne deployment were not exercised.",
+    "No database migration or data write is performed by this update."
+  ]
+}

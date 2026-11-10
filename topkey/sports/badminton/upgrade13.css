@@ -1,0 +1,7 @@
+.tk13-court-legend{font-size:11px;color:#93c5fd;font-weight:800;padding:4px 8px;border:1px dashed #315270;border-radius:8px}
+.tk13-fixed-court-no{background:#ef4444!important;color:#fff!important;border:2px solid rgba(255,255,255,.25)}
+.tk13-player.serving .tk13-fixed-court-no{background:#fff!important;color:#ef4444!important;border-color:#fef3c7}
+.tk13-left .tk13-player:first-of-type .tk13-fixed-court-no::after,.tk13-right .tk13-player:first-of-type .tk13-fixed-court-no::after{content:''}
+.tk13-probe-ok{border:1px solid #10b981;background:#063c33;color:#a7f3d0;border-radius:10px;padding:10px;line-height:1.55}
+.tk13-probe-bad{border:1px solid #fb7185;background:#4c1730;color:#fecdd3;border-radius:10px;padding:10px;line-height:1.55}
+@media(max-width:760px){.tk13-court-legend{width:100%;text-align:center}}

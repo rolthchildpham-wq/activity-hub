@@ -1,0 +1,2 @@
+/* Upgrade80 · rear camera default + explicit front/rear selector */
+.tk80-camera-field{min-width:0}.tk80-camera-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}.tk80-camera-row select{min-width:0;width:100%}.tk80-camera-status{margin-top:6px;font-size:11px;color:#9fc3dc;font-weight:800}.tk80-camera-status[data-state="live"]{color:#6ee7b7}@media(max-width:600px){.tk80-camera-row{grid-template-columns:1fr}.tk80-camera-row .btn{width:100%}}

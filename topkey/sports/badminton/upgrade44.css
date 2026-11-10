@@ -1,0 +1,5 @@
+.tk44-actual-time{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:4px;font-size:11px;line-height:1.25;color:#a7f3d0}
+.tk44-actual-time span{display:inline-flex;align-items:center;border:1px solid rgba(52,211,153,.38);border-radius:999px;padding:2px 6px;background:rgba(5,150,105,.12);color:#6ee7b7;font-weight:800;white-space:nowrap}
+.tk44-actual-time b{color:#d1fae5;font-size:11px;white-space:nowrap}
+.tk12-public-match .tk44-actual-time{display:flex;color:#a7f3d0!important}
+@media(max-width:760px){.tk44-actual-time{align-items:flex-start}.tk44-actual-time b{white-space:normal}}

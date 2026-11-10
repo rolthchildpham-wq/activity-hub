@@ -1,0 +1,18 @@
+const fs=require('fs'),assert=require('assert');
+const p=__dirname+'/../upgrade122-hotfix52.js',s=fs.readFileSync(p,'utf8');
+assert(s.includes("role()==='ADMIN'"),'button must be ADMIN-only');
+assert(s.includes('🧾 Giải trình BXH'),'missing report button');
+assert(s.includes('App.ranking({category:cat})'),'report must use active App.ranking');
+assert(s.includes('rows.slice(0,4)'),'Top 4 model missing');
+assert(s.includes('Giải trình vị trí 1–2–3–4'),'Top 4 report heading missing');
+assert(s.includes("GIẢI TRÌNH TOP 4"),'CSV Top 4 missing');
+assert(s.includes('dateDDMMYYYY'),'ddmmyyyy date naming missing');
+assert(s.includes('_Báo cáo BXH_'),'report filename rule missing');
+assert(s.includes('shortTournamentName'),'short tournament name missing');
+assert(s.includes('<title>${esc(reportBaseName(model))}</title>'),'print/PDF title naming missing');
+const idx=fs.readFileSync(__dirname+'/../index.html','utf8');
+assert(idx.includes('./upgrade122-hotfix52.js?v=u122h53-20261105'),'H52 runtime not loaded');
+assert(!idx.includes('./upgrade122-hotfix51.js?v=u122h53-20261105'),'H51 should not be active in H52 runtime');
+const build=JSON.parse(fs.readFileSync(__dirname+'/../build.json','utf8'));
+assert.equal(build.cacheTag,'u122h53-20261105');
+console.log('H52 ranking Top4 + filename rule: PASS');

@@ -1,0 +1,8 @@
+/* Upgrade 23: strict 0-0 opening server + physical-side score mapping */
+.tk23-opening-allowed{cursor:pointer!important;outline:3px solid rgba(253,230,138,.9)!important;outline-offset:-5px;box-shadow:0 0 0 2px rgba(245,158,11,.28),0 0 18px rgba(245,158,11,.24)}
+.tk23-opening-allowed:hover,.tk23-opening-allowed:focus{filter:brightness(1.12);transform:translateY(-1px)}
+.tk23-opening-locked{cursor:not-allowed!important;opacity:.78;filter:saturate(.82)}
+.tk23-zero-zero-line{border-color:#f59e0b!important;background:#3a2908!important}
+.tk23-zero-zero-line>span:first-child{font-weight:800}.tk23-zero-zero-line small{display:block;color:#fde68a;font-size:10px;margin-top:2px}
+.score-head .tk23-score-physical small{color:#d7f4ff;font-weight:1000}.score-head .tk23-score-physical strong{font-variant-numeric:tabular-nums}
+@media(max-width:700px){.tk23-zero-zero-line>span:first-child{width:100%}.tk23-zero-zero-line small{margin-top:4px}}

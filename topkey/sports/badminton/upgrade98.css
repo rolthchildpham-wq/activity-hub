@@ -1,0 +1,53 @@
+/* Upgrade100 viewer auto-landscape correction + fullscreen cleanup */
+#tk88-public-live-stage .tk88-public-player{aspect-ratio:16/9!important;background:#000!important;overflow:hidden!important}
+#tk88-public-live-stage .tk88-public-player video{position:absolute!important;left:50%!important;top:50%!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;transform:translate(-50%,-50%)!important;transform-origin:center center!important;object-fit:contain!important;background:#000!important}
+/* WebRTC track may report portrait geometry although physical scene was shot landscape. Swap box then rotate. */
+#tk88-public-live-stage .tk88-public-player.tk98-rot90 video,#tk88-public-live-stage .tk88-public-player video.tk98-rot90,#tk88-public-live-stage.tk98-rot90 .tk88-public-player video{width:var(--tk98-rot-w,56.25vw)!important;height:var(--tk98-rot-h,100vw)!important;transform:translate(-50%,-50%) rotate(90deg)!important;object-fit:cover!important}
+#tk88-public-live-stage .tk88-public-player.tk98-rotm90 video,#tk88-public-live-stage .tk88-public-player video.tk98-rotm90,#tk88-public-live-stage.tk98-rotm90 .tk88-public-player video{width:var(--tk98-rot-w,56.25vw)!important;height:var(--tk98-rot-h,100vw)!important;transform:translate(-50%,-50%) rotate(-90deg)!important;object-fit:cover!important}
+#tk88-public-live-stage .tk88-public-player.tk98-rot180 video,#tk88-public-live-stage .tk88-public-player video.tk98-rot180,#tk88-public-live-stage.tk98-rot180 .tk88-public-player video{transform:translate(-50%,-50%) rotate(180deg)!important;object-fit:cover!important}
+/* Native fullscreen only. No fixed-position CSS fallback, so exiting fullscreen cannot leave a dead overlay. */
+#tk88-public-live-stage:fullscreen,#tk88-public-live-stage.tk98-viewer-fullscreen{background:#000!important;width:100%!important;height:100%!important;padding:0!important;margin:0!important}
+#tk88-public-live-stage:fullscreen .tk88-public-player,#tk88-public-live-stage.tk98-viewer-fullscreen .tk88-public-player{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-height:none!important;aspect-ratio:auto!important;border:0!important;border-radius:0!important}
+#tk88-public-live-stage:fullscreen .tk88-public-toolbar,#tk88-public-live-stage.tk98-viewer-fullscreen .tk88-public-toolbar{position:absolute!important;z-index:5!important;left:max(8px,env(safe-area-inset-left))!important;right:max(8px,env(safe-area-inset-right))!important;bottom:max(8px,env(safe-area-inset-bottom))!important;margin:0!important;padding:7px!important;border-radius:12px!important;background:linear-gradient(180deg,rgba(2,9,20,.18),rgba(2,9,20,.88))!important;display:flex!important;gap:7px!important;align-items:center!important;flex-wrap:wrap!important}
+#tk88-public-live-stage:fullscreen .btn,#tk88-public-live-stage.tk98-viewer-fullscreen .btn{min-height:42px!important;font-size:13px!important;padding:8px 11px!important}
+#tk98-public-rotate{white-space:nowrap}
+
+/* Referee fullscreen on short landscape phones (e.g. Vivo X300 Pro class viewport): prioritize score, names and touch targets. */
+@media (orientation:landscape) and (max-height:650px) and (max-width:1200px){
+ body.tk58-score-focus{
+  --tk70-gap:clamp(4px,1dvh,7px)!important;
+  --tk70-score:clamp(44px,14dvh,64px)!important;
+  --tk70-score-label:clamp(11px,3dvh,14px)!important;
+  --tk70-match-name:clamp(13px,3.7dvh,18px)!important;
+  --tk70-note:clamp(10px,2.7dvh,12px)!important;
+  --tk70-service:clamp(12px,3.3dvh,15px)!important;
+  --tk70-team:clamp(13px,3.6dvh,18px)!important;
+  --tk70-player:clamp(14px,3.9dvh,19px)!important;
+  --tk70-player-note:clamp(11px,2.9dvh,13px)!important;
+  --tk70-player-no:clamp(34px,9.5dvh,44px)!important;
+  --tk70-action:clamp(13px,3.5dvh,16px)!important;
+ }
+ body.tk58-score-focus #page-umpire>.card{padding:4px!important;gap:var(--tk70-gap)!important}
+ body.tk58-score-focus #umpire-board>.score-head{min-height:clamp(64px,18dvh,84px)!important;grid-template-columns:minmax(0,1fr) minmax(190px,32vw) minmax(0,1fr)!important}
+ body.tk58-score-focus #umpire-board>.score-head>div{padding:3px 8px!important}
+ body.tk58-score-focus #umpire-board>.tk11-service-line{min-height:44px!important;padding:3px 7px!important;font-size:var(--tk70-service)!important}
+ body.tk58-score-focus #umpire-board>.tk11-service-line .btn{min-height:44px!important;min-width:44px!important;padding:6px 9px!important;font-size:clamp(12px,3.1dvh,15px)!important}
+ body.tk58-score-focus #umpire-board>.tk11-service-line .tk13-court-legend{font-size:clamp(10px,2.6dvh,12px)!important;padding:4px 6px!important}
+ body.tk58-score-focus #umpire-board>.tk69-opening-history{padding:3px 7px!important;font-size:clamp(10px,2.7dvh,12px)!important;min-height:24px!important}
+ body.tk58-score-focus #umpire-board .court-half{padding:4px 8px!important;gap:4px!important}
+ body.tk58-score-focus #umpire-board .tk11-team-head{min-height:44px!important}
+ body.tk58-score-focus #umpire-board .tk11-swap-pos{min-height:44px!important;min-width:44px!important;font-size:clamp(12px,3dvh,14px)!important;padding:5px 8px!important}
+ body.tk58-score-focus #umpire-board .player{min-height:clamp(52px,14dvh,68px)!important;padding:5px 8px!important;font-size:var(--tk70-player)!important;gap:6px!important}
+ body.tk58-score-focus .score-actions .btn{min-height:48px!important;font-size:var(--tk70-action)!important;padding:6px!important}
+ body.tk58-score-focus #tk58-focus-exit{width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;font-size:22px!important}
+}
+
+/* Extremely short Android landscape: preserve readability by collapsing only secondary notes, never score/action text. */
+@media (orientation:landscape) and (max-height:430px) and (max-width:1000px){
+ body.tk58-score-focus #umpire-board .tk22-side-note{display:none!important}
+ body.tk58-score-focus #umpire-board>.tk69-opening-history small{display:none!important}
+ body.tk58-score-focus #umpire-board>.tk69-opening-history{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ body.tk58-score-focus #umpire-board>.score-head{min-height:68px!important}
+ body.tk58-score-focus #umpire-board>.tk11-service-line{min-height:42px!important}
+ body.tk58-score-focus #umpire-board .player{min-height:52px!important}
+}

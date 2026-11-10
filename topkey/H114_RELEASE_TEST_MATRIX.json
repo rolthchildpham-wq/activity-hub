@@ -1,0 +1,49 @@
+{
+  "build": "u122h114-20261109",
+  "syntax_files": 414,
+  "syntax_failures": [],
+  "release_manifests_synced": true,
+  "receipt_pdf": "chromium mock PASS",
+  "finance_edit_delete": "chromium mock PASS",
+  "full_firebase_login": "NOT_TESTED",
+  "edgeone_production": "NOT_TESTED",
+  "live_pdfjs": "NOT_TESTED",
+  "release": "H114",
+  "base": "H113",
+  "local_chromium": {
+    "tournament_close": "PASS (mock; one LIVE rejected, all finished accepted)",
+    "finance_edit": "PASS (mock, timestamp-guarded transaction)",
+    "finance_delete": "PASS (mock, with audit)",
+    "pdf_test_pages": 7,
+    "pdf_all_pages_nonwhite": true,
+    "pdf_no_attachment": true,
+    "pdf_pdfjs_renderer": "SIMULATED; real PDF.js not verified",
+    "xlsx_sheet_print": "PASS with sample XLSX"
+  },
+  "testlab_mock": {
+    "pass": 18,
+    "fail": 0,
+    "untested": 8,
+    "status": "PARTIAL"
+  },
+  "legacy_regressions": {
+    "H107_awards": "PASS",
+    "H108_auth": "PASS",
+    "H95_runtime": "PASS",
+    "H104_v2_pagination": "PASS",
+    "H114_ServiceWorker": "PASS"
+  },
+  "deployment": {
+    "firebase_staging": "NOT_TESTED",
+    "edgeone_production": "NOT_TESTED",
+    "multiuser_concurrency": "NOT_TESTED",
+    "measured_30s_startup": "NOT_TESTED",
+    "live_receipt_cors": "NOT_TESTED"
+  },
+  "scope_limits": [
+    "XLSX cells and embedded images rendered; original Excel chart objects not pixel-exact",
+    "Original PDF receipts require dynamically loaded PDF.js; errors do not yield incomplete PDF",
+    "Legacy XLS receipts unsupported; convert to XLSX",
+    "Closed tournament write should be tested under actual scoring concurrency"
+  ]
+}

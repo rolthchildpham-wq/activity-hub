@@ -1,0 +1,161 @@
+{
+  "baseline": "H114",
+  "release": "H115",
+  "tests": [
+    {
+      "test": "All JS syntax",
+      "result": "PASS",
+      "details": "416 JS files; errors=[]"
+    },
+    {
+      "test": "Inline HTML script syntax",
+      "result": "PASS",
+      "details": "44 scripts, errors=[]"
+    },
+    {
+      "test": "Release manifest H115",
+      "result": "PASS",
+      "details": "True"
+    },
+    {
+      "test": "Build manifest sports/badminton/build.json",
+      "result": "PASS",
+      "details": "True"
+    },
+    {
+      "test": "Build manifest sports/vnext/build.json",
+      "result": "PASS",
+      "details": "True"
+    },
+    {
+      "test": "SW cache H115 sw.js",
+      "result": "PASS",
+      "details": "True"
+    },
+    {
+      "test": "SW cache H115 sports/badminton/sw.js",
+      "result": "PASS",
+      "details": "True"
+    },
+    {
+      "test": "SW cache H115 sports/vnext/sw.js",
+      "result": "PASS",
+      "details": "True"
+    },
+    {
+      "test": "HTML script H115 index.html",
+      "result": "PASS",
+      "details": "True"
+    },
+    {
+      "test": "HTML script H115 system-admin.html",
+      "result": "PASS",
+      "details": "True"
+    },
+    {
+      "test": "HTML script H115 change-password.html",
+      "result": "PASS",
+      "details": "True"
+    },
+    {
+      "test": "HTML script H115 sports/badminton/index.html",
+      "result": "PASS",
+      "details": "True"
+    },
+    {
+      "test": "HTML script H115 sports/vnext/index.html",
+      "result": "PASS",
+      "details": "True"
+    },
+    {
+      "test": "HTML referenced assets exist",
+      "result": "PASS",
+      "details": "90 references, missing=[]"
+    },
+    {
+      "test": "JSON parse firebase.database.rules.json",
+      "result": "PASS",
+      "details": "True"
+    },
+    {
+      "test": "JSON parse edgeone.json",
+      "result": "PASS",
+      "details": "True"
+    },
+    {
+      "test": "JSON parse i18n/H115_TRANSLATIONS.json",
+      "result": "PASS",
+      "details": "True"
+    },
+    {
+      "test": "Dynamic display translation wired index.html",
+      "result": "PASS",
+      "details": "True"
+    },
+    {
+      "test": "Dynamic display translation wired system-admin.html",
+      "result": "PASS",
+      "details": "True"
+    },
+    {
+      "test": "Dynamic display translation wired sports/badminton/index.html",
+      "result": "PASS",
+      "details": "True"
+    },
+    {
+      "test": "Dynamic display translation wired sports/vnext/index.html",
+      "result": "PASS",
+      "details": "True"
+    },
+    {
+      "test": "Dynamic display translation wired change-password.html",
+      "result": "PASS",
+      "details": "True"
+    },
+    {
+      "test": "Club planning transaction tests",
+      "result": "PASS",
+      "details": "PASS production clubPlan isolation\nPASS write full plan\nPASS schedule-only update persists\nPASS budget unchanged during schedule save\nPASS concurrent stale revision refused\nPASS delete all schedule persisted\nPASS delete schedule leaves budget intact\nPASS full plan save after schedule update\nPASS invalid schedule date refused\nPASS milestone row keeps tri-language source\nPASS milestone row offers edit/delete\nPASS schedule actions available\nPASS testlab does not write production path\nPASS testlab rejects production tournament ID\nTOTAL 14/14"
+    },
+    {
+      "test": "DOM translation mock",
+      "result": "PASS",
+      "details": "PASS dynamic athlete name translated for EN\nPASS dictionary UI label translated\nPASS translation cached for repeated DOM refresh\nPASS athlete name retranslated for Chinese\nPASS static label switched to Chinese\nPASS no firebase records were mutated\nTOTAL 6/6"
+    },
+    {
+      "test": "Translation proxy security mock",
+      "result": "PASS",
+      "details": "PASS unauthenticated denied\nPASS authenticated translation batch\nPASS public translation only when explicitly enabled\nPASS mismatched Origin denied\nPASS unknown locale rejected\nPASS excessive batch rejected\nTOTAL 6/6"
+    },
+    {
+      "test": "Auth matrix legacy",
+      "result": "PASS",
+      "details": "disabled ADMIN is denied\nPASS manual login transition survives reload\nPASS different restored Firebase uid requires fresh login\nPASS VNext volleyball Hub entry and BTC scope work\nPASS switching from authenticated badminton to volleyball starts a new fresh session\nPASS authenticated VNext session survives clean URL without sport query\nPASS direct VNext with mismatched stored sport is rejected\nPASS public spectator bypass does not require Hub ticket\nPASS testlab bypass does not require Hub ticket\nPASS ADMIN allowed football\nPASS BTC own scope allowed football\nPASS ADMIN allowed volleyball\nPASS BTC own scope allowed volleyball\nPASS ADMIN allowed running\nPASS BTC own scope allowed running\nPASS ADMIN allowed handmade\nPASS BTC own scope allowed handmade\nPASS ADMIN allowed shuttle\nPASS BTC own scope allowed shuttle\nPASS ADMIN allowed cooking\nPASS BTC own scope allowed cooking\nAUTH_MATRIX_OK 26"
+    },
+    {
+      "test": "Award contracts legacy",
+      "result": "PASS",
+      "details": "H107 award contracts PASS: all 7 sports, legacy/new report, archive snapshot, bundled VNext, 4 manifests"
+    },
+    {
+      "test": "ServiceWorker scope legacy",
+      "result": "PASS",
+      "details": "PASS H114 service worker 3 scopes cache deletion without cross-scope disruption [{\"file\":\"sw.js\",\"deleted\":[\"topkey-h107-hub-shell\",\"topkey-h108-hub-shell\",\"topkey-h109-hub-shell\"],\"install\":\"non-disruptive\"},{\"file\":\"sports/badminton/sw.js\",\"deleted\":[\"topkey-h105-r1-sports-badminton-shell\",\"topkey-h106-r1-sports-badminton-shell\",\"topkey-h109-badminton-shell\"],\"install\":\"non-disruptive\"},{\"file\":\"sports/vnext/sw.js\",\"deleted\":[\"topkey-h108-r1-sports-vnext-shell\",\"topkey-h109-vnext-shell\"],\"install\":\"non-disruptive\"}]"
+    },
+    {
+      "test": "Firebase V2 engine stress",
+      "result": "PASS",
+      "details": "PASS PAGE teams {} records=12000 pages=98\nPASS PAGE teams {\"category\":\"MEN\"} records=6000 pages=49\nPASS PAGE teams {\"search\":\"doi 000\"} records=100 pages=1\nPASS PAGE matches {} records=12000 pages=98\nPASS PAGE matches {\"day\":\"2026-11-03\"} records=429 pages=4\nPASS PAGE matches {\"status\":\"FINISHED\"} records=9600 pages=79\nPASS PAGE matches {\"day\":\"2026-11-03\",\"status\":\"FINISHED\"} records=343 pages=3\nPASS PAGE finance {} records=12000 pages=98\nPASS PAGE finance {\"day\":\"2026-11-03\"} records=429 pages=4\nPASS status/date index mutation atomic delta\nPASS financial aggregate invalidation\nPASS referential integrity catches invalid match\nALL TESTS PASS"
+    }
+  ],
+  "limitations": [
+    "No real Firebase staging auth/account sign-in, login latency, or EdgeOne production browser was tested.",
+    "AI translation endpoint requires EdgeOne MAKERS_MODELS_KEY / AI_GATEWAY_API_KEY; optional public access is disabled by default.",
+    "User-entered names are translated for DISPLAY only, never stored or used as identity keys; editable input values remain original.",
+    "H114 185-feature parity and badminton 60 contracts are not certified end-to-end; legacy H91 language test already failed on unmodified H114.",
+    "Tests/h109_release_architecture.js and h108_release_parity.js are pinned to historic release ids and cannot be counted as H115 release failure without updating expected tags.",
+    "EdgeOne WAF/rate limits and privacy approval needed before optional anonymous translation endpoint is enabled."
+  ],
+  "pass": 29,
+  "fail": 0
+}

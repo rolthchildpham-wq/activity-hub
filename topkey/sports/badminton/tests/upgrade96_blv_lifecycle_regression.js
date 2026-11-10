@@ -1,0 +1,26 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const src=fs.readFileSync(__dirname+'/../src/upgrade94.js','utf8');
+const spoken=[],listeners={},callbacks={},offs=[];
+function Utter(t){this.text=t;this.lang='';this.rate=1;this.pitch=1;this.volume=1;}
+const speechSynthesis={getVoices(){return[{name:'Vietnamese Test',lang:'vi-VN'}]},cancel(){},resume(){},speak(u){spoken.push(u.text);u.onstart?.();u.onend?.()}};
+const els={'tk88-public-unmute':{id:'tk88-public-unmute',textContent:'',disabled:false,closest(sel){return sel.includes(this.id)?this:null}},'tk88-public-live-stage':{querySelector(){return null},appendChild(){}},'health-version':{textContent:''},'tk55-runtime-build':{textContent:''}};
+const document={documentElement:{dataset:{}},getElementById:id=>els[id]||null,createElement(){return{style:{},dataset:{},appendChild(){}}},addEventListener(t,f){(listeners[t]??=[]).push(f)}};
+const App={state:{activeMatches:{},matches:{m1:{teamAId:'a',teamBId:'b'},m2:{teamAId:'a',teamBId:'b'}},teams:{a:{name:'Đội A'},b:{name:'Đội B'}},courts:{}},currentCourt:'court_1',audioUnlocked:false};
+const U88={state:{publicCourt:'court_1'},preferredLiveCourt(){return this.state.publicCourt}};
+const current={court_1:{id:'old-a',courtId:'court_1',text:'Câu cũ sân 1.'},court_2:{id:'old-b',courtId:'court_2',text:'Câu cũ sân 2.'}};
+const T={App,U:{},Auth:{role:()=> 'VIEWER'},Data:{ready:true,listen(path,cb){(callbacks[path]??=[]).push(cb);if(path.startsWith('commentary/'))cb(current[path.split('/')[1]]);return()=>offs.push(path)}}};
+const location={hash:'#spectator',href:'https://example.test/sports/badminton/#spectator'};
+const window={Topkey:T,TopkeyUpgrade88:U88,TopkeyUpgrade47:{Piper:{installed:false}},speechSynthesis,SpeechSynthesisUtterance:Utter,location,addEventListener(){}};
+const ctx={window,document,location,speechSynthesis,SpeechSynthesisUtterance:Utter,console,setTimeout,clearTimeout,setInterval:()=>0,clearInterval,URL,fetch:async()=>({json:async()=>({build:'upgrade96'})})};vm.createContext(ctx);vm.runInContext(src,ctx);
+const U94=window.TopkeyUpgrade94;assert(U94);
+for(const fn of listeners.click||[])fn({target:els['tk88-public-unmute']});
+assert.strictEqual(App.audioUnlocked,false,'Viewer enable must not unlock legacy BTC BLV engine');
+assert.deepStrictEqual(spoken,['Âm thanh bình luận tỷ số đã bật.'],'Old initial commentary snapshot must be silent');
+let cb=callbacks['commentary/court_1/latest'].at(-1);cb(current.court_1);cb(current.court_1);assert.strictEqual(spoken.length,1,'Identical old snapshot repeats must remain silent');
+cb({id:'new-a',courtId:'court_1',text:'Đội A ghi điểm, tỷ số 6 - 3.'});assert.strictEqual(spoken.filter(x=>x.includes('6 - 3')).length,1,'Fresh row must speak once');
+cb({id:'new-a',courtId:'court_1',text:'Đội A ghi điểm, tỷ số 6 - 3.'});assert.strictEqual(spoken.filter(x=>x.includes('6 - 3')).length,1,'Duplicate fresh row must not repeat');
+U94.bindCourt(true);assert.strictEqual(spoken.filter(x=>x.includes('6 - 3')).length,1,'Rebind current snapshot must not replay');
+U88.state.publicCourt='court_2';U94.bindCourt(true);assert(!spoken.some(x=>x.includes('Câu cũ sân 2')),'Court switch must baseline old row silently');
+U88.state.publicCourt='court_1';U94.bindCourt(true);assert.strictEqual(spoken.filter(x=>x.includes('6 - 3')).length,1,'Switch back must not replay latest row');
+U94.state.lastScore.court_1={matchId:'m1',setIndex:0,sets:[{a:6,b:3}]};U94.onActiveMatches({court_1:{matchId:'m1',setIndex:0,sets:[{a:7,b:3}]}});assert(U94.state.fallbackTimer,'700 ms score fallback must remain');
+console.log('upgrade96 BLV lifecycle regression PASS');

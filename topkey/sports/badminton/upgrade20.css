@@ -1,0 +1,12 @@
+#page-umpire .form-grid{grid-template-columns:minmax(160px,.8fr) minmax(240px,1.25fr) minmax(280px,1.5fr) minmax(150px,.7fr) auto auto;align-items:end}
+.tk20-umpire-count{display:block;margin-top:6px;color:#8fb5d9;font-size:12px;font-weight:700}
+.tk20-order-code{white-space:nowrap;font-weight:700}
+.tk20-order-code::before{content:"#" attr(data-day-order);display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:26px;margin-right:8px;padding:0 7px;border-radius:999px;background:#0ea5e9;color:#fff;font-weight:900;font-size:12px;box-shadow:0 0 0 1px #38bdf866 inset}
+.tk20-umpire-open{white-space:nowrap}
+.tk20-player-window-card{border-color:#0ea5e9!important}
+.tk20-window-grid{display:grid;grid-template-columns:1.35fr repeat(4,minmax(130px,.75fr));gap:10px;align-items:end}
+.tk20-window-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.tk20-window-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border:1px solid #28506f;border-radius:12px;background:#0b2138}
+.tk20-window-row span{display:flex;flex-direction:column;gap:3px}.tk20-window-row small{color:#9fc1df}
+@media(max-width:1250px){#page-umpire .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.tk20-window-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:720px){#page-umpire .form-grid,.tk20-window-grid{grid-template-columns:1fr}.tk20-window-actions{align-items:stretch}.tk20-window-actions .btn{width:100%}}

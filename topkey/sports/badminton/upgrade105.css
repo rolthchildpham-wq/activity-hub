@@ -1,0 +1,10 @@
+/* Upgrade105 — Scoring Fast Lane + Schedule Collapse */
+.tk105-collapse-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.tk105-collapse-head .action-bar,.tk105-collapse-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tk105-collapse-btn{white-space:nowrap}
+.tk105-collapse-status{font-size:12px;opacity:.82}
+.tk105-collapse-body{overflow:hidden;transition:max-height .22s ease,opacity .16s ease,margin-top .16s ease}
+.tk105-collapsed .tk105-collapse-body{max-height:0!important;opacity:0;pointer-events:none;margin-top:0!important}
+.tk105-collapse-btn .tk105-label-short{display:none}
+#tk105-fastlane-health{margin-top:8px;line-height:1.7}
+@media(max-width:640px){.tk105-collapse-btn .tk105-label-full{display:none}.tk105-collapse-btn .tk105-label-short{display:inline}.tk105-collapse-status{display:none}}

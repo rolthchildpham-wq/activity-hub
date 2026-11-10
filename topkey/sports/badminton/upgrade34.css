@@ -1,0 +1,16 @@
+/* Upgrade 34: schedule pane maximize/restore controls. */
+.tk34-pane-toggle{white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:5px}
+body.tk34-pane-open{overflow:hidden!important}
+.tk32-schedule-upper.tk34-pane-maximized,.tk32-schedule-lower.tk34-pane-maximized{
+  position:fixed!important;inset:0!important;z-index:12050!important;width:100vw!important;height:100dvh!important;max-width:none!important;max-height:none!important;
+  margin:0!important;padding:14px!important;border-radius:0!important;background:linear-gradient(135deg,#06101f,#0a1b31 55%,#09243c)!important;
+  scrollbar-gutter:stable;overscroll-behavior:contain
+}
+.tk32-schedule-upper.tk34-pane-maximized{display:block!important;overflow:auto!important}
+.tk32-schedule-upper.tk34-pane-maximized>.card{max-width:1800px;margin-left:auto!important;margin-right:auto!important}
+.tk32-schedule-upper.tk34-pane-maximized>.card+.card{margin-top:14px!important}
+.tk32-schedule-lower.tk34-pane-maximized{display:flex!important;overflow:hidden!important}
+.tk32-schedule-lower.tk34-pane-maximized>.tk32-schedule-list-card{width:min(1800px,100%);height:100%!important;min-height:0!important;margin:0 auto!important;display:flex!important;flex-direction:column!important}
+.tk32-schedule-lower.tk34-pane-maximized>.tk32-schedule-list-card>.tk32-schedule-table-scroll{flex:1 1 auto!important;min-height:0!important;max-height:none!important;overflow:auto!important}
+.tk34-pane-maximized [data-tk34-pane-toggle]{position:sticky;top:0;z-index:8;box-shadow:0 4px 18px rgba(0,0,0,.28)}
+@media(max-width:900px){.tk32-schedule-upper.tk34-pane-maximized,.tk32-schedule-lower.tk34-pane-maximized{padding:8px!important}.tk34-pane-toggle{font-size:12px}}

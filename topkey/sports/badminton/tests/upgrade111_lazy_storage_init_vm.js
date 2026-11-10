@@ -1,0 +1,10 @@
+const fs=require('fs'),path=require('path'),vm=require('vm'),assert=require('assert');
+const root=path.resolve(__dirname,'..'),src=fs.readFileSync(path.join(root,'src/firebase.js'),'utf8');
+const db={ref(){return{on(){},once:async()=>({val:()=>null}),update:async()=>{}}}};
+const auth={currentUser:null};
+const firebase={apps:[],initializeApp(){this.apps.push({})},app(){return{}},database(){return db},auth(){return auth}};
+const Topkey={U:{id:()=> 'id',toast(){}},ROOT:'root',FIREBASE_CONFIG:{},idb:{all:async()=>[],put:async()=>{},get:async()=>null,del:async()=>{}},App:{renderHealth(){}}};
+const windowMock={Topkey,addEventListener(){}};
+const ctx={window:windowMock,navigator:{onLine:true},firebase,addEventListener(){},console,Date,String,Number,Object,Array,JSON,Math,URLSearchParams,location:{search:''},localStorage:{getItem(){return null},setItem(){}}};
+vm.createContext(ctx);vm.runInContext(src,ctx);
+(async()=>{const d=windowMock.Topkey.Data;await d.init();assert.strictEqual(d.ready,true);assert.strictEqual(d.storage,null,'Storage must stay null when SDK is not loaded');console.log('upgrade111 lazy Storage init VM PASS')})().catch(e=>{console.error(e);process.exit(1)});

@@ -1,0 +1,12 @@
+/* Upgrade 32: two-pane schedule workspace, each pane scrolls independently. */
+#page-schedule.tk32-split-ready{height:calc(100dvh - 138px);min-height:600px;overflow:hidden}
+#page-schedule.tk32-split-ready>.tk32-schedule-workspace{height:100%;min-height:0;display:grid;grid-template-rows:minmax(310px,1.08fr) minmax(270px,.92fr);gap:14px}
+.tk32-schedule-upper,.tk32-schedule-lower{min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;padding-right:4px}
+.tk32-schedule-upper>.card+ .card{margin-top:14px!important}
+.tk32-schedule-lower{overflow:hidden;padding-right:0}
+.tk32-schedule-lower>.tk32-schedule-list-card{height:100%;min-height:0;margin-top:0!important;display:flex;flex-direction:column}
+.tk32-schedule-list-card>.split{flex:0 0 auto}
+.tk32-schedule-list-card>.tk32-schedule-table-scroll{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+.tk32-schedule-list-card>.tk32-schedule-table-scroll thead th{top:0;z-index:2}
+@media(max-height:760px) and (min-width:901px){#page-schedule.tk32-split-ready{height:calc(100dvh - 118px);min-height:520px}#page-schedule.tk32-split-ready>.tk32-schedule-workspace{grid-template-rows:minmax(250px,1fr) minmax(230px,1fr)}}
+@media(max-width:900px){#page-schedule.tk32-split-ready{height:auto;min-height:0;overflow:visible}#page-schedule.tk32-split-ready>.tk32-schedule-workspace{height:auto;display:block}.tk32-schedule-upper,.tk32-schedule-lower{overflow:visible;padding-right:0}.tk32-schedule-lower>.tk32-schedule-list-card{height:auto;margin-top:14px!important}.tk32-schedule-list-card>.tk32-schedule-table-scroll{max-height:65dvh;overflow:auto}}

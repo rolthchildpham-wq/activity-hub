@@ -1,0 +1,705 @@
+{
+  "cwd": "/mnt/data/h117work",
+  "counts": {
+    "PASS": 52,
+    "FAIL": 86,
+    "TIMEOUT": 1
+  },
+  "results": [
+    {
+      "file": "tests/h114_sw_scopes.js",
+      "status": "PASS",
+      "error": "PASS H114 service worker 3 scopes cache deletion without cross-scope disruption [{\"file\":\"sw.js\",\"deleted\":[\"topkey-h107-hub-shell\",\"topkey-h108-hub-shell\",\"topkey-h109-hub-shell\"],\"install\":\"non-disruptive\"},{\"file\":\"sports/badminton/sw.js\",\"deleted\":[\"topkey-h105-r1-sports-badminton-shell\",\"topkey-h106-r1-sports-badminton-shell\",\"topkey-h109-badminton-shell\"],\"install\":\"non-disruptive\"},{\"file\":\"sports/vnext/sw.js\",\"deleted\":[\"topkey-h108-r1-sports-vnext-shell\",\"topkey-h109-vnext-shell\"],\"install\":\"non-disruptive\"}]\n\n"
+    },
+    {
+      "file": "tests/hub_admin_h93.js",
+      "status": "FAIL",
+      "error": "ror: compact layout linked\n    at ok (/mnt/data/h117work/tests/hub_admin_h93.js:2:30)\n    at Object.<anonymous> (/mnt/data/h117work/tests/hub_admin_h93.js:6:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "tests/release_atomic_h86.js",
+      "status": "FAIL",
+      "error": "\nAssertionError [ERR_ASSERTION]: 'MISMATCH' == 'OK'\n    at /mnt/data/h117work/tests/release_atomic_h86.js:21:29 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: 'MISMATCH',\n  expected: 'OK',\n  operator: '=='\n}\n"
+    },
+    {
+      "file": "tests/public_routes_h88.js",
+      "status": "PASS",
+      "error": "PASS vnext preboot all public hashes\nPASS vnext auth sdk conditional\nPASS vnext auth bypass public route\nPASS vnext firebase auth optional\nPASS vnext guard bypass judge\nPASS badminton preboot public routes\nPASS badminton public register bypass\nPASS badminton viewer lazy public auth\nPASS badminton viewer db before auth\nPUBLIC_ROUTES_H88_OK 9\n\n"
+    },
+    {
+      "file": "tests/ppt_export_h86.js",
+      "status": "FAIL",
+      "error": "work/tests/ppt_export_h86.js:6:12)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  errno: -2,\n  code: 'ENOENT',\n  syscall: 'open',\n  path: '/mnt/data/h86_review/sports/badminton/upgrade122-hotfix80.js'\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "tests/release_atomic_h87.js",
+      "status": "FAIL",
+      "error": "\nAssertionError [ERR_ASSERTION]: 'MISMATCH' == 'OK'\n    at /mnt/data/h117work/tests/release_atomic_h87.js:21:29 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: 'MISMATCH',\n  expected: 'OK',\n  operator: '=='\n}\n"
+    },
+    {
+      "file": "tests/update_authority_h93.js",
+      "status": "FAIL",
+      "error": "ty_h93.js:19:3)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: '',\n  expected: '2026.11.08-vnext-upgrade122-hotfix96-header-reference-layout',\n  operator: '=='\n}\n"
+    },
+    {
+      "file": "tests/report_fixture_h83.js",
+      "status": "PASS",
+      "error": "PASS sports/badminton/upgrade122-hotfix80.js vi-en 6169\nPASS sports/badminton/upgrade122-hotfix80.js vi-zh 5699\nPASS sports/badminton/upgrade122-hotfix80.js en-vi-zh 6528\nPASS sports/vnext/src/upgrade122-hotfix80.js vi-en 6169\nPASS sports/vnext/src/upgrade122-hotfix80.js vi-zh 5699\nPASS sports/vnext/src/upgrade122-hotfix80.js en-vi-zh 6528\nREPORT_FIXTURE_OK 6\n\n"
+    },
+    {
+      "file": "tests/hub_guard_h87.js",
+      "status": "FAIL",
+      "error": "87.js:4:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: '../../index.html?reason=release-runtime-missing',\n  expected: '',\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "tests/h109_sw_cache.js",
+      "status": "FAIL",
+      "error": "\nAssertionError [ERR_ASSERTION]: must preserve own current cache\n    at check (/mnt/data/h117work/tests/h109_sw_cache.js:11:2)\n    at async /mnt/data/h117work/tests/h109_sw_cache.js:17:156 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n"
+    },
+    {
+      "file": "tests/release_atomic_h92.js",
+      "status": "FAIL",
+      "error": "\nAssertionError [ERR_ASSERTION]: 'MISMATCH' == 'OK'\n    at /mnt/data/h117work/tests/release_atomic_h92.js:21:29 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: 'MISMATCH',\n  expected: 'OK',\n  operator: '=='\n}\n"
+    },
+    {
+      "file": "tests/report_html_h88.js",
+      "status": "PASS",
+      "error": "REPORT_HTML_H88_OK /mnt/data/h88_report_preview.html 9623\n\n"
+    },
+    {
+      "file": "tests/hub_guard_h88.js",
+      "status": "FAIL",
+      "error": "88.js:4:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: '../../index.html?reason=release-runtime-missing',\n  expected: '',\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "tests/update_authority_h86.js",
+      "status": "FAIL",
+      "error": "y_h86.js:19:3)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: '',\n  expected: '2026.11.07-vnext-upgrade122-hotfix86-report-parity-regression',\n  operator: '=='\n}\n"
+    },
+    {
+      "file": "tests/h95_runtime_lifecycle.js",
+      "status": "PASS",
+      "error": "PASS H95 finite lifecycle scheduler\n\n"
+    },
+    {
+      "file": "tests/auth_bootstrap_h90.js",
+      "status": "FAIL",
+      "error": "/mnt/data/h117work/tests/auth_bootstrap_h90.js:5:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "tests/update_authority_h85.js",
+      "status": "FAIL",
+      "error": "y_h85.js:19:3)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: '',\n  expected: '2026.11.07-vnext-upgrade122-hotfix86-report-parity-regression',\n  operator: '=='\n}\n"
+    },
+    {
+      "file": "tests/h108_auth_security_regression.js",
+      "status": "PASS",
+      "error": "lse,\"afterLogin\":0,\"redirects\":0},{\"sport\":\"vnext\",\"hasProfile\":true,\"observerCount\":1,\"authorized\":true,\"afterLogin\":1,\"redirects\":0}]\n\nKhông đọc được hồ sơ quyền kịp thời Error: permission-denied\n    at Object.once (/mnt/data/h117work/tests/h108_auth_security_regression.js:12:51)\n    at _h108HandleState (evalmachine.<anonymous>:106:62)\n    at /mnt/data/h117work/tests/h108_auth_security_regression.js:11:93\nProfile read deferred; no cached privilege allowed Error: permission-denied\n    at Object.once (/mnt/data/h117work/tests/h108_auth_security_regression.js:12:51)\n    at _h108HandleState (evalmachine.<anonymous>:1:5080)\n    at /mnt/data/h117work/tests/h108_auth_security_regression.js:11:93\n"
+    },
+    {
+      "file": "tests/release_atomic_h85.js",
+      "status": "FAIL",
+      "error": "\nAssertionError [ERR_ASSERTION]: 'MISMATCH' == 'OK'\n    at /mnt/data/h117work/tests/release_atomic_h85.js:21:29 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: 'MISMATCH',\n  expected: 'OK',\n  operator: '=='\n}\n"
+    },
+    {
+      "file": "tests/auth_i18n_parity_h91.js",
+      "status": "FAIL",
+      "error": "t/data/h117work/tests/auth_i18n_parity_h91.js:14:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "tests/hub_guard_h84.js",
+      "status": "FAIL",
+      "error": "84.js:4:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: '../../index.html?reason=release-runtime-missing',\n  expected: '',\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "tests/update_authority_h87.js",
+      "status": "FAIL",
+      "error": "rity_h87.js:19:3)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: '',\n  expected: '2026.11.07-vnext-upgrade122-hotfix87-schedule-group-parity',\n  operator: '=='\n}\n"
+    },
+    {
+      "file": "tests/security_contract_h86.js",
+      "status": "PASS",
+      "error": "SECURITY_CONTRACT_H86_OK 6\n\n"
+    },
+    {
+      "file": "tests/hotfix78_report_image_export_smoke.js",
+      "status": "FAIL",
+      "error": "\nnode:internal/fs/promises:633\n  return new FileHandle(await PromisePrototypeThen(\n                        ^\n\nError: ENOENT: no such file or directory, open '/mnt/data/topkey_h78_testout/h78_fixture_with_image.pptx'\n    at async open (node:internal/fs/promises:633:25)\n    at async writeFile (node:internal/fs/promises:1207:14) {\n  errno: -2,\n  code: 'ENOENT',\n  syscall: 'open',\n  path: '/mnt/data/topkey_h78_testout/h78_fixture_with_image.pptx'\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "tests/auth_bootstrap_h93.js",
+      "status": "FAIL",
+      "error": "/mnt/data/h117work/tests/auth_bootstrap_h93.js:5:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "tests/ppt_export_h88.js",
+      "status": "FAIL",
+      "error": "112 - hãy triển khai đủ gói website\n    at Object.toast (/mnt/data/h117work/tests/ppt_export_h88.js:16:194)\n    at Object.exportPpt (sports/badminton/upgrade122-hotfix80.js:258:131)\n    at /mnt/data/h117work/tests/ppt_export_h88.js:22:14\n    at Object.<anonymous> (/mnt/data/h117work/tests/ppt_export_h88.js:22:707)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n"
+    },
+    {
+      "file": "tests/ppt_export_h87.js",
+      "status": "FAIL",
+      "error": "Error: api._testSetReport is not a function\n    at /mnt/data/h117work/tests/ppt_export_h87.js:17:67\n    at Object.<anonymous> (/mnt/data/h117work/tests/ppt_export_h87.js:17:973)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49\n"
+    },
+    {
+      "file": "tests/auth_i18n_parity_h93.js",
+      "status": "FAIL",
+      "error": "t/data/h117work/tests/auth_i18n_parity_h93.js:14:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "tests/update_authority_h84.js",
+      "status": "PASS",
+      "error": "UPDATE_AUTHORITY_H84_OK\n\n"
+    },
+    {
+      "file": "tests/security_contract_h85.js",
+      "status": "PASS",
+      "error": "SECURITY_CONTRACT_H85_OK 6\n\n"
+    },
+    {
+      "file": "tests/h107_awards_contract.js",
+      "status": "PASS",
+      "error": "H107 award contracts PASS: all 7 sports, legacy/new report, archive snapshot, bundled VNext, 4 manifests\n\n"
+    },
+    {
+      "file": "tests/release_atomic_h93.js",
+      "status": "FAIL",
+      "error": "\nAssertionError [ERR_ASSERTION]: 'MISMATCH' == 'OK'\n    at /mnt/data/h117work/tests/release_atomic_h93.js:21:29 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: 'MISMATCH',\n  expected: 'OK',\n  operator: '=='\n}\n"
+    },
+    {
+      "file": "tests/h95_browser_smoke.js",
+      "status": "FAIL",
+      "error": "veImpl (node:internal/modules/cjs/loader:1057:19)\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)\n    at Function._load (node:internal/modules/cjs/loader:1211:37)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Module.require (node:internal/modules/cjs/loader:1487:12)\n    at require (node:internal/modules/helpers:135:16)\n    at Object.<anonymous> (/mnt/data/h117work/tests/h95_browser_smoke.js:4:20)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14) {\n  code: 'MODULE_NOT_FOUND',\n  requireStack: [ '/mnt/data/h117work/tests/h95_browser_smoke.js' ]\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "tests/judging_contract_h88.js",
+      "status": "PASS",
+      "error": "JUDGING_CONTRACT_H88_OK\n\n"
+    },
+    {
+      "file": "tests/report_translation_h87.js",
+      "status": "PASS",
+      "error": "PASS_TRANSLATION sports/badminton/upgrade122-hotfix80.js vi-en 6467\nPASS_TRANSLATION sports/badminton/upgrade122-hotfix80.js vi-zh 5886\nPASS_TRANSLATION sports/badminton/upgrade122-hotfix80.js en-vi-zh 6929\nPASS_TRANSLATION sports/vnext/src/upgrade122-hotfix80.js vi-en 6467\nPASS_TRANSLATION sports/vnext/src/upgrade122-hotfix80.js vi-zh 5886\nPASS_TRANSLATION sports/vnext/src/upgrade122-hotfix80.js en-vi-zh 6929\nREPORT_TRANSLATION_H87_OK 6\n\n"
+    },
+    {
+      "file": "tests/release_atomic_h88.js",
+      "status": "FAIL",
+      "error": "\nAssertionError [ERR_ASSERTION]: 'MISMATCH' == 'OK'\n    at /mnt/data/h117work/tests/release_atomic_h88.js:21:29 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: 'MISMATCH',\n  expected: 'OK',\n  operator: '=='\n}\n"
+    },
+    {
+      "file": "tests/security_contract_h87.js",
+      "status": "PASS",
+      "error": "SECURITY_CONTRACT_H87_OK 6\n\n"
+    },
+    {
+      "file": "tests/club_plan_rules_h92.js",
+      "status": "PASS",
+      "error": "CLUB_PLAN_RULES_H92_OK\n\n"
+    },
+    {
+      "file": "tests/auth_matrix_h83.js",
+      "status": "PASS",
+      "error": "thenticated badminton to volleyball starts a new fresh session\nPASS authenticated VNext session survives clean URL without sport query\nPASS direct VNext with mismatched stored sport is rejected\nPASS public spectator bypass does not require Hub ticket\nPASS testlab bypass does not require Hub ticket\nPASS ADMIN allowed football\nPASS BTC own scope allowed football\nPASS ADMIN allowed volleyball\nPASS BTC own scope allowed volleyball\nPASS ADMIN allowed running\nPASS BTC own scope allowed running\nPASS ADMIN allowed handmade\nPASS BTC own scope allowed handmade\nPASS ADMIN allowed shuttle\nPASS BTC own scope allowed shuttle\nPASS ADMIN allowed cooking\nPASS BTC own scope allowed cooking\nAUTH_MATRIX_OK 26\n\n"
+    },
+    {
+      "file": "tests/header_layout_h96.js",
+      "status": "FAIL",
+      "error": "/mnt/data/h117work/tests/header_layout_h96.js:29:3)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "tests/update_authority_h92.js",
+      "status": "FAIL",
+      "error": "ty_h92.js:19:3)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: '',\n  expected: '2026.11.08-vnext-upgrade122-hotfix96-header-reference-layout',\n  operator: '=='\n}\n"
+    },
+    {
+      "file": "tests/h108_release_parity.js",
+      "status": "FAIL",
+      "error": "release_parity.js:4:51)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: 'u122h117-20261109',\n  expected: 'u122h108-20261109',\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "tests/auth_integration_h83.js",
+      "status": "PASS",
+      "error": "PASS BTC badminton login\nPASS BTC badminton reload persists\nPASS ADMIN badminton login\nPASS BTC wrong sport denied\nPASS BTC volleyball login\nPASS BTC volleyball reload persists\nPASS ADMIN volleyball login\nPASS disabled BTC denied\nAUTH_INTEGRATION_OK 8\n\n"
+    },
+    {
+      "file": "tests/security_contract_h88.js",
+      "status": "PASS",
+      "error": "SECURITY_CONTRACT_H88_OK 6\n\n"
+    },
+    {
+      "file": "tests/hub_guard_h93.js",
+      "status": "FAIL",
+      "error": "93.js:4:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: '../../index.html?reason=release-runtime-missing',\n  expected: '',\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "tests/auth_i18n_parity_h92.js",
+      "status": "FAIL",
+      "error": "t/data/h117work/tests/auth_i18n_parity_h92.js:14:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "tests/pdf_binary_h83.js",
+      "status": "PASS",
+      "error": "PDF_BINARY_OK 109402 /mnt/data/topkey_h83_pdf_smoke.pdf\n\n"
+    },
+    {
+      "file": "tests/hub_guard_h85.js",
+      "status": "FAIL",
+      "error": "85.js:4:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: '../../index.html?reason=release-runtime-missing',\n  expected: '',\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "tests/report_translation_h88.js",
+      "status": "PASS",
+      "error": "PASS_TRANSLATION sports/badminton/upgrade122-hotfix80.js vi-en 6467\nPASS_TRANSLATION sports/badminton/upgrade122-hotfix80.js vi-zh 5886\nPASS_TRANSLATION sports/badminton/upgrade122-hotfix80.js en-vi-zh 6929\nPASS_TRANSLATION sports/vnext/src/upgrade122-hotfix80.js vi-en 6467\nPASS_TRANSLATION sports/vnext/src/upgrade122-hotfix80.js vi-zh 5886\nPASS_TRANSLATION sports/vnext/src/upgrade122-hotfix80.js en-vi-zh 6929\nREPORT_TRANSLATION_H88_OK 6\n\n"
+    },
+    {
+      "file": "tests/report_translation_h86.js",
+      "status": "PASS",
+      "error": "PASS_TRANSLATION sports/badminton/upgrade122-hotfix80.js vi-en 6467\nPASS_TRANSLATION sports/badminton/upgrade122-hotfix80.js vi-zh 5886\nPASS_TRANSLATION sports/badminton/upgrade122-hotfix80.js en-vi-zh 6929\nPASS_TRANSLATION sports/vnext/src/upgrade122-hotfix80.js vi-en 6467\nPASS_TRANSLATION sports/vnext/src/upgrade122-hotfix80.js vi-zh 5886\nPASS_TRANSLATION sports/vnext/src/upgrade122-hotfix80.js en-vi-zh 6929\nREPORT_TRANSLATION_H86_OK 6\n\n"
+    },
+    {
+      "file": "tests/update_authority_h88.js",
+      "status": "FAIL",
+      "error": "authority_h88.js:19:3)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: '',\n  expected: '2026.11.07-vnext-upgrade122-hotfix91-auth-i18n-parity',\n  operator: '=='\n}\n"
+    },
+    {
+      "file": "tests/club_plan_rules_h93.js",
+      "status": "PASS",
+      "error": "CLUB_PLAN_RULES_H93_OK\n\n"
+    },
+    {
+      "file": "tests/hub_guard_h86.js",
+      "status": "FAIL",
+      "error": "86.js:4:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: '../../index.html?reason=release-runtime-missing',\n  expected: '',\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "tests/header_layout_h94.js",
+      "status": "FAIL",
+      "error": "Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Module.require (node:internal/modules/cjs/loader:1487:12)\n    at require (node:internal/modules/helpers:135:16)\n    at Object.<anonymous> (/mnt/data/h117work/tests/header_layout_h94.js:2:1) {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "tests/hub_guard_h92.js",
+      "status": "FAIL",
+      "error": "92.js:4:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: '../../index.html?reason=release-runtime-missing',\n  expected: '',\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "tests/h95_performance_acceptance.js",
+      "status": "FAIL",
+      "error": " v22.16.0\n\n    at run (/mnt/data/h117work/tests/h95_performance_acceptance.js:12:34)\n    at Array.forEach (<anonymous>)\n    at Object.<anonymous> (/mnt/data/h117work/tests/h95_performance_acceptance.js:20:3)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "tests/auth_bootstrap_h92.js",
+      "status": "FAIL",
+      "error": "/mnt/data/h117work/tests/auth_bootstrap_h92.js:5:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "tests/h109_release_architecture.js",
+      "status": "FAIL",
+      "error": "\nAssertionError [ERR_ASSERTION]: sw.js uses H109 cache\n    at ok (/mnt/data/h117work/tests/h109_release_architecture.js:7:42)\n    at /mnt/data/h117work/tests/h109_release_architecture.js:29:95 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade92_full_regression.js",
+      "status": "FAIL",
+      "error": "badminton/tests/upgrade92_full_regression.js:6:153)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/h51_ranking_explain_report_test.js",
+      "status": "FAIL",
+      "error": "nton/tests/h51_ranking_explain_report_test.js:11:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade111_feature_code_splitting_vm.js",
+      "status": "FAIL",
+      "error": "tests/upgrade111_feature_code_splitting_vm.js:1:431)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: null,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade111_feature_loader_vm.js",
+      "status": "PASS",
+      "error": "upgrade111 feature loader VM PASS [\n  './assets/feature-replay.066a639d1526.css',\n  './assets/feature-replay.fe7f71fb1812.js',\n  'https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js',\n  'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js'\n]\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade117_production_hardening_vm.js",
+      "status": "PASS",
+      "error": "PASS upgrade117 production hardening VM\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade99_viewer_freeze_regression.js",
+      "status": "FAIL",
+      "error": "on/tests/upgrade99_viewer_freeze_regression.js:9:12)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/h52_ranking_top4_filename_test.js",
+      "status": "FAIL",
+      "error": "inton/tests/h52_ranking_top4_filename_test.js:14:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade117_atomic_score_soak_vm.js",
+      "status": "TIMEOUT",
+      "error": ""
+    },
+    {
+      "file": "sports/badminton/tests/upgrade84_live_first_regression.js",
+      "status": "FAIL",
+      "error": "inton/tests/upgrade84_live_first_regression.js:9:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade82_replay_orientation_regression.js",
+      "status": "FAIL",
+      "error": "sts/upgrade82_replay_orientation_regression.js:8:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/h44_standings_single_result_test.js",
+      "status": "PASS",
+      "error": "H44 standings single-result: PASS [\n  { id: 'b', p: 6, wl: '5-1', pts: 5 },\n  { id: 'c', p: 4, wl: '4-0', pts: 4 },\n  { id: 'z', p: 1, wl: '1-0', pts: 1 },\n  { id: 'q', p: 1, wl: '0-1', pts: 0 },\n  { id: 'd', p: 2, wl: '0-2', pts: 0 },\n  { id: 'h', p: 2, wl: '0-2', pts: 0 },\n  { id: 'n', p: 2, wl: '0-2', pts: 0 },\n  { id: 't', p: 2, wl: '0-2', pts: 0 }\n]\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade85_disk_lazy_regression.js",
+      "status": "FAIL",
+      "error": "inton/tests/upgrade85_disk_lazy_regression.js:12:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade74_regression.js",
+      "status": "FAIL",
+      "error": "117work/sports/badminton/tests/upgrade74_regression.js:4:56)\n    at Object.<anonymous> (/mnt/data/h117work/sports/badminton/tests/upgrade74_regression.js:77:2)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade100_viewer_auto_landscape_vm.js",
+      "status": "PASS",
+      "error": "upgrade100 viewer auto-landscape VM: PASS\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade114_consolidation_phase1_regression.js",
+      "status": "FAIL",
+      "error": "ing current consolidated admin assets\n    at Object.<anonymous> (/mnt/data/h117work/sports/badminton/tests/upgrade114_consolidation_phase1_regression.js:8:137)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade88a_viewer_autolive_regression.js",
+      "status": "PASS",
+      "error": "upgrade88a viewer autolive regression: PASS\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade78_blv_gate_regression.js",
+      "status": "PASS",
+      "error": "upgrade78 BLV live-session gate regression: PASS · boot mute + no stale replay + LIVE/tab/court/umpire gate + hard stop\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade118_production_artifact_cleanup_regression.js",
+      "status": "FAIL",
+      "error": "egression.js:2:51)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: 'upgrade122-hotfix117',\n  expected: 'upgrade118',\n  operator: 'strictEqual'\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/h48_ranking_mini_league_test.js",
+      "status": "PASS",
+      "error": "H48 ranking mini-league: PASS\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade102_firebase_latency_regression.js",
+      "status": "PASS",
+      "error": "upgrade102 firebase latency regression: PASS\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade93_public_bootstrap_regression.js",
+      "status": "FAIL",
+      "error": "/tests/upgrade93_public_bootstrap_regression.js:6:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade81_continuous_replay_regression.js",
+      "status": "FAIL",
+      "error": "ests/upgrade81_continuous_replay_regression.js:7:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade116_ui_boundary_vm.js",
+      "status": "PASS",
+      "error": "PASS upgrade116 UI boundary VM\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade77_regression.js",
+      "status": "FAIL",
+      "error": "ports/badminton/tests/upgrade77_regression.js:10:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade122_hotfix34_mainthread_stability_regression.js",
+      "status": "FAIL",
+      "error": "ject.<anonymous> (/mnt/data/h117work/sports/badminton/tests/upgrade122_hotfix34_mainthread_stability_regression.js:4:11)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5) {\n  errno: -2,\n  code: 'ENOENT',\n  syscall: 'open',\n  path: 'upgrade122-hotfix30.js'\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade122_hotfix32_auth_readiness_vm.js",
+      "status": "FAIL",
+      "error": "\nError: preboot still calls Auth.login before Data.auth\n    at /mnt/data/h117work/sports/badminton/tests/upgrade122_hotfix32_auth_readiness_vm.js:19:84\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade101_webrtc_signaling_resilience_regression.js",
+      "status": "FAIL",
+      "error": "01_webrtc_signaling_resilience_regression.js:15:142)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade88_viewer_umpire_audio_regression.js",
+      "status": "FAIL",
+      "error": "s/upgrade88_viewer_umpire_audio_regression.js:12:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade113_atomic_score_pipeline_vm.js",
+      "status": "PASS",
+      "error": "upgrade113 atomic score pipeline VM: PASS\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade111_feature_code_splitting_regression.js",
+      "status": "FAIL",
+      "error": "rade111_feature_code_splitting_regression.js:1:1061)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade105_scoring_fast_lane_vm.js",
+      "status": "PASS",
+      "error": "upgrade105 scoring fast lane VM: PASS\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade99_viewer_freeze_vm.js",
+      "status": "PASS",
+      "error": "upgrade99 viewer freeze VM: PASS · observer disconnected before DOM mutation\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade83_replay_performance_regression.js",
+      "status": "FAIL",
+      "error": "ts/upgrade83_replay_performance_regression.js:19:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/h38_withdrawal_standings_test.js",
+      "status": "FAIL",
+      "error": "8)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: [ 'w1', 'w2', 'w3', 'w4' ],\n  expected: [ 'w2', 'w3', 'w4' ],\n  operator: 'deepStrictEqual'\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade115_data_runtime_vm.js",
+      "status": "PASS",
+      "error": "PASS upgrade115 data runtime VM\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade111_lazy_storage_init_vm.js",
+      "status": "PASS",
+      "error": "upgrade111 lazy Storage init VM PASS\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade76_regression.js",
+      "status": "FAIL",
+      "error": "rts/badminton/tests/upgrade76_regression.js:13:380)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade79_ai_endpoint_regression.js",
+      "status": "FAIL",
+      "error": "ton/tests/upgrade79_ai_endpoint_regression.js:12:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade116_consolidation_phase3_regression.js",
+      "status": "FAIL",
+      "error": "pgrade116_consolidation_phase3_regression.js:17:31)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade97_viewer_orientation_regression.js",
+      "status": "FAIL",
+      "error": "ts/upgrade97_viewer_orientation_regression.js:13:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade115_consolidation_phase2_regression.js",
+      "status": "FAIL",
+      "error": "upgrade115_consolidation_phase2_regression.js:16:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade102_firebase_latency_vm.js",
+      "status": "PASS",
+      "error": "upgrade102 firebase latency VM: PASS\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/h46_withdrawal_policy_recovery_test.js",
+      "status": "PASS",
+      "error": "H46 withdrawal policy recovery: PASS [\n  { id: 'b', p: 3, wl: '3-0', pts: 3, wo: 2 },\n  { id: 'x', p: 3, wl: '2-1', pts: 2, wo: 2 },\n  { id: 'w1', p: 2, wl: '0-2', pts: 0, wo: 2 },\n  { id: 'w2', p: 2, wl: '0-2', pts: 0, wo: 2 }\n]\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade122_hotfix33_early_submit_vm.js",
+      "status": "FAIL",
+      "error": "t earlySubmit (evalmachine.<anonymous>:66:229)\n    at /mnt/data/h117work/sports/badminton/tests/upgrade122_hotfix33_early_submit_vm.js:19:54\n    at Array.map (<anonymous>)\n    at /mnt/data/h117work/sports/badminton/tests/upgrade122_hotfix33_early_submit_vm.js:19:46\n    at Object.<anonymous> (/mnt/data/h117work/sports/badminton/tests/upgrade122_hotfix33_early_submit_vm.js:26:3)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n"
+    },
+    {
+      "file": "sports/badminton/tests/h53_ranking_signature_logo_test.js",
+      "status": "FAIL",
+      "error": "inton/tests/h53_ranking_signature_logo_test.js:16:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade114_runtime_authority_vm.js",
+      "status": "FAIL",
+      "error": "4)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: '2026.11.04-vnext-upgrade122-hotfix47-withdrawal-legacy-recovery',\n  expected: '2026.11.09-vnext-upgrade122-hotfix117-plan-parity',\n  operator: 'strictEqual'\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade93_reset_vm.js",
+      "status": "PASS",
+      "error": "upgrade93_reset_vm: PASS · root+badminton SW cleared + redirect #spectator\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade103_render_runtime_regression.js",
+      "status": "PASS",
+      "error": "upgrade103 render/runtime stability regression: PASS\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade117_production_hardening_regression.js",
+      "status": "FAIL",
+      "error": "upgrade117_production_hardening_regression.js:5:48)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade95_performance_safe_regression.js",
+      "status": "FAIL",
+      "error": "ests/upgrade95_performance_safe_regression.js:8:75)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade75_pinyin_regression.js",
+      "status": "PASS",
+      "error": "upgrade75 pinyin regression: PASS\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/hotfix41_auto_update_regression.js",
+      "status": "FAIL",
+      "error": " at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  errno: -2,\n  code: 'ENOENT',\n  syscall: 'open',\n  path: '/mnt/data/h117work/sports/badminton/tests/../assets/u122/admin-core.h85full.js?v=u122h117-20261109'\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade109_viewer_minimal_boot_regression.js",
+      "status": "FAIL",
+      "error": "/upgrade109_viewer_minimal_boot_regression.js:1:426)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade93_public_bootstrap_vm.js",
+      "status": "PASS",
+      "error": "upgrade93_public_bootstrap_vm: PASS · Auth stalled but Viewer surface/init resolves\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade112_viewer_firebase_window_regression.js",
+      "status": "FAIL",
+      "error": "pgrade112_viewer_firebase_window_regression.js:8:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade94_viewer_blv_regression.js",
+      "status": "FAIL",
+      "error": "inton/tests/upgrade94_viewer_blv_regression.js:5:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade122_hotfix33_auth_vm.js",
+      "status": "PASS",
+      "error": "PASS Hotfix33 auth/data single-authority VM\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade87_audio_reset_regression.js",
+      "status": "FAIL",
+      "error": "ton/tests/upgrade87_audio_reset_regression.js:10:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade117_long_session_soak_vm.js",
+      "status": "PASS",
+      "error": "PASS upgrade117 long-session UI/Firebase listener soak VM\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade110_admin_login_boot_guard_vm.js",
+      "status": "FAIL",
+      "error": "/tests/upgrade110_admin_login_boot_guard_vm.js:10:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: null,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade122_hotfix33_bootstrap_vm.js",
+      "status": "FAIL",
+      "error": "\nevalmachine.<anonymous>:23\n  if(!cfg?.apiKey||!cfg?.databaseURL||!cfg?.projectId)throw new Error('Không tải được cấu hình Firebase của môn Cầu lông');\n                                                            ^\n\nError: Không tải được cấu hình Firebase của môn Cầu lông\n    at evalmachine.<anonymous>:23:61\n    at async evalmachine.<anonymous>:63:173\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade101_webrtc_signaling_resilience_vm.js",
+      "status": "PASS",
+      "error": "upgrade101 webrtc signaling resilience VM: PASS\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade107_schedule_dom_safety_regression.js",
+      "status": "PASS",
+      "error": "PASS upgrade107 schedule DOM parent safety\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade96_blv_lifecycle_regression.js",
+      "status": "PASS",
+      "error": "upgrade96 BLV lifecycle regression PASS\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade109_route_boot_vm.js",
+      "status": "FAIL",
+      "error": "rts/badminton/tests/upgrade109_route_boot_vm.js:4:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: null,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/h45_core_standings_authority_test.js",
+      "status": "PASS",
+      "error": "H45 core standings authority: PASS [\n  { id: 'b', p: 6, wl: '5-1', pts: 5 },\n  { id: 'c', p: 4, wl: '4-0', pts: 4 },\n  { id: 'z', p: 1, wl: '1-0', pts: 1 },\n  { id: 'q', p: 1, wl: '0-1', pts: 0 },\n  { id: 'd', p: 2, wl: '0-2', pts: 0 },\n  { id: 'h', p: 2, wl: '0-2', pts: 0 },\n  { id: 'n', p: 2, wl: '0-2', pts: 0 },\n  { id: 't', p: 2, wl: '0-2', pts: 0 }\n]\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade122_hotfix33_integrity_regression.js",
+      "status": "FAIL",
+      "error": "ntegrity_regression.js:6:8)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: 'upgrade122-hotfix117',\n  expected: 'upgrade122',\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade122_hotfix33_stable_runtime_regression.js",
+      "status": "FAIL",
+      "error": "egression.js:4:51)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: 'upgrade122-hotfix117',\n  expected: 'upgrade122',\n  operator: 'strictEqual'\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade108_cache_correctness_regression.js",
+      "status": "FAIL",
+      "error": "8_cache_correctness_regression.js:1:478)\n    at Object.<anonymous> (/mnt/data/h117work/sports/badminton/tests/upgrade108_cache_correctness_regression.js:1:607)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade80_rear_camera_regression.js",
+      "status": "FAIL",
+      "error": "n/tests/upgrade80_rear_camera_regression.js:8:30)\n    at Object.<anonymous> (/mnt/data/h117work/sports/badminton/tests/upgrade80_rear_camera_regression.js:9:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade100_viewer_auto_landscape_regression.js",
+      "status": "FAIL",
+      "error": "grade100_viewer_auto_landscape_regression.js:4:122)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade106_schedule_internal_scroll_regression.js",
+      "status": "FAIL",
+      "error": "\nFAIL current bundle referenced\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade103_render_runtime_vm.js",
+      "status": "PASS",
+      "error": "upgrade103 render/runtime VM: PASS\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/hotfix31_stability_regression.js",
+      "status": "FAIL",
+      "error": "ility_regression.js:6:8)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: 'u122h117-20261109',\n  expected: 'u122h31-20261103',\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade107_schedule_dom_safety_vm.js",
+      "status": "PASS",
+      "error": "PASS upgrade107 DOM parent VM\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/h47_withdrawal_legacy_recovery_test.js",
+      "status": "PASS",
+      "error": "H47 withdrawal legacy recovery: PASS [\n  { id: 'b', withdrawn: false, p: 3, wl: '3-0', pts: 3, wo: 1 },\n  { id: 'x', withdrawn: false, p: 3, wl: '1-2', pts: 1, wo: 1 },\n  { id: 'w1', withdrawn: true, p: 2, wl: '1-1', pts: 1, wo: 0 },\n  { id: 'w2', withdrawn: true, p: 2, wl: '0-2', pts: 0, wo: 2 }\n]\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade105_scoring_fast_lane_regression.js",
+      "status": "FAIL",
+      "error": "ts/upgrade105_scoring_fast_lane_regression.js:15:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade86_live_layout_race_regression.js",
+      "status": "FAIL",
+      "error": "ests/upgrade86_live_layout_race_regression.js:12:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade101_viewer_heartbeat_vm.js",
+      "status": "PASS",
+      "error": "upgrade101 viewer heartbeat VM: PASS\n\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade122_hotfix33_runtime_ownership_regression.js",
+      "status": "FAIL",
+      "error": "de122_hotfix33_runtime_ownership_regression.js:5:1)\n    at Module._compile (node:internal/modules/cjs/loader:1730:14)\n    at Object..js (node:internal/modules/cjs/loader:1895:10)\n    at Module.load (node:internal/modules/cjs/loader:1465:32)\n    at Function._load (node:internal/modules/cjs/loader:1282:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.16.0\n"
+    },
+    {
+      "file": "sports/badminton/tests/upgrade98_viewer_landscape_referee_regression.js",
+      "status": "PASS",
+      "error": "PASS upgrade98 referee readability + orientation contract (U100 supersession aware)\n\n"
+    }
+  ]
+}

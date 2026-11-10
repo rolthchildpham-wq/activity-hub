@@ -1,0 +1,106 @@
+/* H104 R1 - schedule readable rows, without changing scoring, data or auth.
+   Applies after the existing CSS. On desktop the table scrolls horizontally
+   rather than wrapping a match title or a winner badge. */
+@media (min-width:981px) {
+  #page-schedule .table-wrap:has(#matches-list) {
+    max-width:100%;
+    overflow-x:auto !important;
+    overscroll-behavior-x:contain;
+    -webkit-overflow-scrolling:touch;
+  }
+  #page-schedule .table-wrap:has(#matches-list) > table {
+    width:max-content !important;
+    min-width:100% !important;
+    table-layout:auto !important;
+  }
+  #page-schedule .table-wrap:has(#matches-list) > table > thead > tr > th,
+  #matches-list > tr:not(.tk12-day-row) > td {
+    padding:8px 5px !important;
+  }
+  #matches-list > tr:not(.tk12-day-row) > td:nth-child(1) {
+    white-space:nowrap !important;
+    max-width:240px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  #matches-list > tr:not(.tk12-day-row) > td:nth-child(2) {
+    white-space:nowrap !important;
+    overflow-wrap:normal !important;
+    word-break:normal !important;
+    min-width:390px;
+    font-size:12px;
+  }
+  #matches-list > tr:not(.tk12-day-row) > td:nth-child(2) .h104-winner {
+    white-space:nowrap !important;
+    display:inline-block;
+    margin-left:8px !important;
+    vertical-align:baseline;
+  }
+  /* td stays a table-cell; 4 direct buttons occupy two balanced lines. */
+  #matches-list > tr:not(.tk12-day-row) > td.table-actions {
+    display:table-cell !important;
+    min-width:188px !important;
+    width:194px !important;
+    padding:6px !important;
+    vertical-align:middle !important;
+    font-size:0 !important;
+    white-space:normal !important;
+    line-height:0 !important;
+  }
+  #matches-list > tr:not(.tk12-day-row) > td.table-actions > button {
+    display:inline-flex !important;
+    align-items:center;
+    justify-content:center;
+    box-sizing:border-box !important;
+    width:calc(50% - 4px) !important;
+    min-width:0 !important;
+    min-height:28px;
+    margin:2px !important;
+    padding:6px 3px !important;
+    font-size:11px !important;
+    line-height:1.2 !important;
+    white-space:nowrap !important;
+    vertical-align:top;
+  }
+}
+/* On phones the pre-existing card layout is kept. Make the team-name line
+   horizontally swipeable, never wrap its winner suffix into a second line. */
+@media (max-width:980px) {
+  body.tk37-admin-mobile #matches-list > tr:not(.tk12-day-row) > td:nth-child(2) {
+    display:block !important;
+    white-space:nowrap !important;
+    overflow-x:auto !important;
+    overflow-wrap:normal !important;
+    word-break:normal !important;
+    -webkit-overflow-scrolling:touch;
+  }
+  body.tk37-admin-mobile #matches-list > tr:not(.tk12-day-row) > td:nth-child(2)::before {
+    display:block !important;
+    margin-bottom:4px;
+  }
+  body.tk37-admin-mobile #matches-list > tr:not(.tk12-day-row) > td:nth-child(2) .h104-winner {
+    white-space:nowrap !important;
+    display:inline !important;
+  }
+  body.tk37-admin-mobile #matches-list > tr:not(.tk12-day-row) > td.table-actions {
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    align-items:stretch !important;
+    gap:6px !important;
+    font-size:12px !important;
+  }
+  body.tk37-admin-mobile #matches-list > tr:not(.tk12-day-row) > td.table-actions::before {
+    grid-column:1 / -1;
+  }
+  body.tk37-admin-mobile #matches-list > tr:not(.tk12-day-row) > td.table-actions > button {
+    display:inline-flex !important;
+    justify-content:center !important;
+    align-items:center !important;
+    box-sizing:border-box !important;
+    width:100% !important;
+    min-width:0 !important;
+    margin:0 !important;
+    padding:7px 4px !important;
+    white-space:nowrap !important;
+  }
+}

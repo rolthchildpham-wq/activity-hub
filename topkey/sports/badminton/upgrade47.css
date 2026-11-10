@@ -1,0 +1,16 @@
+/* Upgrade 47 · Android-ready TOPKEY Offline Vietnamese Voice */
+#page-live .tk47-pack{margin-top:12px;padding:12px;border:1px solid #315b7a;border-radius:12px;background:linear-gradient(180deg,#0a2037,#07192c);display:grid;gap:10px}
+#page-live .tk47-pack-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+#page-live .tk47-pack-head b{font-size:14px;color:#e7f5ff}
+#page-live .tk47-pack-head .muted{margin-top:3px;font-size:11px}
+#page-live .tk47-badge{padding:5px 8px;border:1px solid #355a76;border-radius:999px;font-size:10px;font-weight:900;white-space:nowrap;color:#a9bfd3;background:#08182a}
+#page-live .tk47-badge[data-state="ok"]{color:#6ee7b7;border-color:#16835f;background:#073326}
+#page-live .tk47-grid{display:grid;grid-template-columns:minmax(220px,.8fr) minmax(280px,1.2fr);gap:10px;align-items:end}
+#page-live .tk47-actions{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+#page-live .tk47-progress{height:8px;border-radius:999px;overflow:hidden;background:#05111f;border:1px solid #27455f}
+#page-live .tk47-progress i{display:block;width:0;height:100%;background:linear-gradient(90deg,#1e9ee8,#34d399);transition:width .2s ease}
+#page-live .tk47-status{font-size:11px;color:#a9bfd3}
+#page-live .tk47-status[data-state="ok"]{color:#6ee7b7}#page-live .tk47-status[data-state="working"]{color:#fbbf24}#page-live .tk47-status[data-state="err"]{color:#fb7185}
+#page-live .tk47-summary{font-size:10px;color:#8fa7bd}
+#page-live .tk47-note{font-size:10px;line-height:1.45;color:#8fa7bd;border-top:1px dashed #2b4a64;padding-top:8px}
+@media(max-width:900px){#page-live .tk47-grid{grid-template-columns:1fr}#page-live .tk47-pack-head{flex-direction:column}#page-live .tk47-actions .btn{flex:1 1 170px}}

@@ -1,0 +1,28 @@
+TOPKEY H104 - STAGING INTEGRATION TESTS
+Test 1: H104 static acceptance
+STATUS PASS_STATIC_AND_SIMULATED_ONLY JS 398 CHECKS 28 FAILED 0
+Test 2: Indexed query engine, 12,000 each + user badminton backup
+PASS PAGE teams {} records=12000 pages=98
+PASS PAGE teams {"category":"MEN"} records=6000 pages=49
+PASS PAGE teams {"search":"doi 000"} records=100 pages=1
+PASS PAGE matches {} records=12000 pages=98
+PASS PAGE matches {"day":"2026-11-03"} records=429 pages=4
+PASS PAGE matches {"status":"FINISHED"} records=9600 pages=79
+PASS PAGE matches {"day":"2026-11-03","status":"FINISHED"} records=343 pages=3
+PASS PAGE finance {} records=12000 pages=98
+PASS PAGE finance {"day":"2026-11-03"} records=429 pages=4
+PASS status/date index mutation atomic delta
+PASS financial aggregate invalidation
+PASS referential integrity catches invalid match
+PASS USER BACKUP {"teams":26,"matches":99,"finance":4} {"count":4,"income":11558664,"expense":0,"balance":11558664,"paidIncome":2889666,"paidExpense":0,"paidBalance":2889666,"pending":3}
+ALL TESTS PASS
+Test 3: Chromium paginated UI
+PASS Chrome index pages/summary/no-full-listener/winner badges {'teams': 120, 'matches': 120, 'teamComplete': False, 'matchComplete': False, 'totalTeams': '330', 'badFullListeners': [], 'winnerBadges': 120}
+PASS Chrome finance page, true aggregate totals {'finance': 120, 'income': '1677225 đ', 'hasMore': True, 'controls': True}
+PASS Chrome blocks incorrect standings on partial data
+PASS no browser JavaScript runtime exceptions; screen captured
+Test 4: Chromium testlab migration with real-backup fixture
+PASS actual-backup fixture: export backup + migrate + compare indexes + canonical unchanged {'teams': 26, 'matches': 99, 'finance': 4}
+PASS staging enable/rollback without canonical writes
+PASS production migration hard-blocked
+PASS Chromium no JavaScript runtime errors

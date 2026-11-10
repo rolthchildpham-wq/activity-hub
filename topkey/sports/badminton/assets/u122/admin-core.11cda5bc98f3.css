@@ -1,0 +1,1128 @@
+
+/* SOURCE styles.css */
+:root{--bg:#071426;--panel:#0d2036;--panel2:#132a44;--line:#24425f;--txt:#eaf4ff;--muted:#9bb0c8;--green:#12c48b;--red:#ef476f;--amber:#ffbd2e;--blue:#3b82f6;--cyan:#22d3ee}*{box-sizing:border-box}html,body{margin:0;background:linear-gradient(135deg,#06101f,#0a1b31 55%,#09243c);color:var(--txt);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}body{min-height:100vh}.hidden{display:none!important}button,input,select,textarea{font:inherit}.topbar{position:sticky;top:0;z-index:40;background:rgba(5,15,29,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;justify-content:space-between;padding:12px 18px}.brand h1{font-size:18px;margin:0}.brand small{color:var(--muted)}.nav{display:flex;gap:6px;overflow:auto;padding:0 12px 10px}.nav button{white-space:nowrap;background:transparent;color:#c9d8e8;border:0;padding:10px 12px;border-radius:10px;cursor:pointer;font-weight:700}.nav button.active{background:#103657;color:#5eead4}.shell{max-width:1500px;margin:auto;padding:18px}.page{animation:fade .18s ease}@keyframes fade{from{opacity:.4;transform:translateY(3px)}to{opacity:1}}.grid{display:grid;gap:14px}.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}.card{background:rgba(13,32,54,.96);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 16px 40px rgba(0,0,0,.18)}.card h2,.card h3{margin:0 0 12px}.muted{color:var(--muted)}.kpi strong{font-size:32px;display:block;color:#5eead4}.btn{border:1px solid #315270;background:#173654;color:#fff;border-radius:10px;padding:10px 13px;font-weight:800;cursor:pointer}.btn:hover{filter:brightness(1.15)}.btn.ok{background:#07865f;border-color:#10b981}.btn.danger{background:#9f2745;border-color:#ef476f}.btn.warn{background:#9a6100;border-color:#ffbd2e}.btn.primary{background:#155bd7;border-color:#3b82f6}.btn.mini{padding:6px 9px;font-size:12px}.form-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.field{display:flex;flex-direction:column;gap:5px}.field label{font-size:12px;color:#b9c9d9;font-weight:800}.field input,.field select,.field textarea{background:#081a2e;color:#fff;border:1px solid #31506d;border-radius:10px;padding:10px;min-width:0}.field textarea{min-height:80px}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}table{width:100%;border-collapse:collapse;min-width:760px}th,td{padding:10px;border-bottom:1px solid #1d3853;text-align:left;font-size:13px}th{background:#102944;color:#b8d7ef;position:sticky;top:0}.pill{display:inline-flex;border:1px solid #2c536f;border-radius:999px;padding:4px 8px;font-size:11px;color:#67e8f9}.control-card,.court-card,.list-card,.checkin-row{background:#0a1b2f;border:1px solid var(--line);border-radius:14px;padding:14px}.control-card strong{font-size:26px;color:#fbbf24}.checkin-row,.list-card{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0}.court{display:grid;grid-template-columns:1fr 4px 1fr;min-height:330px;background:#07966e;border:4px solid #fff;border-radius:16px;overflow:hidden}.court-half{padding:16px;display:flex;flex-direction:column;justify-content:space-around;text-align:center;gap:10px}.court-half b{color:#fff}.net{background:repeating-linear-gradient(#fff 0 4px,transparent 4px 8px);opacity:.9}.player{background:#064c3d;border-radius:12px;padding:18px;font-weight:900}.player.serving{background:#fbbf24;color:#142033;box-shadow:0 0 0 4px #fde68a}.score-head{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;text-align:center;gap:10px;margin-bottom:12px}.score-head div{background:#091b30;border-radius:14px;padding:10px}.score-head strong{font-size:42px;display:block;color:#67e8f9}.score-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.video-box{position:relative;background:#020617;border-radius:16px;overflow:hidden;aspect-ratio:16/9;max-height:calc(100vh - 220px);margin:auto}.video-box video,.video-box iframe{width:100%;height:100%;object-fit:contain;border:0}.video-box.pseudo-full{position:fixed;inset:0;z-index:9999;width:100vw;height:100vh;max-height:none;aspect-ratio:auto;border-radius:0;background:#000}.live-score{position:absolute;left:12px;bottom:12px;background:rgba(2,6,23,.88);padding:9px 12px;border-radius:10px;font-weight:900;color:#fbbf24;max-width:calc(100% - 24px)}.caption{position:absolute;left:50%;bottom:58px;transform:translateX(-50%);background:rgba(0,0,0,.78);padding:8px 14px;border-radius:10px;max-width:85%;text-align:center}.fallback{position:absolute;inset:auto 12px 12px 12px;background:#7c2d12;padding:10px;border-radius:10px}.toast-box{position:fixed;right:14px;bottom:14px;z-index:10000;display:grid;gap:8px}.toast{padding:11px 14px;border-radius:10px;background:#173654;border:1px solid #315270;max-width:360px}.toast.ok{background:#075d48}.toast.err{background:#7f1d3c}.modal{position:fixed;inset:0;z-index:10001;background:rgba(0,0,0,.75);display:grid;place-items:center;padding:20px}.modal-box{width:min(520px,100%);background:#0d2036;border:1px solid #3a5d7b;border-radius:18px;padding:20px}.audio-overlay{position:fixed;inset:0;z-index:9000;background:rgba(2,6,23,.92);display:grid;place-items:center;text-align:center;padding:24px}.audio-overlay .card{max-width:440px}.login{min-height:100vh;display:grid;place-items:center;padding:20px}.login .card{width:min(520px,100%)}.public-register{position:fixed;inset:0;z-index:11000;background:#071426;overflow:auto;padding:30px}.empty{padding:40px;text-align:center;color:var(--muted);background:#091a2e;border-radius:14px}.health-good{color:#34d399}.health-bad{color:#fb7185}.split{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.qr{background:#fff;padding:8px;width:max-content;border-radius:8px}.note{font-size:12px;color:#9bb0c8}.security-banner{border:1px solid #f59e0b;background:#4b2e08;padding:12px;border-radius:12px;color:#fde68a}.login-tabs{display:grid;grid-template-columns:1fr;gap:12px}.hr{height:1px;background:var(--line);margin:14px 0}@media(max-width:1000px){.g4,.g3{grid-template-columns:repeat(2,1fr)}.form-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:650px){.shell{padding:10px}.g4,.g3,.g2,.form-grid{grid-template-columns:1fr}.score-actions{grid-template-columns:repeat(2,1fr)}.court{min-height:260px}.player{padding:12px}.brand{align-items:flex-start;gap:10px}.brand h1{font-size:15px}.video-box{max-height:none}.caption{bottom:50px;font-size:12px}.nav button{padding:9px 10px;font-size:12px}}.action-bar{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.action-group{display:flex;gap:5px;flex-wrap:wrap}.subcard{background:#091b30;border:1px solid var(--line);border-radius:14px;padding:14px}.scheduler-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-top:14px}.scheduler-grid .check-option{display:flex;align-items:center;gap:8px;background:#091b30;border:1px solid var(--line);border-radius:10px;padding:10px;font-size:12px;font-weight:800}.scheduler-rules input,.scheduler-rules select{background:#081a2e;color:#fff;border:1px solid #31506d;border-radius:9px;padding:8px;min-width:0}.rule-list{display:grid;gap:6px;margin-top:9px;max-height:170px;overflow:auto}.rule-chip{display:flex;justify-content:space-between;gap:8px;align-items:center;background:#0d2944;border:1px solid #284a67;border-radius:9px;padding:7px 8px;font-size:11px}.schedule-preview{margin-top:14px;border:1px solid #315270;border-radius:12px;background:#071a2d;padding:12px;max-height:360px;overflow:auto}.schedule-preview .preview-ok{color:#6ee7b7}.schedule-preview .preview-warn{color:#fbbf24}.row-withdrawn{opacity:.62}.status-withdrawn{color:#fb7185;font-weight:900}.table-actions{display:flex;gap:5px;flex-wrap:wrap;min-width:190px}.court-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.modal-box.wide{width:min(760px,100%)}
+@media(max-width:1100px){.scheduler-grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:650px){.scheduler-grid{grid-template-columns:1fr}.action-bar{width:100%}.action-bar .btn,.action-bar label.btn{flex:1;text-align:center}.table-actions{min-width:150px}}
+
+.scheduler-rule-stack{display:grid;gap:14px;margin-top:14px}.scheduler-rule-stack .subcard{padding:16px}.rule-toolbar{display:flex;gap:10px;align-items:end;flex-wrap:wrap;margin:10px 0}.rule-toolbar .field{min-width:170px;flex:1}.picker-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 0 7px}.team-picker{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;max-height:240px;overflow:auto;border:1px solid #294a67;border-radius:12px;padding:10px;background:#071a2d}.team-pick{display:flex;gap:9px;align-items:center;border:1px solid #274761;background:#0c2239;border-radius:10px;padding:9px;cursor:pointer;min-height:48px}.team-pick:hover{border-color:#4f83ad}.team-pick input{width:17px;height:17px;flex:0 0 auto}.team-pick span{font-size:12px;line-height:1.35}.team-pick small{display:block;color:#8ea7c0;margin-top:2px}.team-pick em{color:#fb7185;font-style:normal;font-weight:800}.team-pick.withdrawn{opacity:.55}.rule-list.tall{max-height:240px}.scheduler-lock{border-color:#1e88c7}.scheduler-busy{border-color:#b7791f}.scheduler-priority{border-color:#0f9f70}.scheduler-limit{border-color:#5b5ce2}.scheduler-withdraw{border-color:#d44c6c}.withdrawn-chip{border-color:#8f2948}.schedule-delete-box{max-height:90vh;overflow:auto}.delete-options{display:grid;gap:8px;margin:12px 0}.radio-row{display:flex;gap:8px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:10px;background:#091b30}.danger-check{display:flex;gap:10px;align-items:flex-start;margin-top:14px;padding:12px;border:1px solid #ef476f;border-radius:12px;background:#3a1522}.danger-check input{margin-top:4px}.danger-check span{display:grid;gap:4px}.danger-check small{color:#f6a7b9}.delete-preview{display:grid;gap:7px;margin-top:14px;padding:12px;border:1px solid var(--line);border-radius:12px;background:#071a2d}.delete-good{color:#6ee7b7}.delete-protect{color:#fbbf24}.delete-danger{color:#fb7185;font-weight:900}
+@media(max-width:1000px){.team-picker{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:650px){.team-picker{grid-template-columns:1fr}.picker-head{align-items:flex-start;flex-direction:column}.rule-toolbar{align-items:stretch}.rule-toolbar .btn{width:100%}}
+
+
+/* SOURCE upgrade9.css */
+/* TOPKEY VNext Upgrade 9 - tournament lifecycle, granular permissions, registration draw, security and scheduler */
+.tk9-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.tk9-grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.tk9-card{background:#091b30;border:1px solid var(--line);border-radius:14px;padding:14px}.tk9-card h3{margin:0 0 10px}.tk9-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.tk9-status{display:inline-flex;align-items:center;gap:6px;border:1px solid #315270;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:800}.tk9-status.closed{border-color:#ef476f;color:#fda4af}.tk9-status.open{border-color:#10b981;color:#6ee7b7}.tk9-top3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}.tk9-podium{background:linear-gradient(145deg,#0b2138,#0a192c);border:1px solid #2b4d69;border-radius:15px;padding:14px}.tk9-podium h3{color:#fbbf24;margin:0 0 10px}.tk9-rank{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid #1e3851}.tk9-rank:last-child{border-bottom:0}.tk9-medal{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#173654;font-weight:900}.tk9-reg-tools{display:grid;grid-template-columns:minmax(160px,230px) 1fr;gap:16px;align-items:start}.tk9-reg-qr{display:grid;justify-items:center;gap:8px}.tk9-link-row{display:flex;gap:7px}.tk9-link-row input{flex:1}.tk9-counts{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.tk9-count{border-radius:999px;padding:5px 9px;background:#0a1b2f;border:1px solid var(--line);font-size:11px}.tk9-reg-entry{background:#0a1b2f;border:1px solid var(--line);border-radius:12px;padding:12px;margin:8px 0}.tk9-reg-entry .meta{font-size:11px;color:var(--muted);margin-top:4px}.tk9-reg-entry .row{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}.tk9-seed{display:flex;gap:7px;align-items:center}.tk9-seed select{background:#081a2e;color:#fff;border:1px solid #31506d;border-radius:8px;padding:6px}.tk9-draw-launch{margin-top:14px;border:1px solid #4f46e5;background:linear-gradient(135deg,#111d45,#0c2940);border-radius:16px;padding:16px}.tk9-draw-modal{position:fixed;inset:0;z-index:20000;background:#020b08;color:#7cf5c6;overflow:hidden;transition:.25s}.tk9-draw-modal.mini{inset:auto 16px 16px auto;width:min(560px,calc(100vw - 32px));height:min(440px,calc(100vh - 32px));border:1px solid #34d399;border-radius:18px;box-shadow:0 24px 80px #000c}.tk9-draw-canvas{position:absolute;inset:0;width:100%;height:100%;opacity:.48}.tk9-draw-inner{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;padding:20px}.tk9-draw-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.tk9-draw-head h2{margin:0;color:#67f5c0;font-size:clamp(20px,3vw,34px)}.tk9-draw-run{flex:1;display:grid;place-items:center;text-align:center;min-height:0}.tk9-code-name{font:900 clamp(24px,4vw,54px)/1.25 ui-monospace,SFMono-Regular,Menlo,monospace;color:#fff;text-shadow:0 0 22px #34d399;max-width:1100px}.tk9-progress{width:min(420px,75vw);height:8px;background:#05382c;border-radius:99px;overflow:hidden;margin:18px auto}.tk9-progress>i{display:block;height:100%;background:#34d399;width:0;transition:width .12s linear}.tk9-draw-results{flex:1;overflow:auto;padding:14px 0;min-height:0}.tk9-pairs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.tk9-pair{border:1px solid #2ed69a;background:#053b2dce;border-radius:13px;padding:13px}.tk9-pair strong{display:block;color:#67f5c0;margin-bottom:7px}.tk9-pair b{font-size:16px;color:#fff}.tk9-unpaired{border-color:#f59e0b;background:#3b2608}.tk9-draw-foot{display:flex;gap:8px;flex-wrap:wrap;border-top:1px solid #17694f;padding-top:12px}.tk9-perm-editor{border:1px solid #2a4964;border-radius:14px;padding:12px;background:#071a2d}.tk9-perm-modules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.tk9-perm-module{border:1px solid #284a67;border-radius:11px;padding:10px;background:#0b2239}.tk9-perm-module summary{cursor:pointer;font-weight:900}.tk9-perm-head{display:flex;justify-content:space-between;gap:8px;align-items:center}.tk9-perm-head select,.tk9-perm-detail select{background:#081a2e;color:#fff;border:1px solid #31506d;border-radius:7px;padding:5px}.tk9-perm-detail{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:6px 0;border-top:1px solid #1f3c55;font-size:11px}.tk9-user{display:flex;justify-content:space-between;gap:10px;align-items:center;background:#0a1b2f;border:1px solid var(--line);border-radius:11px;padding:10px;margin-top:8px}.tk9-firewall-corner{position:fixed;right:12px;bottom:12px;z-index:15000;display:flex;gap:7px;align-items:center;background:#071426e8;border:1px solid #ef476f;border-radius:999px;padding:7px 9px;box-shadow:0 8px 30px #0008;font-size:11px}.tk9-firewall-corner button{padding:5px 8px}.tk9-unlock-pop{position:fixed;right:12px;bottom:58px;z-index:15001;width:min(330px,calc(100vw - 24px));background:#0d2036;border:1px solid #ef476f;border-radius:14px;padding:13px;box-shadow:0 18px 50px #000b}.tk9-unlock-pop input{width:100%;background:#081a2e;color:#fff;border:1px solid #31506d;border-radius:9px;padding:9px;margin:8px 0}.tk9-copy-locked{-webkit-user-select:none;user-select:none}.tk9-copy-locked input,.tk9-copy-locked textarea,.tk9-copy-locked select,.tk9-copy-locked [contenteditable="true"],.tk9-copy-locked [data-allow-copy="true"]{-webkit-user-select:text;user-select:text}.tk9-security-note{border:1px solid #f59e0b;background:#3b2a0b;border-radius:12px;padding:10px;color:#fde68a;font-size:11px}.tk9-date-picker{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.tk9-date-chip{display:flex;gap:5px;align-items:center;border:1px solid #315270;background:#0a1b2f;border-radius:9px;padding:6px 8px;font-size:11px}.tk9-player-busy{border-color:#c2410c}.tk9-quick-limit{border-color:#7c3aed}.tk9-appearance-preview{min-height:110px;border:1px dashed #315270;border-radius:12px;background-size:cover;background-position:center;display:grid;place-items:center;color:#cbd5e1}.tk9-closed-overview #latest-announcement{display:none}.tk9-hidden-permission{display:none!important}.tk9-readonly{opacity:.82}.tk9-readonly input,.tk9-readonly select,.tk9-readonly textarea,.tk9-readonly button:not([data-view-ok="true"]){pointer-events:none;opacity:.55}.tk9-inline{display:flex;gap:8px;align-items:end;flex-wrap:wrap}.tk9-inline>.field{min-width:160px;flex:1}.tk9-small{font-size:11px;color:var(--muted)}
+@media(max-width:1000px){.tk9-top3,.tk9-pairs{grid-template-columns:repeat(2,minmax(0,1fr))}.tk9-perm-modules{grid-template-columns:1fr}.tk9-reg-tools{grid-template-columns:1fr}.tk9-grid3{grid-template-columns:1fr 1fr}}
+@media(max-width:650px){.tk9-grid,.tk9-grid3,.tk9-top3,.tk9-pairs{grid-template-columns:1fr}.tk9-draw-inner{padding:12px}.tk9-draw-modal.mini{inset:8px;width:auto;height:70vh}.tk9-firewall-corner{right:7px;bottom:7px}.tk9-draw-head{flex-direction:column}.tk9-draw-head .tk9-actions{width:100%}}
+
+/* Upgrade 10: navigation, live controls, save feedback */
+.top-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.hub-back{border-color:#2dd4bf!important;color:#5eead4!important}.live-controls{margin-top:10px;justify-content:center}.live-state-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:6px}.switch-line{display:flex;gap:8px;align-items:center;margin:10px 0;font-weight:700}.save-working{opacity:.7;pointer-events:none}.migration-summary{border:1px solid #2563eb55;background:#0b2440;padding:10px;border-radius:10px;margin-top:8px}.migration-summary b{color:#5eead4}@media(max-width:760px){.top-actions{justify-content:flex-end}.hub-back{order:3;width:100%;text-align:center}.live-controls .btn{flex:1 1 140px}}
+
+
+/* SOURCE upgrade11.css */
+/* Upgrade 11: referee parity, migration package, permission scroll */
+.tk11-permission-box{max-height:92vh;overflow-y:auto;overscroll-behavior:contain}.tk11-permission-box>.split:first-child{position:sticky;top:-20px;z-index:5;background:#0d2036;padding:20px 0 10px}.tk11-service-line{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;border:1px solid #2f5f77;background:#071a2d;border-radius:12px;padding:9px 12px;margin:8px 0}.tk11-service-line b{color:#fbbf24}.tk11-team-head{display:flex;align-items:center;justify-content:space-between;gap:8px}.tk11-player{position:relative;display:flex;align-items:center;gap:12px;text-align:left}.tk11-player>div{display:grid;gap:3px;flex:1}.tk11-player small{font-size:10px;color:#b7d4d0}.tk11-player.serving small{color:#102a24}.tk11-player-no{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#ef4444;color:#fff;font-size:23px;font-weight:1000;flex:0 0 auto}.tk11-player.serving .tk11-player-no{background:#fff;color:#ef4444}.migration-summary{line-height:1.6}.delete-danger{color:#fb7185;font-weight:800}@media(max-width:700px){.tk11-permission-box{max-height:96vh}.tk11-service-line .btn{width:100%}.tk11-team-head{align-items:flex-start;flex-direction:column}.tk11-swap-pos{width:100%}}
+.tk11-permission-box>.split:last-child{position:sticky;bottom:-20px;z-index:5;background:#0d2036;padding:10px 0 20px;border-top:1px solid var(--line)}
+
+
+/* SOURCE upgrade12.css */
+/* Upgrade 12: viewer-first schedule + one-category quick standings */
+.tk12-category-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 12px}.tk12-cat-btn{border:1px solid #315270;background:#0b2239;color:#b9d3e8;border-radius:999px;padding:8px 12px;font-weight:900;cursor:pointer}.tk12-cat-btn.active{background:#0f9f70;border-color:#34d399;color:#fff;box-shadow:0 0 0 2px rgba(52,211,153,.14)}
+.tk12-day-row td{padding:0;border-bottom:0}.tk12-day-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 14px;margin-top:9px;border:1px solid #315270;background:#0b2239;color:#c7d9ea}.tk12-day-row.today .tk12-day-head{background:#5a3b05;border-color:#fbbf24;color:#fff3c4;box-shadow:inset 4px 0 #fbbf24}.tk12-day-row.upcoming .tk12-day-head{border-left:4px solid #38bdf8}.tk12-day-row.past .tk12-day-head{opacity:.78;border-left:4px solid #64748b}.tk12-day-row.unscheduled .tk12-day-head{border-left:4px solid #a78bfa}.tk12-match-row td{transition:background .15s}.tk12-match-row.tk12-status-finished td{background:rgba(16,185,129,.075)}.tk12-match-row.tk12-status-live td{background:rgba(244,63,94,.09)}.tk12-match-row.tk12-status-paused td{background:rgba(245,158,11,.08)}.tk12-match-row.tk12-status-cancelled{opacity:.55}.tk12-status-badge{display:inline-flex;align-items:center;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:1000;white-space:nowrap;border:1px solid #315270}.tk12-status-badge.scheduled{background:#2d2409;border-color:#b98512;color:#fde68a}.tk12-status-badge.live{background:#6b102b;border-color:#fb7185;color:#ffe4e6}.tk12-status-badge.finished{background:#075d48;border-color:#34d399;color:#d1fae5}.tk12-status-badge.paused{background:#6b3b09;border-color:#f59e0b;color:#ffedd5}.tk12-status-badge.cancelled{background:#27364a;color:#cbd5e1}
+.tk12-public-schedule{margin-top:16px}.tk12-public-day{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:16px;padding:12px 14px;border-radius:12px;background:#0d2944;border:1px solid #315270}.tk12-public-day.today{background:#5a3b05;border-color:#fbbf24;color:#fff3c4;box-shadow:0 0 0 2px rgba(251,191,36,.12)}.tk12-public-day.upcoming{border-left:5px solid #38bdf8}.tk12-public-day.past{border-left:5px solid #64748b;opacity:.82}.tk12-public-day.unscheduled{border-left:5px solid #a78bfa}.tk12-public-match{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;margin:8px 0;padding:13px 14px;border-radius:12px;border:1px solid #274761;background:#091b30}.tk12-public-match.tk12-status-finished{border-color:#16866a;background:#082b2a}.tk12-public-match.tk12-status-live{border-color:#fb7185;background:#351326;box-shadow:0 0 0 1px rgba(251,113,133,.12)}.tk12-match-main{display:grid;gap:5px}.tk12-match-main small{color:#9fb4c8}.tk12-match-code{font-size:11px;color:#67e8f9;font-weight:900}.tk12-vs{color:#7f9bb4;font-weight:600}.tk12-match-result{display:grid;gap:7px;justify-items:end}.tk12-match-result strong{font-size:18px;color:#fff}.tk12-standing-row{display:grid;grid-template-columns:36px minmax(0,1fr) 54px;gap:10px;align-items:center;padding:11px 12px;border-bottom:1px solid #1d3853}.tk12-standing-row>b{width:28px;height:28px;display:grid;place-items:center;border-radius:50%;background:#263b51}.tk12-standing-row span{display:grid;gap:3px}.tk12-standing-row small{color:#91a8bf}.tk12-standing-row em{font-style:normal;font-size:20px;font-weight:1000;color:#fbbf24;text-align:right}.tk12-standing-row.top-1>b,.tk12-top-1 td:first-child{background:#fbbf24;color:#1f2937}.tk12-standing-row.top-2>b,.tk12-top-2 td:first-child{background:#cbd5e1;color:#1f2937}.tk12-standing-row.top-3>b,.tk12-top-3 td:first-child{background:#b45309;color:#fff}.tk12-empty{text-align:center;color:#9fb4c8;padding:24px!important}
+@media(max-width:700px){.tk12-public-match{grid-template-columns:1fr}.tk12-match-result{justify-items:start}.tk12-public-day,.tk12-day-head{align-items:flex-start;flex-direction:column}.tk12-cat-btn{flex:1}.tk12-standing-row{grid-template-columns:32px minmax(0,1fr) 44px}}
+
+
+/* SOURCE upgrade13.css */
+.tk13-court-legend{font-size:11px;color:#93c5fd;font-weight:800;padding:4px 8px;border:1px dashed #315270;border-radius:8px}
+.tk13-fixed-court-no{background:#ef4444!important;color:#fff!important;border:2px solid rgba(255,255,255,.25)}
+.tk13-player.serving .tk13-fixed-court-no{background:#fff!important;color:#ef4444!important;border-color:#fef3c7}
+.tk13-left .tk13-player:first-of-type .tk13-fixed-court-no::after,.tk13-right .tk13-player:first-of-type .tk13-fixed-court-no::after{content:''}
+.tk13-probe-ok{border:1px solid #10b981;background:#063c33;color:#a7f3d0;border-radius:10px;padding:10px;line-height:1.55}
+.tk13-probe-bad{border:1px solid #fb7185;background:#4c1730;color:#fecdd3;border-radius:10px;padding:10px;line-height:1.55}
+@media(max-width:760px){.tk13-court-legend{width:100%;text-align:center}}
+
+
+/* SOURCE upgrade14.css */
+.tk14-public-links{margin-top:14px}.tk14-public-links table{min-width:980px}.tk14-public-links th:last-child,.tk14-public-links td:last-child{min-width:280px}.tk14-link-input{min-width:360px;width:100%;font-size:12px}.tk14-actions{display:flex;gap:6px;flex-wrap:wrap}.tk14-small{font-size:12px}.tk14-qr-box{width:292px;min-height:292px;margin:18px auto;padding:16px;background:#fff;border-radius:16px;display:flex;align-items:center;justify-content:center}.tk14-qr-box img,.tk14-qr-box canvas{max-width:260px!important;max-height:260px!important}.tk14-public-links.hidden{display:none!important}@media(max-width:760px){.tk14-public-links table{min-width:840px}.tk14-link-input{min-width:280px}}
+
+
+/* SOURCE upgrade15.css */
+.tk15-opening-choice{cursor:pointer;outline:2px dashed rgba(254,240,138,.55);outline-offset:-5px;transition:filter .15s ease,transform .15s ease,box-shadow .15s ease}
+.tk15-opening-choice:hover,.tk15-opening-choice:focus{filter:brightness(1.12);transform:translateY(-1px);box-shadow:0 0 0 4px rgba(253,230,138,.72)}
+.tk15-opening-choice:not(.serving){background:#0a5d4a}
+.tk15-opening-choice:not(.serving) .tk13-fixed-court-no{box-shadow:0 0 0 3px rgba(253,230,138,.28)}
+.tk15-prestart-line{border-color:#f59e0b;background:#3a2908}
+.tk15-prestart-note{color:#fde68a;font-size:11px;font-weight:700}
+.tk15-player:not(.tk15-opening-choice)[data-court-slot="1"]{cursor:default}
+@media(max-width:700px){.tk15-prestart-note{display:block;margin-top:4px}}
+
+
+/* SOURCE upgrade16.css */
+/* Upgrade 16: search schedule by participant/team */
+.tk16-searchbar{display:grid;grid-template-columns:minmax(280px,1fr) auto auto auto;gap:10px;align-items:end;margin:14px 0 12px;padding:12px;border:1px solid #315270;border-radius:14px;background:#091b30}.tk16-search-field{margin:0}.tk16-search-field input{width:100%}.tk16-search-count{align-self:center;min-width:140px;color:#7dd3fc;font-weight:900;text-align:right}.tk16-searchbar .btn{white-space:nowrap}.tk16-public-searchbar{margin-top:12px;margin-bottom:14px}.tk16-search-empty{border:1px dashed #315270;border-radius:12px;margin-top:10px}
+@media(max-width:820px){.tk16-searchbar{grid-template-columns:1fr 1fr}.tk16-search-field{grid-column:1/-1}.tk16-search-count{grid-column:1/-1;text-align:left;min-width:0}}@media(max-width:480px){.tk16-searchbar{grid-template-columns:1fr}.tk16-search-field,.tk16-search-count{grid-column:1}.tk16-searchbar .btn{width:100%}}
+
+
+/* SOURCE upgrade17.css */
+/* Upgrade 17: compact busy-day rules + multi-team specific-day priority limits */
+.tk17-busy-row{display:grid;grid-template-columns:minmax(210px,1.1fr) minmax(260px,2.5fr) auto;gap:10px;align-items:center;border:1px solid #2c4b68;background:#0a1d32;border-radius:11px;padding:8px 10px;margin:7px 0}.tk17-busy-team{display:flex;gap:7px;align-items:center;min-width:0}.tk17-busy-team b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tk17-busy-team span{color:var(--muted);font-size:11px}.tk17-busy-dates{display:flex;gap:6px;flex-wrap:wrap}.tk17-date-rule{display:inline-flex;align-items:center;gap:5px;background:#123554;border:1px solid #315b7e;border-radius:999px;padding:4px 5px 4px 9px;font-size:11px;font-weight:800}.tk17-date-rule button{width:20px;height:20px;border:0;border-radius:50%;background:#be2448;color:#fff;font-weight:900;cursor:pointer}.tk17-remove-team-rule{white-space:nowrap}.tk17-quick-limit .tk17-limit-toolbar{margin-bottom:10px}.tk17-limit-picker{max-height:230px;overflow:auto}.tk17-team-pick{position:relative}.tk17-select-order{display:none;position:absolute;right:8px;top:50%;transform:translateY(-50%);width:24px;height:24px;border-radius:50%;place-items:center;background:#7c3aed;color:#fff;font-style:normal;font-size:11px;font-weight:900;box-shadow:0 0 0 2px #c4b5fd44}.tk17-select-order.show{display:grid}.tk17-priority-help{margin:9px 0;color:#c4b5fd;font-size:11px}.tk17-priority-list{max-height:300px;overflow:auto}.tk17-priority-row{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:9px;align-items:center;border:1px solid #51469b;background:#111d3b;border-radius:10px;padding:8px;margin:6px 0}.tk17-priority-no{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#7c3aed;color:#fff;font-weight:900}.tk17-priority-text{display:grid;gap:2px;min-width:0}.tk17-priority-text b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tk17-priority-text small{color:#c7d2fe}.tk17-priority-actions{display:flex;gap:5px}.tk17-priority-actions button:disabled{opacity:.35;cursor:not-allowed}@media(max-width:760px){.tk17-busy-row{grid-template-columns:1fr}.tk17-remove-team-rule{justify-self:start}.tk17-priority-row{grid-template-columns:32px 1fr}.tk17-priority-actions{grid-column:1/-1;justify-content:flex-end}}
+
+
+/* SOURCE upgrade18.css */
+.tk18-score-btn{white-space:nowrap}.tk18-modal-box{max-height:min(88vh,820px);overflow:auto}.tk18-score-head,.tk18-score-row{display:grid;grid-template-columns:90px minmax(110px,1fr) 28px minmax(110px,1fr);gap:8px;align-items:center}.tk18-score-head{margin-top:14px;padding:0 4px;color:#9bd7ff;font-size:12px}.tk18-score-head span{grid-column:1}.tk18-score-head b:nth-child(2){grid-column:2;text-align:center}.tk18-score-head b:nth-child(3){grid-column:4;text-align:center}.tk18-score-sets{display:grid;gap:8px;margin:8px 0 14px}.tk18-score-row{background:#081a2e;border:1px solid #31506d;border-radius:12px;padding:9px}.tk18-score-row>b{text-align:center}.tk18-score-row>span{text-align:center;font-weight:900}.tk18-score-row input{width:100%;min-width:0;background:#061526;color:#fff;border:1px solid #3b5e7d;border-radius:9px;padding:10px;text-align:center;font-weight:900;font-size:18px}.tk18-status-field{margin-top:10px}.tk18-status-field select{background:#081a2e;color:#fff;border:1px solid #31506d;border-radius:10px;padding:10px}.tk18-modal-actions{margin-top:14px}.tk18-warning{border:1px solid #f59e0b;background:#3b2a0b;color:#fde68a;border-radius:12px;padding:10px;margin:10px 0;font-size:12px}.tk18-summary{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}.tk18-summary span{background:#071a2d;border:1px solid #315270;border-radius:999px;padding:7px 10px;font-size:12px}.tk18-summary b{color:#67e8f9}.tk18-policy-list{display:grid;gap:9px}.tk18-policy{display:flex;gap:10px;align-items:flex-start;border:1px solid #315270;background:#081a2e;border-radius:13px;padding:12px;cursor:pointer}.tk18-policy:hover{border-color:#3b82f6}.tk18-policy.danger{border-color:#7f1d3c;background:#281322}.tk18-policy input{margin-top:3px;transform:scale(1.15)}.tk18-policy span{display:grid;gap:5px}.tk18-policy small{color:#9bb0c8;line-height:1.45}.tk18-policy-tag{display:block;color:#fbbf24;font-size:10px;margin-top:3px;line-height:1.3}.status-withdrawn+.tk18-policy-tag{max-width:220px}.table-actions{min-width:245px}@media(max-width:650px){.tk18-score-head,.tk18-score-row{grid-template-columns:58px minmax(80px,1fr) 20px minmax(80px,1fr)}.tk18-score-row input{font-size:16px;padding:8px}.tk18-modal-box{padding:14px}.table-actions{min-width:220px}}
+
+
+/* SOURCE upgrade19.css */
+.tk19-viewer-fresh{margin:0 0 12px;padding:8px 12px;border:1px solid #10b981;border-radius:10px;background:#052e2a;color:#a7f3d0;font-size:12px;font-weight:800}.tk19-viewer-fresh[data-kind="err"]{border-color:#ef476f;background:#3b1020;color:#fecdd3}.tk19-withdrawn-pending{opacity:.72}.tk19-withdrawn-pending td{background:#3a1b24!important}.tk19-repair-card{margin-top:14px;border-color:#7c3aed}.tk9-readonly:is(button,input,select,textarea){pointer-events:none!important;opacity:.55!important}
+
+
+/* SOURCE upgrade20.css */
+#page-umpire .form-grid{grid-template-columns:minmax(160px,.8fr) minmax(240px,1.25fr) minmax(280px,1.5fr) minmax(150px,.7fr) auto auto;align-items:end}
+.tk20-umpire-count{display:block;margin-top:6px;color:#8fb5d9;font-size:12px;font-weight:700}
+.tk20-order-code{white-space:nowrap;font-weight:700}
+.tk20-order-code::before{content:"#" attr(data-day-order);display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:26px;margin-right:8px;padding:0 7px;border-radius:999px;background:#0ea5e9;color:#fff;font-weight:900;font-size:12px;box-shadow:0 0 0 1px #38bdf866 inset}
+.tk20-umpire-open{white-space:nowrap}
+.tk20-player-window-card{border-color:#0ea5e9!important}
+.tk20-window-grid{display:grid;grid-template-columns:1.35fr repeat(4,minmax(130px,.75fr));gap:10px;align-items:end}
+.tk20-window-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.tk20-window-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border:1px solid #28506f;border-radius:12px;background:#0b2138}
+.tk20-window-row span{display:flex;flex-direction:column;gap:3px}.tk20-window-row small{color:#9fc1df}
+@media(max-width:1250px){#page-umpire .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.tk20-window-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:720px){#page-umpire .form-grid,.tk20-window-grid{grid-template-columns:1fr}.tk20-window-actions{align-items:stretch}.tk20-window-actions .btn{width:100%}}
+
+
+/* SOURCE upgrade21.css */
+.tk21-range-note{display:block;margin:6px 0 8px;color:#8fc8ff;font-weight:700}.tk9-date-picker:empty{min-height:42px}
+
+
+/* SOURCE upgrade22.css */
+/* Upgrade 22: physical-side scoreboard, cancelled match emphasis, umpire permission note */
+.score-head .tk22-score-side{border:1px solid #2f5f77;box-shadow:inset 0 0 0 1px rgba(103,232,249,.05)}
+.score-head .tk22-score-side small{font-weight:900;color:#bfe9ff;letter-spacing:.02em}
+.score-head>span{display:grid;gap:3px;min-width:260px}
+.tk22-vs{color:#67e8f9;font-weight:900}.tk22-side-note{display:block;color:#8fb5d9;font-size:10px;font-weight:700}
+.score-actions [data-physical-side="TRÁI"]{box-shadow:inset 4px 0 0 rgba(255,255,255,.25)}
+.score-actions [data-physical-side="PHẢI"]{box-shadow:inset -4px 0 0 rgba(255,255,255,.25)}
+.tk22-umpire-access-note{margin:12px 0 0;padding:9px 12px;border:1px solid #315270;border-radius:10px;background:#081a2e;color:#a9c7e2;font-size:11px;line-height:1.45}
+.tk22-umpire-access-note b{color:#67e8f9}
+.tk12-match-row.tk12-status-cancelled{opacity:1!important}
+.tk12-match-row.tk12-status-cancelled td{background:#351523!important;color:#f8c8d5!important;border-bottom-color:#7f2945!important}
+.tk12-match-row.tk12-status-cancelled td:first-child{box-shadow:inset 5px 0 0 #ef476f}
+.tk12-match-row.tk12-status-cancelled td:nth-child(2){text-decoration:line-through;text-decoration-color:#fb7185;text-decoration-thickness:1px}
+.tk12-status-badge.cancelled{background:#7f1d3c!important;border-color:#fb7185!important;color:#ffe4e6!important;box-shadow:0 0 0 1px rgba(251,113,133,.12)}
+.tk12-public-match.tk12-status-cancelled{opacity:1!important;border-color:#fb7185!important;background:#351523!important;box-shadow:inset 5px 0 0 #ef476f}
+.tk12-public-match.tk12-status-cancelled .tk12-match-main>b{text-decoration:line-through;text-decoration-color:#fb7185}
+.tk12-public-match.tk12-status-cancelled .tk12-match-result strong{color:#fda4af}
+@media(max-width:700px){.score-head>span{min-width:0;font-size:12px}.tk22-side-note{font-size:9px}.score-actions .btn{font-size:12px}}
+
+
+/* SOURCE upgrade23.css */
+/* Upgrade 23: strict 0-0 opening server + physical-side score mapping */
+.tk23-opening-allowed{cursor:pointer!important;outline:3px solid rgba(253,230,138,.9)!important;outline-offset:-5px;box-shadow:0 0 0 2px rgba(245,158,11,.28),0 0 18px rgba(245,158,11,.24)}
+.tk23-opening-allowed:hover,.tk23-opening-allowed:focus{filter:brightness(1.12);transform:translateY(-1px)}
+.tk23-opening-locked{cursor:not-allowed!important;opacity:.78;filter:saturate(.82)}
+.tk23-zero-zero-line{border-color:#f59e0b!important;background:#3a2908!important}
+.tk23-zero-zero-line>span:first-child{font-weight:800}.tk23-zero-zero-line small{display:block;color:#fde68a;font-size:10px;margin-top:2px}
+.score-head .tk23-score-physical small{color:#d7f4ff;font-weight:1000}.score-head .tk23-score-physical strong{font-variant-numeric:tabular-nums}
+@media(max-width:700px){.tk23-zero-zero-line>span:first-child{width:100%}.tk23-zero-zero-line small{margin-top:4px}}
+
+
+/* SOURCE upgrade24.css */
+/* Upgrade 24: stable umpire top position + resilient match search */
+#tk20-umpire-search{scroll-margin-top:120px}
+#page-umpire{scroll-margin-top:0}
+#tk20-umpire-search:focus,#tk16-admin-search-input:focus,#tk16-public-search-input:focus{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.16);outline:none}
+#tk20-umpire-match-count{min-height:18px}
+
+
+/* SOURCE upgrade25.css */
+/* Upgrade 25: reliable Firebase appearance save + Cloud HD Vietnamese commentary */
+.tk25-status{margin-top:10px;padding:9px 11px;border:1px solid #31506d;border-radius:10px;background:#07182a;color:#cbd5e1;font-size:12px;line-height:1.45}
+.tk25-status[data-state="working"]{border-color:#0ea5e9;color:#bae6fd}
+.tk25-status[data-state="ok"]{border-color:#10b981;color:#a7f3d0}
+.tk25-status[data-state="warn"]{border-color:#f59e0b;color:#fde68a}
+.tk25-status[data-state="err"]{border-color:#ef4444;color:#fecaca}
+#tk9-appearance-save:disabled{opacity:.7;cursor:wait}
+#tk9-bg-preview{background-size:cover;background-position:center}
+#page-live #blv-voice{min-width:0}
+.tk25-browser-fallback label::after{content:""}
+
+
+/* SOURCE upgrade26.css */
+/* Upgrade 26: public spectator search must visually hide filtered cards.
+   Upgrade 12 assigns display:grid/flex, so relying on the HTML hidden attribute alone is not sufficient. */
+#spectator-schedule > .tk26-search-hidden,
+#spectator-schedule > .tk12-public-match[hidden],
+#spectator-schedule > .tk12-public-day[hidden]{display:none!important}
+
+
+/* SOURCE upgrade27.css */
+/* Upgrade 27: dynamic Firebase role presets */
+#tk27-role-card{grid-column:1/-1}
+.tk27-role-create,.tk27-manage{display:flex;gap:10px;align-items:end;flex-wrap:wrap;margin-top:12px}
+.tk27-role-create>.field,.tk27-manage>.field{min-width:180px}.tk27-grow{flex:1 1 260px}
+.tk27-status{margin-top:12px;padding:10px 12px;border:1px solid #31506d;border-radius:10px;background:#07182a;color:#cbd5e1;font-size:12px;line-height:1.45}
+.tk27-status[data-state="ok"]{border-color:#10b981;color:#a7f3d0}.tk27-status[data-state="working"]{border-color:#0ea5e9;color:#bae6fd}.tk27-status[data-state="err"]{border-color:#ef4444;color:#fecaca}
+.tk27-role-list{display:grid;gap:8px;margin-top:10px}.tk27-role-row{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:10px 12px;border:1px solid #284762;border-radius:10px;background:#081a2e}.tk27-small{font-size:11px;color:#a9bfd3;margin-top:3px}
+@media(max-width:760px){.tk27-role-create,.tk27-manage{display:grid;grid-template-columns:1fr}.tk27-role-create>.field,.tk27-manage>.field{min-width:0}.tk27-role-row{align-items:flex-start}}
+
+
+/* SOURCE upgrade30.css */
+/* TOPKEY Upgrade 28 - multilingual language picker */
+.tk28-language-launcher{position:fixed;right:18px;bottom:18px;z-index:2147483000;width:48px;height:48px;border-radius:999px;border:1px solid #2c6b8d;background:#0b2942;color:#fff;box-shadow:0 12px 34px #0008;font-size:22px;cursor:pointer;display:grid;place-items:center}.tk28-language-launcher:hover{transform:translateY(-1px);border-color:#38d9c4}.tk28-language-modal{position:fixed;inset:0;z-index:2147483640;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(2,10,20,.78);backdrop-filter:blur(8px)}.tk28-language-modal.tk28-hidden{display:none!important}.tk28-language-box{width:min(560px,94vw);border:1px solid #2b5878;border-radius:24px;padding:26px;background:linear-gradient(145deg,#102b46,#07192b);box-shadow:0 28px 90px #000b;color:#eef8ff}.tk28-language-brand{display:flex;align-items:center;gap:12px;margin-bottom:8px}.tk28-language-brand span{font-size:34px}.tk28-language-box h2{font-size:26px;margin:0}.tk28-language-sub{margin:8px 0 20px;color:#b6c9da;line-height:1.55}.tk28-language-options{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.tk28-lang-option{border:1px solid #315b79;border-radius:17px;padding:16px 10px;background:#0a2035;color:#f4fbff;cursor:pointer;text-align:center;font-weight:900;min-height:94px;transition:.15s}.tk28-lang-option:hover,.tk28-lang-option.tk28-active{border-color:#1dd6a4;background:#0d3b42;box-shadow:0 0 0 2px #1dd6a433}.tk28-lang-option .flag{display:block;font-size:28px;margin-bottom:7px}.tk28-lang-option small{display:block;margin-top:5px;color:#9db5c8;font-weight:600}.tk28-language-note{margin:16px 0 0;color:#8ea8bc;font-size:12px;text-align:center}.tk28-language-current{font-size:11px;position:absolute;right:-2px;top:-2px;background:#12b981;color:#032018;border-radius:999px;min-width:20px;height:20px;padding:0 5px;display:grid;place-items:center;font-weight:900;border:2px solid #071426}@media(max-width:560px){.tk28-language-options{grid-template-columns:1fr}.tk28-lang-option{min-height:auto;display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:left;padding:13px 16px}.tk28-lang-option .flag{display:inline;margin:0}.tk28-lang-option small{margin:2px 0 0}.tk28-language-launcher{right:12px;bottom:12px}}
+
+
+/* SOURCE upgrade31.css */
+#tk18-withdraw-apply[disabled],#tk18-withdraw-cancel[disabled],#tk18-withdraw-close[disabled]{cursor:wait;opacity:.72;filter:none}.tk31-withdraw-busy .tk18-policy{pointer-events:none;opacity:.78}.tk31-withdraw-busy .tk18-modal-actions{position:sticky;bottom:0;background:#0d2036;padding-top:10px;z-index:2}#tk18-withdraw-apply[aria-busy="true"]{min-width:270px}
+
+
+/* SOURCE upgrade32.css */
+/* Upgrade 32: two-pane schedule workspace, each pane scrolls independently. */
+#page-schedule.tk32-split-ready{height:calc(100dvh - 138px);min-height:600px;overflow:hidden}
+#page-schedule.tk32-split-ready>.tk32-schedule-workspace{height:100%;min-height:0;display:grid;grid-template-rows:minmax(310px,1.08fr) minmax(270px,.92fr);gap:14px}
+.tk32-schedule-upper,.tk32-schedule-lower{min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;padding-right:4px}
+.tk32-schedule-upper>.card+ .card{margin-top:14px!important}
+.tk32-schedule-lower{overflow:hidden;padding-right:0}
+.tk32-schedule-lower>.tk32-schedule-list-card{height:100%;min-height:0;margin-top:0!important;display:flex;flex-direction:column}
+.tk32-schedule-list-card>.split{flex:0 0 auto}
+.tk32-schedule-list-card>.tk32-schedule-table-scroll{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+.tk32-schedule-list-card>.tk32-schedule-table-scroll thead th{top:0;z-index:2}
+@media(max-height:760px) and (min-width:901px){#page-schedule.tk32-split-ready{height:calc(100dvh - 118px);min-height:520px}#page-schedule.tk32-split-ready>.tk32-schedule-workspace{grid-template-rows:minmax(250px,1fr) minmax(230px,1fr)}}
+@media(max-width:900px){#page-schedule.tk32-split-ready{height:auto;min-height:0;overflow:visible}#page-schedule.tk32-split-ready>.tk32-schedule-workspace{height:auto;display:block}.tk32-schedule-upper,.tk32-schedule-lower{overflow:visible;padding-right:0}.tk32-schedule-lower>.tk32-schedule-list-card{height:auto;margin-top:14px!important}.tk32-schedule-list-card>.tk32-schedule-table-scroll{max-height:65dvh;overflow:auto}}
+
+
+/* SOURCE upgrade33.css */
+/* Upgrade 33: athlete-centric Smart Scheduler rules. */
+.tk33-legacy-hidden{display:none!important}
+.tk33-rule-card{border-width:1px}.tk33-busy-card{border-color:#b7791f}.tk33-priority-card{border-color:#0f9f70}.tk33-limit-card{border-color:#6d5ce7}
+.tk33-rule-toolbar{display:grid;grid-template-columns:minmax(160px,1fr) minmax(160px,1fr) minmax(160px,1fr) auto;gap:10px;align-items:end;margin:10px 0}
+.tk33-busy-card .tk33-rule-toolbar,.tk33-priority-card .tk33-rule-toolbar{grid-template-columns:minmax(180px,1fr) minmax(180px,1fr) auto}
+.tk33-player-tools{display:flex;gap:10px;align-items:end;justify-content:space-between;margin:10px 0 7px}.tk33-player-tools .field{flex:1;max-width:520px}.tk33-picker-actions{display:flex;gap:6px;flex-wrap:wrap}
+.tk33-player-picker{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;max-height:250px;overflow:auto;border:1px solid #294a67;border-radius:12px;padding:10px;background:#071a2d;scrollbar-gutter:stable}
+.tk33-player-pick{display:flex;gap:9px;align-items:center;border:1px solid #274761;background:#0c2239;border-radius:10px;padding:9px;cursor:pointer;min-height:54px}.tk33-player-pick:hover{border-color:#4f83ad}.tk33-player-pick input{width:17px;height:17px;flex:0 0 auto}.tk33-player-pick span{min-width:0}.tk33-player-pick b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tk33-player-pick small{display:block;color:#8ea7c0;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tk33-person-list{display:grid;gap:8px;margin-top:12px;max-height:360px;overflow:auto;scrollbar-gutter:stable}.tk33-person-row{border:1px solid #315270;background:#0a2138;border-radius:12px;padding:10px;display:grid;gap:8px}.tk33-person-head{display:flex;justify-content:space-between;align-items:center;gap:10px}.tk33-person-head>div{min-width:0}.tk33-person-head b{font-size:13px}.tk33-person-head small{display:block;color:#8ea7c0;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tk33-date-chips{display:flex;gap:6px;flex-wrap:wrap}.tk33-date-chip{display:inline-flex;align-items:center;gap:5px;background:#123554;border:1px solid #315b7e;border-radius:999px;padding:4px 5px 4px 9px;font-size:11px;font-weight:800}.tk33-date-chip button{width:20px;height:20px;border:0;border-radius:50%;background:#be2448;color:#fff;font-weight:900;cursor:pointer}.tk33-add-one{display:flex;gap:7px;align-items:center;flex-wrap:wrap;border-top:1px dashed #284a67;padding-top:8px}.tk33-add-one input,.tk33-add-one select{background:#081a2e;color:#fff;border:1px solid #31506d;border-radius:8px;padding:6px 8px}.tk33-empty{padding:12px;border:1px dashed #294a67;border-radius:10px}.tk33-legacy-box{margin-top:12px;border:1px dashed #5b5ce2;border-radius:10px;padding:9px 10px}.tk33-legacy-box summary{cursor:pointer;font-weight:800;color:#c4b5fd}.tk33-legacy-box .pill{margin-left:5px}
+@media(max-width:1050px){.tk33-player-picker{grid-template-columns:repeat(2,minmax(0,1fr))}.tk33-rule-toolbar{grid-template-columns:repeat(2,minmax(0,1fr))}.tk33-rule-toolbar>.btn{align-self:end}}
+@media(max-width:650px){.tk33-player-picker{grid-template-columns:1fr}.tk33-player-tools{align-items:stretch;flex-direction:column}.tk33-rule-toolbar,.tk33-busy-card .tk33-rule-toolbar,.tk33-priority-card .tk33-rule-toolbar{grid-template-columns:1fr}.tk33-person-head{align-items:flex-start;flex-direction:column}.tk33-add-one>*{flex:1}.tk33-add-one .btn{flex-basis:100%}}
+
+
+/* SOURCE upgrade34.css */
+/* Upgrade 34: schedule pane maximize/restore controls. */
+.tk34-pane-toggle{white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:5px}
+body.tk34-pane-open{overflow:hidden!important}
+.tk32-schedule-upper.tk34-pane-maximized,.tk32-schedule-lower.tk34-pane-maximized{
+  position:fixed!important;inset:0!important;z-index:12050!important;width:100vw!important;height:100dvh!important;max-width:none!important;max-height:none!important;
+  margin:0!important;padding:14px!important;border-radius:0!important;background:linear-gradient(135deg,#06101f,#0a1b31 55%,#09243c)!important;
+  scrollbar-gutter:stable;overscroll-behavior:contain
+}
+.tk32-schedule-upper.tk34-pane-maximized{display:block!important;overflow:auto!important}
+.tk32-schedule-upper.tk34-pane-maximized>.card{max-width:1800px;margin-left:auto!important;margin-right:auto!important}
+.tk32-schedule-upper.tk34-pane-maximized>.card+.card{margin-top:14px!important}
+.tk32-schedule-lower.tk34-pane-maximized{display:flex!important;overflow:hidden!important}
+.tk32-schedule-lower.tk34-pane-maximized>.tk32-schedule-list-card{width:min(1800px,100%);height:100%!important;min-height:0!important;margin:0 auto!important;display:flex!important;flex-direction:column!important}
+.tk32-schedule-lower.tk34-pane-maximized>.tk32-schedule-list-card>.tk32-schedule-table-scroll{flex:1 1 auto!important;min-height:0!important;max-height:none!important;overflow:auto!important}
+.tk34-pane-maximized [data-tk34-pane-toggle]{position:sticky;top:0;z-index:8;box-shadow:0 4px 18px rgba(0,0,0,.28)}
+@media(max-width:900px){.tk32-schedule-upper.tk34-pane-maximized,.tk32-schedule-lower.tk34-pane-maximized{padding:8px!important}.tk34-pane-toggle{font-size:12px}}
+
+
+/* SOURCE upgrade35.css */
+/* Upgrade 35: fullscreen workspace stays below every application overlay/modal. */
+:root{
+  --tk35-workspace-z:8000;
+  --tk35-overlay-z:40000;
+  --tk35-toast-z:40100;
+}
+/* Upgrade 34 uses pseudo-fullscreen (fixed pane), not the browser Fullscreen API.
+   Keep it above the app shell but below all dialogs/overlays. */
+.tk32-schedule-upper.tk34-pane-maximized,
+.tk32-schedule-lower.tk34-pane-maximized{
+  z-index:var(--tk35-workspace-z)!important;
+}
+/* Standard dialogs: confirmDanger, edit team, delete schedule, score entry,
+   withdrawal policy, permissions, QR and future dialogs using .modal. */
+body.tk34-pane-open .modal:not(.hidden){
+  z-index:var(--tk35-overlay-z)!important;
+}
+/* Feedback must never be hidden behind a maximized workspace. */
+body.tk34-pane-open .toast-box{
+  z-index:var(--tk35-toast-z)!important;
+}
+/* Other application overlays that do not use the common .modal class. */
+body.tk34-pane-open .audio-overlay:not(.hidden),
+body.tk34-pane-open .public-register:not(.hidden),
+body.tk34-pane-open .video-box.pseudo-full,
+body.tk34-pane-open .tk9-draw-modal:not(.hidden),
+body.tk34-pane-open .tk9-unlock-pop:not(.hidden),
+body.tk34-pane-open .tk9-firewall-corner{
+  z-index:calc(var(--tk35-overlay-z) + 20)!important;
+}
+/* Language selector intentionally remains at its existing 2.1B z-index. */
+@media(max-width:900px){
+  body.tk34-pane-open .modal{padding:10px!important}
+  body.tk34-pane-open .modal-box{max-height:calc(100dvh - 20px);overflow:auto}
+}
+
+
+/* SOURCE upgrade36.css */
+/* Upgrade 36: Smart Scheduler integrity guard + schedule conflict audit. */
+.tk36-audit-btn{white-space:nowrap}.tk36-preview-safe{border:1px solid #10b981;background:#063b32;color:#9ff7d8;border-radius:10px;padding:8px 10px;margin:0 0 8px;font-weight:800;font-size:12px}.tk36-audit-box{width:min(920px,calc(100vw - 28px));max-height:min(86dvh,900px);overflow:auto}.tk36-audit-summary{border-radius:10px;padding:10px 12px;margin:10px 0;font-weight:800}.tk36-audit-summary.ok{border:1px solid #10b981;background:#063b32;color:#9ff7d8}.tk36-audit-summary.bad{border:1px solid #f43f5e;background:#431426;color:#fecdd3}.tk36-audit-list{display:grid;gap:7px}.tk36-audit-row{display:grid;grid-template-columns:minmax(140px,190px) 1fr;gap:10px;border:1px solid #315270;background:#0a2138;border-radius:10px;padding:9px 10px}.tk36-audit-row b{color:#67e8f9}.tk36-audit-row span{overflow-wrap:anywhere}.tk36-audit-empty{padding:14px;border:1px dashed #315270;border-radius:10px;color:#9ff7d8}@media(max-width:700px){.tk36-audit-row{grid-template-columns:1fr}}
+
+
+/* SOURCE upgrade37.css */
+.tk37-day-summary{margin:8px 0 12px;padding:10px 12px;border:1px solid #2c6c83;border-radius:12px;background:rgba(5,30,48,.72);display:grid;gap:7px}.tk37-day-chips{display:flex;flex-wrap:wrap;gap:7px}.tk37-day-chip{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;border:1px solid #526b7d;font-weight:800;font-size:12px}.tk37-day-chip.full{border-color:#00c58e;background:rgba(0,197,142,.13)}.tk37-day-chip.partial{border-color:#e7a800;background:rgba(231,168,0,.12)}.tk37-day-summary small{opacity:.78}
+
+
+/* SOURCE upgrade38.css */
+/* Upgrade 38: one busy-day source only — player name. Keep legacy DOM for app.js static bindings, but never show/focus it. */
+#page-schedule .scheduler-busy.tk38-legacy-team-busy-hidden,
+#page-schedule .scheduler-busy{display:none!important;visibility:hidden!important;pointer-events:none!important;}
+#tk33-player-busy-card{order:0;}
+
+
+/* SOURCE upgrade39.css */
+/* Upgrade 39: flexible vs required exact player/day match rules. */
+#tk33-player-limit-card .tk33-rule-toolbar{grid-template-columns:minmax(150px,1fr) minmax(150px,1fr) minmax(150px,.8fr) minmax(180px,1fr) auto}
+#tk39-limit-mode-field select,.tk39-add-mode{background:#081a2e;color:#fff;border:1px solid #31506d;border-radius:8px;padding:7px 9px}
+.tk33-date-chip.tk39-flexible{border-color:#315b7e;background:#123554}
+.tk33-date-chip.tk39-required{border-color:#f59e0b;background:rgba(245,158,11,.16);color:#fff3c4}
+.tk39-required-summary{margin:8px 0 12px;padding:10px 12px;border:1px solid #f59e0b;border-radius:12px;background:rgba(91,52,3,.28);display:grid;gap:7px}
+.tk39-required-chips{display:flex;flex-wrap:wrap;gap:7px}.tk39-required-result{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;border:1px solid #6b7280;font-size:12px;font-weight:900}.tk39-required-result.ok{border-color:#00c58e;background:rgba(0,197,142,.13)}.tk39-required-result.bad{border-color:#ef476f;background:rgba(239,71,111,.14)}
+@media(max-width:1150px){#tk33-player-limit-card .tk33-rule-toolbar{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){#tk33-player-limit-card .tk33-rule-toolbar{grid-template-columns:1fr}.tk39-add-mode{flex:1}}
+
+
+/* SOURCE upgrade40.css */
+/* Upgrade 40: actionable UNSCHEDULED diagnostics and manual date resolution. */
+.tk40-modal-box{width:min(1180px,96vw)!important;max-height:calc(100dvh - 34px);overflow:hidden;display:grid;grid-template-rows:auto auto minmax(0,1fr) auto;gap:12px}
+.tk40-head h2{margin:0 0 5px}.tk40-list{overflow:auto;display:grid;gap:10px;padding-right:4px}.tk40-row{border:1px solid #315270;border-radius:13px;background:#091b30;padding:12px;display:grid;gap:9px}.tk40-row-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.tk40-row-head>div{display:grid;gap:3px}.tk40-row-head b{color:#67e8f9}.tk40-row-head span{font-weight:800}.tk40-row-head em{font-style:normal;color:#9bb0c8;font-weight:500}.tk40-badge{border:1px solid #315270;border-radius:999px;padding:4px 8px;font-size:11px;font-weight:900;white-space:nowrap}.tk40-badge.ok{border-color:#10b981;color:#6ee7b7}.tk40-badge.bad{border-color:#ef476f;color:#fda4af}.tk40-reason{font-size:12px;line-height:1.55;color:#d7e5f3}.tk40-reason b{color:#ffbd2e}.tk40-controls{display:grid;grid-template-columns:160px minmax(0,1fr);gap:8px;align-items:center}.tk40-controls label{font-size:12px;font-weight:900;color:#b9c9d9}.tk40-date-select{width:100%;background:#081a2e;color:#fff;border:1px solid #31506d;border-radius:9px;padding:9px}.tk40-details{border-top:1px dashed #31506d;padding-top:7px}.tk40-details summary{cursor:pointer;color:#9bc9ef;font-size:12px;font-weight:800}.tk40-date-reasons{display:grid;gap:5px;margin-top:7px;max-height:150px;overflow:auto}.tk40-date-reasons>div{display:grid;grid-template-columns:95px minmax(0,1fr);gap:8px;font-size:11px;padding:5px 7px;background:#071a2d;border-radius:7px}.tk40-date-reasons b{color:#67e8f9}.tk40-alert{border:1px solid #ef476f;background:rgba(127,29,60,.5);color:#fecdd3;border-radius:10px;padding:9px 11px;font-size:12px;font-weight:800}.tk40-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;border-top:1px solid #315270;padding-top:10px}.tk40-foot>.muted{font-size:11px;max-width:720px}.tk40-foot button:disabled{opacity:.55;cursor:wait}
+@media(max-width:720px){.tk40-modal-box{width:100%!important;max-height:calc(100dvh - 16px);padding:12px}.tk40-row-head,.tk40-foot{align-items:stretch;flex-direction:column}.tk40-controls{grid-template-columns:1fr}.tk40-date-reasons>div{grid-template-columns:1fr}.tk40-badge{align-self:flex-start}}
+
+
+/* SOURCE upgrade41.css */
+/* Upgrade 41: separate schedule clearing from match/stage deletion. */
+#tk41-delete-mode-wrap{display:grid;gap:9px;margin:14px 0;padding:12px;border:1px solid #31597a;border-radius:14px;background:#071a2d}
+.tk41-delete-mode-title{font-weight:900;color:#dcecff}
+.tk41-mode-card{display:flex;gap:10px;align-items:flex-start;padding:11px 12px;border:1px solid #31597a;border-radius:12px;background:#0a2238;cursor:pointer}
+.tk41-mode-card:has(input:checked){border-color:#22d3ee;box-shadow:0 0 0 1px rgba(34,211,238,.28) inset}
+.tk41-mode-card.danger:has(input:checked){border-color:#fb7185;box-shadow:0 0 0 1px rgba(251,113,133,.28) inset}
+.tk41-mode-card input{margin-top:4px}.tk41-mode-card span{display:grid;gap:4px}.tk41-mode-card small{color:#9fb5c9;line-height:1.4}
+.tk41-scope-disabled{opacity:.48;pointer-events:none}.tk41-keep-structure{color:#67e8f9;font-weight:800}.tk41-unscheduled-count{color:#fbbf24;font-weight:800}
+#auto-reschedule:disabled{opacity:1;accent-color:#22d3ee}#auto-reschedule:disabled+*{opacity:1}
+
+
+/* SOURCE upgrade42.css */
+/* TOPKEY Upgrade 42 - cache/deployment hardening marker */
+
+
+/* SOURCE upgrade43.css */
+/* Upgrade 43: show every scheduler-range date and allow safe manual date rebalancing. */
+.tk43-modal-box .tk40-badge.warn{border-color:#f59e0b;color:#fcd34d}.tk43-choice-hint{font-size:11px;line-height:1.5;border-radius:8px;padding:7px 9px;background:#071a2d;border:1px solid #31506d;color:#b9c9d9}.tk43-choice-hint.ok{border-color:#10b981;color:#86efac}.tk43-choice-hint.rebalance{border-color:#f59e0b;color:#fde68a}.tk43-choice-hint.blocked{border-color:#ef476f;color:#fecdd3}.tk43-day-line.direct span{color:#86efac}.tk43-day-line.rebalance span{color:#fde68a}.tk43-day-line.blocked span,.tk43-day-line.locked span{color:#fda4af}.tk43-date-select option{background:#081a2e;color:#fff}.tk43-date-select option:disabled{color:#718096}
+
+
+/* SOURCE upgrade44.css */
+.tk44-actual-time{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:4px;font-size:11px;line-height:1.25;color:#a7f3d0}
+.tk44-actual-time span{display:inline-flex;align-items:center;border:1px solid rgba(52,211,153,.38);border-radius:999px;padding:2px 6px;background:rgba(5,150,105,.12);color:#6ee7b7;font-weight:800;white-space:nowrap}
+.tk44-actual-time b{color:#d1fae5;font-size:11px;white-space:nowrap}
+.tk12-public-match .tk44-actual-time{display:flex;color:#a7f3d0!important}
+@media(max-width:760px){.tk44-actual-time{align-items:flex-start}.tk44-actual-time b{white-space:normal}}
+
+
+/* SOURCE upgrade45.css */
+#audit-list .tk45-audit-role{display:block;margin-top:3px;color:#8fb1ca;font-size:11px;line-height:1.3;word-break:break-word}
+#audit-list .tk45-access-row{background:rgba(24,156,255,.045)}
+#audit-list .tk45-access-action{font-weight:800;color:#61e6c2;white-space:nowrap}
+#page-audit table th:last-child,#page-audit table td:last-child{min-width:190px}
+@media(max-width:760px){#page-audit .table-wrap{overflow:auto}#page-audit table{min-width:900px}}
+
+
+/* SOURCE upgrade46.css */
+/* Upgrade 46 · TOPKEY Local Vietnamese Commentary Engine */
+#page-live .tk46-controls{margin-top:12px;padding-top:12px;border-top:1px solid #284a67;display:grid;gap:10px}
+#page-live .tk46-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.85fr) minmax(0,.85fr);gap:8px;align-items:end}
+#page-live .tk46-check{display:flex;align-items:center;gap:8px;min-height:42px;padding:8px 10px;border:1px solid #31506d;border-radius:10px;background:#081a2e;font-size:12px;font-weight:800;color:#c8d8e8}
+#page-live .tk46-meta{display:flex;gap:8px;flex-wrap:wrap;color:#9bb0c8;font-size:11px}
+#page-live .tk46-meta span{padding:4px 7px;border:1px solid #284a67;border-radius:999px;background:#091b30}
+#page-live .tk46-actions{display:flex;gap:7px;flex-wrap:wrap}
+#page-live .tk46-dict textarea{min-height:76px;resize:vertical}
+#page-live .tk46-manual-row{display:grid;grid-template-columns:1fr auto;gap:7px}
+#page-live #tk46-local-status[data-state="ok"]{color:#6ee7b7}
+#page-live #tk46-local-status[data-state="working"]{color:#fbbf24}
+#page-live #tk46-local-status[data-state="err"]{color:#fb7185}
+#page-live #tk46-local-status{margin-top:5px;font-size:11px}
+@media(max-width:900px){#page-live .tk46-grid{grid-template-columns:1fr}#page-live .tk46-manual-row{grid-template-columns:1fr}}
+
+
+/* SOURCE upgrade47.css */
+/* Upgrade 47 · Android-ready TOPKEY Offline Vietnamese Voice */
+#page-live .tk47-pack{margin-top:12px;padding:12px;border:1px solid #315b7a;border-radius:12px;background:linear-gradient(180deg,#0a2037,#07192c);display:grid;gap:10px}
+#page-live .tk47-pack-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+#page-live .tk47-pack-head b{font-size:14px;color:#e7f5ff}
+#page-live .tk47-pack-head .muted{margin-top:3px;font-size:11px}
+#page-live .tk47-badge{padding:5px 8px;border:1px solid #355a76;border-radius:999px;font-size:10px;font-weight:900;white-space:nowrap;color:#a9bfd3;background:#08182a}
+#page-live .tk47-badge[data-state="ok"]{color:#6ee7b7;border-color:#16835f;background:#073326}
+#page-live .tk47-grid{display:grid;grid-template-columns:minmax(220px,.8fr) minmax(280px,1.2fr);gap:10px;align-items:end}
+#page-live .tk47-actions{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+#page-live .tk47-progress{height:8px;border-radius:999px;overflow:hidden;background:#05111f;border:1px solid #27455f}
+#page-live .tk47-progress i{display:block;width:0;height:100%;background:linear-gradient(90deg,#1e9ee8,#34d399);transition:width .2s ease}
+#page-live .tk47-status{font-size:11px;color:#a9bfd3}
+#page-live .tk47-status[data-state="ok"]{color:#6ee7b7}#page-live .tk47-status[data-state="working"]{color:#fbbf24}#page-live .tk47-status[data-state="err"]{color:#fb7185}
+#page-live .tk47-summary{font-size:10px;color:#8fa7bd}
+#page-live .tk47-note{font-size:10px;line-height:1.45;color:#8fa7bd;border-top:1px dashed #2b4a64;padding-top:8px}
+@media(max-width:900px){#page-live .tk47-grid{grid-template-columns:1fr}#page-live .tk47-pack-head{flex-direction:column}#page-live .tk47-actions .btn{flex:1 1 170px}}
+
+
+/* SOURCE upgrade48.css */
+/* Upgrade 48 · Realtime Vietnamese BLV */
+.tk48-realtime{margin-top:12px;padding:12px;border:1px solid #1d6b8d;border-radius:14px;background:rgba(3,31,52,.72)}
+.tk48-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.tk48-head b{font-size:15px}.tk48-badge{padding:4px 8px;border-radius:999px;border:1px solid #37647c;font-size:11px;font-weight:800;white-space:nowrap}.tk48-badge[data-state="ok"]{border-color:#18b87b;color:#65efbd}.tk48-badge[data-state="working"]{border-color:#e3a72f;color:#ffd36c}
+.tk48-options{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:10px}.tk48-options label{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700}.tk48-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;margin-top:10px;font-size:11px;color:#a9c7d8}.tk48-note{margin-top:9px;font-size:11px;line-height:1.45;color:#8eb0c4}
+@media(max-width:720px){.tk48-head{align-items:center}.tk48-options{display:grid;grid-template-columns:1fr}.tk48-actions{align-items:stretch}.tk48-actions .btn{width:100%}}
+
+
+/* SOURCE upgrade49.css */
+/* Upgrade 49 · persistent auto voice for Umpire + Live/BLV */
+.tk49-auto-voice{margin:0 0 12px;padding:11px 12px;border:1px solid #315b7a;border-radius:13px;background:linear-gradient(180deg,rgba(8,35,58,.97),rgba(5,25,44,.97));display:grid;gap:8px}
+.tk49-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.tk49-head b{font-size:14px;color:#eaf7ff}.tk49-sub{font-size:11px;color:#8fb1c7;margin-top:2px}.tk49-badge{padding:4px 8px;border-radius:999px;border:1px solid #46677d;font-size:10px;font-weight:900;white-space:nowrap}.tk49-badge[data-state="ok"]{color:#6ee7b7;border-color:#16835f;background:#073326}.tk49-badge[data-state="need"]{color:#ffd36c;border-color:#b7791f;background:#3a2605}.tk49-badge[data-state="working"]{color:#7dd3fc;border-color:#0284c7}.tk49-badge[data-state="disabled"]{opacity:.65}.tk49-body{display:flex;align-items:center;justify-content:space-between;gap:10px}.tk49-message{font-size:12px;line-height:1.4;color:#c7d9e6}.tk49-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.tk49-note{font-size:10px;line-height:1.4;color:#789bb1;border-top:1px dashed #294b63;padding-top:7px}
+#page-umpire .tk49-auto-voice{position:relative;z-index:1}
+@media(max-width:720px){.tk49-head,.tk49-body{align-items:stretch;flex-direction:column}.tk49-actions{justify-content:stretch}.tk49-actions .btn{width:100%}.tk49-badge{align-self:flex-start}}
+
+
+/* SOURCE upgrade50.css */
+/* Upgrade 50 · verified Android audio gate */
+.tk50-audio-proof{display:flex;align-items:center;justify-content:space-between;gap:9px;padding-top:7px;border-top:1px dashed #294b63}.tk50-proof-text{font-size:11px;line-height:1.4;color:#9fc3d8}.tk50-test{flex:0 0 auto}.tk49-badge[data-state="need"]{color:#ffd36c;border-color:#b7791f;background:#3a2605}
+@media(max-width:720px){.tk50-audio-proof{align-items:stretch;flex-direction:column}.tk50-test{width:100%}}
+
+
+/* SOURCE upgrade51.css */
+/* Upgrade 51 - Piper/ONNX runtime repair */
+.tk51-runtime{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:9px;padding:8px 10px;border:1px solid rgba(85,190,255,.28);border-radius:10px;background:rgba(4,24,43,.5);font-size:12px}.tk51-runtime-badge{font-weight:800;border:1px solid rgba(148,163,184,.45);border-radius:999px;padding:4px 8px;white-space:nowrap}.tk51-runtime-badge[data-state="ok"]{color:#7fffd4;border-color:#00c98d}.tk51-runtime-badge[data-state="working"]{color:#7dd3fc;border-color:#0ea5e9}.tk51-runtime-badge[data-state="err"]{color:#fda4af;border-color:#fb7185}.tk51-runtime-badge[data-state="need"]{color:#fde68a;border-color:#f59e0b}.tk51-runtime-text{flex:1;min-width:220px;color:#cbd5e1}.tk51-runtime .hidden{display:none!important}
+
+
+/* SOURCE upgrade52.css */
+/* Upgrade 52 - Cloud pronunciation dictionary */
+.tk52-sync{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;padding:8px 10px;border:1px solid rgba(56,189,248,.28);border-radius:10px;background:rgba(4,24,43,.48);font-size:12px}.tk52-badge{font-weight:900;border:1px solid rgba(148,163,184,.45);border-radius:999px;padding:4px 8px;white-space:nowrap}.tk52-badge[data-state="ok"]{color:#7fffd4;border-color:#00c98d}.tk52-badge[data-state="readonly"]{color:#93c5fd;border-color:#3b82f6}.tk52-badge[data-state="pending"]{color:#fde68a;border-color:#f59e0b}.tk52-badge[data-state="local"]{color:#c4b5fd;border-color:#8b5cf6}.tk52-badge[data-state="err"]{color:#fda4af;border-color:#fb7185}.tk52-text{flex:1;min-width:220px;color:#cbd5e1}.tk46-dict textarea[readonly]{opacity:.82;cursor:default}.tk46-actions #tk46-save-dict:disabled{opacity:.58;cursor:not-allowed}
+
+
+/* SOURCE upgrade53.css */
+/* Upgrade 53: responsive shell + Android/PWA installability */
+html,body{width:100%;max-width:100%;overflow-x:clip}#app-shell,.topbar,.shell,.page,.card,.grid,.form-grid,.subcard{min-width:0;max-width:100%}#app-shell{width:100%}.topbar{width:100%;max-width:100vw}.shell{width:min(100%,1500px)}.grid>*,.form-grid>*,.score-head>*,.court-half,.split>*{min-width:0}img,video,canvas,iframe{max-width:100%}input,select,textarea,button{max-width:100%}.table-wrap{width:100%;max-width:100%;overflow-x:auto;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-inline:contain}.table-wrap table{max-width:none}.nav{max-width:100vw;scrollbar-width:thin;overscroll-behavior-inline:contain;scroll-snap-type:x proximity}.nav button{scroll-snap-align:start}.tk53-install{border-color:#10b981!important;color:#9ff7d8!important;background:#063b32!important}.tk53-install.hidden{display:none!important}.tk53-mobile-table-note{display:none}
+@media(max-width:900px){
+  .shell{padding:10px 10px calc(18px + env(safe-area-inset-bottom))!important;margin:0!important;width:100%!important}
+  .page,.card{width:100%!important;max-width:100%!important}
+  .card{padding:12px!important;border-radius:14px}
+  .g2,.g3,.g4,.form-grid,#page-umpire .form-grid,.scheduler-grid,.team-picker,.tk9-grid,.tk9-grid3,.tk9-top3,.tk9-pairs,#page-live .tk46-grid,#page-live .tk47-grid{grid-template-columns:minmax(0,1fr)!important}
+  .brand{padding:10px 12px 7px!important;align-items:flex-start!important;flex-direction:column!important;gap:8px!important}
+  .brand>div{width:100%;min-width:0}.brand h1{font-size:clamp(15px,4.4vw,20px)!important;line-height:1.2;overflow-wrap:anywhere}.brand small{font-size:11px;line-height:1.35}
+  .top-actions{width:100%;display:grid!important;grid-template-columns:minmax(0,1fr) auto;gap:7px!important;align-items:center!important}.top-actions .hub-back{order:0!important;width:auto!important;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.top-actions #user-label{min-width:0;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.top-actions #logout-btn{grid-column:2}.top-actions .tk53-install{grid-column:1/-1;width:100%}
+  .nav{padding:0 10px 8px!important;gap:5px!important}.nav button{padding:9px 11px!important;font-size:12px!important;min-height:40px}
+  #page-umpire>.card{padding:10px!important}#page-umpire .field,#page-umpire select,#page-umpire input{width:100%!important}#page-umpire .form-grid>.btn{width:100%;min-height:46px}#page-umpire #umpire-board{width:100%;max-width:100%;overflow:hidden}
+  .score-head{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)!important;gap:6px!important}.score-head div{padding:8px 5px!important}.score-head strong{font-size:clamp(30px,11vw,46px)!important}.score-head span,.score-head b{overflow-wrap:anywhere}
+  .court{grid-template-columns:minmax(0,1fr) 3px minmax(0,1fr)!important;min-height:250px!important;width:100%;max-width:100%}.court-half{padding:8px 6px!important;gap:7px!important}.player{padding:10px 6px!important;font-size:clamp(11px,3.5vw,15px);overflow-wrap:anywhere}.tk11-player{gap:7px!important}.tk11-player-no{width:30px!important;height:30px!important;font-size:19px!important}
+  .score-actions{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important}.score-actions .btn{min-width:0;min-height:48px;padding:10px 7px!important;font-size:12px;white-space:normal;line-height:1.2}
+  .checkin-row,.list-card{align-items:stretch;flex-direction:column}.action-bar,.action-group,.court-actions{align-items:stretch}.action-bar .btn,.action-bar label.btn,.court-actions .btn{flex:1 1 145px;text-align:center}
+  .modal{padding:8px!important}.modal-box,.modal-box.wide{width:100%!important;max-width:100%!important;max-height:calc(100dvh - 16px);overflow:auto;padding:13px!important}
+  .public-register{padding:12px!important}.video-box{width:100%;max-height:none}.caption{max-width:92%;font-size:12px}
+  .table-wrap{position:relative;border-radius:10px}.table-wrap table{font-size:12px}.table-wrap th,.table-wrap td{padding:8px}.tk53-mobile-table-note{display:block;color:#8fb5d9;font-size:10px;margin:5px 2px 0}
+}
+@media(max-width:520px){
+  .shell{padding-left:7px!important;padding-right:7px!important}.card{padding:10px!important}.top-actions{grid-template-columns:1fr auto}.top-actions #user-label{font-size:10px}.nav{padding-left:7px!important;padding-right:7px!important}
+  .court{min-height:230px!important;border-width:3px}.court-half{padding:6px 4px!important}.player{font-size:11px!important}.score-actions .btn{font-size:11px}.tk22-umpire-access-note{font-size:10px!important}
+}
+@media(min-width:901px){.tk53-install{white-space:nowrap}}
+
+
+/* SOURCE upgrade57.css */
+/* Upgrade 57 · Referee Focus Mode: fullscreen + adaptive scoring layout */
+.tk57-referee-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 10px;padding:9px 11px;border:1px solid #315270;border-radius:12px;background:linear-gradient(135deg,#081a2e,#0c2944)}
+.tk57-referee-toolbar-main{display:flex;align-items:center;gap:10px;min-width:0}.tk57-referee-icon{font-size:22px;line-height:1}.tk57-referee-copy{display:grid;gap:2px;min-width:0}.tk57-referee-copy strong{font-size:13px}.tk57-referee-copy small{color:#8fb5d9;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tk57-referee-toolbar .btn{flex:0 0 auto;white-space:nowrap;min-width:148px}
+#page-umpire .tk22-umpire-access-note{display:none!important}
+html.tk57-referee-focus,body.tk57-referee-focus{width:100%;height:100%;overflow:hidden!important;overscroll-behavior:none;background:#06101f}
+body.tk57-referee-focus .topbar{display:none!important}
+body.tk57-referee-focus #app-shell{width:100vw!important;height:100dvh!important;overflow:hidden!important}
+body.tk57-referee-focus .shell{width:100%!important;max-width:none!important;height:100dvh!important;margin:0!important;padding:max(6px,env(safe-area-inset-top)) max(7px,env(safe-area-inset-right)) max(6px,env(safe-area-inset-bottom)) max(7px,env(safe-area-inset-left))!important;overflow:hidden!important}
+body.tk57-referee-focus .shell>.page:not(#page-umpire){display:none!important}
+body.tk57-referee-focus #page-umpire{display:block!important;width:100%!important;height:100%!important;margin:0!important;animation:none!important;overflow:hidden!important}
+body.tk57-referee-focus #page-umpire>.card{width:100%!important;height:100%!important;max-width:none!important;margin:0!important;padding:8px!important;border-radius:12px!important;display:grid!important;grid-template-rows:auto auto minmax(0,1fr) auto;gap:7px;overflow:hidden!important;background:rgba(7,22,39,.985);box-shadow:none}
+body.tk57-referee-focus .tk57-referee-toolbar{margin:0;padding:6px 9px;min-height:38px}
+body.tk57-referee-focus .tk57-referee-toolbar .btn{min-height:34px;padding:6px 11px}
+body.tk57-referee-focus #page-umpire>.card>.form-grid{margin:0!important;gap:7px!important;align-items:end}
+body.tk57-referee-focus #page-umpire .field{gap:3px}body.tk57-referee-focus #page-umpire .field label{font-size:10px}body.tk57-referee-focus #page-umpire select,body.tk57-referee-focus #page-umpire input{padding:7px 8px!important;min-height:36px!important}
+body.tk57-referee-focus #page-umpire .form-grid>.btn{min-height:36px!important;padding:7px 10px!important}
+body.tk57-referee-focus #tk20-umpire-match-count{margin-top:2px!important;min-height:0!important;font-size:9px!important;line-height:1.15}
+body.tk57-referee-focus .tk22-umpire-access-note{display:none!important}
+body.tk57-referee-focus #umpire-board{margin:0!important;min-height:0!important;overflow:hidden!important;display:flex;flex-direction:column;gap:6px}
+body.tk57-referee-focus #umpire-board>.score-head{flex:0 0 auto;margin:0!important;gap:7px!important}
+body.tk57-referee-focus #umpire-board>.score-head div{padding:5px 8px!important}body.tk57-referee-focus #umpire-board>.score-head strong{font-size:clamp(28px,5.2vh,48px)!important;line-height:1}body.tk57-referee-focus #umpire-board>.score-head small{font-size:9px}body.tk57-referee-focus #umpire-board>.score-head>span{font-size:clamp(11px,1.4vw,15px);line-height:1.2}
+body.tk57-referee-focus #umpire-board>.tk11-service-line{flex:0 0 auto;margin:0!important;padding:5px 8px!important;min-height:34px;gap:6px;font-size:clamp(10px,1.2vw,12px)}body.tk57-referee-focus #umpire-board>.tk11-service-line .btn{padding:5px 9px!important;min-height:30px}body.tk57-referee-focus #umpire-board>.tk11-service-line .tk13-court-legend{padding:3px 6px;font-size:9px}
+body.tk57-referee-focus #umpire-board>.court{flex:1 1 auto;min-height:0!important;height:auto!important;width:100%;border-width:3px;border-radius:12px}
+body.tk57-referee-focus #umpire-board .court-half{padding:7px 10px!important;gap:6px!important;min-height:0;justify-content:space-around}body.tk57-referee-focus #umpire-board .tk11-team-head{gap:6px}body.tk57-referee-focus #umpire-board .tk11-team-head>b{font-size:clamp(11px,1.4vw,15px);overflow-wrap:anywhere}body.tk57-referee-focus #umpire-board .tk11-swap-pos{padding:5px 8px!important;min-height:30px;font-size:10px}
+body.tk57-referee-focus #umpire-board .player{padding:clamp(6px,1.2vh,12px) clamp(6px,1vw,12px)!important;min-height:0;font-size:clamp(10px,1.25vw,14px);line-height:1.15}body.tk57-referee-focus #umpire-board .tk11-player-no{width:clamp(27px,3.3vw,34px)!important;height:clamp(27px,3.3vw,34px)!important;font-size:clamp(17px,2.2vw,23px)!important}body.tk57-referee-focus #umpire-board .tk11-player small{font-size:clamp(8px,.9vw,10px)}
+body.tk57-referee-focus .score-actions{margin:0!important;gap:6px!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;background:rgba(7,22,39,.98);padding:0}
+body.tk57-referee-focus .score-actions .btn{min-width:0!important;min-height:39px!important;padding:7px 6px!important;font-size:clamp(10px,1.05vw,12px)!important;line-height:1.1;white-space:normal}
+body.tk57-referee-focus .toast-box{right:max(8px,env(safe-area-inset-right));bottom:max(8px,env(safe-area-inset-bottom))}
+
+/* Phone/tablet portrait: remove search/date clutter, keep match/court/scoring controls large enough to tap. */
+@media (max-width:720px) and (orientation:portrait){
+ body.tk57-referee-focus #page-umpire>.card{padding:6px!important;gap:6px;overflow:auto!important;grid-template-rows:auto auto auto auto}
+ body.tk57-referee-focus .tk57-referee-toolbar-copy-wide{display:none}body.tk57-referee-focus .tk57-referee-toolbar{gap:6px}body.tk57-referee-focus .tk57-referee-toolbar .btn{min-width:128px}
+ body.tk57-referee-focus #page-umpire .tk20-umpire-filter{display:none!important}
+ body.tk57-referee-focus #page-umpire>.card>.form-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important}
+ body.tk57-referee-focus #page-umpire .tk57-match-field{grid-column:1/-1}body.tk57-referee-focus #page-umpire .tk57-court-field{grid-column:1/2}
+ body.tk57-referee-focus #umpire-start{grid-column:1/-1}
+ body.tk57-referee-focus #umpire-board{overflow:visible!important;display:block}
+ body.tk57-referee-focus #umpire-board>.score-head{margin-bottom:5px!important}body.tk57-referee-focus #umpire-board>.score-head strong{font-size:clamp(32px,10vw,48px)!important}
+ body.tk57-referee-focus #umpire-board>.tk11-service-line{margin:5px 0!important}body.tk57-referee-focus #umpire-board>.tk11-service-line .tk13-court-legend{width:100%;order:3;text-align:center}
+ body.tk57-referee-focus #umpire-board>.court{min-height:clamp(195px,24dvh,230px)!important;height:clamp(195px,24dvh,230px)!important}
+ body.tk57-referee-focus #umpire-board .court-half{padding:7px 5px!important}body.tk57-referee-focus #umpire-board .tk11-team-head{align-items:stretch!important;flex-direction:column!important}body.tk57-referee-focus #umpire-board .tk11-swap-pos{width:100%}
+ body.tk57-referee-focus .score-actions{grid-template-columns:repeat(2,minmax(0,1fr))!important;padding-bottom:max(2px,env(safe-area-inset-bottom))}body.tk57-referee-focus .score-actions .btn{min-height:46px!important;font-size:11px!important}
+}
+
+/* Short landscape phones and small referee tablets: fit the complete scoring console in one viewport. */
+@media (orientation:landscape) and (max-height:650px){
+ body.tk57-referee-focus #page-umpire>.card{padding:5px!important;gap:4px;border-radius:8px!important}
+ body.tk57-referee-focus .tk57-referee-toolbar{min-height:32px;padding:3px 7px}body.tk57-referee-focus .tk57-referee-toolbar-main{gap:6px}body.tk57-referee-focus .tk57-referee-icon{font-size:17px}body.tk57-referee-focus .tk57-referee-copy strong{font-size:11px}body.tk57-referee-focus .tk57-referee-copy small{font-size:8px}body.tk57-referee-focus .tk57-referee-toolbar .btn{min-height:30px!important;padding:4px 8px!important;font-size:10px;min-width:112px}
+ body.tk57-referee-focus #page-umpire .tk20-umpire-filter{display:none!important}
+ body.tk57-referee-focus #page-umpire>.card>.form-grid{grid-template-columns:minmax(240px,2fr) minmax(100px,.75fr) auto auto!important;gap:5px!important}
+ body.tk57-referee-focus #page-umpire .field label{display:none}body.tk57-referee-focus #page-umpire select,body.tk57-referee-focus #page-umpire input,body.tk57-referee-focus #page-umpire .form-grid>.btn{min-height:31px!important;padding:4px 7px!important;font-size:10px}body.tk57-referee-focus #tk20-umpire-match-count{display:none!important}
+ body.tk57-referee-focus #umpire-board{gap:3px}body.tk57-referee-focus #umpire-board>.score-head{gap:4px!important}body.tk57-referee-focus #umpire-board>.score-head div{padding:2px 6px!important}body.tk57-referee-focus #umpire-board>.score-head strong{font-size:26px!important}body.tk57-referee-focus #umpire-board>.score-head small{font-size:7px}body.tk57-referee-focus #umpire-board>.score-head>span{font-size:9px}
+ body.tk57-referee-focus #umpire-board>.tk11-service-line{padding:2px 6px!important;min-height:27px;font-size:9px;flex-wrap:nowrap!important}body.tk57-referee-focus #umpire-board>.tk11-service-line .tk13-court-legend{font-size:7px;padding:2px 4px;white-space:nowrap}body.tk57-referee-focus #umpire-board>.tk11-service-line .btn{min-height:25px!important;padding:3px 6px!important;font-size:9px}
+ body.tk57-referee-focus #umpire-board>.court{border-width:2px;min-height:0!important}body.tk57-referee-focus #umpire-board .court-half{padding:3px 7px!important;gap:3px!important}body.tk57-referee-focus #umpire-board .tk11-team-head{flex-direction:row!important;align-items:center!important}body.tk57-referee-focus #umpire-board .tk11-team-head>b{font-size:9px}body.tk57-referee-focus #umpire-board .tk11-swap-pos{min-height:23px!important;padding:2px 5px!important;font-size:8px;width:auto!important}body.tk57-referee-focus #umpire-board .player{padding:3px 6px!important;font-size:9px!important;gap:5px!important}body.tk57-referee-focus #umpire-board .tk11-player-no{width:23px!important;height:23px!important;font-size:15px!important}body.tk57-referee-focus #umpire-board .tk11-player small{font-size:7px!important}
+ body.tk57-referee-focus .score-actions{gap:4px!important}body.tk57-referee-focus .score-actions .btn{min-height:31px!important;padding:4px!important;font-size:9px!important}
+}
+
+/* Large referee screens: use the extra space for legibility rather than empty margins. */
+@media (min-width:1400px) and (min-height:800px){
+ body.tk57-referee-focus #page-umpire>.card{padding:12px 18px!important;gap:10px}body.tk57-referee-focus #umpire-board>.score-head strong{font-size:56px!important}body.tk57-referee-focus #umpire-board .player{font-size:16px;padding:15px!important}body.tk57-referee-focus .score-actions .btn{min-height:52px!important;font-size:14px!important}
+}
+
+
+/* SOURCE upgrade58.css */
+/* Upgrade 58 · Referee Match Focus + Android PWA install feedback */
+body.tk58-score-focus .tk57-referee-toolbar,
+body.tk58-score-focus #page-umpire>.card>.form-grid,
+body.tk58-score-focus #page-umpire .tk20-umpire-filter,
+body.tk58-score-focus #tk20-umpire-match-count,
+body.tk58-score-focus #page-umpire .tk22-umpire-access-note{display:none!important}
+
+html.tk58-score-focus,body.tk58-score-focus{width:100%;height:100%;overflow:hidden!important;overscroll-behavior:none;background:#06101f}
+body.tk58-score-focus .topbar{display:none!important}
+body.tk58-score-focus #app-shell{width:100vw!important;height:100dvh!important;overflow:hidden!important}
+body.tk58-score-focus .shell{width:100%!important;max-width:none!important;height:100dvh!important;margin:0!important;padding:max(4px,env(safe-area-inset-top)) max(5px,env(safe-area-inset-right)) max(4px,env(safe-area-inset-bottom)) max(5px,env(safe-area-inset-left))!important;overflow:hidden!important}
+body.tk58-score-focus .shell>.page:not(#page-umpire){display:none!important}
+body.tk58-score-focus #page-umpire{display:block!important;width:100%!important;height:100%!important;margin:0!important;overflow:hidden!important;animation:none!important}
+body.tk58-score-focus #page-umpire>.card{width:100%!important;height:100%!important;max-width:none!important;margin:0!important;padding:5px!important;border-radius:9px!important;display:grid!important;grid-template-rows:minmax(0,1fr) auto!important;gap:5px!important;overflow:hidden!important;background:rgba(7,22,39,.99);box-shadow:none!important}
+body.tk58-score-focus #umpire-board{grid-row:1!important;margin:0!important;min-height:0!important;overflow:hidden!important;display:flex!important;flex-direction:column!important;gap:5px!important}
+body.tk58-score-focus .score-actions{grid-row:2!important;margin:0!important;gap:5px!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;padding:0!important;background:transparent!important}
+body.tk58-score-focus .score-actions .btn{min-width:0!important;min-height:40px!important;padding:7px 5px!important;font-size:clamp(10px,1.05vw,13px)!important;line-height:1.1!important;white-space:normal!important}
+body.tk58-score-focus #umpire-board>.score-head{flex:0 0 auto!important;margin:0!important;gap:5px!important}
+body.tk58-score-focus #umpire-board>.score-head div{padding:4px 7px!important}
+body.tk58-score-focus #umpire-board>.score-head strong{font-size:clamp(34px,7vh,62px)!important;line-height:.95!important}
+body.tk58-score-focus #umpire-board>.score-head small{font-size:9px!important}
+body.tk58-score-focus #umpire-board>.score-head>span{font-size:clamp(11px,1.45vw,16px)!important;line-height:1.15!important}
+body.tk58-score-focus #umpire-board>.tk11-service-line{flex:0 0 auto!important;margin:0!important;padding:4px 7px!important;min-height:32px!important;gap:5px!important;font-size:clamp(9px,1.1vw,12px)!important}
+body.tk58-score-focus #umpire-board>.tk11-service-line .btn{min-height:28px!important;padding:4px 7px!important}
+body.tk58-score-focus #umpire-board>.tk11-service-line .tk13-court-legend{padding:2px 5px!important;font-size:8px!important}
+body.tk58-score-focus #umpire-board>.court{flex:1 1 auto!important;min-height:0!important;height:auto!important;width:100%!important;border-width:3px!important;border-radius:11px!important}
+body.tk58-score-focus #umpire-board .court-half{padding:6px 9px!important;gap:5px!important;min-height:0!important;justify-content:space-around!important}
+body.tk58-score-focus #umpire-board .tk11-team-head{gap:5px!important}
+body.tk58-score-focus #umpire-board .tk11-team-head>b{font-size:clamp(11px,1.5vw,16px)!important;overflow-wrap:anywhere}
+body.tk58-score-focus #umpire-board .tk11-swap-pos{padding:4px 7px!important;min-height:28px!important;font-size:9px!important}
+body.tk58-score-focus #umpire-board .player{padding:clamp(6px,1.25vh,13px) clamp(6px,1vw,12px)!important;min-height:0!important;font-size:clamp(10px,1.3vw,15px)!important;line-height:1.12!important}
+body.tk58-score-focus #umpire-board .tk11-player-no{width:clamp(27px,3.4vw,36px)!important;height:clamp(27px,3.4vw,36px)!important;font-size:clamp(17px,2.3vw,24px)!important}
+body.tk58-score-focus #umpire-board .tk11-player small{font-size:clamp(8px,.9vw,10px)!important}
+
+#tk58-focus-exit{display:none;position:fixed;z-index:10020;top:max(6px,env(safe-area-inset-top));right:max(6px,env(safe-area-inset-right));width:38px;height:38px;padding:0!important;border-radius:12px!important;border:1px solid #6b8cab!important;background:rgba(7,28,48,.88)!important;color:#d9efff!important;box-shadow:0 3px 12px #0008;font-size:18px!important;line-height:1!important;backdrop-filter:blur(8px)}
+body.tk58-score-focus #tk58-focus-exit{display:grid!important;place-items:center}
+body.tk58-score-focus .toast-box{right:max(8px,env(safe-area-inset-right));bottom:max(8px,env(safe-area-inset-bottom))}
+
+/* Portrait phone: score + court + actions only. Scroll is allowed only if the physical screen is unusually short. */
+@media (max-width:720px) and (orientation:portrait){
+ body.tk58-score-focus #page-umpire>.card{padding:4px!important;gap:4px!important;overflow:auto!important;grid-template-rows:auto auto!important}
+ body.tk58-score-focus #umpire-board{overflow:visible!important;display:block!important}
+ body.tk58-score-focus #umpire-board>.score-head{margin-bottom:4px!important}body.tk58-score-focus #umpire-board>.score-head strong{font-size:clamp(36px,12vw,54px)!important}
+ body.tk58-score-focus #umpire-board>.tk11-service-line{margin:4px 0!important;flex-wrap:wrap!important}body.tk58-score-focus #umpire-board>.tk11-service-line .tk13-court-legend{width:100%;order:3;text-align:center}
+ body.tk58-score-focus #umpire-board>.court{min-height:clamp(300px,48dvh,430px)!important;height:clamp(300px,48dvh,430px)!important}
+ body.tk58-score-focus #umpire-board .court-half{padding:7px 5px!important}body.tk58-score-focus #umpire-board .tk11-team-head{align-items:stretch!important;flex-direction:column!important}body.tk58-score-focus #umpire-board .tk11-swap-pos{width:100%!important}
+ body.tk58-score-focus .score-actions{grid-template-columns:repeat(2,minmax(0,1fr))!important;padding-bottom:max(2px,env(safe-area-inset-bottom))!important}body.tk58-score-focus .score-actions .btn{min-height:48px!important;font-size:11px!important}
+ #tk58-focus-exit{width:34px;height:34px;font-size:16px}
+}
+
+/* Landscape phones: fit the complete scoring console in one physical viewport. */
+@media (orientation:landscape) and (max-height:650px){
+ body.tk58-score-focus #page-umpire>.card{padding:3px!important;gap:3px!important;border-radius:7px!important}
+ body.tk58-score-focus #umpire-board{gap:2px!important}
+ body.tk58-score-focus #umpire-board>.score-head{gap:3px!important}body.tk58-score-focus #umpire-board>.score-head div{padding:1px 5px!important}body.tk58-score-focus #umpire-board>.score-head strong{font-size:27px!important}body.tk58-score-focus #umpire-board>.score-head small{font-size:7px!important}body.tk58-score-focus #umpire-board>.score-head>span{font-size:9px!important}
+ body.tk58-score-focus #umpire-board>.tk11-service-line{padding:2px 5px!important;min-height:26px!important;font-size:8px!important;flex-wrap:nowrap!important}body.tk58-score-focus #umpire-board>.tk11-service-line .tk13-court-legend{font-size:7px!important;padding:1px 3px!important;white-space:nowrap}body.tk58-score-focus #umpire-board>.tk11-service-line .btn{min-height:23px!important;padding:2px 5px!important;font-size:8px!important}
+ body.tk58-score-focus #umpire-board>.court{border-width:2px!important;min-height:0!important}body.tk58-score-focus #umpire-board .court-half{padding:3px 6px!important;gap:3px!important}body.tk58-score-focus #umpire-board .tk11-team-head{flex-direction:row!important;align-items:center!important}body.tk58-score-focus #umpire-board .tk11-team-head>b{font-size:9px!important}body.tk58-score-focus #umpire-board .tk11-swap-pos{min-height:22px!important;padding:2px 5px!important;font-size:8px!important;width:auto!important}body.tk58-score-focus #umpire-board .player{padding:3px 5px!important;font-size:9px!important;gap:4px!important}body.tk58-score-focus #umpire-board .tk11-player-no{width:22px!important;height:22px!important;font-size:14px!important}body.tk58-score-focus #umpire-board .tk11-player small{font-size:7px!important}
+ body.tk58-score-focus .score-actions{gap:3px!important}body.tk58-score-focus .score-actions .btn{min-height:31px!important;padding:3px!important;font-size:9px!important}
+ #tk58-focus-exit{width:30px;height:30px;top:max(3px,env(safe-area-inset-top));right:max(3px,env(safe-area-inset-right));font-size:14px;border-radius:9px!important}
+}
+
+/* Install status shown only when useful. */
+.tk58-install-note{display:block;margin-top:4px;color:#9ec5e8;font-size:10px;line-height:1.3;grid-column:1/-1}
+.tk58-install-note.ok{color:#7ef0bd}.tk58-install-note.warn{color:#ffd479}
+
+
+/* SOURCE upgrade59.css */
+/* Upgrade 59 · strict match-only referee focus + reliable Android install guidance */
+/* In score focus, the referee page must contain ONLY the scoring card. Upgrade49 injects
+   an Auto-BLV card as a direct sibling of the scoring card; hide every such sibling. */
+body.tk58-score-focus #page-umpire > :not(.card){display:none!important}
+body.tk58-score-focus #page-umpire > .tk49-auto-voice{display:none!important}
+/* Inside the scoring card, keep only board + score actions. This is intentionally stricter
+   than Upgrade58 so later injected setup widgets cannot leak into the match viewport. */
+body.tk58-score-focus #page-umpire > .card > :not(#umpire-board):not(.score-actions){display:none!important}
+body.tk58-score-focus #page-umpire > .card{overflow-y:auto!important;overflow-x:hidden!important;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;scrollbar-gutter:stable}
+body.tk58-score-focus #umpire-board{scroll-margin-top:0}
+/* Keep the score console reachable on unusually short portrait devices. */
+@media (max-width:720px) and (orientation:portrait){
+ body.tk58-score-focus #page-umpire{overflow:hidden!important}
+ body.tk58-score-focus #page-umpire > .card{height:100%!important;max-height:100dvh!important;overflow-y:auto!important;touch-action:pan-y!important}
+ body.tk58-score-focus .score-actions{position:relative!important;z-index:2}
+}
+/* Android install diagnostics / Chrome handoff */
+.tk59-install-note{display:block;margin-top:5px;color:#9ec5e8;font-size:10px;line-height:1.4;grid-column:1/-1}
+.tk59-install-note.ok{color:#7ef0bd}.tk59-install-note.warn{color:#ffd479}.tk59-install-note.bad{color:#ff9fb1}
+.tk59-install-secondary{grid-column:1/-1;width:100%;margin-top:4px}
+
+
+/* SOURCE upgrade62.css */
+/* Upgrade 62 · compact application header for small referee screens */
+#tk62-header-toggle{position:sticky;right:6px;z-index:4;margin-left:auto;flex:0 0 auto;border-color:#5eead4!important;background:#073d46!important;color:#bffbf2!important;box-shadow:-10px 0 14px rgba(5,15,29,.92);white-space:nowrap}
+#tk62-compactbar{display:none;min-height:42px;align-items:center;justify-content:space-between;gap:8px;padding:max(5px,env(safe-area-inset-top)) 8px 5px 10px;background:rgba(5,15,29,.98);border-bottom:1px solid #24425f}
+#tk62-compactbar .tk62-compact-title{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;font-weight:900;color:#dffcff;letter-spacing:.01em}
+#tk62-header-expand{flex:0 0 auto;min-height:30px;padding:5px 9px!important;border-color:#5eead4!important;background:#073d46!important;color:#bffbf2!important}
+body.tk62-header-collapsed:not(.tk58-score-focus):not(.tk57-referee-focus) .topbar>.brand,
+body.tk62-header-collapsed:not(.tk58-score-focus):not(.tk57-referee-focus) .topbar>.nav{display:none!important}
+body.tk62-header-collapsed:not(.tk58-score-focus):not(.tk57-referee-focus) #tk62-compactbar{display:flex!important}
+body.tk62-header-collapsed:not(.tk58-score-focus):not(.tk57-referee-focus) .topbar{min-height:42px!important}
+@media(max-width:650px){
+  #tk62-header-toggle{font-size:11px!important;padding:6px 8px!important;min-height:31px}
+  body.tk62-header-collapsed:not(.tk58-score-focus):not(.tk57-referee-focus) .shell{padding-top:6px!important}
+}
+@media(max-width:430px){
+  #tk62-compactbar{min-height:38px;padding-top:max(3px,env(safe-area-inset-top));padding-bottom:3px}
+  #tk62-compactbar .tk62-compact-title{font-size:11px}
+  #tk62-header-expand{min-height:28px;padding:4px 8px!important;font-size:10px!important}
+  body.tk62-header-collapsed:not(.tk58-score-focus):not(.tk57-referee-focus) .topbar{min-height:38px!important}
+}
+
+
+/* SOURCE upgrade63.css */
+/* Upgrade63: automatic set rotation + opening-server team highlight */
+#umpire-board .court-half.tk63-opening-team{
+  outline:3px solid #fde047!important;
+  outline-offset:-3px;
+  box-shadow:0 0 0 2px rgba(250,204,21,.26),0 0 24px rgba(250,204,21,.30)!important;
+  position:relative;
+}
+#umpire-board .score-head .tk63-opening-team{
+  background:linear-gradient(180deg,rgba(250,204,21,.22),rgba(250,204,21,.06));
+  box-shadow:inset 0 0 0 2px rgba(253,224,71,.75);
+  border-radius:12px;
+}
+.tk63-opening-badge{
+  display:inline-flex;align-items:center;gap:4px;margin-left:8px;padding:3px 8px;border-radius:999px;
+  background:#fde047;color:#422006;font-size:10px;font-weight:1000;line-height:1.2;letter-spacing:.02em;
+  white-space:nowrap;
+}
+.tk63-service-note{margin-left:auto;max-width:48%;white-space:normal;text-align:right;justify-content:flex-end}
+@media(max-width:700px){
+  .tk63-opening-badge{font-size:9px;padding:3px 6px;margin-left:5px}
+  .tk63-service-note{width:100%;max-width:none;margin:5px 0 0;justify-content:center;text-align:center}
+}
+
+
+/* SOURCE upgrade65.css */
+#umpire-board .tk65-opening-confirm{
+  outline:4px solid #fde047!important;
+  outline-offset:-5px!important;
+  box-shadow:0 0 0 3px rgba(245,158,11,.38),0 0 24px rgba(250,204,21,.38)!important;
+  cursor:pointer!important;
+}
+#umpire-board .tk65-opening-blocked{outline:none!important;box-shadow:none!important;cursor:not-allowed!important}
+
+
+/* SOURCE upgrade66.css */
+/* Upgrade 66 · hard gate: choose Set-1 opening server before Start / Match Focus */
+#umpire-start.tk66-start-locked:disabled{
+  opacity:1!important;cursor:not-allowed!important;background:#5d3b08!important;border-color:#d59a2a!important;color:#ffe1a3!important;box-shadow:inset 0 0 0 1px #ffcb5a55!important
+}
+#umpire-start.tk66-start-ready{box-shadow:0 0 0 2px #4ef0a455,0 0 18px #18c97d33!important}
+@media(max-width:720px){#umpire-start.tk66-start-locked:disabled{font-size:12px!important;line-height:1.15!important}}
+
+
+/* SOURCE upgrade67.css */
+/* Upgrade 67 · explicit referee state machine: select server -> Start -> LIVE -> score */
+#tk67-start-hint{grid-column:1/-1;border:1px solid #6b4a14;background:#3b2808;color:#ffe1a3;border-radius:10px;padding:8px 10px;font-size:11px;line-height:1.35;font-weight:700}
+#tk67-start-hint[data-state="READY"]{border-color:#15966d;background:#073d32;color:#bff7df}
+#tk67-start-hint[data-state="LIVE"]{border-color:#2576c9;background:#082f55;color:#cce8ff}
+#tk67-start-hint[data-state="FINISHED"]{border-color:#6b7280;background:#252a33;color:#d1d5db}
+#umpire-start.tk67-start-locked{opacity:.42!important;filter:saturate(.55)!important;cursor:not-allowed!important;background:#38506a!important;border-color:#6a7f93!important;color:#e8eef5!important;box-shadow:none!important}
+#umpire-start.tk67-start-ready{opacity:1!important;background:#07865f!important;border-color:#34d399!important;color:#fff!important;box-shadow:0 0 0 2px #4ef0a455,0 0 20px #18c97d44!important;animation:tk67-ready-pulse 1.6s ease-in-out infinite alternate}
+#umpire-start.tk67-start-live{opacity:.72!important}
+@keyframes tk67-ready-pulse{from{filter:brightness(1)}to{filter:brightness(1.16)}}
+.score-actions .tk67-score-locked{opacity:.38!important;filter:grayscale(.28) saturate(.6)!important;cursor:not-allowed!important;box-shadow:inset 0 0 0 1px #8ba0b344!important}
+.score-actions .tk67-score-locked:hover{filter:grayscale(.28) saturate(.6)!important}
+@media(max-width:720px){#tk67-start-hint{font-size:10px;padding:7px 8px}#umpire-start.tk67-start-ready{min-height:50px!important;font-size:13px!important}}
+/* Match Focus is never valid before Start; if a stale browser class survives, keep setup visible until JS exits it. */
+body:not(.tk58-score-focus) #tk67-start-hint{display:block}
+
+
+/* SOURCE upgrade69.css */
+.tk69-opening-history{margin:6px 0 10px;padding:8px 12px;border:1px solid rgba(89,222,255,.38);border-radius:10px;background:rgba(5,28,48,.88);color:#d9f7ff;font-size:12px;line-height:1.45}.tk69-opening-history b{color:#7eeaff}.tk69-opening-history small{color:#a9c6d8}
+
+
+/* SOURCE upgrade70.css */
+/* Upgrade 70 · Responsive Referee Fullscreen
+   Scale the match console to the physical viewport instead of stretching only the court. */
+body.tk58-score-focus{
+  --tk70-gap:clamp(5px,.7vmin,11px);
+  --tk70-score:clamp(58px,9.6dvh,112px);
+  --tk70-score-label:clamp(12px,.92vw,18px);
+  --tk70-match-name:clamp(16px,1.55vw,30px);
+  --tk70-note:clamp(10px,.78vw,14px);
+  --tk70-service:clamp(12px,1.02vw,19px);
+  --tk70-team:clamp(16px,1.35vw,26px);
+  --tk70-player:clamp(16px,1.32vw,25px);
+  --tk70-player-note:clamp(11px,.92vw,16px);
+  --tk70-player-no:clamp(38px,3.15vw,58px);
+  --tk70-action:clamp(13px,1.08vw,20px);
+}
+body.tk58-score-focus #page-umpire>.card{padding:var(--tk70-gap)!important;gap:var(--tk70-gap)!important}
+body.tk58-score-focus #umpire-board{gap:var(--tk70-gap)!important}
+body.tk58-score-focus #umpire-board>.score-head{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) minmax(260px,34vw) minmax(0,1fr)!important;
+  gap:var(--tk70-gap)!important;
+  min-height:clamp(92px,13.5dvh,154px);
+}
+body.tk58-score-focus #umpire-board>.score-head>div{
+  min-height:100%;padding:clamp(7px,1dvh,14px) clamp(10px,1vw,18px)!important;
+  display:grid!important;align-content:center!important;justify-items:center!important;
+}
+body.tk58-score-focus #umpire-board>.score-head strong{font-size:var(--tk70-score)!important;line-height:.82!important;letter-spacing:-.045em}
+body.tk58-score-focus #umpire-board>.score-head small{font-size:var(--tk70-score-label)!important;line-height:1.15!important}
+body.tk58-score-focus #umpire-board>.score-head>span{font-size:var(--tk70-match-name)!important;line-height:1.12!important;min-width:0!important;max-width:34vw;text-wrap:balance}
+body.tk58-score-focus #umpire-board>.score-head>span>b{font-size:inherit!important}
+body.tk58-score-focus #umpire-board .tk22-vs{font-size:clamp(18px,1.65vw,31px)!important;line-height:1!important}
+body.tk58-score-focus #umpire-board .tk22-side-note{font-size:var(--tk70-note)!important;line-height:1.2!important}
+body.tk58-score-focus #umpire-board>.tk11-service-line{
+  min-height:clamp(42px,5.6dvh,66px)!important;padding:clamp(6px,.75dvh,10px) clamp(10px,.9vw,16px)!important;
+  font-size:var(--tk70-service)!important;line-height:1.2!important;gap:clamp(6px,.7vw,12px)!important
+}
+body.tk58-score-focus #umpire-board>.tk11-service-line .btn{min-height:clamp(34px,4.3dvh,48px)!important;padding:5px clamp(9px,.8vw,15px)!important;font-size:clamp(11px,.85vw,16px)!important}
+body.tk58-score-focus #umpire-board>.tk11-service-line .tk13-court-legend{font-size:clamp(9px,.7vw,13px)!important;padding:4px 8px!important}
+body.tk58-score-focus #umpire-board>.tk69-opening-history{
+  flex:0 0 auto;margin:0!important;padding:clamp(5px,.65dvh,9px) clamp(9px,.8vw,14px)!important;
+  font-size:clamp(10px,.82vw,15px)!important;line-height:1.25!important
+}
+body.tk58-score-focus #umpire-board>.tk69-opening-history small{font-size:.9em!important}
+body.tk58-score-focus #umpire-board>.court{border-width:clamp(3px,.25vw,5px)!important;border-radius:clamp(10px,.8vw,16px)!important}
+body.tk58-score-focus #umpire-board .court-half{
+  padding:clamp(8px,1.1dvh,15px) clamp(10px,1vw,18px)!important;gap:clamp(7px,1dvh,14px)!important;
+  display:grid!important;grid-template-rows:auto minmax(0,1fr) minmax(0,1fr)!important;align-items:center!important;justify-content:stretch!important
+}
+body.tk58-score-focus #umpire-board .tk11-team-head{gap:clamp(8px,.8vw,14px)!important;min-height:clamp(38px,5.2dvh,58px)}
+body.tk58-score-focus #umpire-board .tk11-team-head>b{font-size:var(--tk70-team)!important;line-height:1.12!important}
+body.tk58-score-focus #umpire-board .tk11-swap-pos{min-height:clamp(32px,4.2dvh,46px)!important;padding:5px clamp(8px,.75vw,14px)!important;font-size:clamp(10px,.78vw,15px)!important}
+body.tk58-score-focus #umpire-board .player{
+  width:100%!important;min-height:clamp(62px,10dvh,112px)!important;padding:clamp(9px,1.35dvh,17px) clamp(10px,1.1vw,20px)!important;
+  gap:clamp(8px,.9vw,16px)!important;font-size:var(--tk70-player)!important;line-height:1.08!important;align-self:center!important
+}
+body.tk58-score-focus #umpire-board .tk11-player-no{width:var(--tk70-player-no)!important;height:var(--tk70-player-no)!important;font-size:calc(var(--tk70-player-no) * .62)!important}
+body.tk58-score-focus #umpire-board .tk11-player small{font-size:var(--tk70-player-note)!important;line-height:1.12!important}
+body.tk58-score-focus #umpire-board .tk63-opening-badge{font-size:clamp(10px,.76vw,14px)!important;padding:4px 9px!important}
+body.tk58-score-focus .score-actions{gap:var(--tk70-gap)!important}
+body.tk58-score-focus .score-actions .btn{
+  min-height:clamp(48px,6.6dvh,72px)!important;padding:clamp(7px,1dvh,12px) clamp(6px,.7vw,12px)!important;
+  font-size:var(--tk70-action)!important;line-height:1.12!important
+}
+body.tk58-score-focus #tk58-focus-exit{width:clamp(38px,3.1vw,52px)!important;height:clamp(38px,3.1vw,52px)!important;font-size:clamp(18px,1.5vw,25px)!important}
+
+/* Large laptop / desktop: use the available 16:9 space for information, not empty court. */
+@media (min-width:1280px) and (min-height:720px){
+ body.tk58-score-focus #umpire-board>.court{min-height:0!important}
+ body.tk58-score-focus #umpire-board .player{max-width:none!important}
+}
+
+/* Ultra-wide screens: stop the middle label from becoming tiny between enormous empty halves. */
+@media (min-aspect-ratio:19/9) and (min-width:1200px){
+ body.tk58-score-focus{--tk70-score:clamp(60px,10.2dvh,118px);--tk70-match-name:clamp(18px,1.35vw,29px);--tk70-player:clamp(17px,1.15vw,25px);--tk70-team:clamp(17px,1.18vw,25px)}
+ body.tk58-score-focus #umpire-board>.score-head{grid-template-columns:minmax(0,1fr) minmax(340px,30vw) minmax(0,1fr)!important}
+ body.tk58-score-focus #umpire-board>.score-head>span{max-width:30vw}
+ body.tk58-score-focus #umpire-board .court-half{padding-inline:clamp(14px,1.6vw,30px)!important}
+}
+
+/* Tablet portrait and large phones: keep two physical court sides but make score/player text touch-readable. */
+@media (max-width:900px) and (orientation:portrait){
+ body.tk58-score-focus{--tk70-score:clamp(52px,13vw,92px);--tk70-score-label:clamp(10px,2.2vw,15px);--tk70-match-name:clamp(13px,2.9vw,22px);--tk70-note:clamp(8px,1.8vw,12px);--tk70-service:clamp(11px,2.45vw,17px);--tk70-team:clamp(13px,2.9vw,21px);--tk70-player:clamp(14px,3vw,22px);--tk70-player-note:clamp(9px,2.05vw,14px);--tk70-player-no:clamp(34px,8vw,52px);--tk70-action:clamp(12px,2.7vw,18px)}
+ body.tk58-score-focus #page-umpire>.card{overflow-y:auto!important;grid-template-rows:auto auto!important}
+ body.tk58-score-focus #umpire-board{display:flex!important;overflow:visible!important}
+ body.tk58-score-focus #umpire-board>.score-head{grid-template-columns:minmax(0,1fr) minmax(145px,38vw) minmax(0,1fr)!important;min-height:clamp(82px,10.5dvh,126px);margin:0!important}
+ body.tk58-score-focus #umpire-board>.score-head>span{max-width:38vw!important;min-width:0!important}
+ body.tk58-score-focus #umpire-board>.tk11-service-line{min-height:auto!important;flex-wrap:wrap!important}
+ body.tk58-score-focus #umpire-board>.tk11-service-line>span:first-child{flex:1 1 100%}
+ body.tk58-score-focus #umpire-board>.tk11-service-line .tk13-court-legend{width:auto!important;order:initial!important}
+ body.tk58-score-focus #umpire-board>.court{height:clamp(300px,42dvh,520px)!important;min-height:clamp(300px,42dvh,520px)!important;flex:none!important}
+ body.tk58-score-focus #umpire-board .court-half{padding:clamp(7px,1.1dvh,13px) clamp(6px,1.6vw,12px)!important}
+ body.tk58-score-focus #umpire-board .tk11-team-head{align-items:stretch!important;flex-direction:column!important;min-height:auto}
+ body.tk58-score-focus #umpire-board .tk11-swap-pos{width:100%!important}
+ body.tk58-score-focus #umpire-board .player{min-height:clamp(78px,10dvh,128px)!important}
+ body.tk58-score-focus .score-actions{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ body.tk58-score-focus .score-actions .btn{min-height:clamp(50px,6.4dvh,68px)!important}
+}
+
+/* Short landscape phones: scale by height. The old fixed 9px console was unreadable. */
+@media (orientation:landscape) and (max-height:650px){
+ body.tk58-score-focus{--tk70-gap:clamp(3px,.8dvh,6px);--tk70-score:clamp(34px,10.5dvh,52px);--tk70-score-label:clamp(8px,2.1dvh,11px);--tk70-match-name:clamp(10px,2.8dvh,15px);--tk70-note:clamp(7px,1.8dvh,10px);--tk70-service:clamp(9px,2.35dvh,13px);--tk70-team:clamp(10px,2.65dvh,15px);--tk70-player:clamp(10px,2.8dvh,16px);--tk70-player-note:clamp(7px,1.95dvh,11px);--tk70-player-no:clamp(25px,7dvh,36px);--tk70-action:clamp(9px,2.45dvh,13px)}
+ body.tk58-score-focus #page-umpire>.card{padding:3px!important;gap:var(--tk70-gap)!important;overflow:hidden!important}
+ body.tk58-score-focus #umpire-board{gap:var(--tk70-gap)!important}
+ body.tk58-score-focus #umpire-board>.score-head{grid-template-columns:minmax(0,1fr) minmax(180px,34vw) minmax(0,1fr)!important;min-height:clamp(48px,14dvh,72px)!important;gap:var(--tk70-gap)!important}
+ body.tk58-score-focus #umpire-board>.score-head>div{padding:2px 6px!important}
+ body.tk58-score-focus #umpire-board>.score-head>span{font-size:var(--tk70-match-name)!important;max-width:34vw!important}
+ body.tk58-score-focus #umpire-board>.tk11-service-line{min-height:clamp(28px,7.2dvh,38px)!important;padding:2px 6px!important;font-size:var(--tk70-service)!important;flex-wrap:nowrap!important}
+ body.tk58-score-focus #umpire-board>.tk11-service-line .btn{min-height:clamp(24px,6dvh,32px)!important;font-size:clamp(8px,2dvh,11px)!important;padding:2px 6px!important}
+ body.tk58-score-focus #umpire-board>.tk11-service-line .tk13-court-legend{font-size:clamp(7px,1.7dvh,9px)!important;padding:2px 4px!important;white-space:nowrap}
+ body.tk58-score-focus #umpire-board>.tk69-opening-history{padding:2px 6px!important;font-size:clamp(7px,1.8dvh,10px)!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ body.tk58-score-focus #umpire-board>.court{border-width:2px!important}
+ body.tk58-score-focus #umpire-board .court-half{padding:3px 7px!important;gap:3px!important;grid-template-rows:auto minmax(0,1fr) minmax(0,1fr)!important}
+ body.tk58-score-focus #umpire-board .tk11-team-head{min-height:clamp(24px,6.4dvh,32px)!important;flex-direction:row!important;align-items:center!important}
+ body.tk58-score-focus #umpire-board .tk11-team-head>b{font-size:var(--tk70-team)!important}
+ body.tk58-score-focus #umpire-board .tk11-swap-pos{min-height:clamp(22px,5.7dvh,29px)!important;font-size:clamp(7px,1.9dvh,10px)!important;width:auto!important;padding:2px 5px!important}
+ body.tk58-score-focus #umpire-board .player{min-height:clamp(42px,12.5dvh,64px)!important;padding:4px 7px!important;font-size:var(--tk70-player)!important;gap:5px!important}
+ body.tk58-score-focus #umpire-board .tk11-player small{font-size:var(--tk70-player-note)!important}
+ body.tk58-score-focus .score-actions{gap:var(--tk70-gap)!important}
+ body.tk58-score-focus .score-actions .btn{min-height:clamp(32px,8.4dvh,43px)!important;padding:3px 4px!important;font-size:var(--tk70-action)!important}
+ body.tk58-score-focus #tk58-focus-exit{width:clamp(30px,8dvh,38px)!important;height:clamp(30px,8dvh,38px)!important;font-size:clamp(14px,3.7dvh,19px)!important}
+}
+
+/* Very narrow portrait phones: protect the center match label and avoid horizontal overflow. */
+@media (max-width:430px) and (orientation:portrait){
+ body.tk58-score-focus #umpire-board>.score-head{grid-template-columns:minmax(0,1fr) minmax(116px,36vw) minmax(0,1fr)!important}
+ body.tk58-score-focus #umpire-board>.score-head>span{max-width:36vw!important}
+ body.tk58-score-focus #umpire-board>.score-head strong{font-size:clamp(44px,14vw,64px)!important}
+ body.tk58-score-focus #umpire-board .tk22-side-note{display:none!important}
+ body.tk58-score-focus #umpire-board .tk69-opening-history small{display:none}
+}
+
+
+/* SOURCE upgrade71.css */
+/* Upgrade 71 · completed-set history strip for referee/fullscreen */
+.tk71-set-history{display:flex;align-items:center;gap:10px;flex-wrap:wrap;border:1px solid #41677f;background:#081a2d;border-radius:10px;padding:7px 10px;margin:0;color:#d9e8f3;font-size:12px;line-height:1.25}
+.tk71-set-history>b{color:#fbbf24;white-space:nowrap}.tk71-set-chips{display:flex;gap:7px;flex:1;flex-wrap:wrap;min-width:0}.tk71-set-chip{display:inline-flex;align-items:center;gap:4px;border:1px solid #31566f;background:#0b243a;border-radius:999px;padding:4px 9px;white-space:nowrap}.tk71-set-chip strong{color:#67e8f9}.tk71-set-chip em{font-style:normal;font-weight:1000;color:#fff;font-size:1.08em}
+body.tk58-score-focus #umpire-board>.tk71-set-history{flex:0 0 auto;min-height:clamp(30px,4.3dvh,48px);padding:clamp(4px,.55dvh,8px) clamp(8px,.75vw,14px);gap:clamp(6px,.7vw,12px);font-size:clamp(10px,.82vw,15px)}
+body.tk58-score-focus #umpire-board>.tk71-set-history .tk71-set-chip{padding:clamp(3px,.35dvh,5px) clamp(7px,.65vw,12px)}
+@media (orientation:landscape) and (max-height:650px){body.tk58-score-focus #umpire-board>.tk71-set-history{min-height:clamp(22px,5.2dvh,30px);padding:2px 6px;font-size:clamp(7px,1.85dvh,10px);gap:4px;flex-wrap:nowrap;overflow:hidden}body.tk58-score-focus #umpire-board>.tk71-set-history>b{font-size:.9em}.tk71-set-chips{flex-wrap:nowrap;overflow:hidden}.tk71-set-chip{padding:2px 5px;overflow:hidden;text-overflow:ellipsis}}
+@media (max-width:900px) and (orientation:portrait){body.tk58-score-focus #umpire-board>.tk71-set-history{font-size:clamp(10px,2.25vw,15px)}.tk71-set-chips{width:100%}}
+@media (max-width:430px) and (orientation:portrait){body.tk58-score-focus #umpire-board>.tk71-set-history{display:block}.tk71-set-history>b{display:block;margin-bottom:4px}.tk71-set-chips{display:grid;grid-template-columns:1fr}.tk71-set-chip{white-space:normal}}
+
+
+/* SOURCE upgrade72.css */
+/* Upgrade 72 · automatic Vietnamese voice bootstrap */
+.tk72-auto-bootstrap{display:flex;align-items:center;gap:8px;padding-top:8px;border-top:1px dashed #294b63;font-size:11px;line-height:1.4;color:#a9c9da}.tk72-auto-dot{width:9px;height:9px;border-radius:50%;background:#64748b;box-shadow:0 0 0 3px rgba(100,116,139,.13);flex:0 0 auto}.tk72-auto-text{flex:1;min-width:0}.tk72-auto-bootstrap[data-state="ok"]{color:#8ff0c7}.tk72-auto-bootstrap[data-state="ok"] .tk72-auto-dot{background:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,.15)}.tk72-auto-bootstrap[data-state="working"]{color:#8bdcff}.tk72-auto-bootstrap[data-state="working"] .tk72-auto-dot{background:#38bdf8;animation:tk72pulse 1s ease-in-out infinite}.tk72-auto-bootstrap[data-state="ready"]{color:#fde68a}.tk72-auto-bootstrap[data-state="ready"] .tk72-auto-dot{background:#f59e0b}.tk72-auto-bootstrap[data-state="err"]{color:#fecaca}.tk72-auto-bootstrap[data-state="err"] .tk72-auto-dot{background:#ef4444}.tk72-auto-bootstrap[data-state="muted"]{opacity:.7}@keyframes tk72pulse{50%{transform:scale(1.45);opacity:.55}}@media(max-width:720px){.tk72-auto-bootstrap{align-items:flex-start;flex-wrap:wrap}.tk72-retry{width:100%;margin-left:17px}}
+
+
+/* SOURCE upgrade73.css */
+/* Upgrade 73 · latency/conflict audit */
+.tk73-latency-audit{margin-top:8px;border:1px solid #285273;border-radius:10px;padding:7px 9px;background:#071d30;color:#b9d7ea;font-size:11px;font-weight:800;line-height:1.35}
+.tk73-latency-audit[data-state="ok"]{border-color:#12805f;color:#b9f7dc;background:#07382f}
+.tk73-latency-audit[data-state="warn"]{border-color:#a66b09;color:#ffe1a0;background:#392707}
+.tk73-latency-audit[data-state="slow"]{border-color:#b3314f;color:#ffd0db;background:#3a0d1a}
+@media(max-width:720px){.tk73-latency-audit{font-size:10px;padding:6px 8px}}
+
+
+/* SOURCE upgrade74.css */
+/* Upgrade 74 · Mobile Score Visibility Guard
+   Contract MOBILE_SCORE_001: in portrait phone focus mode both score values must remain fully inside the visual viewport.
+   Do not put the center team label between the two score boxes on narrow portrait screens. */
+body.tk58-score-focus #umpire-board>.score-head,
+body.tk58-score-focus #umpire-board>.score-head>*{min-width:0;max-width:100%}
+
+@media (max-width:600px) and (orientation:portrait){
+  html.tk58-score-focus,body.tk58-score-focus,
+  body.tk58-score-focus #app-shell,
+  body.tk58-score-focus .shell,
+  body.tk58-score-focus #page-umpire,
+  body.tk58-score-focus #page-umpire>.card,
+  body.tk58-score-focus #umpire-board{max-width:100%!important;min-width:0!important;overflow-x:hidden!important}
+
+  body.tk58-score-focus #umpire-board>.score-head{
+    width:100%!important;
+    max-width:100%!important;
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    grid-template-areas:"tk74left tk74right" "tk74center tk74center"!important;
+    gap:clamp(4px,1.2vw,7px)!important;
+    min-height:0!important;
+    align-items:stretch!important;
+    overflow:hidden!important;
+  }
+  body.tk58-score-focus #umpire-board>.score-head>div:first-child{grid-area:tk74left!important}
+  body.tk58-score-focus #umpire-board>.score-head>div:last-child{grid-area:tk74right!important}
+  body.tk58-score-focus #umpire-board>.score-head>span{
+    grid-area:tk74center!important;
+    width:100%!important;
+    max-width:100%!important;
+    padding:clamp(2px,.7vw,5px) 4px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    flex-wrap:wrap!important;
+    column-gap:6px!important;
+    row-gap:1px!important;
+    overflow:hidden!important;
+    overflow-wrap:anywhere!important;
+    text-align:center!important;
+    font-size:clamp(13px,3.8vw,18px)!important;
+    line-height:1.12!important;
+  }
+  body.tk58-score-focus #umpire-board>.score-head>div{
+    width:100%!important;
+    max-width:100%!important;
+    min-height:clamp(82px,10.5dvh,112px)!important;
+    padding:clamp(6px,1.5vw,9px) 4px!important;
+    overflow:hidden!important;
+  }
+  body.tk58-score-focus #umpire-board>.score-head strong{
+    width:100%!important;
+    max-width:100%!important;
+    display:block!important;
+    text-align:center!important;
+    font-size:clamp(48px,16vw,70px)!important;
+    line-height:.86!important;
+    letter-spacing:-.035em!important;
+    overflow:visible!important;
+  }
+  body.tk58-score-focus #umpire-board>.score-head small{
+    display:block!important;
+    width:100%!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    white-space:nowrap!important;
+    text-align:center!important;
+    font-size:clamp(10px,2.75vw,13px)!important;
+  }
+  body.tk58-score-focus #umpire-board>.score-head .tk22-vs{font-size:1em!important;line-height:1!important}
+  body.tk58-score-focus #umpire-board>.score-head .tk22-side-note{flex-basis:100%;font-size:clamp(8px,2.25vw,11px)!important;line-height:1.15!important}
+}
+
+/* Extra narrow Android/WebView: preserve score first, trim explanatory text instead. */
+@media (max-width:380px) and (orientation:portrait){
+  body.tk58-score-focus #umpire-board>.score-head strong{font-size:clamp(46px,17vw,64px)!important}
+  body.tk58-score-focus #umpire-board>.score-head .tk22-side-note{display:none!important}
+  body.tk58-score-focus #umpire-board>.score-head>span{font-size:clamp(12px,3.7vw,16px)!important}
+}
+
+/* Keep the focus-exit control from covering the right score label on portrait phones. */
+@media (max-width:600px) and (orientation:portrait){
+  body.tk58-score-focus #tk58-focus-exit{top:max(6px,env(safe-area-inset-top))!important;right:max(6px,env(safe-area-inset-right))!important;width:32px!important;height:32px!important;font-size:15px!important;opacity:.9}
+  body.tk58-score-focus #umpire-board>.score-head>div:last-child{padding-right:clamp(6px,2vw,10px)!important}
+}
+
+
+/* SOURCE upgrade75.css */
+#tk75-pinyin-card{margin-top:10px;padding:12px;border:1px solid rgba(77,221,198,.35);border-radius:12px;background:rgba(4,31,49,.72)}
+.tk75-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.tk75-head b{color:#e8fbff}.tk75-badge{white-space:nowrap;font-size:11px;font-weight:900;padding:4px 8px;border-radius:999px;border:1px solid #3f7186;color:#bfeeff}.tk75-badge[data-state="ok"]{border-color:#16c784;color:#65f0b8}.tk75-badge[data-state="working"]{border-color:#f2b84b;color:#ffd873}.tk75-badge[data-state="err"]{border-color:#ff5874;color:#ff9bad}.tk75-badge[data-state="off"]{opacity:.6}.tk75-status{margin-top:8px;font-size:12px;line-height:1.45;color:#d7edf6}.tk75-options{display:flex;gap:14px;flex-wrap:wrap;margin-top:9px;font-size:12px}.tk75-options label{display:flex;gap:6px;align-items:center}.tk75-progress{height:4px;background:#153b4c;border-radius:999px;overflow:hidden;margin-top:8px}.tk75-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#35a7ff,#46e0bd);transition:width .2s}.tk75-help{margin-top:8px;font-size:11px;line-height:1.5;color:#9fc1cf}.tk75-help code{color:#ffda76;background:#0a2635;padding:1px 4px;border-radius:4px}@media(max-width:600px){#tk75-pinyin-card{padding:10px}.tk75-head{display:block}.tk75-badge{display:inline-flex;margin-top:6px}.tk75-options{display:grid;gap:7px}}
+
+
+/* SOURCE upgrade76.css */
+/* Upgrade 76 · naturalized offline crowd applause FX */
+.tk76-crowd-fx{margin-top:10px;padding:12px;border:1px solid #31566f;border-radius:12px;background:#071d31}.tk76-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.tk76-head .muted{margin-top:3px;font-size:11px;line-height:1.35}.tk76-badge{white-space:nowrap;border:1px solid #3d6885;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:900}.tk76-badge[data-state="ok"]{color:#8fffc4;border-color:#1eb980}.tk76-badge[data-state="working"]{color:#ffe38d;border-color:#b98718}.tk76-badge[data-state="err"]{color:#ff9cae;border-color:#c23a59}.tk76-badge[data-state="off"]{opacity:.65}.tk76-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:10px;font-size:12px}.tk76-row label{display:flex;align-items:center;gap:6px}.tk76-volume{flex:1;min-width:190px}.tk76-volume input{flex:1;min-width:100px;accent-color:#29d3b1}.tk76-tests{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.tk76-status{margin-top:8px;font-size:11px;line-height:1.4;color:#a8cadf}@media(max-width:600px){.tk76-crowd-fx{padding:10px}.tk76-head{align-items:center}.tk76-row{gap:8px}.tk76-volume{min-width:100%;}.tk76-tests .btn{flex:1 1 30%;min-width:92px}}
+
+
+/* SOURCE upgrade78.css */
+.tk78-live-gate{display:flex;align-items:flex-start;gap:10px;margin-top:10px;padding:10px 12px;border:1px solid rgba(148,163,184,.26);border-radius:12px;background:rgba(15,23,42,.46);font-size:12px;line-height:1.45}.tk78-gate-dot{width:10px;height:10px;border-radius:50%;margin-top:4px;flex:0 0 auto;background:#64748b;box-shadow:0 0 0 3px rgba(100,116,139,.13)}.tk78-live-gate[data-state="live"]{border-color:rgba(34,197,94,.46);background:rgba(20,83,45,.18)}.tk78-live-gate[data-state="live"] .tk78-gate-dot{background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.15)}.tk78-live-gate[data-state="locked"] .tk78-gate-title{color:#cbd5e1}.tk78-gate-text{margin-top:2px;color:#94a3b8}.tk78-live-gate[data-state="live"] .tk78-gate-text{color:#bbf7d0}
+
+
+/* SOURCE upgrade80.css */
+/* Upgrade80 · rear camera default + explicit front/rear selector */
+.tk80-camera-field{min-width:0}.tk80-camera-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}.tk80-camera-row select{min-width:0;width:100%}.tk80-camera-status{margin-top:6px;font-size:11px;color:#9fc3dc;font-weight:800}.tk80-camera-status[data-state="live"]{color:#6ee7b7}@media(max-width:600px){.tk80-camera-row{grid-template-columns:1fr}.tk80-camera-row .btn{width:100%}}
+
+
+/* SOURCE upgrade87.css */
+/* Upgrade87 · natural crowd source + male voice profile + auto-audio state + reset scope */
+.tk87-voice-profile{margin:9px 0 12px;padding:10px;border:1px solid #31566f;border-radius:12px;background:#081a2e}.tk87-label{font-size:12px;font-weight:900;color:#b9d5e9;margin-bottom:7px}.tk87-segment{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.tk87-segment button{border:1px solid #315270;background:#102944;color:#c8d8e8;border-radius:9px;padding:8px 7px;font-weight:800;cursor:pointer}.tk87-segment button[data-state="on"]{background:#0a6f59;border-color:#28d7a8;color:#fff;box-shadow:0 0 0 1px #28d7a844 inset}.tk87-voice-status{margin-top:7px;font-size:11px;line-height:1.4;color:#9fc1d7}.tk87-state-btn{transition:opacity .15s ease,filter .15s ease}.tk87-state-btn.tk87-state-on,.tk87-state-wait{opacity:.52;filter:saturate(.65);cursor:default}.tk87-state-btn.tk87-needs-action{opacity:1;box-shadow:0 0 0 2px #fbbf2440}.tk87-tie-option{opacity:.9}.tk87-reset-box{width:min(610px,100%)}.tk87-reset-box h2{margin:0 0 5px}.tk87-reset-options{display:grid;gap:10px;margin:14px 0}.tk87-reset-choice{display:flex;gap:11px;align-items:flex-start;border:1px solid #315270;background:#081a2e;border-radius:14px;padding:13px;cursor:pointer}.tk87-reset-choice:hover{border-color:#4d86b2}.tk87-reset-choice input{margin-top:4px;transform:scale(1.18);accent-color:#22d3ee}.tk87-reset-choice span{display:grid;gap:5px}.tk87-reset-choice small{color:#a9bfd2;line-height:1.45}.tk87-reset-danger{border-color:#8a3450;background:#27131d}.tk87-reset-danger b{color:#ff9aae}.tk87-reset-choice.tk87-disabled{opacity:.48;cursor:not-allowed}.tk87-reset-note{min-height:34px;padding:9px 11px;border-radius:10px;background:#0a1b2f;color:#f4cf76;font-size:11px;line-height:1.45}.tk87-reset-actions{justify-content:flex-end;margin-top:12px}@media(max-width:650px){.tk87-segment{grid-template-columns:1fr}.tk87-reset-box{padding:14px}.tk87-reset-actions .btn{flex:1}}
+
+
+/* SOURCE upgrade88.css */
+/* Upgrade88 · viewer-first live + UMPIRE audio ownership */
+#tk88-viewer-hint{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 10px;padding:9px 12px;border:1px solid #1f8ca8;border-radius:12px;background:#06273a;color:#dff8ff}
+#tk88-viewer-hint span{font-size:.86rem;color:#a9d6e5;text-align:right}
+#tk88-viewer-hint.hidden{display:none!important}
+.tk88-public-live-card{margin-top:0!important;border-color:#1b8ca7!important}
+.tk88-public-live-card>h2{margin-bottom:10px}
+.tk88-public-live-stage{margin-bottom:12px}
+.tk88-public-player{position:relative;width:100%;aspect-ratio:16/9;min-height:220px;max-height:min(68vh,720px);overflow:hidden;border-radius:14px;background:#020b13;border:1px solid #214c68}
+.tk88-public-player video,.tk88-public-player iframe{width:100%;height:100%;display:block;border:0;background:#000;object-fit:contain}
+.tk88-public-player .hidden{display:none!important}
+.tk88-public-placeholder{position:absolute;inset:0;display:grid;place-items:center;padding:24px;text-align:center;color:#b7c9d9;background:linear-gradient(135deg,#061523,#0a2135)}
+.tk88-public-placeholder.hidden{display:none!important}
+.tk88-public-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:8px;flex-wrap:wrap}
+#tk88-public-status{font-size:.88rem;color:#a9c8dd}
+#tk88-public-status[data-state="ok"]{color:#66f0c2}#tk88-public-status[data-state="need"]{color:#ffd66e}#tk88-public-status[data-state="err"]{color:#ff8d9b}
+#spectator-live{display:grid;gap:8px}
+.tk88-live-choice{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;border:1px solid #234f6d;border-radius:12px;background:#0a2135;color:#eef8ff;padding:11px 13px;cursor:pointer}
+.tk88-live-choice span{display:grid;gap:3px}.tk88-live-choice small{color:#a9c8dd}.tk88-live-choice strong{white-space:nowrap;color:#69e9c1}.tk88-live-choice:hover,.tk88-live-choice.active{border-color:#22c9a5;background:#0b2b3c}
+#public-spectator #tk12-spectator-layout{display:flex;flex-direction:column}
+@media(max-width:720px){#tk88-viewer-hint{align-items:flex-start;flex-direction:column}#tk88-viewer-hint span{text-align:left}.tk88-public-player{min-height:190px}.tk88-live-choice{align-items:flex-start;flex-direction:column}.tk88-live-choice strong{width:100%;text-align:center;padding-top:5px}}
+
+#page-live.tk88-viewer-mode #tk84-source-card,#page-live.tk88-viewer-mode #tk77-replay-card,#page-live.tk88-viewer-mode #tk84-blv-card,#page-live.tk88-viewer-mode .live-controls{display:none!important}
+#page-live.tk88-viewer-mode #tk84-live-layout{display:block!important}
+#page-live.tk88-viewer-mode #tk84-live-left{width:min(1280px,100%);margin:0 auto}
+#page-live.tk88-viewer-mode #tk84-viewer-card{width:100%}
+#page-live.tk88-viewer-mode #video-box{min-height:min(70vh,720px)}
+
+/* Upgrade88D · compact viewer announcement */
+.tk88-announcement-chip{position:fixed;top:max(12px,env(safe-area-inset-top));right:14px;z-index:18000;max-width:min(300px,calc(100vw - 28px));display:flex;align-items:center;gap:9px;text-align:left;padding:9px 12px;border:1px solid #2c6687;border-radius:14px;background:#092039ed;color:#eef8ff;box-shadow:0 10px 32px #0008;cursor:pointer}.tk88-announcement-chip>span:first-child{font-size:20px}.tk88-announcement-chip>span:last-child{display:grid;min-width:0}.tk88-announcement-chip b{font-size:12px}.tk88-announcement-chip small{max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#b7d3e5}.tk88-announcement-modal{position:fixed;inset:0;z-index:19000;display:grid;place-items:center;padding:20px;background:#020914d9;backdrop-filter:blur(4px)}.tk88-announcement-modal.hidden{display:none!important}.tk88-announcement-dialog{width:min(900px,96vw);max-height:88vh;overflow:auto;border:1px solid #2c6687;border-radius:20px;background:#0a2037;color:#eef8ff;padding:20px;box-shadow:0 24px 80px #000c}.tk88-announcement-head{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #21435d;padding-bottom:12px}.tk88-announcement-head h2{margin:0}.tk88-announcement-dialog h3{margin:18px 0 10px;color:#7ce8ca}.tk88-announcement-body{white-space:pre-wrap;line-height:1.65;font-size:1rem;color:#e3edf5}@media(max-width:720px){.tk88-announcement-chip{top:max(8px,env(safe-area-inset-top));right:8px;padding:7px 9px;max-width:220px}.tk88-announcement-chip small{max-width:150px}.tk88-announcement-dialog{padding:14px}.tk88-announcement-head{align-items:flex-start}}
+
+
+/* SOURCE upgrade98.css */
+/* Upgrade100 viewer auto-landscape correction + fullscreen cleanup */
+#tk88-public-live-stage .tk88-public-player{aspect-ratio:16/9!important;background:#000!important;overflow:hidden!important}
+#tk88-public-live-stage .tk88-public-player video{position:absolute!important;left:50%!important;top:50%!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;transform:translate(-50%,-50%)!important;transform-origin:center center!important;object-fit:contain!important;background:#000!important}
+/* WebRTC track may report portrait geometry although physical scene was shot landscape. Swap box then rotate. */
+#tk88-public-live-stage .tk88-public-player.tk98-rot90 video,#tk88-public-live-stage .tk88-public-player video.tk98-rot90,#tk88-public-live-stage.tk98-rot90 .tk88-public-player video{width:var(--tk98-rot-w,56.25vw)!important;height:var(--tk98-rot-h,100vw)!important;transform:translate(-50%,-50%) rotate(90deg)!important;object-fit:cover!important}
+#tk88-public-live-stage .tk88-public-player.tk98-rotm90 video,#tk88-public-live-stage .tk88-public-player video.tk98-rotm90,#tk88-public-live-stage.tk98-rotm90 .tk88-public-player video{width:var(--tk98-rot-w,56.25vw)!important;height:var(--tk98-rot-h,100vw)!important;transform:translate(-50%,-50%) rotate(-90deg)!important;object-fit:cover!important}
+#tk88-public-live-stage .tk88-public-player.tk98-rot180 video,#tk88-public-live-stage .tk88-public-player video.tk98-rot180,#tk88-public-live-stage.tk98-rot180 .tk88-public-player video{transform:translate(-50%,-50%) rotate(180deg)!important;object-fit:cover!important}
+/* Native fullscreen only. No fixed-position CSS fallback, so exiting fullscreen cannot leave a dead overlay. */
+#tk88-public-live-stage:fullscreen,#tk88-public-live-stage.tk98-viewer-fullscreen{background:#000!important;width:100%!important;height:100%!important;padding:0!important;margin:0!important}
+#tk88-public-live-stage:fullscreen .tk88-public-player,#tk88-public-live-stage.tk98-viewer-fullscreen .tk88-public-player{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-height:none!important;aspect-ratio:auto!important;border:0!important;border-radius:0!important}
+#tk88-public-live-stage:fullscreen .tk88-public-toolbar,#tk88-public-live-stage.tk98-viewer-fullscreen .tk88-public-toolbar{position:absolute!important;z-index:5!important;left:max(8px,env(safe-area-inset-left))!important;right:max(8px,env(safe-area-inset-right))!important;bottom:max(8px,env(safe-area-inset-bottom))!important;margin:0!important;padding:7px!important;border-radius:12px!important;background:linear-gradient(180deg,rgba(2,9,20,.18),rgba(2,9,20,.88))!important;display:flex!important;gap:7px!important;align-items:center!important;flex-wrap:wrap!important}
+#tk88-public-live-stage:fullscreen .btn,#tk88-public-live-stage.tk98-viewer-fullscreen .btn{min-height:42px!important;font-size:13px!important;padding:8px 11px!important}
+#tk98-public-rotate{white-space:nowrap}
+
+/* Referee fullscreen on short landscape phones (e.g. Vivo X300 Pro class viewport): prioritize score, names and touch targets. */
+@media (orientation:landscape) and (max-height:650px) and (max-width:1200px){
+ body.tk58-score-focus{
+  --tk70-gap:clamp(4px,1dvh,7px)!important;
+  --tk70-score:clamp(44px,14dvh,64px)!important;
+  --tk70-score-label:clamp(11px,3dvh,14px)!important;
+  --tk70-match-name:clamp(13px,3.7dvh,18px)!important;
+  --tk70-note:clamp(10px,2.7dvh,12px)!important;
+  --tk70-service:clamp(12px,3.3dvh,15px)!important;
+  --tk70-team:clamp(13px,3.6dvh,18px)!important;
+  --tk70-player:clamp(14px,3.9dvh,19px)!important;
+  --tk70-player-note:clamp(11px,2.9dvh,13px)!important;
+  --tk70-player-no:clamp(34px,9.5dvh,44px)!important;
+  --tk70-action:clamp(13px,3.5dvh,16px)!important;
+ }
+ body.tk58-score-focus #page-umpire>.card{padding:4px!important;gap:var(--tk70-gap)!important}
+ body.tk58-score-focus #umpire-board>.score-head{min-height:clamp(64px,18dvh,84px)!important;grid-template-columns:minmax(0,1fr) minmax(190px,32vw) minmax(0,1fr)!important}
+ body.tk58-score-focus #umpire-board>.score-head>div{padding:3px 8px!important}
+ body.tk58-score-focus #umpire-board>.tk11-service-line{min-height:44px!important;padding:3px 7px!important;font-size:var(--tk70-service)!important}
+ body.tk58-score-focus #umpire-board>.tk11-service-line .btn{min-height:44px!important;min-width:44px!important;padding:6px 9px!important;font-size:clamp(12px,3.1dvh,15px)!important}
+ body.tk58-score-focus #umpire-board>.tk11-service-line .tk13-court-legend{font-size:clamp(10px,2.6dvh,12px)!important;padding:4px 6px!important}
+ body.tk58-score-focus #umpire-board>.tk69-opening-history{padding:3px 7px!important;font-size:clamp(10px,2.7dvh,12px)!important;min-height:24px!important}
+ body.tk58-score-focus #umpire-board .court-half{padding:4px 8px!important;gap:4px!important}
+ body.tk58-score-focus #umpire-board .tk11-team-head{min-height:44px!important}
+ body.tk58-score-focus #umpire-board .tk11-swap-pos{min-height:44px!important;min-width:44px!important;font-size:clamp(12px,3dvh,14px)!important;padding:5px 8px!important}
+ body.tk58-score-focus #umpire-board .player{min-height:clamp(52px,14dvh,68px)!important;padding:5px 8px!important;font-size:var(--tk70-player)!important;gap:6px!important}
+ body.tk58-score-focus .score-actions .btn{min-height:48px!important;font-size:var(--tk70-action)!important;padding:6px!important}
+ body.tk58-score-focus #tk58-focus-exit{width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;font-size:22px!important}
+}
+
+/* Extremely short Android landscape: preserve readability by collapsing only secondary notes, never score/action text. */
+@media (orientation:landscape) and (max-height:430px) and (max-width:1000px){
+ body.tk58-score-focus #umpire-board .tk22-side-note{display:none!important}
+ body.tk58-score-focus #umpire-board>.tk69-opening-history small{display:none!important}
+ body.tk58-score-focus #umpire-board>.tk69-opening-history{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ body.tk58-score-focus #umpire-board>.score-head{min-height:68px!important}
+ body.tk58-score-focus #umpire-board>.tk11-service-line{min-height:42px!important}
+ body.tk58-score-focus #umpire-board .player{min-height:52px!important}
+}
+
+
+/* SOURCE upgrade105.css */
+/* Upgrade105 — Scoring Fast Lane + Schedule Collapse */
+.tk105-collapse-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.tk105-collapse-head .action-bar,.tk105-collapse-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tk105-collapse-btn{white-space:nowrap}
+.tk105-collapse-status{font-size:12px;opacity:.82}
+.tk105-collapse-body{overflow:hidden;transition:max-height .22s ease,opacity .16s ease,margin-top .16s ease}
+.tk105-collapsed .tk105-collapse-body{max-height:0!important;opacity:0;pointer-events:none;margin-top:0!important}
+.tk105-collapse-btn .tk105-label-short{display:none}
+#tk105-fastlane-health{margin-top:8px;line-height:1.7}
+@media(max-width:640px){.tk105-collapse-btn .tk105-label-full{display:none}.tk105-collapse-btn .tk105-label-short{display:inline}.tk105-collapse-status{display:none}}
+
+
+/* SOURCE upgrade106.css */
+/* Upgrade106 — Schedule Internal Scroll UX */
+/* Expanded schedules stay in a bounded scroll region instead of stretching the whole page. */
+.u106-admin-scroll .tk105-collapse-status,
+.u106-public-scroll .tk105-collapse-status{white-space:nowrap}
+
+/* Admin: let the table wrapper own the vertical + horizontal scrolling so sticky TH works. */
+.u106-admin-scroll:not(.tk105-collapsed) .tk105-collapse-body{
+  max-height:none!important;
+  overflow:visible!important;
+  opacity:1;
+}
+.u106-admin-scroll .tk105-collapse-body>.table-wrap{
+  max-height:min(64vh,680px);
+  overflow:auto!important;
+  scrollbar-gutter:stable both-edges;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+}
+.u106-admin-scroll .tk105-collapse-body>.table-wrap thead th{
+  position:sticky;
+  top:0;
+  z-index:8;
+  box-shadow:0 1px 0 #315270;
+}
+.u106-admin-scroll .tk105-collapse-body>.table-wrap .tk12-day-head{
+  position:sticky;
+  top:36px;
+  z-index:7;
+  box-shadow:0 1px 0 #315270;
+}
+
+/* Public viewer: cards scroll vertically inside the schedule panel. */
+.u106-public-scroll:not(.tk105-collapsed) .tk105-collapse-body{
+  max-height:min(64vh,680px)!important;
+  overflow-y:scroll!important;
+  overflow-x:hidden!important;
+  scrollbar-gutter:stable;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  padding-right:4px;
+  opacity:1;
+}
+.u106-public-scroll .tk105-collapse-body .tk12-public-day{
+  position:sticky;
+  top:0;
+  z-index:6;
+  box-shadow:0 2px 8px rgba(0,0,0,.25);
+}
+
+/* Keep collapse authoritative. */
+.u106-admin-scroll.tk105-collapsed .tk105-collapse-body,
+.u106-public-scroll.tk105-collapsed .tk105-collapse-body{
+  max-height:0!important;
+  overflow:hidden!important;
+  opacity:0;
+}
+
+/* Visible desktop scrollbar. */
+.u106-admin-scroll .table-wrap::-webkit-scrollbar,
+.u106-public-scroll .tk105-collapse-body::-webkit-scrollbar{width:11px;height:11px}
+.u106-admin-scroll .table-wrap::-webkit-scrollbar-track,
+.u106-public-scroll .tk105-collapse-body::-webkit-scrollbar-track{background:#071a2d;border-radius:10px}
+.u106-admin-scroll .table-wrap::-webkit-scrollbar-thumb,
+.u106-public-scroll .tk105-collapse-body::-webkit-scrollbar-thumb{background:#315a7a;border:2px solid #071a2d;border-radius:10px}
+.u106-admin-scroll .table-wrap::-webkit-scrollbar-thumb:hover,
+.u106-public-scroll .tk105-collapse-body::-webkit-scrollbar-thumb:hover{background:#477da5}
+.u106-admin-scroll .table-wrap,
+.u106-public-scroll .tk105-collapse-body{scrollbar-width:auto;scrollbar-color:#315a7a #071a2d}
+
+@media(max-width:700px){
+  .u106-admin-scroll .tk105-collapse-body>.table-wrap,
+  .u106-public-scroll:not(.tk105-collapsed) .tk105-collapse-body{max-height:58vh!important}
+  .u106-admin-scroll .tk105-collapse-body>.table-wrap .tk12-day-head{top:34px}
+}
+
+
+/* SOURCE upgrade111.css */
+/* Upgrade111 feature split health */
+#tk111-feature-health b{color:#65f0d1}
+

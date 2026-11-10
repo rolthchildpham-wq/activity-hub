@@ -1,0 +1,28 @@
+const fs=require('fs');
+const assert=require('assert');
+const root=__dirname+'/..';
+const idx=fs.readFileSync(root+'/index.html','utf8');
+const corePath=(idx.match(/adminJs:'\.\/assets\/u122\/([^']+)'/)||[])[1];
+assert(corePath,'admin core reference missing');
+const core=fs.readFileSync(root+'/assets/u122/'+corePath,'utf8');
+const sw=fs.readFileSync(root+'/sw.js','utf8');
+const build=JSON.parse(fs.readFileSync(root+'/build.json','utf8'));
+const h41=fs.readFileSync(root+'/upgrade122-hotfix41.js','utf8');
+assert.equal(build.version,'2026.11.04-vnext-upgrade122-hotfix47-withdrawal-legacy-recovery');
+assert.equal(build.cacheTag,'u122h47-20261104');
+assert(idx.includes("window.__TOPKEY_BOOT_VERSION='2026.11.04-vnext-upgrade122-hotfix47-withdrawal-legacy-recovery'"));
+assert(idx.includes("window.__TOPKEY_BOOT_CACHE='u122h47-20261104'"));
+assert(idx.includes("new URL('./index.html',location.href)"),'preboot must hard reload index.html');
+assert(idx.includes("__topkey_reload"),'preboot reload timestamp missing');
+assert(core.includes('const sameVersion=runtimeVersion===serverVersion;'),'exact version compare missing');
+assert(core.includes('runtimeTag===serverTag'),'exact cacheTag compare missing');
+assert(core.includes("window.TopkeyUpgrade55.checkServerBuild({manual:true,repair:true})"),'runtime authority must delegate repair');
+assert(!core.includes("serverNo>runtimeNo"),'legacy upgrade-number-only comparison still present');
+assert(sw.includes("topkey-vnext-2026-upgrade122-hotfix47-withdrawal-legacy-recovery"));
+assert(sw.includes('"./upgrade122-hotfix41.js"'));
+assert(h41.includes('u122h47-20261104'));
+function needsRepair(rv,rt,sv,st){return rv!==sv || (!!rt&&!!st&&rt!==st)}
+assert(needsRepair('H39','tag39','H40','tag40'));
+assert(needsRepair('same','tag39','same','tag40'));
+assert(!needsRepair('same','tag40','same','tag40'));
+console.log('Hotfix41 auto-update regression PASS');

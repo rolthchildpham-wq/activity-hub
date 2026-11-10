@@ -1,0 +1,37 @@
+{
+  "results": [
+    {
+      "sport": "badminton",
+      "hasProfile": false,
+      "observerCount": 1,
+      "authorized": false,
+      "afterLogin": 0,
+      "redirects": 0
+    },
+    {
+      "sport": "badminton",
+      "hasProfile": true,
+      "observerCount": 1,
+      "authorized": true,
+      "afterLogin": 1,
+      "redirects": 0
+    },
+    {
+      "sport": "football",
+      "hasProfile": false,
+      "observerCount": 1,
+      "authorized": false,
+      "afterLogin": 0,
+      "redirects": 0
+    },
+    {
+      "sport": "football",
+      "hasProfile": true,
+      "observerCount": 1,
+      "authorized": true,
+      "afterLogin": 1,
+      "redirects": 0
+    }
+  ],
+  "pass": true
+}

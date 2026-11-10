@@ -1,0 +1,10 @@
+/* Upgrade 25: reliable Firebase appearance save + Cloud HD Vietnamese commentary */
+.tk25-status{margin-top:10px;padding:9px 11px;border:1px solid #31506d;border-radius:10px;background:#07182a;color:#cbd5e1;font-size:12px;line-height:1.45}
+.tk25-status[data-state="working"]{border-color:#0ea5e9;color:#bae6fd}
+.tk25-status[data-state="ok"]{border-color:#10b981;color:#a7f3d0}
+.tk25-status[data-state="warn"]{border-color:#f59e0b;color:#fde68a}
+.tk25-status[data-state="err"]{border-color:#ef4444;color:#fecaca}
+#tk9-appearance-save:disabled{opacity:.7;cursor:wait}
+#tk9-bg-preview{background-size:cover;background-position:center}
+#page-live #blv-voice{min-width:0}
+.tk25-browser-fallback label::after{content:""}

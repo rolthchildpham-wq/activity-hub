@@ -1,0 +1,72 @@
+{
+  "release": "H108 Auth & Runtime Stability",
+  "base": "H107 Prize Structure Report",
+  "cacheTag": "u122h108-20261109",
+  "version": "2026.11.09-vnext-upgrade122-hotfix108-auth-stability",
+  "readyForProduction": false,
+  "testedOnRealFirebase": false,
+  "testedOnEdgeOne": false,
+  "localTests": [
+    {
+      "name": "JS and inline script syntax",
+      "passed": 417,
+      "total": 417,
+      "status": "PASS"
+    },
+    {
+      "name": "Local resource references",
+      "passed": 107,
+      "total": 107,
+      "status": "PASS"
+    },
+    {
+      "name": "Auth integration",
+      "passed": 8,
+      "total": 8,
+      "status": "PASS"
+    },
+    {
+      "name": "Role and session guard matrix",
+      "passed": 26,
+      "total": 26,
+      "status": "PASS"
+    },
+    {
+      "name": "Chromium auth-submit mock",
+      "passed": 3,
+      "total": 3,
+      "status": "PASS"
+    },
+    {
+      "name": "Authoritative profile and no cached admin",
+      "passed": 4,
+      "total": 4,
+      "status": "PASS"
+    },
+    {
+      "name": "H108 release parity",
+      "passed": 1,
+      "total": 1,
+      "status": "PASS"
+    },
+    {
+      "name": "H104 V2 pagination 36k synthetic records",
+      "passed": 1,
+      "total": 1,
+      "status": "PASS"
+    }
+  ],
+  "legacyTests": [
+    {
+      "name": "H95 performance acceptance",
+      "status": "FAIL on both H107 baseline and H108",
+      "reason": "legacy mock lacks readPage, test expects prior audit subscription behavior"
+    }
+  ],
+  "limitations": [
+    "No Firebase Auth staging credentials or real database integration",
+    "Chromium local/remote page navigation blocked by policy (ERR_BLOCKED_BY_ADMINISTRATOR); set_content DOM harness tested only",
+    "No guarantee of production performance until real measurements"
+  ],
+  "security": "No client-side authentication or ADMIN bypass; authorization requires verified Firebase Auth identity and profile."
+}

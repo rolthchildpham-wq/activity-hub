@@ -1,0 +1,22 @@
+const fs=require('fs'),path=require('path');
+const root=path.resolve(__dirname,'..');
+const app=fs.readFileSync(path.join(root,'src/app.js'),'utf8');
+const u80=fs.readFileSync(path.join(root,'src/upgrade80.js'),'utf8');
+const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
+const reg=JSON.parse(fs.readFileSync(path.join(root,'FEATURE_REGISTRY.json'),'utf8'));
+const con=JSON.parse(fs.readFileSync(path.join(root,'REGRESSION_CONTRACT.json'),'utf8'));
+function ok(v,m){if(!v)throw new Error(m)}
+ok(html.indexOf('src/upgrade80.js')>html.indexOf('src/upgrade79.js'),'U80 must load after U79');
+ok(html.includes('upgrade80.css'),'U80 CSS missing');
+ok(/facingMode:\{ideal:'environment'\}/.test(app),'app fallback must prefer rear/environment');
+ok((app.match(/openPreferredCamera\?\.\(\)/g)||[]).length===2,'local camera and WebRTC broadcaster must share preferred-camera acquisition');
+ok(u80.includes("let facing='environment'"),'new page must default rear');
+ok(u80.includes('<option value="environment" selected>'),'rear option must be selected by default');
+ok(u80.includes('<option value="user">'),'front option missing');
+ok(u80.includes("videoConstraints('exact')"),'rear/front selection must try exact facing first');
+ok(u80.includes("videoConstraints('ideal')"),'camera acquisition must fall back to ideal facing on unsupported devices');
+ok(u80.includes("sel.value='environment'"),'UI install must fail-safe to rear');
+ok(u80.includes('switchLocalCamera'),'live local-camera switch missing');
+ok(reg.features.some(x=>x.id==='REAR_CAMERA_DEFAULT_001'),'feature registry missing contract');
+ok(con.tests.some(x=>x.id==='REAR_CAMERA_DEFAULT_001'&&x.required===true),'regression contract missing');
+console.log('upgrade80 rear camera regression: PASS · rear default + explicit front/rear + local/WebRTC constraints');

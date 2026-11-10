@@ -1,0 +1,1066 @@
+{
+  "schemaVersion": 1,
+  "product": "TOPKEY Badminton VNext 2026",
+  "currentBuild": "upgrade117",
+  "currentCacheTag": "u117-20261031",
+  "policy": "Before any future release, preserve every invariant below and run every testId in REGRESSION_CONTRACT.json. New features must add or update a contract entry instead of silently replacing old behavior.",
+  "features": [
+    {
+      "id": "MATCH_FOCUS_001",
+      "since": "upgrade58",
+      "title": "Referee match focus / fullscreen",
+      "invariants": [
+        "Start Match may enter match-focus/fullscreen",
+        "Manual exit/refocus remains available",
+        "Score console must fit the active visual viewport"
+      ],
+      "owners": [
+        "upgrade58.css",
+        "src/upgrade58.js",
+        "upgrade70.css",
+        "src/upgrade70.js",
+        "upgrade74.css",
+        "src/upgrade74.js"
+      ]
+    },
+    {
+      "id": "SET_ROTATION_001",
+      "since": "upgrade63",
+      "title": "Automatic set rotation",
+      "invariants": [
+        "Set 1 -> Set 2 automatically after a valid set win",
+        "Set 2 -> Set 3 only when match is 1-1",
+        "Never create Set 4",
+        "Opening team alternates A-B-A or B-A-B"
+      ],
+      "owners": [
+        "src/upgrade63.js",
+        "src/upgrade64.js",
+        "src/upgrade65.js",
+        "src/upgrade69.js"
+      ]
+    },
+    {
+      "id": "SET_COMMIT_001",
+      "since": "upgrade64",
+      "title": "Commit completed set before next set",
+      "invariants": [
+        "Completed set is persisted to matches.sets",
+        "Next set starts at 0-0",
+        "activeMatches and match mirror stay consistent"
+      ],
+      "owners": [
+        "src/upgrade64.js"
+      ]
+    },
+    {
+      "id": "OPENING_SERVER_001",
+      "since": "upgrade65",
+      "title": "Opening server player selection",
+      "invariants": [
+        "At 0-0 the opening server is a real player in court slot 2/even court",
+        "Automatic set opening assigns both team and player",
+        "Scoring must not be blocked by a missing player after automatic rotation"
+      ],
+      "owners": [
+        "src/upgrade65.js",
+        "src/upgrade69.js"
+      ]
+    },
+    {
+      "id": "START_GATE_001",
+      "since": "upgrade67",
+      "title": "Choose opening server -> Start -> score",
+      "invariants": [
+        "Before Set 1 opening server is selected Start is unavailable",
+        "After selection but before Start score +/- cannot change score",
+        "Only successful Start may enter fullscreen/match focus",
+        "Blocked actions show a Vietnamese instruction telling the operator what to do next"
+      ],
+      "owners": [
+        "upgrade67.css",
+        "src/upgrade67.js"
+      ]
+    },
+    {
+      "id": "BLV_FX_001",
+      "since": "upgrade67",
+      "title": "Commentary applause and comeback encouragement",
+      "invariants": [
+        "Tie score may trigger a short applause effect",
+        "Set finish triggers medium applause and match finish triggers stronger/longer applause",
+        "Upgrade76 must replace Upgrade67 synthetic noise bursts with embedded crowd samples when loaded",
+        "Applause uses a dedicated audio path and must not replace or cancel Piper/TTS commentary audio",
+        "Operator can enable/disable FX, set FX volume and manually test tie/set/match applause",
+        "A team trailing by 5-10 that scores and regains serve may receive encouragement"
+      ],
+      "owners": [
+        "src/upgrade67.js",
+        "upgrade76.css",
+        "src/upgrade76.js",
+        "assets/audio/applause-tie.ogg",
+        "assets/audio/applause-set.ogg",
+        "assets/audio/applause-match.ogg",
+        "assets/audio/README.md"
+      ]
+    },
+    {
+      "id": "REAL_APPLAUSE_001",
+      "since": "upgrade76",
+      "title": "Offline crowd applause samples",
+      "invariants": [
+        "Three local OGG multi-layer crowd FX assets exist and decode: tie, set finish, match finish",
+        "Tie sample is shortest, set sample medium, match sample longest",
+        "Legacy Upgrade67 playApplause delegates to Upgrade76 when Upgrade76 is installed",
+        "FX remains available offline through badminton Service Worker cache"
+      ],
+      "owners": [
+        "src/upgrade67.js",
+        "upgrade76.css",
+        "src/upgrade76.js",
+        "assets/audio/applause-tie.ogg",
+        "assets/audio/applause-set.ogg",
+        "assets/audio/applause-match.ogg",
+        "assets/audio/README.md"
+      ]
+    },
+    {
+      "id": "ADMIN_RESET_001",
+      "since": "upgrade68",
+      "title": "Admin result reset",
+      "invariants": [
+        "Reset to SCHEDULED clears sets winner and finishedAt",
+        "Active match is cleared and court is released when applicable",
+        "Stale queued score writes are purged",
+        "Success is reported only after Firebase read-back confirms reset"
+      ],
+      "owners": [
+        "src/upgrade68.js"
+      ]
+    },
+    {
+      "id": "OPENING_LEDGER_001",
+      "since": "upgrade69",
+      "title": "Immutable opening-server ledger",
+      "invariants": [
+        "At first 0-0 of every set store openingServerSide/playerId/playerName",
+        "Rally server changes never overwrite the set-opening snapshot",
+        "Set 2/3 alternation is based on Set 1 opening snapshot, never the final rally server",
+        "Legacy u63 recovery uses the first 0-0 point event when trustworthy"
+      ],
+      "owners": [
+        "upgrade69.css",
+        "src/upgrade69.js"
+      ]
+    },
+    {
+      "id": "RESPONSIVE_REFEREE_001",
+      "since": "upgrade70",
+      "title": "Responsive referee fullscreen",
+      "invariants": [
+        "Laptop/tablet/phone typography scales to viewport",
+        "Portrait phone keeps scoring controls usable",
+        "Landscape phone scales primarily by height"
+      ],
+      "owners": [
+        "upgrade70.css",
+        "src/upgrade70.js"
+      ]
+    },
+    {
+      "id": "SET_HISTORY_001",
+      "since": "upgrade71",
+      "title": "Completed set history strip",
+      "invariants": [
+        "While Set 2 is active show Set 1 result",
+        "While Set 3 is active show Set 1 and Set 2 results",
+        "Winner labels follow team A/B data, not current left/right court position",
+        "Reload can recover committed history from matches.sets"
+      ],
+      "owners": [
+        "upgrade71.css",
+        "src/upgrade71.js"
+      ]
+    },
+    {
+      "id": "VOICE_BOOTSTRAP_001",
+      "since": "upgrade72",
+      "title": "Automatic Vietnamese voice bootstrap",
+      "invariants": [
+        "Use available vi-VN system voice without downloading TOPKEY model",
+        "If no Vietnamese system voice and TOPKEY model is absent, auto-install TOPKEY Offline Voice",
+        "Installed model is reused on later visits",
+        "Browser autoplay policy is respected; first user gesture unlocks audio when required",
+        "Failures are visible to operator and may retry online",
+        "Voice bootstrap may prepare/download/warm a voice while the website opens, but it must not by itself authorize commentary playback; Upgrade78 Live Session Gate owns playback permission"
+      ],
+      "owners": [
+        "upgrade72.css",
+        "src/upgrade72.js",
+        "src/upgrade49.js",
+        "src/upgrade50.js",
+        "src/upgrade78.js"
+      ]
+    },
+    {
+      "id": "LOW_LATENCY_001",
+      "since": "upgrade73",
+      "title": "Low-latency commentary pipeline",
+      "invariants": [
+        "Audio prime occurs at most once per browser session",
+        "Piper warmup is deduplicated",
+        "eventAt survives commentary queue for real point-to-audio latency measurement",
+        "Legacy Service Worker registrations are coalesced"
+      ],
+      "owners": [
+        "upgrade73.css",
+        "src/upgrade73-preboot.js",
+        "src/upgrade73.js"
+      ]
+    },
+    {
+      "id": "MOBILE_SCORE_001",
+      "since": "upgrade74",
+      "title": "Portrait mobile score visibility",
+      "invariants": [
+        "Both current score values remain fully inside visual viewport",
+        "On <=600px portrait, left/right score boxes use equal top-row columns",
+        "Center team names move below the score boxes instead of squeezing them",
+        "Long team names must wrap/clip before they can push a score outside viewport"
+      ],
+      "owners": [
+        "upgrade74.css",
+        "src/upgrade74.js"
+      ]
+    },
+    {
+      "id": "PINYIN_VOICE_001",
+      "since": "upgrade75",
+      "title": "Mandarin pronunciation for Chinese/Hanyu Pinyin player names",
+      "invariants": [
+        "Vietnamese commentary text remains on the Vietnamese voice path",
+        "Known roster names written in Hanzi or multi-syllable Hanyu Pinyin are isolated as Mandarin segments",
+        "Pinyin/Hanzi names are never destroyed by a legacy Vietnamese pronunciation replacement before language routing",
+        "Prefer an available zh-CN system voice; if absent and Chinese names exist, auto-install/reuse the offline zh_CN-huayan-x_low voice",
+        "Single-token Vietnamese names such as LONG are not auto-classified as Chinese solely because the spelling is also a valid Pinyin syllable",
+        "Latin Pinyin without tone/character information must not invent lexical tones; PY:/ZH:/VI: dictionary modes allow the operator to lock a reading"
+      ],
+      "owners": [
+        "upgrade75.css",
+        "src/upgrade75.js"
+      ]
+    },
+    {
+      "id": "AI_SHUTTLE_REPLAY_001",
+      "since": "upgrade77",
+      "title": "Lightweight camera shuttle replay + optional EdgeOne vision assist",
+      "invariants": [
+        "Camera/WebRTC replay works locally without any AI API key or network AI dependency",
+        "Use one MediaRecorder encoder path with short rolling segments; do not run overlapping full-resolution encoders on mobile",
+        "Replay captures approximately 6 seconds before and 4 seconds after a marked/candidate event and stores clips locally in IndexedDB",
+        "Local detector uses a low-resolution canvas at approximately 8 FPS and must not block scoring, BLV or the live video element",
+        "Optional AI sends only 2-4 downscaled still frames, never the full livestream, and is throttled",
+        "AI credentials are read only in EdgeOne Functions environment variables and never embedded in frontend HTML/JS",
+        "AI endpoint requires a valid Firebase ID token and limits analysis to ADMIN / UMPIRE / LIVE_ONLY roles",
+        "AI result is advisory/highlight metadata only and must never mutate score, line call, match winner or umpire state",
+        "HLS/YouTube/iframe sources are not promised auto-replay capture because browser CORS/media capture support varies; Camera/WebRTC MediaStream is the supported replay source",
+        "Manual replay/tag buttons remain available when AI is unconfigured, offline or returns an error"
+      ],
+      "owners": [
+        "upgrade77.css",
+        "src/upgrade77.js",
+        "../../edge-functions/api/ai-shuttle-analyze.js",
+        "../../EDGEONE_AI_SETUP.md",
+        "tests/upgrade77_regression.js",
+        "src/upgrade81.js"
+      ]
+    },
+    {
+      "id": "BLV_LIVE_SESSION_001",
+      "since": "upgrade78",
+      "title": "Fail-closed live commentary session gate",
+      "invariants": [
+        "Every new website/browser tab starts with commentary audio muted and Auto BLV output closed; voice models may warm silently",
+        "Automatic commentary may play only while the foreground/focused browser page is on app tab Umpire or Live and that selected court has an active started match whose match.status is LIVE and whose court status/activeMatchId agree",
+        "For non-ADMIN accounts using the Umpire tab, the selected court must still be assigned to the current user via court.umpireUid",
+        "The existing Firebase commentary/latest row at gate-arm time is a baseline and must never be replayed as fresh audio in a newly opened tab/session",
+        "Only commentary created after the current gate armed and for the current selected court may enter the automatic audio queue",
+        "Leaving Umpire/Live, backgrounding/unfocusing the browser tab, deleting/finishing the match, removing the active match, releasing the court, or losing umpire assignment immediately clears the queue and stops Vietnamese Piper, system SpeechSynthesis, Mandarin audio and crowd FX",
+        "Multiple browser tabs must not compete for commentary audio; foreground/focus and cross-tab ownership are fail-closed",
+        "Manual voice/FX test controls remain explicit operator actions and are not treated as automatic match commentary"
+      ],
+      "owners": [
+        "src/upgrade49.js",
+        "src/upgrade50.js",
+        "src/upgrade72.js",
+        "src/upgrade75.js",
+        "src/upgrade76.js",
+        "upgrade78.css",
+        "src/upgrade78.js",
+        "tests/upgrade78_blv_gate_regression.js"
+      ]
+    },
+    {
+      "id": "PACKAGE_HISTORY_001",
+      "since": "upgrade74",
+      "title": "Self-describing upgrade package",
+      "invariants": [
+        "Every release updates TOPKEY_PACKAGE_MANIFEST.json",
+        "Every new/changed behavior is recorded in CHANGELOG.md and FEATURE_REGISTRY.json",
+        "Every release runs REGRESSION_CONTRACT.json tests or records an explicit NOT-RUN reason",
+        "Future work must inspect these files before modifying the package"
+      ],
+      "owners": [
+        "../../TOPKEY_PACKAGE_MANIFEST.json",
+        "../../CHANGELOG.md",
+        "FEATURE_REGISTRY.json",
+        "REGRESSION_CONTRACT.json"
+      ]
+    },
+    {
+      "id": "AI_ENDPOINT_ROOT_001",
+      "since": "upgrade79",
+      "title": "Origin-root EdgeOne AI endpoint from nested Badminton routes",
+      "invariants": [
+        "Badminton pages under /sports/badminton/ must call the Edge Function at origin-root /api/ai-shuttle-analyze, never ./api/ai-shuttle-analyze",
+        "Both AI health GET and vision analysis POST use the same origin-root endpoint",
+        "Stable project domains and deployment-specific domains must resolve the AI endpoint without changing frontend code",
+        "Environment variables remain server-side; this routing fix must not embed MAKERS_MODELS_KEY in frontend code"
+      ],
+      "owners": [
+        "src/upgrade77.js",
+        "src/upgrade79.js",
+        "tests/upgrade79_ai_endpoint_regression.js",
+        "../../EDGEONE_AI_SETUP.md"
+      ]
+    },
+    {
+      "id": "REAR_CAMERA_DEFAULT_001",
+      "since": "upgrade80",
+      "title": "Rear camera default for local court capture",
+      "invariants": [
+        "Every new page session defaults Camera cục bộ to the rear/environment camera, never the selfie/user camera when the browser supports facingMode",
+        "Live source UI exposes an explicit Camera sau / Camera trước selector and Camera sau is selected by default",
+        "Both local Camera and WebRTC broadcaster use the same selected facingMode constraints",
+        "Changing the selector while a local camera stream is active restarts that local stream with the newly selected facing direction",
+        "Camera selection changes only media capture and must not change scoring, Firebase match state, AI advisory behavior, replay timing or BLV gates"
+      ],
+      "owners": [
+        "src/app.js",
+        "upgrade80.css",
+        "src/upgrade80.js",
+        "tests/upgrade80_rear_camera_regression.js"
+      ]
+    },
+    {
+      "id": "CONTINUOUS_REPLAY_001",
+      "since": "upgrade81",
+      "title": "Continuous replay playback and longer court context",
+      "invariants": [
+        "New replay target is approximately 10 seconds: about 6 seconds before the marked/candidate event plus 4 seconds after it",
+        "Replay recording continues to use exactly one MediaRecorder encoder path; extending replay must not add a second full-resolution encoder on mobile",
+        "Multi-segment replay must play the full saved sequence rather than stop after the first short recorder segment",
+        "Upgrade85 supersedes MediaSource stitching: independently recorded MediaRecorder files are played one ObjectURL segment at a time, releasing each URL before the next, with a manual Continue fallback if autoplay is blocked",
+        "Replay playback/storage changes must never mutate score, winner, court assignment, Firebase match state, BLV gate or EdgeOne AI advisory semantics"
+      ],
+      "owners": [
+        "src/upgrade77.js",
+        "src/upgrade81.js",
+        "tests/upgrade81_continuous_replay_regression.js",
+        "src/upgrade85.js",
+        "tests/upgrade85_disk_lazy_regression.js"
+      ]
+    },
+    {
+      "id": "REPLAY_ORIENTATION_001",
+      "since": "upgrade82",
+      "title": "Replay preserves capture orientation and court-size fit",
+      "invariants": [
+        "Each newly recorded replay stores capture orientation metadata from the phone at segment time, including portrait/landscape, screen angle, viewport dimensions and camera track/video dimensions when available",
+        "Playback uses the orientation captured when the rally was recorded, not the orientation of the phone later when the replay is opened",
+        "If recorded media intrinsic dimensions conflict with the captured portrait/landscape orientation, replay automatically quarter-turns 90 degrees and fits the corrected frame into the stage without the narrow portrait-in-landscape symptom",
+        "Landscape court replay uses a 16:9 stage and recalculates fit on resize/orientation changes; a manual 90-degree rotate control remains available for legacy clips or devices with incorrect sensor metadata",
+        "Fit/rotate playback changes are visual only and must not mutate replay bytes, score, Firebase match state, AI advisory results, BLV gate, camera-facing selection or MediaRecorder encoder count"
+      ],
+      "owners": [
+        "src/upgrade77.js",
+        "upgrade82.css",
+        "src/upgrade82.js",
+        "tests/upgrade82_replay_orientation_regression.js"
+      ]
+    },
+    {
+      "id": "REPLAY_PERFORMANCE_001",
+      "since": "upgrade83",
+      "title": "Replay performance guard for long tournament sessions",
+      "invariants": [
+        "Local replay keeps exactly one MediaRecorder encoder and a bounded rolling buffer; performance hardening must not add a second full-resolution encoder.",
+        "IndexedDB may retain at most 24 replay clips, while the live JavaScript list materializes only the newest 8 clip records/blobs for the visible replay list.",
+        "Pruning old clips uses the createdAt index/key cursor and must not call getAll() merely to discover records to delete.",
+        "Replay play/download resolves a missing in-memory item by direct primary-key get, not by loading every stored replay blob.",
+        "Detector status UI is change/throttle painted instead of rewriting status innerHTML at the ~8 FPS detector cadence.",
+        "Detector grayscale/mask/seen typed arrays are reused between frames to reduce mobile garbage-collection churn.",
+        "Leaving Live or backgrounding the browser stops the replay MediaRecorder and detector/frame loops without stopping or mutating score/Firebase match state; returning to foreground Live may restart them.",
+        "Object URLs and MediaSource resources remain released when replay closes; local replay storage/performance changes never alter score, BLV gate, AI advisory semantics or camera-facing selection."
+      ],
+      "owners": [
+        "src/upgrade77.js",
+        "src/upgrade83.js",
+        "tests/upgrade83_replay_performance_regression.js"
+      ]
+    },
+    {
+      "id": "LIVE_FIRST_WORKSPACE_001",
+      "since": "upgrade84",
+      "title": "Live-first workspace and automatic Live Focus",
+      "invariants": [
+        "On desktop, Live Viewer, Live Source/Fallback and AI Shuttle Replay share the left workspace column while BLV stays in the right column; controls must use the previously empty area below the Live Viewer instead of forcing long vertical scrolling.",
+        "On mobile/tablet the Live workspace becomes one column and replay history is height-bounded/scrollable so accumulated replay cards do not make the page indefinitely tall.",
+        "Applying/Open Live Source automatically brings the operator into Live Focus; the viewer fills the visual viewport and may request native fullscreen only from the same user gesture.",
+        "Live Focus always exposes an explicit Thu nhỏ control and existing Fit/Fullscreen controls remain recoverable; leaving Live, stopping Live, Escape/back fullscreen exits focus safely.",
+        "Live-first layout/focus is presentation/navigation only and must not mutate score, Firebase match state, AI advisory results, replay timing/retention, camera selection or BLV Live Session Gate."
+      ],
+      "owners": [
+        "upgrade84.css",
+        "src/upgrade84.js",
+        "tests/upgrade84_live_first_regression.js"
+      ]
+    },
+    {
+      "id": "REPLAY_DISK_LAZY_001",
+      "since": "upgrade85",
+      "title": "Disk-first replay metadata + safe lazy playback",
+      "invariants": [
+        "Saved replay video Blobs live in IndexedDB local storage; the live JavaScript replay list keeps metadata only and must not retain saved video Blob arrays.",
+        "Opening the website outside Live must not open/read the replay database or materialize old replay video; replay metadata is loaded only when Live is opened.",
+        "Pressing Xem fetches exactly the selected replay from IndexedDB on demand; closing the modal revokes the current ObjectURL and releases the full replay record for garbage collection.",
+        "Do not append independently recorded MediaRecorder files into MediaSource/SourceBuffer. Multi-segment playback uses one segment ObjectURL at a time, muted by default for safe automatic continuation, with a manual Continue fallback if autoplay is blocked.",
+        "Replay recording uses the existing single MediaRecorder path and a video-only MediaStream so court audio encoding does not add unnecessary replay CPU/storage load.",
+        "Request persistent browser storage when replay/camera is enabled when supported; storage may still be browser-managed if persistence is not granted.",
+        "Legacy Upgrade84 replay records remain on local storage and are migrated to metadata only on explicit operator demand, never during normal startup."
+      ],
+      "owners": [
+        "src/upgrade77.js",
+        "upgrade85.css",
+        "src/upgrade85.js",
+        "tests/upgrade85_disk_lazy_regression.js"
+      ]
+    },
+    {
+      "id": "STARTUP_PERFORMANCE_001",
+      "since": "upgrade85",
+      "title": "Startup and observer performance guard",
+      "invariants": [
+        "Default Vietnamese UI must not keep the Upgrade30 whole-body translation MutationObserver active; switching to English/Chinese may enable it and switching back to Vietnamese disables it.",
+        "Replay orientation must not use a whole-document MutationObserver; replay click/metadata/resize/orientation events are sufficient.",
+        "Overlay-state observation is requestAnimationFrame-coalesced so bursts of DOM mutations cause at most one overlay scan per animation frame.",
+        "JSZip and HLS.js are not blocking startup dependencies; load them only when ZIP export or HLS playback is actually requested.",
+        "Startup performance changes must not alter scoring, Firebase match state, camera/replay semantics, AI advisory behavior, BLV gate or Live-first layout."
+      ],
+      "owners": [
+        "src/upgrade30.js",
+        "src/upgrade35.js",
+        "src/upgrade82.js",
+        "src/upgrade85.js",
+        "tests/upgrade85_disk_lazy_regression.js"
+      ]
+    },
+    {
+      "id": "LIVE_LAYOUT_RACE_GUARD_001",
+      "since": "upgrade86",
+      "title": "Durable Live-first layout under lazy Replay creation",
+      "invariants": [
+        "On desktop, the durable order is Live Viewer -> Live Source/Fallback -> AI Shuttle Replay inside #tk84-live-left; BLV remains in the right grid column.",
+        "Lazy Replay creation after Live-first layout has already run must immediately re-parent #tk77-replay-card into the left workspace; it must never remain a full-width direct child of #page-live.",
+        "The race guard observes only direct children of #page-live and is requestAnimationFrame-coalesced; it must not reintroduce a whole-document/subtree MutationObserver or undo Upgrade85 startup/performance guards.",
+        "Entering Live and starting Camera/WebRTC re-check the layout after asynchronous engine startup so later replay/storage changes cannot escape the left workspace.",
+        "Layout repair is presentation-only and must not mutate score, Firebase match state, replay Blob storage, AI advisory results, camera selection or BLV gate."
+      ],
+      "owners": [
+        "src/upgrade77.js",
+        "src/upgrade84.js",
+        "upgrade84.css",
+        "upgrade86.css",
+        "src/upgrade86.js",
+        "tests/upgrade86_live_layout_race_regression.js"
+      ]
+    },
+    {
+      "id": "NATURAL_APPLAUSE_002",
+      "since": "upgrade87",
+      "title": "Natural audience applause with softened offline fallback",
+      "invariants": [
+        "Set/match applause prefers the public-domain natural field recording Applause ii.ogg from Wikimedia/PDSounds when available",
+        "Tie applause is OFF by default to avoid repetitive crowd noise; it can be enabled explicitly",
+        "Natural crowd media is loaded only from Trọng tài/Live interaction and runtime-cached when the browser permits, so normal app startup is not slowed by the remote audio",
+        "Existing local tie/set/match OGG assets remain offline fallback and are softened/lower-level rather than removed",
+        "Crowd FX never owns or reuses the Piper commentary audio element"
+      ],
+      "owners": [
+        "src/upgrade87.js",
+        "upgrade87.css",
+        "assets/audio/README.md",
+        "assets/audio/applause-tie.ogg",
+        "assets/audio/applause-set.ogg",
+        "assets/audio/applause-match.ogg",
+        "sw.js",
+        "tests/upgrade87_audio_reset_regression.js"
+      ]
+    },
+    {
+      "id": "MALE_VOICE_PROFILE_001",
+      "since": "upgrade87",
+      "title": "Vietnamese male/female commentary voice profile",
+      "invariants": [
+        "BLV UI exposes Auto, Nam and Nữ voice profiles without changing score/commentary generation",
+        "Nam profile prefers a vi-VN system voice whose name is identifiable as male; when no male-labeled vi-VN system voice exists it uses the nearest allowed vi-VN system voice with a lower pitch and reports that fallback honestly",
+        "Exact voice chosen manually in the existing vi-VN voice selector takes precedence over profile heuristics",
+        "Upgrade87 does not download or select the Piper 25hours_single model because its production/source license is not established in this package",
+        "Existing vais1000 Piper voice remains the offline fallback when no usable system voice exists"
+      ],
+      "owners": [
+        "src/upgrade87.js",
+        "upgrade87.css",
+        "tests/upgrade87_audio_reset_regression.js"
+      ]
+    },
+    {
+      "id": "AUTO_AUDIO_STATE_001",
+      "since": "upgrade87",
+      "title": "Auto-first BLV audio with truthful button states",
+      "invariants": [
+        "Auto BLV userEnabled defaults to true; Live Session Gate still decides whether a commentary event may speak",
+        "On the first user gesture in Trọng tài/Live, TOPKEY automatically attempts the existing verified audio-unlock path; manual activation is only actionable when the browser blocks it",
+        "When audio is verified and active, activation buttons are disabled/dimmed and display an ON state; when waiting for a valid LIVE session they are disabled/dimmed and display ARMED; only a blocked browser state is bright/actionable",
+        "No stale commentary may bypass Upgrade78 Live Session Gate just because audio is primed"
+      ],
+      "owners": [
+        "src/upgrade87.js",
+        "upgrade87.css",
+        "tests/upgrade87_audio_reset_regression.js"
+      ]
+    },
+    {
+      "id": "RESET_SCOPE_MENU_001",
+      "since": "upgrade87",
+      "title": "Referee reset scope chooser",
+      "invariants": [
+        "The referee Reset button opens a two-choice radio/tick menu: current set or whole match",
+        "Current-set reset delegates to the existing App.resetSet flow so current scoring/opening-server/audit contracts remain authoritative",
+        "Whole-match reset is ADMIN-only and delegates to Upgrade68 resetMatchResult with SCHEDULED target and post-write verification",
+        "Whole-match reset clears result/sets/winner/finishedAt and active scoring state, returns court AVAILABLE, and preserves teams/players/schedule record",
+        "Upgrade87 does not introduce a competing direct Firebase score/reset write path"
+      ],
+      "owners": [
+        "src/upgrade87.js",
+        "upgrade87.css",
+        "src/upgrade68.js",
+        "tests/upgrade87_audio_reset_regression.js"
+      ]
+    },
+    {
+      "id": "VIEWER_LIVE_PLAYER_001",
+      "since": "upgrade88",
+      "title": "Viewer-first Live player with shared-camera WebRTC",
+      "invariants": [
+        "Public spectator places Trận đang Live and the viewing stage before schedule/standings; HLS/YouTube may play publicly without login when configured.",
+        "Local Camera capture remains one camera stream; Upgrade88 reuses that exact stream for authenticated WebRTC viewers and must not call getUserMedia a second time.",
+        "VIEWER/LIVE_ONLY accounts land on the Live player and receive CAMERA/WEBRTC from the broadcaster; they must never open their own local camera as the remote source.",
+        "WebRTC signaling remains authenticated under existing Firebase rules; unauthenticated public spectator must show an honest login requirement instead of opening public signaling writes.",
+        "Viewer mode hides broadcaster/source/replay/BLV controls while preserving fullscreen/player controls; viewer actions must not mutate score or match state.",
+        "VIEWER/LIVE_ONLY playback quiesces AI Replay recorder/detector loops on the remote stream so watching Live does not consume replay/AI CPU or local replay storage."
+      ],
+      "owners": [
+        "src/upgrade88.js",
+        "upgrade88.css",
+        "firebase.database.rules.json",
+        "tests/upgrade88_viewer_umpire_audio_regression.js"
+      ]
+    },
+    {
+      "id": "UMPIRE_AUDIO_OWNERSHIP_001",
+      "since": "upgrade88",
+      "title": "UMPIRE scoring ownership matches BLV Session Gate",
+      "invariants": [
+        "Upgrade78 assignment gate remains authoritative: a non-ADMIN UMPIRE may speak only for the court assigned to that UID.",
+        "When an UMPIRE starts/scores a court that has no umpireUid, Upgrade88 self-assigns that court to the current UID through the normal court Firebase path and audit before commentary is evaluated.",
+        "If a court is already assigned to another UID, Upgrade88 does not bypass the gate and does not silently take ownership.",
+        "After self-claim/start, Upgrade78 is re-evaluated and Upgrade87 audio-state UI is synchronized so the score gesture can prime/unlock audio and speak the new score event.",
+        "Upgrade88 does not write activeMatches/matches for audio ownership; scoring remains owned by the existing referee pipeline."
+      ],
+      "owners": [
+        "src/upgrade78.js",
+        "src/upgrade87.js",
+        "src/upgrade88.js",
+        "tests/upgrade88_viewer_umpire_audio_regression.js"
+      ]
+    },
+    {
+      "id": "PUBLIC_VIEWER_STABILITY_001",
+      "since": "upgrade92",
+      "title": "Public Viewer no-login + stable client shell",
+      "invariants": [
+        "#spectator never renders the login form",
+        "F5 preserves #spectator and restores anonymous signaling auth",
+        "Legacy Service Worker/cache can be cleared without clearing Piper/crowd runtime caches",
+        "Only the current final stability authority may define the visible runtime version",
+        "Spectator Firebase listeners are installed once per page session"
+      ],
+      "owners": [
+        "src/auth.js",
+        "src/app.js",
+        "src/upgrade55.js",
+        "src/upgrade92.js",
+        "reset-u92.html",
+        "sw.js"
+      ]
+    },
+    {
+      "id": "public_viewer_bootstrap_stability_u93",
+      "since": "upgrade93",
+      "title": "Public Viewer renders before Auth; reset clears all same-origin TOPKEY SW/cache",
+      "invariants": [
+        "#spectator first paint must show public-spectator even if Firebase/Auth is unavailable",
+        "Anonymous Auth runs in background and never gates public UI",
+        "Final authority must not observe and rewrite its own build attribute recursively",
+        "reset-u93 provides a visible manual Viewer link"
+      ],
+      "owners": [
+        "index.html",
+        "src/app.js",
+        "src/upgrade93.js",
+        "reset-u93.html",
+        "src/upgrade92.js"
+      ]
+    },
+    {
+      "id": "VIEWER_BLV_AUDIO_U94",
+      "since": "upgrade94",
+      "title": "Public Viewer BLV audio follows visible audio gesture and selected court",
+      "invariants": [
+        "The visible Public Viewer #tk88-public-unmute gesture enables both Live audio and Viewer-local BLV TTS.",
+        "Viewer commentary binds to the court actually selected by Upgrade88 public Live, not a hard-coded/default court.",
+        "Firebase commentary/latest is primary; activeMatches score changes provide a delayed local fallback when commentary is late or missing.",
+        "Viewer BLV does not mutate score/match state and does not require a second camera/microphone stream."
+      ],
+      "owners": [
+        "src/upgrade94.js",
+        "tests/upgrade94_viewer_blv_regression.js",
+        "src/upgrade88.js",
+        "src/upgrade90.js"
+      ]
+    },
+    {
+      "id": "PERFORMANCE_SAFE_U95",
+      "since": "upgrade95",
+      "title": "Performance-safe bundle/cache consolidation",
+      "invariants": [
+        "Upgrade94 behavior sources and exact execution order remain preserved inside the U95 JS bundle",
+        "Browser loads one local CSS bundle and one application JS bundle plus the SW preboot helper",
+        "Firebase/QRCode CDN scripts do not block HEAD parsing",
+        "Service Worker precaches only the minimal app shell plus three local applause assets; legacy source/tests remain auditable but are not precached",
+        "Content-hashed U95 JS/CSS are cache-first; HTML/build/sw remain fresh",
+        "Firebase Rules, TURN config, TURN credential Edge Function, scoring and WebRTC protocol remain unchanged; later Viewer BLV lifecycle fixes may update U94 source under regression protection"
+      ],
+      "owners": [
+        "index.html",
+        "assets/u96/bundle-manifest.json",
+        "sw.js",
+        "src/upgrade95.js",
+        "tests/upgrade95_performance_safe_regression.js",
+        "edgeone.json"
+      ]
+    },
+    {
+      "id": "VIEWER_BLV_LIFECYCLE_U96",
+      "since": "upgrade96",
+      "title": "Viewer BLV lifecycle isolation and stale snapshot suppression",
+      "invariants": [
+        "Viewer audio enable never flips App.audioUnlocked, so legacy BTC Local BLV cannot be activated by a public Viewer gesture.",
+        "The initial Firebase commentary/latest value on bind/rebind is baselined and never spoken.",
+        "Commentary dedupe is per court, preventing old rows from replaying when selected court changes or listeners rebind.",
+        "Only a fresh commentary key after the baseline may speak; activeMatches 700 ms fallback remains unchanged."
+      ],
+      "owners": [
+        "src/upgrade94.js",
+        "src/upgrade96.js",
+        "tests/upgrade96_blv_lifecycle_regression.js"
+      ]
+    },
+    {
+      "id": "PUBLIC_VIEWER_ORIENTATION_GUARD_U97",
+      "introduced": "upgrade97",
+      "status": "superseded-by-upgrade98",
+      "invariants": [
+        "Public Viewer does not use native requestFullscreen for its large-view control",
+        "Entering #spectator releases stale screen.orientation locks",
+        "Public Viewer never locks landscape",
+        "Umpire Match Focus and Replay orientation controllers are unchanged"
+      ],
+      "note": "Historical CSS-only portrait-safe guard. Upgrade98 supersedes final Viewer behavior by user request: explicit Xem ngang uses native fullscreen + landscape and portrait-track correction."
+    },
+    {
+      "id": "VIEWER_LANDSCAPE_LIVE_REFEREE_READABILITY_U98",
+      "since": "upgrade98",
+      "status": "active",
+      "title": "Viewer landscape Live + phone referee readability",
+      "invariants": [
+        "Viewer remains public/no-login and opens no camera or microphone.",
+        "Only an explicit Viewer Xem ngang gesture requests native fullscreen and best-effort landscape orientation.",
+        "A portrait-sized WebRTC video track is auto-rotated 90 degrees in horizontal Viewer mode, with a manual reverse/straighten control.",
+        "Exiting Viewer fullscreen unlocks orientation.",
+        "Short-landscape referee fullscreen uses larger score/name/action typography and at least 44px primary touch targets.",
+        "Scoring, Firebase Rules, TURN, WebRTC signaling and BLV lifecycle are unchanged."
+      ],
+      "owners": [
+        "src/upgrade98.js",
+        "upgrade98.css",
+        "tests/upgrade98_viewer_landscape_referee_regression.js"
+      ]
+    },
+    {
+      "id": "VIEWER_FREEZE_MUTATION_LOOP_FIX_U99",
+      "since": "upgrade99",
+      "title": "Public Viewer one-shot landscape patch lifecycle",
+      "invariants": [
+        "No recursive MutationObserver patch loop on public-spectator",
+        "Observer disconnects before any fullscreen button text/class mutation",
+        "Viewer render/Firebase callbacks remain schedulable",
+        "Upgrade98 landscape and referee readability behavior remains available"
+      ],
+      "owners": [
+        "src/upgrade98.js",
+        "src/upgrade99.js",
+        "tests/upgrade99_viewer_freeze_regression.js"
+      ]
+    },
+    {
+      "id": "WEBRTC_SIGNALING_RESILIENCE_U101",
+      "since": "upgrade101",
+      "title": "WebRTC broadcaster heartbeat, self-heal and waiting-session preservation",
+      "invariants": [
+        "Broadcaster must never delete fresh Viewer requests when it reloads/self-heals",
+        "Existing waiting Viewer sessions receive an offer when broadcaster attaches",
+        "Live local camera periodically writes broadcaster heartbeat",
+        "Viewer retries signaling once when broadcaster is fresh but offer is delayed",
+        "Viewer reports stale/offline broadcaster quickly instead of waiting indefinitely"
+      ],
+      "owners": [
+        "src/upgrade88.js",
+        "src/upgrade101.js",
+        "tests/upgrade101_webrtc_signaling_resilience_regression.js",
+        "tests/upgrade101_webrtc_signaling_resilience_vm.js"
+      ]
+    },
+    {
+      "id": "FIREBASE_LATENCY_U102",
+      "since": "upgrade102",
+      "title": "Incremental Firebase listeners, tab scoping and render coalescing",
+      "invariants": [
+        "Core operational branches remain live for scoring/schedule ownership",
+        "Finance, audit, registrations, commentary and users listeners attach only on relevant authenticated tabs and detach on tab change",
+        "Public Viewer does not subscribe to the whole commentary tree; BLV follows only commentary/<selectedCourt>/latest",
+        "Upgrade94 duplicate global Viewer listeners are suppressed while its per-court commentary listener and 700 ms fallback remain active",
+        "Burst child updates are coalesced into one render frame instead of one full render per Firebase callback",
+        "Firebase Rules, TURN, WebRTC signaling, scoring, BLV lifecycle and Viewer orientation behavior are unchanged"
+      ],
+      "owners": [
+        "src/upgrade102.js",
+        "assets/u102/latency.01e81b154af0.js",
+        "tests/upgrade102_firebase_latency_regression.js",
+        "tests/upgrade102_firebase_latency_vm.js"
+      ]
+    },
+    {
+      "id": "RENDER_RUNTIME_STABILITY_U103",
+      "since": "upgrade103",
+      "title": "Active-tab rendering, background render deferral and runtime latency metrics",
+      "invariants": [
+        "Firebase state updates continue even when a branch page is hidden",
+        "Authenticated DOM rendering is limited to the active tab; hidden Overview KPI rendering is skipped",
+        "When the document is hidden, admin DOM rendering is deferred and flushed once on return",
+        "Upgrade90 legacy Viewer BLV poller retires when Upgrade94 is installed",
+        "Upgrade94 Viewer BLV court binding is event-driven without continuous 700 ms polling",
+        "Passive latency instrumentation does not change scoring or Firebase persistence semantics",
+        "Firebase Rules, TURN, WebRTC signaling, BLV lifecycle and Viewer orientation behavior remain unchanged"
+      ],
+      "owners": [
+        "src/upgrade90.js",
+        "src/upgrade94.js",
+        "src/upgrade102.js",
+        "src/upgrade103.js",
+        "tests/upgrade103_render_runtime_regression.js",
+        "tests/upgrade103_render_runtime_vm.js"
+      ]
+    },
+    {
+      "id": "SCORING_FAST_LANE_001",
+      "since": "upgrade105",
+      "title": "Direct-first Firebase score persistence",
+      "invariants": [
+        "Referee score UI remains optimistic/local-first",
+        "Online authenticated SCORE writes bypass the general IndexedDB backlog and use one atomic Firebase multi-location update",
+        "If direct SCORE write fails or the court already has queued SCORE writes, persist safely to IndexedDB in order",
+        "Permission-denied SCORE writes become BLOCKED and surface an error instead of retrying forever",
+        "Non-SCORE queue behavior is unchanged"
+      ],
+      "owners": [
+        "src/upgrade105.js"
+      ]
+    },
+    {
+      "id": "SCHEDULE_COLLAPSE_001",
+      "since": "upgrade105",
+      "title": "Collapsible schedule panels",
+      "invariants": [
+        "Public schedule can collapse/expand without changing schedule or standings data",
+        "Admin schedule list can collapse/expand without changing schedule data",
+        "Collapse state persists per browser",
+        "Search/filter/live/standings behavior is unchanged"
+      ],
+      "owners": [
+        "upgrade105.css",
+        "src/upgrade105.js"
+      ]
+    },
+    {
+      "id": "SCHEDULE_INTERNAL_SCROLL_001",
+      "since": "upgrade106",
+      "title": "Bounded schedule internal scroll",
+      "invariants": [
+        "Expanded Admin schedule uses its own bounded vertical scrollbar",
+        "Expanded Public schedule uses its own bounded vertical scrollbar",
+        "Table header remains sticky while schedule scrolls",
+        "Schedule collapse/expand and persisted state from Upgrade105 remain authoritative",
+        "No scoring/Firebase/WebRTC/BLV semantics are changed"
+      ],
+      "owners": [
+        "upgrade106.css",
+        "src/upgrade106.js"
+      ]
+    },
+    {
+      "id": "SCHEDULE_DOM_PARENT_SAFETY_001",
+      "since": "upgrade107",
+      "title": "Schedule DOM parent safety after collapse/scroll wrappers",
+      "invariants": [
+        "Re-rendering schedule/status after U105/U106 wrappers must not call insertBefore with a reference node owned by another parent",
+        "Admin and public search bars are inserted relative to the actual parent of the schedule/table reference",
+        "Changing match status must not be blocked by schedule UX DOM structure"
+      ],
+      "owners": [
+        "src/upgrade16.js",
+        "src/upgrade107.js"
+      ]
+    },
+    {
+      "id": "CACHE_CORRECTNESS_001",
+      "since": "upgrade108",
+      "title": "Hashed asset cache correctness",
+      "invariants": [
+        "Current build JS/CSS must be precached by the Service Worker",
+        "Hashed app assets use cache-first independent of upgrade number",
+        "HTML/build.json/sw.js/reset pages remain network-first/no-cache",
+        "EdgeOne immutable headers use wildcard asset paths so future hashed bundles do not need per-version header edits"
+      ],
+      "owners": [
+        "sw.js",
+        "edgeone.json",
+        "index.html",
+        "build.json"
+      ]
+    },
+    {
+      "id": "VIEWER_MINIMAL_BOOT_001",
+      "since": "upgrade109",
+      "title": "Route-gated minimal public Viewer boot",
+      "invariants": [
+        "#spectator must not load Admin application bundle",
+        "Viewer loads Firebase App/Auth/Database but not Firebase Storage or QRCode",
+        "Public Viewer retains schedule, standings, announcement, WebRTC/TURN, BLV and fullscreen/rotation",
+        "Protected non-spectator route retains full Admin bundle"
+      ],
+      "owners": [
+        "index.html",
+        "assets/u109/viewer.2300b458c21b.js",
+        "assets/u109/viewer.6dbec66a2de5.css",
+        "sw.js"
+      ]
+    },
+    {
+      "id": "ADMIN_LOGIN_BOOT_GUARD_001",
+      "since": "upgrade110",
+      "title": "Admin login dynamic boot guard",
+      "invariants": [
+        "Admin boot runs exactly once whether bundle loads before or after DOMContentLoaded",
+        "Login form cannot native-GET submit before Firebase login handler is attached",
+        "email/password query parameters are removed from URL/history immediately",
+        "Viewer minimal boot remains route-isolated"
+      ],
+      "owners": [
+        "index.html",
+        "src/app.js"
+      ]
+    },
+    {
+      "id": "FEATURE_CODE_SPLITTING_001",
+      "since": "upgrade111",
+      "title": "Safe admin feature code splitting",
+      "invariants": [
+        "Viewer Minimal Boot remains isolated from Admin",
+        "Admin login boot must not load Firebase Storage, QRCode, JSZip or Replay/AI chunk",
+        "Replay/AI chunk loads on first Live tab entry",
+        "Firebase Storage loads only on finance/settings/upload demand",
+        "QRCode loads only on Teams/registration demand",
+        "Feature loading must not change scoring, Rules, TURN, WebRTC signaling or BLV semantics"
+      ],
+      "owners": [
+        "src/upgrade111.js",
+        "assets/u111/admin-core.1a8f10923cfb.js",
+        "assets/u111/feature-replay.fe7f71fb1812.js",
+        "index.html",
+        "sw.js"
+      ]
+    },
+    {
+      "id": "VIEWER_FIREBASE_WINDOW_001",
+      "since": "upgrade112",
+      "title": "Viewer Firebase Window",
+      "invariants": [
+        "Viewer schedule uses bounded date queries instead of a full matches listener",
+        "Standings use completed-status queries so BXH remains complete",
+        "Teams are subscribed on demand by referenced team id",
+        "Announcements subscribe only to the latest item",
+        "matches/date,status and announcements/createdAt are indexed without changing write permissions"
+      ],
+      "owners": [
+        "assets/u112/viewer.680e1156ac19.js",
+        "firebase.database.rules.json"
+      ]
+    },
+    {
+      "id": "ATOMIC_SCORE_PIPELINE_001",
+      "since": "upgrade113",
+      "title": "Atomic score + event + commentary Firebase update",
+      "invariants": [
+        "Positive score actions keep local optimistic UI and local BLV immediate",
+        "activeMatches + score event + commentary/latest are merged into one SCORE Firebase update when commentary is generated",
+        "Score correction without commentary is not delayed",
+        "Offline/permission fallback remains owned by Upgrade105 Fast Lane queue semantics"
+      ],
+      "owners": [
+        "src/upgrade113.js",
+        "src/upgrade105.js",
+        "src/upgrade48.js"
+      ]
+    },
+    {
+      "id": "CONSOLIDATION_PHASE1_001",
+      "since": "upgrade114",
+      "title": "Admin runtime consolidation phase 1",
+      "invariants": [
+        "Public Viewer legacy upgrades 92-100 are not executed inside Admin core after Viewer Minimal Boot owns public Viewer behavior",
+        "Referee landscape CSS from Upgrade98 remains in Admin CSS",
+        "WebRTC broadcaster Upgrade101 remains in Admin runtime",
+        "A single final runtime authority owns Upgrade114 version/server status after legacy timers settle",
+        "Legacy source files remain packaged for audit/regression but need not execute at runtime"
+      ],
+      "owners": [
+        "src/core/runtime-authority.js",
+        "assets/u114/bundle-manifest.json"
+      ]
+    },
+    {
+      "id": "CONSOLIDATION_PHASE2_001",
+      "since": "upgrade115",
+      "title": "Admin data/runtime consolidation phase 2",
+      "invariants": [
+        "Upgrade102 and Upgrade103 legacy source files remain packaged for audit but are not executed in Admin core",
+        "One core/data-runtime.js owns tab-scoped listeners, render coalescing, visibility defer/cache render and latency metrics",
+        "Compatibility exports TopkeyUpgrade102 and TopkeyUpgrade103 remain available for Fast Lane/Health contracts",
+        "Firebase paths, scoring semantics, Rules, TURN, WebRTC and Viewer bundle are unchanged",
+        "Admin showTab data/runtime wrapper count is reduced from two legacy wrappers to one consolidated wrapper"
+      ],
+      "owners": [
+        "src/core/data-runtime.js",
+        "src/core/runtime-authority.js",
+        "assets/u115/bundle-manifest.json"
+      ]
+    },
+    {
+      "id": "CONSOLIDATION_PHASE3_001",
+      "since": "upgrade116",
+      "title": "Schedule / Umpire / Live feature boundaries",
+      "invariants": [
+        "One core UI boundary owns the shared Admin showTab/renderMatches/renderSpectator dispatch points for migrated features",
+        "Legacy Upgrade80/106/107 source remains packaged for audit but does not execute in Admin core",
+        "Schedule internal scroll and DOM-parent repair are owned by features/schedule/runtime.js",
+        "Umpire top reset is owned by features/umpire/runtime.js while Upgrade24 search behavior remains intact",
+        "Rear/front camera selection is owned by features/live/runtime.js with Upgrade80 compatibility export",
+        "Upgrade24, Upgrade87 and Upgrade111 migrated hooks register with the boundary and retain fallback behavior"
+      ],
+      "owners": [
+        "src/core/ui-boundary.js",
+        "src/core/ui-boundary-install.js",
+        "src/features/schedule/runtime.js",
+        "src/features/umpire/runtime.js",
+        "src/features/live/runtime.js",
+        "assets/u116/bundle-manifest.json"
+      ]
+    },
+    {
+      "id": "PRODUCTION_HARDENING_001",
+      "since": "upgrade117",
+      "title": "Production boot/queue single-flight hardening",
+      "invariants": [
+        "Data.init and Auth.init cannot install duplicate long-lived listeners when boot is invoked repeatedly",
+        "Only one underlying Firebase/IndexedDB flushQueue drain may run at a time",
+        "Concurrent connection/online/action flush triggers are coalesced without dropping retryBlocked/focus semantics",
+        "Resume/visible/online recovery triggers coalesce and only flush when Data/Auth are ready",
+        "Health exposes hardening counters, queue high-water and listener-budget self-check"
+      ],
+      "owners": [
+        "src/core/production-hardening.js",
+        "src/core/runtime-authority.js",
+        "tests/upgrade117_production_hardening_vm.js",
+        "tests/upgrade117_production_hardening_regression.js"
+      ]
+    },
+    {
+      "id": "LONG_SESSION_SOAK_001",
+      "since": "upgrade117",
+      "title": "Long-session leak / scoring soak contract",
+      "invariants": [
+        "100 repeated subscriptions leave exactly one owned core listener set",
+        "1200 tab changes do not multiply UI boundary hooks or dynamic Firebase listeners",
+        "500 awarded points with commentary produce exactly 500 underlying atomic writes and leave no atomic pending entries",
+        "Existing WebRTC heartbeat/self-heal, Viewer BLV and offline Fast Lane regression tests remain mandatory"
+      ],
+      "owners": [
+        "tests/upgrade117_long_session_soak_vm.js",
+        "tests/upgrade117_atomic_score_soak_vm.js",
+        "tests/upgrade101_viewer_heartbeat_vm.js",
+        "tests/upgrade101_webrtc_signaling_resilience_vm.js",
+        "tests/upgrade105_scoring_fast_lane_vm.js",
+        "tests/upgrade113_atomic_score_pipeline_vm.js"
+      ]
+    },
+    {
+      "id": "PRODUCTION_ARTIFACT_CLEANUP_001",
+      "since": "upgrade118",
+      "title": "Production artifact cleanup and dependency hygiene",
+      "invariants": [
+        "Replay/AI lazy loader resolves current feature assets from runtime asset manifest and never hardcodes an older versioned asset directory",
+        "Production package contains only the current versioned asset directory plus shared audio while source/tests/history remain available",
+        "Hashed current assets remain immutable and Service Worker precaches only current Viewer shell",
+        "No Firebase Rules, scoring, TURN, WebRTC, BLV or Viewer data-path changes"
+      ],
+      "owners": [
+        "src/upgrade111.js",
+        "index.html",
+        "assets/u118/bundle-manifest.json",
+        "tests/upgrade118_production_artifact_cleanup_regression.js"
+      ]
+    }
+  ]
+}

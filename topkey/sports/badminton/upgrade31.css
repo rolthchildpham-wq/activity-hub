@@ -1,0 +1,1 @@
+#tk18-withdraw-apply[disabled],#tk18-withdraw-cancel[disabled],#tk18-withdraw-close[disabled]{cursor:wait;opacity:.72;filter:none}.tk31-withdraw-busy .tk18-policy{pointer-events:none;opacity:.78}.tk31-withdraw-busy .tk18-modal-actions{position:sticky;bottom:0;background:#0d2036;padding-top:10px;z-index:2}#tk18-withdraw-apply[aria-busy="true"]{min-width:270px}

@@ -1,0 +1,18 @@
+'use strict';
+const assert=require('node:assert/strict');const fs=require('fs');const vm=require('node:vm');
+const src=fs.readFileSync('sports/badminton/assets/u122/admin-core.h85full.js','utf8');
+const block=src.split('/* SOURCE: ./src/firebase.js */')[1].split('/* SOURCE: ./src/auth.js */')[0];
+let registered=0,flush=0;const listeners=[];const db={ref(path){return{on(type,fn){if(path==='.info/connected'){registered++;listeners.push(fn)}},off(){}}}};
+const old={__platformShell:true,app:{},db,auth:{currentUser:null},tid:'test_tournament'};
+const ctx={window:{Topkey:{ROOT:'topkey_badminton_vnext_2026',Data:old,U:{toast(){}}}},navigator:{onLine:true},location:{search:''},localStorage:{getItem(){return null},setItem(){},removeItem(){}},firebase:{storage:null},URLSearchParams,console,addEventListener(){},setTimeout,clearTimeout,Date,Promise};
+vm.runInNewContext(block,ctx);
+const data=ctx.window.Topkey.Data;
+data.flushQueue=async()=>{flush++};data.ensureFirebase();data.ensureFirebase();
+assert.equal(registered,1,'connection listener should bind exactly once despite shell');
+listeners[0]({val(){return true}});assert.equal(data.connected,true);assert.equal(flush,1);
+listeners[0]({val(){return false}});assert.equal(data.connected,false);
+const testlab=fs.readFileSync('sports/badminton/testlab122.js','utf8');
+assert.match(testlab,/await ensureAcceptanceFeatures\(\);const s=/);
+assert.match(testlab,/async function reportLocal\(s\)\{await ensureAcceptanceFeatures\(\)/);
+assert.match(testlab,/await report\(ref\)/);
+console.log('H120_P2_CONNECTION_TESTLAB 5/5 PASS');

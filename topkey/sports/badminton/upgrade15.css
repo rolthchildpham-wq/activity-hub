@@ -1,0 +1,8 @@
+.tk15-opening-choice{cursor:pointer;outline:2px dashed rgba(254,240,138,.55);outline-offset:-5px;transition:filter .15s ease,transform .15s ease,box-shadow .15s ease}
+.tk15-opening-choice:hover,.tk15-opening-choice:focus{filter:brightness(1.12);transform:translateY(-1px);box-shadow:0 0 0 4px rgba(253,230,138,.72)}
+.tk15-opening-choice:not(.serving){background:#0a5d4a}
+.tk15-opening-choice:not(.serving) .tk13-fixed-court-no{box-shadow:0 0 0 3px rgba(253,230,138,.28)}
+.tk15-prestart-line{border-color:#f59e0b;background:#3a2908}
+.tk15-prestart-note{color:#fde68a;font-size:11px;font-weight:700}
+.tk15-player:not(.tk15-opening-choice)[data-court-slot="1"]{cursor:default}
+@media(max-width:700px){.tk15-prestart-note{display:block;margin-top:4px}}

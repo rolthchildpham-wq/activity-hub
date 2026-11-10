@@ -1,0 +1,48 @@
+<!doctype html><meta charset="utf-8"><body>
+<table><tbody id="matches-list"></tbody></table>
+<div id="test-output"></div>
+<script>
+window.Topkey={};
+const T=window.Topkey;
+T.SPORT={key:'volleyball',name:'Bóng chuyền',mode:'sets',categories:['OPEN'],stages:['GROUP','SEMIFINAL','FINAL'],eventLabel:'Trận',participantLabel:'Đội',rules:{bestOf:5}};
+T.MATCH_STATUSES=['SCHEDULED','LIVE','FINISHED','WALKOVER','CANCELLED','SUSPENDED'];
+T.DEFAULT_RULES={bestOf:5};
+T.Auth={role:()=> 'ADMIN',profile:{role:'ADMIN'},user:{uid:'test'}};
+T.Data={ready:false,read:async()=>null,queueSet:async()=>{},queueMulti:async()=>{},audit:async()=>{},listen:()=>()=>{},path:x=>x};
+T.U={toast:()=>{},confirmDanger:async()=>true,money:n=>String(n),setText:()=>{},download:()=>{}};
+const teams={A:{id:'A',name:'Volley Alpha'},B:{id:'B',name:'Volley Beta'},C:{id:'C',name:'Volley Gamma'},D:{id:'D',name:'Volley Delta'},E:{id:'E',name:'Volley Epsilon'},F:{id:'F',name:'Volley Zeta'},G:{id:'G',name:'Volley Eta'},H:{id:'H',name:'Volley Theta'}};
+const mk=(id,code,date,time,stage,status,a,b,sets=[])=>({id,code,date,time,stage,status,teamAId:a,teamBId:b,sets});
+const matches={
+ m003:mk('m003','M003','2026-11-03','01:00','GROUP','FINISHED','E','F',[{a:25,b:18},{a:25,b:21},{a:25,b:20}]),
+ m005:mk('m005','M005','2026-11-03','12:00','GROUP','WALKOVER','B','D',[{a:25,b:18},{a:25,b:21},{a:25,b:20}]),
+ m001:mk('m001','M001','2026-11-03','08:00','SEMIFINAL','FINISHED','A','B',[{a:25,b:18},{a:25,b:21},{a:25,b:20}]),
+ m004:mk('m004','M004','2026-11-04','11:00','SEMIFINAL','FINISHED','A','C',[{a:25,b:18},{a:25,b:21},{a:25,b:20}]),
+ m006:mk('m006','M006','2026-11-04','13:00','FINAL','FINISHED','E','A',[{a:18,b:25},{a:21,b:25},{a:20,b:25}]),
+ m002:mk('m002','M002','2026-11-04','09:00','GROUP','LIVE','C','D',[{a:18,b:25},{a:21,b:25},{a:20,b:25}]),
+ m008:mk('m008','M008','2026-11-05','10:00','GROUP','SCHEDULED','A','D',[{a:25,b:18},{a:25,b:21},{a:25,b:20}]),
+ m009:mk('m009','M009','2026-11-05','10:00','SEMIFINAL','FINISHED','B','E',[{a:18,b:25},{a:21,b:25},{a:20,b:25}]),
+ m007:mk('m007','M007','2026-11-05','09:00','GROUP','WALKOVER','G','H',[]),
+ m010:mk('m010','M010','2026-11-06','13:00','FINAL','FINISHED','A','E',[{a:25,b:18},{a:25,b:21},{a:25,b:20}]),
+ m011:mk('m011','M011','2026-11-06','15:00','GROUP','LIVE','C','F',[]),
+ m012:mk('m012','M012','2026-11-07','09:00','GROUP','SCHEDULED','G','H',[])
+};
+T.App={state:{matches,teams,courts:{c1:{name:'Sân 1'},c2:{name:'Sân 2'},c3:{name:'Sân 3'}},activeMatches:{},config:{rules:{bestOf:5}}},
+ matchLabel(m){return this.teamName(m.teamAId)+' vs '+this.teamName(m.teamBId)},teamName(id){return teams[id]?.name||id},resultLabel(m){return (m.sets||[]).map(s=>s.a+'-'+s.b).join(' | ')||'—'},ranking(){return[]},formatTime:x=>String(x),setMatchStatus:async()=>{},seedIfEmpty:async()=>{},toggleWithdraw:async()=>{},renderFinance(){},renderAll(){},showTab(){}};
+</script>
+<script src="../sports/vnext/src/upgrade12.js"></script>
+<script src="../sports/vnext/src/upgrade122-hotfix58.js"></script>
+<script src="../sports/vnext/src/upgrade122-hotfix86.js"></script>
+<script>
+T.App.renderMatches();
+const seq=[];let current='';const bad=[];
+for(const tr of document.querySelectorAll('#matches-list > tr')){
+ if(tr.classList.contains('tk12-day-row')){current=tr.querySelector('b')?.textContent||'';seq.push('H:'+current);continue;}
+ const code=(tr.cells[0]?.textContent.match(/M\d+/)||[])[0]||'';const id=tr.dataset.matchId||'';const m=T.App.state.matches[id];seq.push('M:'+code);if(!m||!current.includes(m.date.split('-').reverse().join('/')))bad.push({code,current,date:m?.date});
+}
+const stages=Object.fromEntries([...document.querySelectorAll('#matches-list tr.tk12-match-row')].map(tr=>[(tr.cells[0].textContent.match(/M\d+/)||[''])[0],tr.cells[2].textContent]));
+const statuses=Object.fromEntries([...document.querySelectorAll('#matches-list tr.tk12-match-row')].map(tr=>[(tr.cells[0].textContent.match(/M\d+/)||[''])[0],tr.cells[5].textContent.trim()]));
+const expected=['H:⭐ HÔM NAY · 07/11/2026','M:M012','H:03/11/2026','M:M003','M:M001','M:M005','H:04/11/2026','M:M002','M:M004','M:M006','H:05/11/2026','M:M008','M:M009','M:M007','H:06/11/2026','M:M010','M:M011'];
+const pass=bad.length===0 && JSON.stringify(seq)===JSON.stringify(expected) && stages.M001==='Bán kết' && stages.M010==='Chung kết' && stages.M003==='Vòng bảng' && statuses.M012==='Chưa thi đấu' && statuses.M011==='Đang thi đấu';
+document.getElementById('test-output').textContent=JSON.stringify({pass,seq,bad,stages,statuses});
+</script>
+</body>

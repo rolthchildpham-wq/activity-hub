@@ -1,0 +1,193 @@
+{
+  "release": {
+    "schemaVersion": 1,
+    "releaseId": "H111",
+    "cacheTag": "u122h111-20261109",
+    "version": "2026.11.09-vnext-upgrade122-hotfix111-full-i18n",
+    "hub": "upgrade122-hotfix111",
+    "badminton": "upgrade122-hotfix111",
+    "vnext": "upgrade122-hotfix111",
+    "generatedAt": "2026-11-09T09:15:00+07:00",
+    "build": "upgrade122-hotfix111",
+    "release": "H111 VI EN ZH UI Localization & Spectator Runtime (STAGING)"
+  },
+  "checks": [
+    {
+      "name": "All JavaScript files pass parser",
+      "pass": true,
+      "details": {
+        "files": 407,
+        "failed": []
+      }
+    },
+    {
+      "name": "Embedded script parsing",
+      "pass": true,
+      "details": {
+        "count": 43,
+        "failures": []
+      }
+    },
+    {
+      "name": "All build manifests exact release match",
+      "pass": true,
+      "details": [
+        "build.json",
+        "sports/badminton/build.json",
+        "sports/vnext/build.json"
+      ]
+    },
+    {
+      "name": "Entrypoint tags shared",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "Service Worker H111 names",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "Viewer boot bundle has translation runtime and lifecycle listener",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "Data/Firebase rules/PDF unchanged",
+      "pass": true,
+      "details": {
+        "unchanged": [
+          "h104-v2-engine.js",
+          "h104-indexed-runtime.js",
+          "h104-migration-ui.js",
+          "firebase.database.rules.json",
+          "sports/badminton/firebase.database.rules.json",
+          "h106-final-report-pdf.js"
+        ]
+      }
+    },
+    {
+      "name": "Local JS/CSS/manifest links resolve",
+      "pass": true,
+      "details": {
+        "checked": 70,
+        "missing": []
+      }
+    },
+    {
+      "name": "H111_CHROMIUM_VIEWER_RESULTS.json",
+      "pass": true,
+      "details": {
+        "test_count": 21
+      }
+    },
+    {
+      "name": "H111_7SPORTS_I18N_RESULTS.json",
+      "pass": true,
+      "details": {
+        "test_count": 26
+      }
+    },
+    {
+      "name": "Regression tests/auth_matrix_h83.js",
+      "pass": true,
+      "details": {
+        "result": "AUTH_MATRIX_OK 26"
+      }
+    },
+    {
+      "name": "Regression tests/h108_auth_security_regression.js",
+      "pass": true,
+      "details": {
+        "result": "PASS H108 auth live-profile-only & single-observer [{\"sport\":\"badminton\",\"hasProfile\":false,\"observerCount\":1,\"authorized\":false,\"afterLogin\":0,\"redirects\":0},{\"sport\":\"badminton\",\"hasProfile\":true,\"observerCount\":1,\"authorized\":true,\"afterLogin\":1,\"redirects\":0},{\"sport\":\"vnext\",\"hasProfile\":false,\"observerCount\":1,\"authorized\":false,\"afterLogin\":0,\"redirects\":0},{\"sport\":\"vnext\",\"hasProfile\":true,\"observerCount\":1,\"authorized\":true,\"afterLogin\":1,\"redirects\":0}]"
+      }
+    },
+    {
+      "name": "Regression tests/h107_awards_contract.js",
+      "pass": true,
+      "details": {
+        "result": "H107 award contracts PASS: all 7 sports, legacy/new report, archive snapshot, bundled VNext, 4 manifests"
+      }
+    },
+    {
+      "name": "Regression tests/report_translation_h88.js",
+      "pass": true,
+      "details": {
+        "result": "REPORT_TRANSLATION_H88_OK 6"
+      }
+    },
+    {
+      "name": "Regression tests/club_plan_rules_h93.js",
+      "pass": true,
+      "details": {
+        "result": "CLUB_PLAN_RULES_H93_OK"
+      }
+    },
+    {
+      "name": "Regression h104-tests/v2-engine.test.js",
+      "pass": true,
+      "details": {
+        "result": "ALL TESTS PASS"
+      }
+    }
+  ],
+  "failures": [],
+  "skipped": [
+    "Old H93 config HTML-order assertion assumes static config tag, but H110 loads config through ensureConfig()",
+    "Old H109 service worker test hardcodes topkey-h109 cache; current H111 cache is topkey-h111"
+  ],
+  "summary": {
+    "passed": 16,
+    "total": 16,
+    "js_count": 407,
+    "html_scripts": 43,
+    "failures": [],
+    "mobile_viewer_pass": true
+  },
+  "mobile_chromium": {
+    "tests": 21,
+    "passed": 21,
+    "screens": [
+      "/mnt/data/H111_spectator_Chinese_mobile.png",
+      "/mnt/data/H111_spectator_English_mobile.png"
+    ]
+  },
+  "html_static_audit": [
+    {
+      "entry": "hub",
+      "locale": "zh",
+      "residual_count": 0,
+      "samples": []
+    },
+    {
+      "entry": "hub",
+      "locale": "en",
+      "residual_count": 0,
+      "samples": []
+    },
+    {
+      "entry": "badminton",
+      "locale": "zh",
+      "residual_count": 0,
+      "samples": []
+    },
+    {
+      "entry": "badminton",
+      "locale": "en",
+      "residual_count": 0,
+      "samples": []
+    },
+    {
+      "entry": "vnext",
+      "locale": "zh",
+      "residual_count": 0,
+      "samples": []
+    },
+    {
+      "entry": "vnext",
+      "locale": "en",
+      "residual_count": 0,
+      "samples": []
+    }
+  ]
+}

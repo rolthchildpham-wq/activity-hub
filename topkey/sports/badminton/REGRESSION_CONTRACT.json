@@ -1,0 +1,282 @@
+{
+  "schemaVersion": 1,
+  "build": "upgrade117",
+  "rule": "A release is not ready if any required test fails. If an environment cannot run a visual/browser test, mark it NOT-RUN with reason; never report it PASS.",
+  "tests": [
+    {
+      "id": "START_GATE_001",
+      "required": true,
+      "assert": "No opening server -> no Start/fullscreen; selected but not started -> no score change; successful Start -> scoring enabled."
+    },
+    {
+      "id": "SET_ROTATION_001",
+      "required": true,
+      "assert": "A-B-A and B-A-B; 2-0 creates no Set 3; no Set 4."
+    },
+    {
+      "id": "DEUCE_001",
+      "required": true,
+      "assert": "20-20 and 21-20 do not finish; 22-20 finishes."
+    },
+    {
+      "id": "OPENING_LEDGER_001",
+      "required": true,
+      "assert": "First 0-0 server snapshot remains immutable even when final rally server differs."
+    },
+    {
+      "id": "ADMIN_RESET_001",
+      "required": true,
+      "assert": "FINISHED 21-12|21-6 -> SCHEDULED sets=[] and no winner/finishedAt/activeMatch; stale score queue removed."
+    },
+    {
+      "id": "SET_HISTORY_001",
+      "required": true,
+      "assert": "Set 2 shows Set 1 result; Set 3 shows Set 1+2; side swap does not change winner identity."
+    },
+    {
+      "id": "VOICE_BOOTSTRAP_001",
+      "required": true,
+      "assert": "System vi-VN avoids model download; absent voice auto-installs once; installed model reused; failure visible."
+    },
+    {
+      "id": "LOW_LATENCY_001",
+      "required": true,
+      "assert": "Two score gestures in one session cause at most one silent audio prime; warmup/register calls are deduplicated."
+    },
+    {
+      "id": "REAL_APPLAUSE_001",
+      "required": true,
+      "assert": "Three embedded OGG crowd FX assets exist/decode with tie < set < match duration; Upgrade67 delegates applause to Upgrade76; Upgrade76 uses a separate AudioContext path and exposes enable/volume/manual tests."
+    },
+    {
+      "id": "MOBILE_SCORE_001",
+      "required": true,
+      "assert": "Portrait widths 320/360/375/390/412/430/600 calculate two equal score columns fully within available width; center label occupies a separate row."
+    },
+    {
+      "id": "PINYIN_VOICE_001",
+      "required": true,
+      "assert": "CHEN LI REN / Xia An Qing / Hanzi names become Mandarin segments; LONG / Vietnamese names stay Vietnamese; legacy dictionary cannot overwrite a detected Pinyin name before routing; PY:/ZH:/VI: modes parse correctly; no Mandarin model download when a zh-CN system voice is available."
+    },
+    {
+      "id": "AI_SHUTTLE_REPLAY_001",
+      "required": true,
+      "assert": "Camera/WebRTC local replay uses one encoder and works without AI; detector stays low-res/~8 FPS; replay target is ~10s; EdgeOne vision sends <=4 frames with Firebase auth and env-only key; AI is advisory and never changes score."
+    },
+    {
+      "id": "BLV_LIVE_SESSION_001",
+      "required": true,
+      "assert": "Boot/new browser tab is muted; stale commentary/latest is baselined and never replayed; only fresh events for the selected started LIVE match in foreground Umpire/Live may speak; UMPIRE assignment is enforced; leaving tab/background/delete/finish/unassign hard-stops all commentary transports and queue."
+    },
+    {
+      "id": "AI_ENDPOINT_ROOT_001",
+      "required": true,
+      "assert": "From /sports/badminton/, AI health GET and analysis POST resolve to origin-root /api/ai-shuttle-analyze; no ./api/ai-shuttle-analyze regression."
+    },
+    {
+      "id": "REAR_CAMERA_DEFAULT_001",
+      "required": true,
+      "assert": "New page defaults to facingMode environment; UI offers rear/front with rear selected; local Camera and WebRTC broadcaster share the selected facing constraint; local live switch can restart camera without touching score/AI/BLV state."
+    },
+    {
+      "id": "CONTINUOUS_REPLAY_001",
+      "required": true,
+      "assert": "Replay targets ~6s pre +4s post; one MediaRecorder only; the full multi-segment sequence plays via Upgrade85 safe one-ObjectURL-at-a-time playlist with manual Continue fallback; no score/Firebase mutation."
+    },
+    {
+      "id": "REPLAY_ORIENTATION_001",
+      "required": true,
+      "assert": "Replay records capture orientation per segment; landscape capture + portrait intrinsic media auto-rotates by 90 degrees into a 16:9 stage; resize/orientation updates refit; manual rotate fallback exists; no score/Firebase mutation."
+    },
+    {
+      "id": "REPLAY_PERFORMANCE_001",
+      "required": true,
+      "assert": "Replay uses one encoder; only newest 8 clips materialize in RAM list while DB is capped at 24; prune uses key cursor not getAll; detector status/typed arrays avoid 8-FPS DOM/allocation churn; leaving Live/background stops replay encoder and analysis loops."
+    },
+    {
+      "id": "STATIC_ASSETS_001",
+      "required": true,
+      "assert": "All local HTML/CSS/JS/SW references exist; JS syntax and JSON parse pass; SW assets have no missing paths."
+    },
+    {
+      "id": "LIVE_FIRST_WORKSPACE_001",
+      "required": true,
+      "assert": "Desktop Live Viewer + Source/Fallback + AI Replay share the left workspace and BLV stays right; mobile is one-column with bounded replay history; Apply/Open Live enters viewport Live Focus with explicit Thu nhỏ; leaving/stopping Live exits focus; no score/Firebase mutation."
+    },
+    {
+      "id": "REPLAY_DISK_LAZY_001",
+      "required": true,
+      "assert": "Saved replay Blobs stay in IndexedDB while RAM list contains metadata only; website startup outside Live does not load replay DB; Xem lazy-loads one clip; no MediaSource/appendBuffer path; close revokes ObjectURL; one video-only MediaRecorder path remains."
+    },
+    {
+      "id": "STARTUP_PERFORMANCE_001",
+      "required": true,
+      "assert": "Vietnamese default has no translation observer, replay orientation has no whole-document observer, overlay scans are RAF-coalesced, JSZip/HLS are lazy-loaded, and no score/Firebase mutation is introduced."
+    },
+    {
+      "id": "LIVE_LAYOUT_RACE_GUARD_001",
+      "required": true,
+      "assert": "If Live-first layout runs before lazy Replay UI exists and Replay is appended later to #page-live, it is immediately repaired into #tk84-live-left after Source; guard watches only direct Live children and never mutates score/Firebase."
+    },
+    {
+      "id": "NATURAL_APPLAUSE_002",
+      "required": true,
+      "assert": "Natural public-domain audience recording is preferred for set/match; tie applause defaults OFF; softened local OGG fallback remains decodable/offline; remote crowd request is runtime-cached without adding startup fetch work."
+    },
+    {
+      "id": "MALE_VOICE_PROFILE_001",
+      "required": true,
+      "assert": "Auto/Nam/Nữ profiles exist; Nam prefers an identifiable vi-VN system male voice and uses a disclosed lower-pitch system fallback if necessary; no unknown-license 25hours_single model is selected."
+    },
+    {
+      "id": "AUTO_AUDIO_STATE_001",
+      "required": true,
+      "assert": "Auto BLV remains enabled by default, first eligible user gesture attempts verified audio activation, ON/ARMED buttons are disabled/dimmed, and only browser-blocked audio exposes an actionable activation button while Upgrade78 gate remains authoritative."
+    },
+    {
+      "id": "RESET_SCOPE_MENU_001",
+      "required": true,
+      "assert": "Referee Reset opens SET/MATCH choices; SET delegates existing App.resetSet; MATCH is ADMIN-only and delegates Upgrade68 verified SCHEDULED reset; Upgrade87 contains no competing direct score/Firebase reset writes."
+    },
+    {
+      "id": "VIEWER_LIVE_PLAYER_001",
+      "required": true,
+      "assert": "Public spectator Live/player is first; HLS/YouTube play publicly; CAMERA reuses the broadcaster camera stream for authenticated WebRTC viewers without a second getUserMedia; VIEWER/LIVE_ONLY lands on player and never opens its own camera. Viewer mode also stops replay recorder/detector loops on the received remote stream."
+    },
+    {
+      "id": "UMPIRE_AUDIO_OWNERSHIP_001",
+      "required": true,
+      "assert": "UMPIRE on an unassigned court self-claims court.umpireUid before Start/score and then Upgrade78/U87 re-evaluate audio; a court assigned to another UID is not bypassed; no direct activeMatches/matches write is introduced by Upgrade88."
+    },
+    {
+      "id": "PUBLIC_VIEWER_STABILITY_001",
+      "required": true,
+      "assert": "#spectator first paint hides login; anonymous auth is automatic; F5/update preserves hash; spectator listeners are idempotent; current stability layer is final visible version; reset page clears old shell caches/SW."
+    },
+    {
+      "id": "VIEWER_BLV_AUDIO_U94",
+      "required": true,
+      "assert": "Public Viewer visible Bật tiếng gesture enables BLV; commentary listener follows the selected public court; new commentary is spoken; score change schedules a fallback narration when commentary is missing."
+    },
+    {
+      "id": "PERFORMANCE_SAFE_U95",
+      "required": true,
+      "assert": "U95 preserves exact source hashes/order in the bundle, cuts actual local CSS/JS tags to bundle+preboot, uses a lean SW ASSETS list, keeps immutable hashed assets cache-first, moves CDN JS after BODY, and leaves Firebase Rules/TURN/scoring/WebRTC/U94 BLV sources unchanged."
+    },
+    {
+      "id": "VIEWER_BLV_LIFECYCLE_U96",
+      "required": true,
+      "assert": "Viewer BLV enable leaves App.audioUnlocked false; first commentary/latest snapshot and identical repeats/rebind snapshots are silent; one fresh row speaks once; court switching cannot replay old commentary; 700 ms score fallback remains."
+    },
+    {
+      "id": "PUBLIC_VIEWER_ORIENTATION_GUARD_U97",
+      "required": false,
+      "assert": "Historical Upgrade97 isolation contract only. Final package Viewer orientation is superseded by Upgrade98 explicit Xem ngang behavior."
+    },
+    {
+      "id": "VIEWER_LANDSCAPE_LIVE_REFEREE_READABILITY_U98",
+      "required": true,
+      "assert": "Public Viewer Xem ngang uses native fullscreen + best-effort landscape only after user gesture; portrait-sized WebRTC tracks auto-rotate with manual direction fallback; exiting unlocks orientation; referee short-landscape score/name/action text is enlarged with >=44px primary touch targets; no getUserMedia/scoring/Rules/TURN changes."
+    },
+    {
+      "id": "VIEWER_FREEZE_MUTATION_LOOP_FIX_U99",
+      "required": true,
+      "assert": "U98 landscape patch must use one-shot observer that disconnects before patching; repeated textContent writes cannot recursively trigger observer and starve public Firebase rendering."
+    },
+    {
+      "id": "WEBRTC_SIGNALING_RESILIENCE_U101",
+      "required": true,
+      "assert": "BTC reload/self-heal does not delete fresh Viewer session; an existing waiting Viewer receives offer; heartbeat is written; Viewer retry/diagnosis path exists."
+    },
+    {
+      "id": "FIREBASE_LATENCY_U102",
+      "required": true,
+      "assert": "Authenticated heavy Firebase branches are tab-scoped with cleanup; core map changes use incremental child listeners and render coalescing; Public Viewer suppresses duplicate Upgrade94 global listeners and whole-tree commentary while preserving per-court BLV, WebRTC and scoring contracts."
+    },
+    {
+      "id": "RENDER_RUNTIME_STABILITY_U103",
+      "required": true,
+      "assert": "Legacy Viewer BLV polling is retired; authenticated hidden/inactive branch DOM rendering is skipped/deferred without losing state; score/UI and Firebase write metrics are passive; all U102/U101 behavior remains."
+    },
+    {
+      "id": "SCORING_FAST_LANE_001",
+      "required": true,
+      "assert": "Online authenticated SCORE uses direct Firebase update before IDB; failed/offline SCORE falls back to ordered IDB queue; permission denied is BLOCKED; non-SCORE queue behavior stays unchanged."
+    },
+    {
+      "id": "SCHEDULE_COLLAPSE_001",
+      "required": true,
+      "assert": "Public/admin schedule panels can collapse/expand and persist the state without changing match/standings data."
+    },
+    {
+      "id": "SCHEDULE_INTERNAL_SCROLL_001",
+      "required": true,
+      "assert": "Expanded schedule is bounded and internally scrollable in Admin and Public Viewer; sticky headers work; collapse remains functional."
+    },
+    {
+      "id": "SCHEDULE_DOM_PARENT_SAFETY_001",
+      "required": true,
+      "assert": "With schedule content inside collapse/scroll wrapper, admin/public search reinsertion uses the actual reference parent and never throws insertBefore NotFoundError."
+    },
+    {
+      "id": "CACHE_CORRECTNESS_001",
+      "required": true,
+      "assert": "SW precaches the exact current hashed JS/CSS, immutable matcher is upgrade-number agnostic, and EdgeOne headers keep shell fresh while assets are immutable."
+    },
+    {
+      "id": "VIEWER_MINIMAL_BOOT_001",
+      "required": true,
+      "assert": "#spectator boot loads viewer hash assets and only Firebase App/Auth/Database; Admin bundle, Firebase Storage and QRCode are route-gated away."
+    },
+    {
+      "id": "ADMIN_LOGIN_BOOT_GUARD_001",
+      "required": true,
+      "assert": "Dynamic Admin bundle loaded after DOMContentLoaded still boots App.init exactly once; pre-ready login submit is prevented and replayed after admin-ready; credential query params are scrubbed."
+    },
+    {
+      "id": "FEATURE_CODE_SPLITTING_001",
+      "required": true,
+      "assert": "Admin startup excludes Storage/QRCode/Replay-AI feature chunk; Live loads Replay-AI once; Teams loads QR once; Finance/Settings/upload loads Storage on demand; Viewer boot remains minimal."
+    },
+    {
+      "id": "VIEWER_FIREBASE_WINDOW_001",
+      "required": true,
+      "assert": "Spectator has no full matches or full teams listener; schedule is bounded, standings keep all terminal results, team refs are on-demand and Firebase query indexes exist."
+    },
+    {
+      "id": "ATOMIC_SCORE_PIPELINE_001",
+      "required": true,
+      "assert": "POINT_AWARDED merges activeMatches + event + commentary/latest into exactly one underlying SCORE write; correction/non-commentary paths remain safe."
+    },
+    {
+      "id": "CONSOLIDATION_PHASE1_001",
+      "required": true,
+      "assert": "Admin bundle continues to exclude Viewer-only U92-U100 JS, retains U98 referee CSS and U101 broadcaster, with consolidated runtime authority on Upgrade114 or later."
+    },
+    {
+      "id": "CONSOLIDATION_PHASE2_001",
+      "required": true,
+      "assert": "Admin bundle excludes legacy U102/U103 runtime execution and uses one core/data-runtime module while preserving incremental/tab-scoped listeners, hidden render defer, latency metrics and U102/U103 compatibility exports."
+    },
+    {
+      "id": "CONSOLIDATION_PHASE3_001",
+      "required": true,
+      "assert": "Admin runtime uses one UI boundary for migrated Schedule/Umpire/Live hooks; legacy U80/U106/U107 do not execute; compatibility exports and feature behavior remain available."
+    },
+    {
+      "id": "PRODUCTION_HARDENING_001",
+      "required": true,
+      "assert": "40 concurrent Data.init + 30 concurrent Auth.init execute one underlying init each; 100 concurrent flushQueue requests never overlap and coalesce to at most two underlying drains; resume storms coalesce."
+    },
+    {
+      "id": "LONG_SESSION_SOAK_001",
+      "required": true,
+      "assert": "100 subscriptions + 1200 tab switches show no listener/hook growth; 500 atomic scoring actions create 500 writes with pending map returning to zero."
+    },
+    {
+      "id": "PRODUCTION_ARTIFACT_CLEANUP_001",
+      "required": true,
+      "assert": "Current release has no runtime dependency on historical versioned assets; Replay/AI resolves current hashed chunk through runtime asset manifest; only current u118 versioned asset directory is shipped; all prior functional hardening remains mandatory."
+    }
+  ]
+}

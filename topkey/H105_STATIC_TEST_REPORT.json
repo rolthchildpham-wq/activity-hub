@@ -1,0 +1,393 @@
+{
+  "name": "H105 staging acceptance",
+  "testedAt": "2026-11-09T02:38:54.732902+00:00",
+  "status": "FAIL",
+  "jsFiles": 411,
+  "checks": 58,
+  "failures": [
+    [
+      "H105 release id",
+      ""
+    ],
+    [
+      "sw.js H105 unique cache",
+      ""
+    ],
+    [
+      "sw.js old H104 cache cleanup exists",
+      ""
+    ],
+    [
+      "sports/badminton/sw.js H105 unique cache",
+      ""
+    ],
+    [
+      "sports/badminton/sw.js old H104 cache cleanup exists",
+      ""
+    ],
+    [
+      "sports/vnext/sw.js H105 unique cache",
+      ""
+    ],
+    [
+      "sports/vnext/sw.js old H104 cache cleanup exists",
+      ""
+    ]
+  ],
+  "results": [
+    {
+      "group": "syntax",
+      "test": "All JS source files",
+      "status": "PASS",
+      "detail": "411 files"
+    },
+    {
+      "group": "json",
+      "test": "All JSON configuration files",
+      "status": "PASS",
+      "detail": "43 files"
+    },
+    {
+      "group": "release",
+      "test": "Hub/Badminton/VNext identical version/cache/build",
+      "status": "PASS",
+      "detail": "[('u122h113-20261109', 'upgrade122-hotfix113'), ('u122h113-20261109', 'upgrade122-hotfix113'), ('u122h113-20261109', 'upgrade122-hotfix113'), ('u122h113-20261109', 'upgrade122-hotfix113')]"
+    },
+    {
+      "group": "release",
+      "test": "H105 release id",
+      "status": "FAIL",
+      "detail": ""
+    },
+    {
+      "group": "cache",
+      "test": "sw.js H105 unique cache",
+      "status": "FAIL",
+      "detail": ""
+    },
+    {
+      "group": "cache",
+      "test": "sw.js old H104 cache cleanup exists",
+      "status": "FAIL",
+      "detail": ""
+    },
+    {
+      "group": "cache",
+      "test": "sports/badminton/sw.js H105 unique cache",
+      "status": "FAIL",
+      "detail": ""
+    },
+    {
+      "group": "cache",
+      "test": "sports/badminton/sw.js old H104 cache cleanup exists",
+      "status": "FAIL",
+      "detail": ""
+    },
+    {
+      "group": "cache",
+      "test": "sports/vnext/sw.js H105 unique cache",
+      "status": "FAIL",
+      "detail": ""
+    },
+    {
+      "group": "cache",
+      "test": "sports/vnext/sw.js old H104 cache cleanup exists",
+      "status": "FAIL",
+      "detail": ""
+    },
+    {
+      "group": "encoding",
+      "test": "index.html charset utf-8",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "assets",
+      "test": "index.html static JS refs resolve",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "inline",
+      "test": "index.html inline JS syntax",
+      "status": "PASS",
+      "detail": "3 segments"
+    },
+    {
+      "group": "encoding",
+      "test": "sports/badminton/index.html charset utf-8",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "assets",
+      "test": "sports/badminton/index.html static JS refs resolve",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "inline",
+      "test": "sports/badminton/index.html inline JS syntax",
+      "status": "PASS",
+      "detail": "9 segments"
+    },
+    {
+      "group": "encoding",
+      "test": "sports/vnext/index.html charset utf-8",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "assets",
+      "test": "sports/vnext/index.html static JS refs resolve",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "inline",
+      "test": "sports/vnext/index.html inline JS syntax",
+      "status": "PASS",
+      "detail": "3 segments"
+    },
+    {
+      "group": "rules",
+      "test": "firebase.database.rules.json v2 subtrees",
+      "status": "PASS",
+      "detail": "7 sports"
+    },
+    {
+      "group": "rules",
+      "test": "sports/badminton/firebase.database.rules.json v2 subtrees",
+      "status": "PASS",
+      "detail": "1 sports"
+    },
+    {
+      "group": "regression",
+      "test": "tests/auth_matrix_h83.js",
+      "status": "PASS",
+      "detail": "AUTH_MATRIX_OK 26"
+    },
+    {
+      "group": "regression",
+      "test": "tests/auth_integration_h83.js",
+      "status": "PASS",
+      "detail": "AUTH_INTEGRATION_OK 8"
+    },
+    {
+      "group": "regression",
+      "test": "tests/report_fixture_h83.js",
+      "status": "PASS",
+      "detail": "REPORT_FIXTURE_OK 6"
+    },
+    {
+      "group": "regression",
+      "test": "tests/security_contract_h88.js",
+      "status": "PASS",
+      "detail": "SECURITY_CONTRACT_H88_OK 6"
+    },
+    {
+      "group": "regression",
+      "test": "sports/badminton/tests/h44_standings_single_result_test.js",
+      "status": "PASS",
+      "detail": "]"
+    },
+    {
+      "group": "h105_awards",
+      "test": "sports/badminton/upgrade122-hotfix80.js tk105-prize-save",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_awards",
+      "test": "sports/badminton/upgrade122-hotfix80.js savePrizesAdmin",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_awards",
+      "test": "sports/badminton/upgrade122-hotfix80.js ref.transaction(",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_awards",
+      "test": "sports/badminton/upgrade122-hotfix80.js tk105-ppt-template",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_awards",
+      "test": "sports/badminton/upgrade122-hotfix80.js tk105-section-files",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_awards",
+      "test": "sports/badminton/upgrade122-hotfix80.js addCustomSectionSlides",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_awards",
+      "test": "sports/badminton/upgrade122-hotfix80.js reportWithPrizes",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_awards",
+      "test": "sports/badminton/upgrade122-hotfix80.js prizeStructure",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_awards",
+      "test": "sports/vnext/src/upgrade122-hotfix80.js tk105-prize-save",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_awards",
+      "test": "sports/vnext/src/upgrade122-hotfix80.js savePrizesAdmin",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_awards",
+      "test": "sports/vnext/src/upgrade122-hotfix80.js ref.transaction(",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_awards",
+      "test": "sports/vnext/src/upgrade122-hotfix80.js tk105-ppt-template",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_awards",
+      "test": "sports/vnext/src/upgrade122-hotfix80.js tk105-section-files",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_awards",
+      "test": "sports/vnext/src/upgrade122-hotfix80.js addCustomSectionSlides",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_awards",
+      "test": "sports/vnext/src/upgrade122-hotfix80.js reportWithPrizes",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_awards",
+      "test": "sports/vnext/src/upgrade122-hotfix80.js prizeStructure",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_integration",
+      "test": "VNext bundle includes H105 admin prize and editable PPT",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_ppt",
+      "test": "badminton template exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_ppt",
+      "test": "football template exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_ppt",
+      "test": "volleyball template exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_ppt",
+      "test": "running template exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_ppt",
+      "test": "handmade template exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_ppt",
+      "test": "shuttle template exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_ppt",
+      "test": "cooking template exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_ppt",
+      "test": "badminton pptx readable",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_ppt",
+      "test": "football pptx readable",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_ppt",
+      "test": "volleyball pptx readable",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_ppt",
+      "test": "running pptx readable",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_ppt",
+      "test": "handmade pptx readable",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_ppt",
+      "test": "shuttle pptx readable",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_ppt",
+      "test": "cooking pptx readable",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "group": "h105_browser",
+      "test": "Seven sport browser mock report + prize + PowerPoint tests",
+      "status": "PASS",
+      "detail": ""
+    }
+  ],
+  "notTested": [
+    "Firebase real staging authentication/Rules deployment",
+    "EdgeOne production network behavior",
+    "7-sport end-to-end real-user workflows",
+    "Cross-client atomic aggregation (needs server-side support)"
+  ]
+}

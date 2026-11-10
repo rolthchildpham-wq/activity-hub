@@ -1,0 +1,18 @@
+const fs=require('fs'),path=require('path'),assert=require('assert');
+const root=path.resolve(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8');
+const build=JSON.parse(read('build.json')),no=Number((String(build.build).match(/upgrade(\d+)/)||[])[1]||0);assert(no>=115,'build must be upgrade115 or later');
+const m=JSON.parse(read(`assets/u${no}/bundle-manifest.json`)),files=new Set(m.adminCore.sources);
+assert(!files.has('src/upgrade102.js'),'legacy U102 must not execute in Admin');
+assert(!files.has('src/upgrade103.js'),'legacy U103 must not execute in Admin');
+assert(files.has('src/core/data-runtime.js'),'consolidated data runtime missing');
+assert(files.has('src/core/runtime-authority.js'),'runtime authority missing');
+for(const f of ['src/upgrade102.js','src/upgrade103.js'])assert(fs.existsSync(path.join(root,f)),f+' legacy audit source missing');
+const core=read('src/core/data-runtime.js'),auth=read('src/core/runtime-authority.js'),html=read('index.html');
+assert(core.includes('CONSOLIDATED_DATA_RUNTIME_001'),'data runtime contract missing');
+assert(core.includes('window.TopkeyUpgrade102=U102')&&core.includes('window.TopkeyUpgrade103=U103'),'compatibility exports missing');
+assert(core.includes('App.subscribe=subscribeCore'),'consolidated subscribe owner missing');
+assert((core.match(/App\.showTab=function/g)||[]).length===1,'data runtime must own exactly one showTab wrapper');
+assert(/BUILD='upgrade11[5-9]'|BUILD='upgrade1[2-9]\d'/.test(auth)&&/CONSOLIDATED_RUNTIME_AUTHORITY_00[2-9]/.test(auth),'U115+ authority contract missing');
+assert(html.includes(`./assets/u${no}/`+m.adminCore.js)&&html.includes(`./assets/u${no}/`+m.adminCore.css),'index not using current admin assets');
+for(const f of ['src/upgrade92.js','src/upgrade93.js','src/upgrade94.js','src/upgrade95.js','src/upgrade96.js','src/upgrade97.js','src/upgrade98.js','src/upgrade99.js','src/upgrade100.js'])assert(!files.has(f),'Phase1 Viewer legacy returned: '+f);
+console.log('PASS upgrade115 consolidation phase2');

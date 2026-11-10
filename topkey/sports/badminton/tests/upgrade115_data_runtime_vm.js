@@ -1,0 +1,19 @@
+const fs=require('fs'),path=require('path'),vm=require('vm'),assert=require('assert');
+const code=fs.readFileSync(path.resolve(__dirname,'../src/core/data-runtime.js'),'utf8');
+const refs=new Map();function ref(path){if(!refs.has(path))refs.set(path,{handlers:{},on(ev,fn){(this.handlers[ev]??=[]).push(fn)},off(ev,fn){this.handlers[ev]=(this.handlers[ev]||[]).filter(x=>x!==fn)}});return refs.get(path)}
+let hidden=true,renderBranch=0,overview=0,umpire=0,financeRender=0,queueCalls=0;const listeners={};
+const els={};const doc={documentElement:{dataset:{}},get hidden(){return hidden},getElementById:id=>els[id]||null,createElement(){return {id:'',className:'',style:{},innerHTML:'',appendChild(){},querySelector(){return null}}},addEventListener(ev,fn){listeners['doc:'+ev]=fn}};
+const App={state:{config:{},teams:{},matches:{},courts:{},activeMatches:{},announcements:{},finance:{},registrations:{},audit:{},commentary:{},users:{}},offs:[],currentTab:'overview',renderBranch(){renderBranch++},renderOverview(){overview++},renderTeams(){},renderCheckin(){},renderRegistrations(){},renderMatches(){},renderSelectors(){},renderStandings(){},renderSchedulerControls(){},renderControl(){},renderUmpire(){umpire++},renderLiveScore(){},renderFinance(){financeRender++},renderAnnouncements(){},renderAudit(){},renderConfig(){},renderUsers(){},renderHealth(){},showTab(tab){this.currentTab=tab;return tab},score(){this.renderUmpire();return Promise.resolve('ok')}};
+const Data={ready:true,ref,db:{ref},queueMulti:async(up,meta)=>{queueCalls++;return {up,meta}}};
+const T={ROOT:'root',App,Data,Auth:{role:()=> 'ADMIN'}};let perf=0;
+const win={Topkey:T,TopkeyUpgrade90:{stopLegacyPolling(){this.stopped=true}},performance:{now:()=>perf+=5},requestAnimationFrame:fn=>setTimeout(fn,0),addEventListener(ev,fn){listeners['win:'+ev]=fn}};
+const sandbox={window:win,document:doc,location:{hash:'',href:'https://x/sports/badminton/'},URL,Math,Date,console,setTimeout,clearTimeout,performance:win.performance};win.window=win;win.document=doc;win.location=sandbox.location;win.URL=URL;
+vm.createContext(sandbox);vm.runInContext(code,sandbox);
+assert(win.TopkeyCoreDataRuntime115?.installed,'core data runtime not installed');assert(win.TopkeyUpgrade102?.installed&&win.TopkeyUpgrade103?.installed,'compat aliases missing');
+App.subscribe();renderBranch=0;let paths=[...refs.keys()];assert(paths.includes('config')&&paths.includes('matches'),'core listeners missing');assert(!paths.includes('finance'),'finance must stay tab scoped');
+const matchRef=refs.get('matches'),snap={key:'m1',val:()=>({id:'m1'})};for(const fn of matchRef.handlers.child_changed||[])fn(snap);
+setTimeout(async()=>{assert.strictEqual(renderBranch,0,'hidden document must defer render');assert(win.TopkeyUpgrade102.state.metrics.hiddenRenderDefers>0,'hidden defer metric missing');App.currentTab='finance';hidden=false;win.TopkeyCoreDataRuntime115.flushAdminRender();
+ setTimeout(async()=>{assert.strictEqual(renderBranch,0,'inactive matches branch must not render on finance tab');App.showTab('finance');
+  setTimeout(async()=>{assert([...refs.keys()].includes('finance'),'finance listener not attached on finance tab');assert(financeRender>=1,'finance cache render missing');App.currentTab='finance';App.renderOverview();assert.strictEqual(overview,0,'overview must be skipped off overview tab');App.currentTab='umpire';await App.score('A',1);assert(umpire>=1,'score render path broken');await T.Data.queueMulti({}, {type:'SCORE'});assert(queueCalls===1,'queueMulti semantics changed');assert(win.TopkeyUpgrade103.state.metrics.localScoreRenderMs>0,'local score metric missing');assert(win.TopkeyUpgrade103.state.metrics.firebaseScoreWriteMs>0,'firebase score metric missing');console.log('PASS upgrade115 data runtime VM');},15);
+ },15);
+},15);

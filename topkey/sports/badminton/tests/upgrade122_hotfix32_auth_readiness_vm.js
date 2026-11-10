@@ -1,0 +1,21 @@
+const fs=require('fs');
+const src=fs.readFileSync(require('path').join(__dirname,'../assets/u118/admin-core.24b593ff0271.js'),'utf8');
+const m=src.match(/async login\(email,password\)\{([\s\S]*?)\n\s*\}\n\s*async logout/);
+if(!m) throw new Error('Cannot extract Auth.login');
+const AsyncFunction=Object.getPrototypeOf(async function(){}).constructor;
+const fn=new AsyncFunction('T','firebase','email','password',m[1]);
+(async()=>{
+  let calls=0;
+  const auth={signInWithEmailAndPassword:async(e,p)=>{calls++;return {user:{email:e},password:p}}};
+  const T={Data:{auth:null},FIREBASE_CONFIG:{}};
+  const fakeFirebase=undefined;
+  setTimeout(()=>{T.Data.auth=auth},250);
+  const t0=Date.now();
+  const r=await fn(T,fakeFirebase,'umpire@example.com','secret123');
+  if(calls!==1) throw new Error('signIn called '+calls+' times');
+  if(r.user.email!=='umpire@example.com') throw new Error('wrong result');
+  if(Date.now()-t0<200) throw new Error('did not wait for delayed auth');
+  const idx=fs.readFileSync(require('path').join(__dirname,'../index.html'),'utf8');
+  if(!idx.includes('window.Topkey?.Auth?.login&&window.Topkey?.Data?.auth')) throw new Error('preboot still calls Auth.login before Data.auth');
+  console.log('PASS hotfix32 auth readiness VM · delayed Data.auth waits · single signIn · preboot readiness gate');
+})().catch(e=>{console.error(e);process.exit(1)});

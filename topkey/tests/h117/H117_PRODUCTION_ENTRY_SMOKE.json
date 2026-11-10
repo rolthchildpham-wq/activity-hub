@@ -1,0 +1,7 @@
+{
+  "release": "H117 Production Stability P1",
+  "cacheTag": "u122h117p1-20261109",
+  "pass": false,
+  "status": "BLOCKED",
+  "reason": "No Chromium executable is installed; network policy returned 403 when Playwright attempted to download it."
+}

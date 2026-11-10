@@ -1,0 +1,19 @@
+/* U122 Hotfix25 · one-touch offline applause in referee fullscreen. */
+#tk76-crowd-fx{display:none!important}
+#tk122h25-applause{display:none!important;align-items:center;justify-content:center;font-size:20px;line-height:1;min-width:44px}
+body.tk58-score-focus #tk122h25-applause{display:inline-flex!important;visibility:visible!important;opacity:1!important}
+body.tk58-score-focus #tk122h25-applause.tk122h25-playing{transform:scale(.96);filter:brightness(1.08)}
+/* When Fun Commentary exists, add applause between dice and microphone. */
+body.tk58-score-focus #tk122h6-funbar>#tk122h25-applause{grid-area:applause!important;width:100%!important;height:35px!important;min-height:35px!important;padding:2px!important}
+@media (max-width:720px) and (orientation:portrait){
+ body.tk58-score-focus #tk122h6-funbar{
+   grid-template-columns:minmax(0,1fr) auto 38px 38px 38px!important;
+   grid-template-areas:
+     "player address dice applause speak"
+     "phrase phrase phrase phrase phrase"!important;
+ }
+ body.tk58-score-focus #tk122h25-applause{font-size:18px!important}
+}
+@media (max-width:390px) and (orientation:portrait){
+ body.tk58-score-focus #tk122h6-funbar{grid-template-columns:minmax(0,1fr) auto 35px 35px 35px!important}
+}

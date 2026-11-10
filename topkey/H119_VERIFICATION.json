@@ -1,0 +1,36 @@
+{
+  "release": "H119",
+  "cacheTag": "u122h119-20261109",
+  "version": "2026.11.09-vnext-upgrade122-hotfix119-unified-platform",
+  "basis": "TOPKEY_H118_UNIFIED_AUTH_MULTISPORT_FIX(1).zip",
+  "localChecks": {
+    "platformBootstrap": "10/10 PASS",
+    "authStateMachine": "12/12 PASS",
+    "policyRulesParity": "69/69 PASS",
+    "sharedAuthRegression": "29/29 PASS",
+    "unifiedRulesAssets": "28/28 PASS",
+    "releaseIntegrity": "38/38 PASS",
+    "clubPlanConcurrency": "14/14 PASS",
+    "clubPlanCrud": "14/14 PASS",
+    "publicRoutes": "9/9 PASS",
+    "securityContract": "6/6 PASS",
+    "judgingContract": "PASS",
+    "awardsContract": "PASS",
+    "javascriptSyntax": "423 files PASS",
+    "jsonParsing": "57 files PASS",
+    "inlineScriptSyntax": "14/14 PASS"
+  },
+  "knownHarnessLimitations": [
+    "Playwright browser smoke could not run because the Python Playwright package is not installed.",
+    "The legacy H95 performance acceptance fixture fails because its mock does not implement T.Data.readPage; no H119 Auth/bootstrap failure was observed in that test.",
+    "The EdgeOne production endpoint was not accessible from the available web/CONNECT environment."
+  ],
+  "notVerified": [
+    "Actual deployment to EdgeOne",
+    "Actual Firebase Email/Password sign-in and production RTDB rules",
+    "Real mobile and desktop browser network timing",
+    "Production CDN cache invalidation"
+  ],
+  "releaseDecision": "Deployable H119 candidate. Production certification requires the post-deploy checklist in H119_READ_ME_FIRST.md."
+}
+

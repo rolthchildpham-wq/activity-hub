@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>TOPKEY - Kiểm tra deploy & cache (đọc thôi)</title>
+<style>
+:root{color-scheme:dark}body{margin:0;padding:24px;font:15px/1.55 system-ui,Arial;background:#071426;color:#eaf4ff}main{max-width:920px;margin:auto}h1{font-size:24px}button{padding:10px 16px;background:#145ddd;color:white;border:1px solid #408cff;border-radius:9px;cursor:pointer}button:focus-visible{outline:2px solid #fff;outline-offset:2px}.notice{color:#a3bdcf}.result{padding:15px;border:1px solid #36516b;border-radius:12px;margin-top:12px;background:#10263d;overflow-wrap:anywhere}.ok{color:#57e5b9}.bad{color:#ff8498}.warn{color:#fcd77c}code{font-size:13px;color:#96e9ef}pre{white-space:pre-wrap;font-size:12px;background:#081c30;padding:13px;border-radius:8px;max-height:440px;overflow:auto}
+</style></head><body><main>
+<h1>TOPKEY · Kiểm tra đồng bộ phiên bản & tốc độ tải tài nguyên</h1>
+<p class="notice">Chỉ đọc tệp tĩnh cùng tên miền; không đăng nhập, không truy cập điểm số, không ghi Firebase. Dùng được trên staging để so sánh phiên bản Hub, Cầu lông và VNext.</p>
+<p><button id="check" type="button">Kiểm tra lại</button> <button id="copy" type="button">Sao chép báo cáo</button></p>
+<div id="status" role="status">Chưa chạy.</div><div id="result" class="result"><pre id="out">Bấm Kiểm tra lại.</pre></div>
+<script>
+(()=>{'use strict';
+ const $=id=>document.getElementById(id), resources=[['Hub','../build.json'],['Cầu lông','../sports/badminton/build.json'],['VNext (6 môn)','../sports/vnext/build.json'],['Badminton layout','../sports/badminton/h104r1-schedule.css'],['VNext layout','../sports/vnext/h104r1-schedule.css']];
+ let last={};const cap=v=>String(v||'').slice(0,160);
+ async function run(){const status=$('status');status.textContent='Đang kiểm tra…';const items=[];
+  for(const [name,path] of resources){const t=performance.now();const url=new URL(path,location.href);url.searchParams.set('diagnostic',String(Date.now()));try{const response=await fetch(url,{cache:'no-store'});const ms=Math.round(performance.now()-t);if(!response.ok)throw new Error('HTTP '+response.status);const raw=await response.text();let data=null;if(path.endsWith('.json'))data=JSON.parse(raw);items.push({name,url:url.pathname,ok:true,ms,bytes:new TextEncoder().encode(raw).length,build:data?.build,version:data?.version,cacheTag:data?.cacheTag});}catch(e){items.push({name,url:url.pathname,ok:false,error:cap(e.message)})}}
+  const metadata=items.slice(0,3);const matching=metadata.every(x=>x.ok)&&new Set(metadata.map(x=>JSON.stringify([x.build,x.version,x.cacheTag]))).size===1;
+  let sw=[];try{if('serviceWorker'in navigator){const regs=await navigator.serviceWorker.getRegistrations();sw=regs.map(r=>({scope:r.scope,active:!!r.active,waiting:!!r.waiting}))}}catch(e){sw=[{error:cap(e.message)}]}
+  let cacheNames=[];try{if('caches' in window)cacheNames=(await caches.keys()).filter(k=>k.startsWith('topkey-')).slice(0,25)}catch(e){}
+  last={checkedAt:new Date().toISOString(),origin:location.origin,releaseMatching:matching,assets:items,serviceWorkers:sw,cacheNames,limitations:'Static asset fetch time is NOT full application load time. Login/Firebase/CRUD not tested.'};
+  status.className=matching&&items.every(x=>x.ok)?'ok':'warn';status.textContent=matching&&items.every(x=>x.ok)?'PASS - Tệp tĩnh đồng bộ (không xác nhận Firebase)':'CẢNH BÁO - Kiểm tra tệp và phiên bản bên dưới';
+  $('out').textContent=JSON.stringify(last,null,2);
+ }
+ $('check').addEventListener('click',run);
+ $('copy').addEventListener('click',()=>{const data=JSON.stringify(last,null,2);if(navigator.clipboard?.writeText)navigator.clipboard.writeText(data).catch(()=>{});else alert('Chọn và sao chép nội dung báo cáo ở bên dưới.');});
+ run().catch(e=>{$('status').textContent='Không kiểm tra được: '+cap(e.message)});
+})();
+</script></main></body></html>

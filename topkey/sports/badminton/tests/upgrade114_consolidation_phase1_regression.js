@@ -1,0 +1,10 @@
+const fs=require('fs'),path=require('path');
+const root=path.resolve(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8');
+const b=JSON.parse(read('build.json')),n=Number((String(b.build).match(/upgrade(\d+)/)||[])[1]||0);if(n<114)throw new Error('build must preserve U114+');
+const m=JSON.parse(read(`assets/u${n}/bundle-manifest.json`)),files=new Set(m.adminCore.sources);
+const removed=[92,93,94,95,96,97,98,99,100].map(x=>`src/upgrade${x}.js`);for(const f of removed)if(files.has(f))throw new Error('Viewer legacy returned to Admin: '+f);
+if(!files.has('src/upgrade101.js'))throw new Error('U101 broadcaster must remain');if(!files.has('src/core/runtime-authority.js'))throw new Error('runtime authority missing');
+if(!m.adminCore.cssSources.includes('upgrade98.css'))throw new Error('referee U98 CSS missing');if(m.adminCore.cssSources.includes('upgrade97.css'))throw new Error('obsolete viewer U97 CSS returned');
+const idx=read('index.html');if(!idx.includes(`./assets/u${n}/`+m.adminCore.js)||!idx.includes(`./assets/u${n}/`+m.adminCore.css))throw new Error('index not using current consolidated admin assets');
+const r=read('src/core/runtime-authority.js');if(!r.includes(`BUILD='upgrade${n}'`)||!r.includes('CONSOLIDATED_RUNTIME_AUTHORITY_'))throw new Error('current authority contract missing');
+console.log('PASS upgrade114 consolidation phase1 invariant on current build');

@@ -1,0 +1,10 @@
+/* U122 Hotfix7: deterministic visibility of Fun Commentary in referee score-focus. */
+body.tk58-score-focus #page-umpire>.card>#tk122h6-funbar.tk122h6-funbar{display:grid!important;visibility:visible!important;opacity:1!important;grid-row:2!important}
+body.tk58-score-focus #page-umpire>.card>.score-actions{grid-row:3!important}
+body.tk58-score-focus #page-umpire>.card{grid-template-rows:minmax(0,1fr) auto auto!important}
+@media(max-width:720px) and (orientation:portrait){
+ body.tk58-score-focus #tk122h6-funbar{position:relative!important;bottom:auto!important;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr) 44px 44px!important;padding:5px!important}
+ body.tk58-score-focus #tk122h6-funbar .tk122h6-title,body.tk58-score-focus #tk122h6-funbar .tk122h6-preview{display:none!important}
+ body.tk58-score-focus #tk122h6-funbar select{height:42px!important;min-height:42px!important;font-size:11px!important}
+ body.tk58-score-focus #tk122h6-funbar .btn{height:42px!important;min-height:42px!important}
+}

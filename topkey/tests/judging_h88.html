@@ -1,0 +1,14 @@
+<!doctype html><html><head><meta charset="utf-8"><title>H88 Judging Browser Test</title></head><body>
+<section id="login-screen">LOGIN SHOULD HIDE</section><div id="app-shell">APP</div><section id="public-spectator" class="hidden"></section><section id="public-register" class="hidden"></section><section id="page-settings"><div class="grid g2"></div></section>
+<script>
+class Snap{constructor(v){this.v=v}val(){return this.v}exists(){return this.v!=null}}
+const fixture={config:{judging:{enabled:true,mode:'PUBLIC_DEVICE',title:'Chấm món ăn',token:'token88',criteria:[{id:'skill',label:'Kỹ năng',weight:40},{id:'variety',label:'Phong phú',weight:30},{id:'beauty',label:'Đẹp',weight:30}]}},teams:{t1:{id:'t1',name:'Đội A'},t2:{id:'t2',name:'Đội B'}}};
+const refs={};
+function valueFor(p){if(p.endsWith('/config'))return fixture.config;if(p.endsWith('/teams'))return fixture.teams;if(p.includes('/judgeAccessCodes/'))return null;if(p.endsWith('/judgingVotes'))return{};return null}
+const db={ref(p=''){return{async once(){return new Snap(valueFor(p))},on(ev,fn){if(ev==='value')fn(new Snap(valueFor(p)))},off(){},async set(v){window.__lastSet={p,v}},async remove(){},async update(v){window.__lastUpdate=v}}}};
+window.QRCode=function(el,o){el.dataset.qr=o.text;el.textContent='QR'};
+window.Topkey={SPORT:{key:'cooking',name:'Nấu ăn',rubric:[{key:'skill',label:'Kỹ năng',weight:40},{key:'variety',label:'Phong phú',weight:30},{key:'beauty',label:'Đẹp',weight:30}]},App:{state:{config:fixture.config,teams:fixture.teams},async afterLogin(){},renderConfig(){},renderTeams(){},handlePublicHash(){}},U:{toast(){},id(){return 'id1'}},Auth:{user:{uid:'admin'},profile:{role:'ADMIN'}},Data:{tid:'tid88',db,path(s=''){return 'topkey_cooking_vnext_2026/tournaments/tid88'+(s?'/'+s:'')},async queueSet(p,v){if(p==='config/judging')fixture.config.judging=v}}};
+</script>
+<script src="../sports/vnext/src/upgrade122-hotfix88-judging.js"></script>
+<script>setTimeout(()=>{document.body.dataset.ready='1'},300)</script>
+</body></html>
