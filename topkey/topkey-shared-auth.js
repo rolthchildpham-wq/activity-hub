@@ -57,7 +57,11 @@
    _removeVerificationPending(){
     document.getElementById('topkey-auth-verification-pending')?.remove();
    }
+   _finishInitialAuthCheck(){
+    document.getElementById('topkey-auth-boot-pending')?.remove();
+   }
    _showVerificationPending(message='Đang xác minh quyền tài khoản…'){
+    this._finishInitialAuthCheck();
     // Firebase identity is retained: never show a second password form for a
     // network timeout, delayed profile read or an in-progress session restore.
     document.getElementById('login-screen')?.classList.add('hidden');
@@ -98,6 +102,7 @@
      this._showVerificationPending(message||PROFILE_MESSAGE);return;
     }
     this._removeVerificationPending();
+    this._finishInitialAuthCheck();
     document.getElementById('app-shell')?.classList.add('hidden');
     document.getElementById('login-screen')?.classList.remove('hidden');
     const retry=document.getElementById('auth-retry-profile');
@@ -109,6 +114,7 @@
     }
    }
    _showApp(){
+    this._finishInitialAuthCheck();
     this._removeVerificationPending();
     document.getElementById('login-screen')?.classList.add('hidden');
     document.getElementById('app-shell')?.classList.remove('hidden');
