@@ -54,7 +54,50 @@
     this.profileRef=null;this.profileHandler=null;this.sessionUid=null;
    }
    detach(){return this.detachProfile()}
+   _removeVerificationPending(){
+    document.getElementById('topkey-auth-verification-pending')?.remove();
+   }
+   _showVerificationPending(message='Đang xác minh quyền tài khoản…'){
+    // Firebase identity is retained: never show a second password form for a
+    // network timeout, delayed profile read or an in-progress session restore.
+    document.getElementById('login-screen')?.classList.add('hidden');
+    document.getElementById('app-shell')?.classList.add('hidden');
+    let panel=document.getElementById('topkey-auth-verification-pending');
+    if(!panel){
+     panel=document.createElement('section');
+     panel.id='topkey-auth-verification-pending';
+     panel.setAttribute('role','status');
+     panel.style.cssText='max-width:520px;margin:10vh auto;padding:24px;border:1px solid #446180;border-radius:16px;background:#10243d;color:#f2f7ff;line-height:1.5;box-shadow:0 12px 40px #0004';
+     const heading=document.createElement('h2');heading.textContent='Đang xác minh phiên đăng nhập';
+     const detail=document.createElement('p');detail.id='topkey-auth-verification-message';
+     const retry=document.createElement('button');retry.type='button';retry.id='topkey-auth-verification-retry';
+     retry.textContent='Thử kiểm tra quyền';retry.style.cssText='padding:10px 16px;border-radius:10px;background:#0f987d;color:white;border:0;cursor:pointer';
+     retry.addEventListener('click',async()=>{
+      if(retry.disabled)return;
+      retry.disabled=true;retry.textContent='Đang kiểm tra…';
+      try{
+       const auth=this.ensureAuth();
+       const user=auth?.currentUser;
+       if(user&&!user.isAnonymous)await this.retryProfile();
+       else if(auth)await this._onAuthState(auth.currentUser);
+       else throw new Error('Firebase chưa kết nối. Vui lòng kiểm tra mạng.');
+      }catch(e){this._showVerificationPending(safeMessage(e))}
+      finally{retry.disabled=false;retry.textContent='Thử kiểm tra quyền'}
+     });
+     panel.append(heading,detail,retry);document.body.appendChild(panel);
+    }
+    const detail=panel.querySelector('#topkey-auth-verification-message');
+    if(detail)detail.textContent=message;
+    this.transition('REVALIDATING',{reason:'profile-wait'});
+   }
    _showLogin(message='',allowRetry=false){
+    const authUser=this.ensureAuth()?.currentUser;
+    const hub=window.TopkeyHubSession?.read?.();
+    const restoring=hub?.phase==='AUTHENTICATED'&&!!hub?.authUid;
+    if(allowRetry&&((authUser&&!authUser.isAnonymous)||restoring)){
+     this._showVerificationPending(message||PROFILE_MESSAGE);return;
+    }
+    this._removeVerificationPending();
     document.getElementById('app-shell')?.classList.add('hidden');
     document.getElementById('login-screen')?.classList.remove('hidden');
     const retry=document.getElementById('auth-retry-profile');
@@ -66,6 +109,7 @@
     }
    }
    _showApp(){
+    this._removeVerificationPending();
     document.getElementById('login-screen')?.classList.add('hidden');
     document.getElementById('app-shell')?.classList.remove('hidden');
     const hint=document.getElementById('topkey-auth-hint');if(hint)hint.textContent='';
@@ -89,6 +133,7 @@
     if(T.App)T.App.__afterLoginUid='';
     window.__TOPKEY_ADMIN_READY=false;
     if(Array.isArray(T.App?.offs)){for(const off of T.App.offs)try{off()}catch{}T.App.offs=[]}
+    this._removeVerificationPending();
     this.transition(state);this._showLogin();
    }
    async rejectSportAccess(profile=this.profile){
