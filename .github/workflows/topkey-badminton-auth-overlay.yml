@@ -1,0 +1,23 @@
+name: TOPKEY Badminton P6 Auth Overlay
+on:
+  pull_request:
+    paths:
+      - 'topkey/sports/badminton/index.html'
+      - 'topkey/tests/badminton-auth-overlay.test.cjs'
+      - '.github/workflows/topkey-badminton-auth-overlay.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'topkey/sports/badminton/index.html'
+      - 'topkey/tests/badminton-auth-overlay.test.cjs'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node --check topkey/tests/badminton-auth-overlay.test.cjs
+      - run: node topkey/tests/badminton-auth-overlay.test.cjs
+      - run: node topkey/tests/badminton-auth-boot.test.cjs
+      - run: node topkey/tests/auth-profile-pending.test.cjs
