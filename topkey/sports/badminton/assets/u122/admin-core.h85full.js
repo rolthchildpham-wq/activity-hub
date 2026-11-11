@@ -278,7 +278,7 @@ const App=T.App={
    setTimeout(()=>{try{this.heartbeat()}catch(e){console.warn('Heartbeat deferred',e)}},250);
    setTimeout(()=>{Promise.resolve(this.ensureSchema()).catch(console.warn);Promise.resolve(this.seedIfEmpty()).catch(console.warn)},1500);
    setTimeout(()=>this.showLoginAnnouncement(),1800);
-   if(T.Auth.role()==='ADMIN')setTimeout(()=>this.inspectLegacyData(),2500);
+   // Legacy database reads are reserved for explicit migration actions.
  },
  async ensureSchema(){
    try{
@@ -604,6 +604,27 @@ window.TopkeyUIBoundary={installed:false,state,hooks,onTab:(fn,key)=>add('tab',f
 Object.defineProperty(window.TopkeyUIBoundary,'installed',{get:()=>state.installed});
 })();
 
+/* SOURCE: ./src/core/archive-pagination.js */
+// Read at most one archive page. Reports stay in their existing storage path.
+(() => {
+ 'use strict';
+ window.TopkeyArchivePage = async function(ref, cursor = null, size = 25) {
+  let query = ref.orderByChild('closedAt');
+  if (cursor) query = query.endAt(cursor.value, cursor.key);
+  const snap = await query.limitToLast(size + 2).once('value');
+  const ordered = [];
+  snap.forEach(child => { ordered.push({key:child.key,value:child.val()}); });
+  const eligible = ordered.filter(x => !cursor || x.key !== cursor.key);
+  const selected = eligible.slice(-size);
+  const first = selected[0];
+  return {
+   rows:Object.fromEntries(selected.map(x => [x.key,{...x.value,tid:x.value?.tid||x.key}])),
+   hasMore:eligible.length > size,
+   cursor:first ? {key:first.key,value:first.value?.closedAt ?? null} : null
+  };
+ };
+})();
+
 /* SOURCE: ./src/upgrade9.js */
 (() => {
 'use strict';
@@ -671,6 +692,7 @@ const Upgrade={
   $('tk9-finish-tournament')?.addEventListener('click',()=>this.finishTournament());$('tk9-new-tournament')?.addEventListener('click',()=>this.createTournament());$('tk9-perm-close')?.addEventListener('click',()=>$('tk9-permission-modal').classList.add('hidden'));$('tk9-perm-default')?.addEventListener('click',()=>this.renderPermissionEditor('tk9-edit-permissions',defaultsForRole($('tk9-perm-role').value)));$('tk9-perm-role')?.addEventListener('change',()=>this.renderPermissionEditor('tk9-edit-permissions',defaultsForRole($('tk9-perm-role').value)));$('tk9-perm-save')?.addEventListener('click',()=>this.saveEditedUser());
  },
  patchMethods(){
+  const show=App.showTab?.bind(App);if(show)App.showTab=(tab,...a)=>{const out=show(tab,...a);if(App.currentTab==='settings'&&!this.archiveLoaded)this.loadArchives();return out};
   const baseAfter=App.afterLogin?.bind(App);if(baseAfter)App.afterLogin=async(...args)=>{const r=await baseAfter(...args);await this.afterLogin();return r};
   const baseBranch=App.renderBranch?.bind(App);if(baseBranch)App.renderBranch=(b,...args)=>{const r=baseBranch(b,...args);this.renderAll();return r};
   const baseAll=App.renderAll?.bind(App);if(baseAll)App.renderAll=(...args)=>{const r=baseAll(...args);this.renderAll();return r};
@@ -680,7 +702,7 @@ const Upgrade={
   App.buildSchedulePlan=()=>this.buildSchedulePlan();
   const baseRole=App.applyRole?.bind(App);if(baseRole)App.applyRole=(...args)=>{const r=baseRole(...args);setTimeout(()=>this.applyPermissionsDom(),0);return r};
  },
- async afterLogin(){await this.ensureRegistrationToken();await this.loadArchives();this.renderAll();this.applyPermissionsDom();},
+ async afterLogin(){this.renderAll();this.applyPermissionsDom();Promise.resolve(this.ensureRegistrationToken()).catch(e=>console.warn('Registration setup deferred',e));},
  renderAll(){this.renderTop3();this.renderRegistrationQR();this.renderRegistrations();this.renderSchedulerUpgrade();this.renderSettings();this.applyAppearance();this.applyPermissionsDom();this.renderSecurityCorner();},
  renderTop3(){const grid=$('tk9-top3-grid');if(!grid)return;const cfg=App.state.config||{},closed=cfg.tournamentStatus==='CLOSED';$('tk9-tournament-status').textContent=closed?'ĐÃ KẾT THÚC':'ĐANG DIỄN RA';$('tk9-tournament-status').className='tk9-status '+(closed?'closed':'open');const cats=[...new Set(Object.values(App.state.teams||{}).map(t=>t.category).filter(Boolean))];const use=cats.length?cats:(S.categories||[]);grid.innerHTML='';use.forEach(cat=>{const rows=App.ranking?App.ranking().filter(r=>App.state.teams?.[r.id]?.category===cat).slice(0,3):[];const card=document.createElement('div');card.className='tk9-podium';card.innerHTML=`<h3>${esc(cat)}</h3>${rows.length?rows.map((r,i)=>`<div class="tk9-rank"><span class="tk9-medal">${['🥇','🥈','🥉'][i]}</span><div><b>${esc(r.name)}</b><div class="tk9-small">${this.rankMeta(r)}</div></div></div>`).join(''):'<span class="muted">Chưa đủ kết quả.</span>'}`;grid.appendChild(card)});const overview=$('page-overview');overview?.classList.toggle('tk9-closed-overview',closed);const legacy=overview?.querySelector('.grid.g2');if(legacy)legacy.classList.toggle('hidden',closed);},
  rankMeta(r){if(S.mode==='time')return r.bestTime==null?'Chưa có thành tích':(App.formatTime?App.formatTime(r.bestTime):String(r.bestTime));if(S.mode==='judged')return `Điểm: ${r.score??'—'}`;return `Trận ${r.played||0} · Điểm ${r.points||0}`;},
@@ -750,7 +772,19 @@ const Upgrade={
  installCopyGuard(){const violate=e=>{const sec=App.state.config?.security||{};if(!sec.copyProtection||!this.securityLocked)return;const tag=e.target?.tagName;if(['INPUT','TEXTAREA','SELECT'].includes(tag))return;e.preventDefault();this.lockSecurity('copy')};document.addEventListener('copy',violate,true);document.addEventListener('cut',violate,true);document.addEventListener('contextmenu',violate,true);document.addEventListener('dragstart',violate,true);document.addEventListener('keydown',e=>{const k=String(e.key||'').toLowerCase(),bad=(e.ctrlKey||e.metaKey)&&(['c','x','u','s'].includes(k)||e.shiftKey&&['i','j','c'].includes(k));if(bad)violate(e)},true);},
  async finishTournament(){if(!canEdit('settings','finish'))return U.toast('Không có quyền','err');const matches=Object.values(App.state.matches||{}),unfinished=matches.filter(m=>!TERMINAL.has(m.status));if(unfinished.length)return U.toast(`Còn ${unfinished.length} lịch chưa kết thúc/hủy`,'err');if(!matches.length&&!confirm('Giải chưa có lịch thi đấu. Vẫn đóng giải?'))return;const top3={};[...new Set(Object.values(App.state.teams||{}).map(t=>t.category).filter(Boolean))].forEach(cat=>top3[cat]=(App.rankingEligible?App.rankingEligible({category:cat}).slice(0,3):(App.ranking?App.ranking().filter(r=>App.state.teams?.[r.id]?.category===cat).slice(0,3):[])));if(!await U.confirmDanger('Đóng giải hiện tại','Giải sẽ chuyển sang chỉ đọc về mặt vận hành. Dữ liệu cũ không bị xóa; Top 3 được chốt theo từng nội dung.','ĐÓNG GIẢI'))return;const closedAt=Date.now(),cfg={...App.state.config,tournamentStatus:'CLOSED',closedAt,closedBy:T.Auth.user?.uid||'',finalTop3:top3,updatedAt:closedAt},index={tid:T.Data.tid,title:cfg.title||S.title,status:'CLOSED',closedAt,sport:SPORT_KEY,top3};const up={};up[T.Data.path('config')]=cfg;up[`${AUTH_ROOT}/tournamentIndex/${SPORT_KEY}/${T.Data.tid}`]=index;await T.Data.queueMulti(up,{type:'TOURNAMENT_CLOSE'});await T.Data.audit('CLOSE','tournament',T.Data.tid,null,index);await this.loadArchives();U.toast('Đã đóng giải. Dashboard giữ thống kê và Top 3.','ok');},
  async createTournament(){if(T.Auth.role()!=='ADMIN')return U.toast('Chỉ ADMIN','err');const title=prompt('Tên giải mới',`${S.name||'TOPKEY'} ${new Date().getFullYear()}`);if(title===null||!title.trim())return;const tid=`t_${Date.now().toString(36)}`,base={title:title.trim(),location:App.state.config?.location||'Topkey',rules:clone(T.DEFAULT_RULES),rulesLocked:false,publicMode:true,tournamentStatus:'ACTIVE',createdAt:Date.now(),scheduler:{lockedDates:[],busy:[],priority:[],limits:[],playerBusy:[]},registration:{title:`Đăng ký ${title.trim()}`,deadline:'',enabled:true,token:this.randomToken()},appearance:{titlePrimary:title.trim(),titleSecondary:'',eventTime:'',format:'Vòng tròn tính điểm toàn giải',headerColor:'#0d2036',backgroundUrl:''}},up={};up[`${T.ROOT}/tournaments/${tid}/config`]=base;up[`${T.ROOT}/tournaments/${tid}/meta`]={schemaVersion:T.SCHEMA_VERSION||1,version:T.VERSION,sport:SPORT_KEY,createdAt:Date.now()};const venueBase=S.mode==='running'?'Làn':S.mode==='judged'?'Khu':'Sân';for(let i=1;i<=4;i++)up[`${T.ROOT}/tournaments/${tid}/courts/court_${i}`]={id:`court_${i}`,name:`${venueBase} ${i}`,status:'AVAILABLE',activeMatchId:'',stream:{type:'CAMERA',url:''}};up[`${AUTH_ROOT}/tournamentIndex/${SPORT_KEY}/${tid}`]={tid,title:title.trim(),status:'ACTIVE',createdAt:Date.now(),sport:SPORT_KEY};await T.Data.db.ref().update(up);{const k=SPORT_KEY==='badminton'?'topkey_vnext_tid':`topkey_${SPORT_KEY}_tid`;localStorage.setItem(k,tid);localStorage.setItem(SPORT_KEY==='badminton'?'topkey_vnext_prod_tid':k+'_prod',tid);}location.reload();},
- async loadArchives(){if(T.Auth?.role?.()!=='ADMIN'||!T.Data?.db)return;try{const s=await T.Data.db.ref(`${AUTH_ROOT}/tournamentIndex/${SPORT_KEY}`).once('value');this.archives=s.val()||{};this.renderArchives()}catch{}},
+ async loadArchives(more=false){
+  if(T.Auth?.role?.()!=='ADMIN'||!T.Data?.db||this.archiveLoading)return;
+  this.archiveLoading=true;
+  try{
+   const page=await window.TopkeyArchivePage(T.Data.db.ref(`${AUTH_ROOT}/tournamentIndex/${SPORT_KEY}`),more?this.archiveCursor:null);
+   if(T.Auth?.role?.()!=='ADMIN')return;
+   this.archives=page.rows;this.archiveCursor=page.cursor;this.archiveLoaded=true;this.renderArchives();
+   let controls=$('tk123-archive-pages');if(!controls){controls=document.createElement('div');controls.id='tk123-archive-pages';$('tk9-archive-list')?.after(controls)}
+   controls.replaceChildren();
+   const reset=document.createElement('button');reset.className='btn mini';reset.textContent='↻ Giải mới nhất';reset.onclick=()=>this.loadArchives();controls.append(reset);
+   if(page.hasMore){const next=document.createElement('button');next.className='btn mini';next.textContent='Xem 25 giải trước';next.onclick=()=>this.loadArchives(true);controls.append(next)}
+  }catch(e){U.toast('Không tải được lịch sử giải: '+(e?.message||e),'err')}finally{this.archiveLoading=false}
+ },
  renderArchives(){const box=$('tk9-archive-list');if(!box)return;const rows=Object.values(this.archives||{}).sort((a,b)=>(b.closedAt||b.createdAt||0)-(a.closedAt||a.createdAt||0));box.innerHTML=rows.length?rows.map(x=>`<div class="list-card"><span><b>${esc(x.title||x.tid)}</b><br><span class="tk9-small">${esc(x.tid)} · ${esc(x.status||'ACTIVE')}${x.closedAt?' · '+new Date(x.closedAt).toLocaleDateString('vi-VN'):''}</span></span>${x.tid===T.Data.tid?'<span class="pill">Hiện tại</span>':''}</div>`).join(''):'<p class="muted">Chưa có lịch sử giải.</p>';}
 };
 Upgrade.install();

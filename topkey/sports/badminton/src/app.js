@@ -28,7 +28,7 @@ const App=T.App={
    try{await Promise.race([this.ensureSchema(),new Promise((_,rej)=>setTimeout(()=>rej(new Error('schema timeout')),4500))])}catch(e){console.warn('Schema check deferred',e)}
    this.subscribe();
    try{await Promise.race([this.seedIfEmpty(),new Promise((_,rej)=>setTimeout(()=>rej(new Error('seed timeout')),4500))])}catch(e){console.warn('Seed check deferred',e)}
-   this.renderAll(); this.heartbeat(); setTimeout(()=>this.showLoginAnnouncement(),700); if(T.Auth.role()==='ADMIN')setTimeout(()=>this.inspectLegacyData(),900);
+   this.renderAll(); this.heartbeat(); setTimeout(()=>this.showLoginAnnouncement(),700); // Legacy inspection is available on demand.
  },
  async ensureSchema(){
    try{

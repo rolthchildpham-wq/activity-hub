@@ -3,28 +3,28 @@
     ".read": false,
     ".write": false,
     "topkey_badminton_app": {
-      ".read": true,
-      ".write": true
+      ".read": "auth != null && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('role').val() === 'ADMIN' && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('active').val() !== false && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('disabled').val() !== true && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('locked').val() !== true && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('enabled').val() !== false && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('isActive').val() !== false && (!root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('status').exists() || !root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('status').val().matches(/^([dD][iI][sS][aA][bB][lL][eE][dD]|[bB][lL][oO][cC][kK][eE][dD]|[sS][uU][sS][pP][eE][nN][dD][eE][dD]|[iI][nN][aA][cC][tT][iI][vV][eE])$/))",
+      ".write": false
     },
     "topkey_badminton_app_ai": {
-      ".read": true,
-      ".write": true
+      ".read": "auth != null && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('role').val() === 'ADMIN' && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('active').val() !== false && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('disabled').val() !== true && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('locked').val() !== true && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('enabled').val() !== false && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('isActive').val() !== false && (!root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('status').exists() || !root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('status').val().matches(/^([dD][iI][sS][aA][bB][lL][eE][dD]|[bB][lL][oO][cC][kK][eE][dD]|[sS][uU][sS][pP][eE][nN][dD][eE][dD]|[iI][nN][aA][cC][tT][iI][vV][eE])$/))",
+      ".write": false
     },
     "topkey_badminton_app_ai_testing": {
-      ".read": true,
-      ".write": true
+      ".read": "auth != null && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('role').val() === 'ADMIN' && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('active').val() !== false && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('disabled').val() !== true && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('locked').val() !== true && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('enabled').val() !== false && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('isActive').val() !== false && (!root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('status').exists() || !root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('status').val().matches(/^([dD][iI][sS][aA][bB][lL][eE][dD]|[bB][lL][oO][cC][kK][eE][dD]|[sS][uU][sS][pP][eE][nN][dD][eE][dD]|[iI][nN][aA][cC][tT][iI][vV][eE])$/))",
+      ".write": false
     },
     "topkey_multisport_app": {
-      ".read": true,
-      ".write": true
+      ".read": "auth != null && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('role').val() === 'ADMIN' && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('active').val() !== false && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('disabled').val() !== true && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('locked').val() !== true && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('enabled').val() !== false && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('isActive').val() !== false && (!root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('status').exists() || !root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('status').val().matches(/^([dD][iI][sS][aA][bB][lL][eE][dD]|[bB][lL][oO][cC][kK][eE][dD]|[sS][uU][sS][pP][eE][nN][dD][eE][dD]|[iI][nN][aA][cC][tT][iI][vV][eE])$/))",
+      ".write": false
     },
     "topkey_multisport_app_v3": {
-      ".read": true,
-      ".write": true
+      ".read": "auth != null && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('role').val() === 'ADMIN' && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('active').val() !== false && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('disabled').val() !== true && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('locked').val() !== true && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('enabled').val() !== false && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('isActive').val() !== false && (!root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('status').exists() || !root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('status').val().matches(/^([dD][iI][sS][aA][bB][lL][eE][dD]|[bB][lL][oO][cC][kK][eE][dD]|[sS][uU][sS][pP][eE][nN][dD][eE][dD]|[iI][nN][aA][cC][tT][iI][vV][eE])$/))",
+      ".write": false
     },
     "topkey_multisport_app_v4": {
-      ".read": true,
-      ".write": true
+      ".read": "auth != null && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('role').val() === 'ADMIN' && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('active').val() !== false && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('disabled').val() !== true && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('locked').val() !== true && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('enabled').val() !== false && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('isActive').val() !== false && (!root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('status').exists() || !root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('status').val().matches(/^([dD][iI][sS][aA][bB][lL][eE][dD]|[bB][lL][oO][cC][kK][eE][dD]|[sS][uU][sS][pP][eE][nN][dD][eE][dD]|[iI][nN][aA][cC][tT][iI][vV][eE])$/))",
+      ".write": false
     },
     "topkey_badminton_vnext_2026": {
       "users": {
@@ -268,7 +268,13 @@
       },
       "tournamentIndex": {
         ".read": "auth != null && (root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('role').val() === 'ADMIN' || root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('permissions/modules/systemAdmin').val() === 'view' || root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('permissions/modules/systemAdmin').val() === 'edit' || root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('permissions/details/systemAdmin:access').val() === 'view' || root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('permissions/details/systemAdmin:access').val() === 'edit')",
-        ".write": "auth != null && (root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('role').val() === 'ADMIN' || root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('permissions/modules/systemAdmin').val() === 'edit' || root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('permissions/details/systemAdmin:access').val() === 'edit')"
+        ".write": "auth != null && (root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('role').val() === 'ADMIN' || root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('permissions/modules/systemAdmin').val() === 'edit' || root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('permissions/details/systemAdmin:access').val() === 'edit')",
+        "$sport": {
+          ".indexOn": [
+            "closedAt",
+            "updatedAt"
+          ]
+        }
       },
       "associationDashboard": {
         ".read": "auth != null && (root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('role').val() === 'ADMIN' || root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('permissions/modules/systemAdmin').val() === 'view' || root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('permissions/modules/systemAdmin').val() === 'edit' || root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('permissions/details/systemAdmin:access').val() === 'view' || root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('permissions/details/systemAdmin:access').val() === 'edit')",
