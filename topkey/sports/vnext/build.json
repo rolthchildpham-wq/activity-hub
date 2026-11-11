@@ -1,6 +1,6 @@
 {
-  "build": "upgrade122-hotfix122-closed-admin-tabs",
-  "cacheTag": "u122h122-20261111",
-  "version": "2026.11.11-vnext-upgrade122-hotfix122-closed-admin-tabs",
-  "release": "H122 Closed Tournament Admin Navigation"
+  "build": "upgrade122-hotfix123-scale-security",
+  "cacheTag": "u122h123-20261111",
+  "version": "2026.11.11-vnext-upgrade122-hotfix123-scale-security",
+  "release": "H123 Archive Pagination and Runtime Ordering"
 }

@@ -1,0 +1,35 @@
+name: TOPKEY archive scale and rules regression
+on:
+  push:
+    branches: [main, fix/h123-scale-security]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Install isolated test dependencies
+        run: npm install --prefix /tmp/topkey-tests firebase-tools@14 @firebase/rules-unit-testing@4 firebase@11 jsdom@26
+      - name: Runtime ordering and 1000 synthetic tournaments
+        env:
+          NODE_PATH: /tmp/topkey-tests/node_modules
+        run: |
+          node topkey/tests/runtime-order.cjs
+          node topkey/tests/scale-1000.cjs
+          node topkey/tests/closed-admin-tabs.cjs
+          node topkey/tests/h119/policy_rules_parity.cjs
+      - name: Real Firebase Database emulator authorization tests
+        working-directory: topkey
+        env:
+          NODE_PATH: /tmp/topkey-tests/node_modules
+        run: /tmp/topkey-tests/node_modules/.bin/firebase emulators:exec --only database --project demo-topkey-scale 'node tests/rules-legacy-emulator.cjs'

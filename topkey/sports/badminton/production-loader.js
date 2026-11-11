@@ -131,6 +131,7 @@
   }
 
   function scheduleRuntime() {
+    if (!window.__TOPKEY_CORE_READY || !window.__TOPKEY_ADMIN_READY) return runtimePromise;
     if (runtimeScheduled) return runtimePromise;
     runtimeScheduled = true;
     idle(() => loadRuntime().catch(error => console.warn('TOPKEY runtime staging failed', error)));
@@ -162,8 +163,9 @@
       });
   }, true);
 
-  window.addEventListener('topkey:admin-ready', scheduleRuntime, {once: true, passive: true});
-  if (window.__TOPKEY_ADMIN_READY) scheduleRuntime();
+  window.addEventListener('topkey:admin-ready', scheduleRuntime, {passive: true});
+  window.addEventListener('topkey:core-ready', scheduleRuntime, {passive: true});
+  if (window.__TOPKEY_ADMIN_READY && window.__TOPKEY_CORE_READY) scheduleRuntime();
 
   window.TopkeyProductionLoader = Object.freeze({
     loadRuntime,
