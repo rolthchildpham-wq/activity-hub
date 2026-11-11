@@ -1,6 +1,6 @@
 {
-  "build": "upgrade122-hotfix121-ppt-upload-admin",
-  "cacheTag": "u122h121-20261111",
-  "version": "2026.11.11-vnext-upgrade122-hotfix121-ppt-upload-admin",
-  "release": "H121 On-demand PPT Templates and Account Editor"
+  "build": "upgrade122-hotfix122-closed-admin-tabs",
+  "cacheTag": "u122h122-20261111",
+  "version": "2026.11.11-vnext-upgrade122-hotfix122-closed-admin-tabs",
+  "release": "H122 Closed Tournament Admin Navigation"
 }

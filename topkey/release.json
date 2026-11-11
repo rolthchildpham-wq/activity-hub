@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "releaseId": "H121",
-  "cacheTag": "u122h121-20261111",
-  "version": "2026.11.11-vnext-upgrade122-hotfix121-ppt-upload-admin",
-  "hub": "upgrade122-hotfix121-ppt-upload-admin",
-  "badminton": "upgrade122-hotfix121-ppt-upload-admin",
-  "vnext": "upgrade122-hotfix121-ppt-upload-admin",
+  "releaseId": "H122",
+  "cacheTag": "u122h122-20261111",
+  "version": "2026.11.11-vnext-upgrade122-hotfix122-closed-admin-tabs",
+  "hub": "upgrade122-hotfix122-closed-admin-tabs",
+  "badminton": "upgrade122-hotfix122-closed-admin-tabs",
+  "vnext": "upgrade122-hotfix122-closed-admin-tabs",
   "generatedAt": "2026-11-11T16:35:46+07:00",
-  "build": "upgrade122-hotfix121-ppt-upload-admin",
-  "release": "H121 On-demand PPT Templates and Account Editor"
+  "build": "upgrade122-hotfix122-closed-admin-tabs",
+  "release": "H122 Closed Tournament Admin Navigation"
 }
