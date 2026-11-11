@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "releaseId": "H120",
-  "cacheTag": "u122h120-20261110",
-  "version": "2026.11.10-vnext-upgrade122-hotfix120-auth-shell-mobile-header",
-  "hub": "upgrade122-hotfix120-auth-shell-mobile-header",
-  "badminton": "upgrade122-hotfix120-auth-shell-mobile-header",
-  "vnext": "upgrade122-hotfix120-auth-shell-mobile-header",
-  "generatedAt": "2026-11-10T08:31:27+07:00",
-  "build": "upgrade122-hotfix120-auth-shell-mobile-header",
-  "release": "H120 Deferred Auth Shell & Mobile Header"
+  "releaseId": "H121",
+  "cacheTag": "u122h121-20261111",
+  "version": "2026.11.11-vnext-upgrade122-hotfix121-ppt-upload-admin",
+  "hub": "upgrade122-hotfix121-ppt-upload-admin",
+  "badminton": "upgrade122-hotfix121-ppt-upload-admin",
+  "vnext": "upgrade122-hotfix121-ppt-upload-admin",
+  "generatedAt": "2026-11-11T16:35:46+07:00",
+  "build": "upgrade122-hotfix121-ppt-upload-admin",
+  "release": "H121 On-demand PPT Templates and Account Editor"
 }

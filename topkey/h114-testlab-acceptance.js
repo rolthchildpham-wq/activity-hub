@@ -21,7 +21,7 @@ async function run(){if(running)return;running=true;const btn=document.getElemen
   add('finance-actions','Nút sửa/xóa tài chính ADMIN',typeof ctrl?.install==='function'&&!!document.querySelector('[data-h114-action="edit"]')&&!!document.querySelector('[data-h114-action="delete"]')?'PASS':'UNTESTED','Chỉ hiện ở Tab Tài chính với ADMIN');
   add('final-report','Bộ xuất báo cáo toàn giải',!!window.TopkeyUpgrade122Hotfix65?.buildReport?'PASS':'FAIL');
   add('awards','Giải thưởng fixture',Array.isArray(raw.config?.prizeStructure)&&raw.config.prizeStructure.length>=3?'PASS':'FAIL');
-  add('ppt','Mẫu riêng theo môn',typeof window.TopkeyPptTemplateH112==='object'||!!document.querySelector('script[src*="h112-ppt-template"]')?'PASS':'UNTESTED');
+  add('ppt','Mẫu riêng theo môn',typeof window.TopkeyPptWizard==='object'||!!document.querySelector('script[src*="ppt-report-wizard"]')?'PASS':'UNTESTED');
   add('ranking','Tính BXH',typeof app?.ranking==='function'?'PASS':'FAIL');
   add('scheduler','Tạo lịch Smart',typeof app?.buildSchedulePlan==='function'||typeof app?.autoSchedule==='function'?'PASS':'UNTESTED');
   add('live','Luồng live thuộc đúng giải',Object.keys(raw.activeMatches||{}).every(k=>matches[raw.activeMatches[k]?.matchId])?'PASS':'FAIL');

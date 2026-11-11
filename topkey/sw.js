@@ -1,6 +1,6 @@
 /* H109 - release-aware offline shell; no automatic page reload on SW takeover. */
-const CACHE='topkey-h120-hub-shell';
-const SHELL=['./topkey-dynamic-i18n.js?v=u122h120-20261110', './i18n/H115_TRANSLATIONS.json?v=u122h120-20261110', './index.html', './release.json', './build.json', './release-runtime.js?v=u122h120-20261110', './hub-auth-flow.js?v=u122h120-20261110', './release-coordinator.js?v=u122h120-20261110', './styles.css?v=u122h120-20261110', './executive-dashboard.js?v=u122h120-20261110', './club-planning.js?v=u122h120-20261110'];
+const CACHE='topkey-h121-hub-shell';
+const SHELL=['./topkey-dynamic-i18n.js?v=u122h121-20261111', './i18n/H115_TRANSLATIONS.json?v=u122h121-20261111', './index.html', './release.json', './build.json', './release-runtime.js?v=u122h121-20261111', './hub-auth-flow.js?v=u122h121-20261111', './release-coordinator.js?v=u122h121-20261111', './styles.css?v=u122h121-20261111', './executive-dashboard.js?v=u122h121-20261111', './club-planning.js?v=u122h121-20261111'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>Promise.allSettled(SHELL.map(x=>c.add(x))))));
 self.addEventListener('activate',e=>e.waitUntil(Promise.all([caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE&&(k.startsWith('topkey-h')&&k.includes('-hub-shell')||k.startsWith('topkey-sports-hub-')||k==='topkey-h98-sw.js')).map(k=>caches.delete(k)))),self.clients.claim()])));
 async function cacheFirst(req){const c=await caches.open(CACHE);const hit=await c.match(req);if(hit)return hit;const res=await fetch(req);if(res.ok)c.put(req,res.clone()).catch(()=>{});return res}

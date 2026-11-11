@@ -12,8 +12,8 @@
     './upgrade122-hotfix29.js', './upgrade122-hotfix30.js', './upgrade122-hotfix37.js',
     './upgrade122-hotfix53.js', './upgrade122-hotfix55.js', './upgrade122-hotfix56.js',
     './upgrade122-hotfix60.js', './upgrade122-hotfix61.js', './upgrade122-hotfix64.js',
-    './upgrade122-hotfix65.js', './upgrade122-hotfix67.js', './upgrade122-hotfix76.js',
-    './upgrade122-hotfix80.js', './upgrade122-hotfix41.js', './upgrade122-hotfix63.js',
+    './upgrade122-hotfix65.js?v=ppt-upload-20261111', './upgrade122-hotfix67.js', './upgrade122-hotfix76.js?v=ppt-upload-20261111',
+    './upgrade122-hotfix80.js?v=ppt-upload-20261111', './upgrade122-hotfix41.js', './upgrade122-hotfix63.js',
     './upgrade122-hotfix68.js', './h98-focus.js', '../../h114-runtime-fixes.js',
     './upgrade122-hotfix57.js'
   ];
@@ -24,16 +24,17 @@
     reports: [
       '../../h106-final-report-pdf.js',
       '../../vendor/jszip.min.js',
-      '../../h112-ppt-template.js',
+      '../../ppt-report-wizard.js?v=ppt-upload-20261111',
       '../../h116-report-integrity.js',
-      '../../h116-custom-ppt.js',
-      '../../h112-testlab-export-check.js',
+      '../../h112-testlab-export-check.js?v=ppt-upload-20261111',
       '../../h113-finance-report.js'
     ],
-    testlab: ['../../h114-testlab-acceptance.js']
+    ppt: ['../../vendor/pptxgen.bundle.js'],
+    testlab: ['../../h114-testlab-acceptance.js?v=ppt-upload-20261111']
   };
   const loaded = new Map();
   const featurePromises = new Map();
+  const readyFeatures = new Set();
   let runtimePromise = null;
   let runtimeScheduled = false;
 
@@ -123,7 +124,7 @@
     if (featurePromises.has(name)) return featurePromises.get(name);
     const sources = FEATURES[name];
     if (!sources) return Promise.reject(new Error('Unknown TOPKEY feature group: ' + name));
-    const promise = loadOrdered(sources, {batchSize: 3, optional: false});
+    const promise = loadOrdered(sources, {batchSize: 3, optional: false}).then(result => {readyFeatures.add(name);return result;});
     featurePromises.set(name, promise);
     promise.catch(() => featurePromises.delete(name));
     return promise;
@@ -143,13 +144,13 @@
   function featureFor(target) {
     if (!target?.closest) return '';
     if (target.closest('#h114-qa, [data-topkey-feature="testlab"]')) return 'testlab';
-    if (target.closest('[data-h113], [data-export], [data-topkey-feature="reports"], #tk65-open, #tk79-open, [id*="export"], [id*="report"], [id*="ppt"], [id*="pdf"]')) return 'reports';
+    if (target.closest('[data-h113], [data-export], [data-topkey-feature="reports"], #tk65-open, #tk79-open, #tk65-download-current, .tk65-archive-report, [id*="export"], [id*="report"], [id*="ppt"], [id*="pdf"]')) return 'reports';
     return '';
   }
 
   document.addEventListener('click', event => {
     const name = featureFor(event.target);
-    if (!name || featurePromises.has(name)) return;
+    if (!name || readyFeatures.has(name)) return;
     const target = event.target;
     event.preventDefault();
     event.stopImmediatePropagation();
@@ -170,6 +171,6 @@
     scheduleRuntime,
     featureFor,
     runtimeSources: Object.freeze([...DEFAULT_RUNTIME]),
-    featureSources: Object.freeze({reports: Object.freeze([...FEATURES.reports]), testlab: Object.freeze([...FEATURES.testlab])})
+    featureSources: Object.freeze({ppt: Object.freeze([...FEATURES.ppt]), reports: Object.freeze([...FEATURES.reports]), testlab: Object.freeze([...FEATURES.testlab])})
   });
 })();

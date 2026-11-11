@@ -81,7 +81,7 @@ for item in html+sw:
  s=s.replace(oldtag,newtag)
  if item in sw:
   # Explicit cache id is the only SW version code and is generated from releaseId.
-  s,num=re.subn(r"(?<=const CACHE=)'topkey-h[0-9]+-(hub|badminton|vnext)-shell'",
+  s,num=re.subn(r"(?<=const CACHE=)'topkey-h[0-9]+-(hub|badminton|vnext)-(?:shell|auth-p5-[0-9]+)'",
                 lambda m:repr('topkey-'+release['releaseId'].lower()+'-'+m.group(1)+'-shell'),s,count=1)
   if num!=1:raise SystemExit('Missing SW cache declaration in '+item)
  p.write_text(s,encoding='utf-8')

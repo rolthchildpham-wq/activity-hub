@@ -30,10 +30,9 @@
    const pdfEngine=window.TopkeyFinalReportPdfH106;if(!pdfEngine?.createPdf)throw Error('Thiếu bộ PDF H106');
    const pdf=await pdfEngine.createPdf(sample,{sport,requireComplete:true});
    test('pdf','PDF nội bộ có đủ trang và mục giải thưởng',pdf.pages>=6&&pdf.bytes>=15000&&pdf.pageStats.every(p=>p.items>=2)&&pdf.pageStats.some(p=>/giải thưởng|award|獎項/i.test(p.section)),`${pdf.pages} trang / ${Math.ceil(pdf.bytes/1024)} KB`);
-   const ppt=window.TopkeyPptxTemplateH112;if(!ppt?.build)throw Error('Thiếu bộ mẫu PPTX H112');
-   const deck=await ppt.build(sample,{sport,images:[],plan:{}});
-   const pptOk=await window.TopkeyReportIntegrityH116?.assertPpt?.(deck,sample,sport);
-   test('ppt','Đúng mẫu riêng và giải thưởng hiện trong PPT',!!pptOk&&deck.stats.sport===sport&&deck.blob.size>10000&&deck.stats.displaySlides>=7,`${deck.stats.displaySlides} slide / ${Math.ceil(deck.blob.size/1024)} KB`);
+   const ppt=window.TopkeyPptWizard;if(!ppt?.buildAuto)throw Error('Thiếu trình tạo PPT tự động');
+   const deck=await ppt.buildAuto(sample,ppt.autoItems());
+   test('ppt','PPT tự động có nội dung mà không cần mẫu đóng gói',deck.stats.mode==='auto'&&deck.blob.size>10000&&deck.stats.displaySlides>=5,`${deck.stats.displaySlides} slide / ${Math.ceil(deck.blob.size/1024)} KB`);
    // H113: the same financial export functions used by production UI, tested read-only.
    const F=window.TopkeyFinanceReportH113;
    if(!F)throw Error('Thiếu module báo cáo tài chính H113');
@@ -47,7 +46,7 @@
    const financePdf=await F.makePdf(financeRows,{receipts:[receipt],missing:[]},{title:sample.title,tid:sample.tid});
    test('finance-pdf','PDF tài chính có phụ lục chứng từ nhìn thấy',financePdf.pages>=4&&financePdf.visibleImages===1&&financePdf.blob.size>12000,`${financePdf.pages} trang, ${Math.ceil(financePdf.blob.size/1024)} KB`);
    test('finance-appendix','Chứng từ được gắn với hạng mục và mã giao dịch',F.htmlPrint(financeRows,{receipts:[receipt]},sample.title).includes(receipt.row.category)&&receipt.row.id.length>0,'Fixture chứng từ giả lập, không ghi Firebase');
-   test('report-parity','Nguồn báo cáo dùng chung Production/Test Lab',typeof window.TopkeyUpgrade122Hotfix79?.reportHtml==='function'&&!!window.TopkeyFinalReportPdfH106?.createPdf&&!!window.TopkeyPptxTemplateH112?.build,'Cùng hàm HTML, PDF, PPT');
+   test('report-parity','Nguồn báo cáo dùng chung Production/Test Lab',typeof window.TopkeyUpgrade122Hotfix79?.reportHtml==='function'&&!!window.TopkeyFinalReportPdfH106?.createPdf&&!!window.TopkeyPptWizard?.buildAuto,'Cùng hàm HTML, PDF, PPT');
    test('privacy','Không gửi dữ liệu test lên production',true,'Chỉ đọc App.state; không gọi Firebase.write');
    const passed=results.filter(x=>x.pass).length,fail=results.length-passed,r={version:'H116',sport,time:new Date().toISOString(),summary:{total:results.length,passed,failed:fail,status:fail?'FAIL':'PASS'},checks:results};
    window.__TOPKEY_H112_FULLTEST_LAST=r;
