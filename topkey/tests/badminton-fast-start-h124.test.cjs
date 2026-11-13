@@ -9,6 +9,8 @@ let resolveSchema,resolveSeed;
 const app={
  currentTab:'overview',
  renderOverview(){events.push('overview-render')},
+ renderAll(){events.push('full-render')},
+ renderTeams(){events.push('teams-render')},
  ensureSchema(){events.push('schema-start');return new Promise(r=>{resolveSchema=r})},
  seedIfEmpty(){events.push('seed-start');return new Promise(r=>{resolveSeed=r})}
 };
@@ -21,6 +23,12 @@ vm.runInNewContext(source,context);
 assert.ok(context.window.TopkeyBadmintonFastStart124.installed);
 assert.ok(html.includes("await loadScript('./fast-start-h124.js?v=h125-20261113',7000);state.core=true"));
 (async()=>{
+ // Only the visible authorized tab is rendered on the first Firebase login.
+ app.renderAll();
+ assert.deepEqual(events,['overview-render']);
+ app.renderAll();
+ assert.deepEqual(events,['overview-render','full-render']);
+ events.length=0;
  // Housekeeping completes after login without waiting for slow RTDB responses.
  await Promise.all([app.ensureSchema(),app.seedIfEmpty()]);
  assert.equal(events.length,0,'Firebase housekeeping must not block app startup');
