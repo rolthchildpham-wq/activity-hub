@@ -14,6 +14,9 @@ on:
       - 'topkey/sports/badminton/fast-start-h124.js'
       - 'topkey/tests/badminton-fast-start-h124.test.cjs'
       - 'topkey/sports/badminton/production-loader.js'
+      - 'topkey/sports/badminton/dashboard-smooth-h129.css'
+      - 'topkey/sports/badminton/dashboard-smooth-h129.js'
+      - 'topkey/tests/badminton-dashboard-smooth-h129.test.cjs'
       - 'topkey/sports/badminton/upgrade122-hotfix5.js'
       - 'topkey/tests/badminton-no-autoheal-h128.test.cjs'
       - 'topkey/sports/badminton/perf-diagnostics-h125.js'
@@ -46,6 +49,8 @@ jobs:
           node --check topkey/sports/badminton/perf-diagnostics-h125.js
           node topkey/tests/badminton-fast-start-h124.test.cjs
           node topkey/tests/badminton-no-autoheal-h128.test.cjs
+          node --check topkey/sports/badminton/dashboard-smooth-h129.js
+          node topkey/tests/badminton-dashboard-smooth-h129.test.cjs
           node topkey/tests/edgeone-host-redirect.test.cjs
           python3 - <<'PY'
           import json
