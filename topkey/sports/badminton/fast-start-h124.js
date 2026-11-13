@@ -39,10 +39,33 @@ function deferredMethod(name){
 }
 deferredMethod('ensureSchema');
 deferredMethod('seedIfEmpty');
+// A Firestore/RTDB burst may update many branches in one animation frame.
+// The legacy renderBranch() calls renderOverview() on each branch change,
+// which redundantly rebuilds the dashboard and can stall every button press.
+const renderOverviewBase=app.renderOverview;
+let overviewPending=false,overviewRequested=0,overviewFlushed=0;
+if(typeof renderOverviewBase==='function'&&!app.__fastStartOverviewCoalesced){
+ app.__fastStartOverviewCoalesced=true;
+ app.renderOverview=function(...args){
+  if(String(this.currentTab||'overview')!=='overview')return;
+  overviewRequested++;
+  if(overviewPending)return;
+  overviewPending=true;
+  const run=()=>{
+   overviewPending=false;
+   if(String(app.currentTab||'overview')!=='overview')return;
+   overviewFlushed++;
+   try{renderOverviewBase.apply(app,args)}catch(error){console.warn('TOPKEY overview refresh:',error)}
+  };
+  if(typeof requestAnimationFrame==='function')requestAnimationFrame(run);
+  else setTimeout(run,16);
+ };
+}
+
 const originalLogout=T.Auth.logout?.bind(T.Auth);
 if(originalLogout&&!T.Auth.__fastStartLogoutWrapped){
  T.Auth.__fastStartLogoutWrapped=true;
  T.Auth.logout=async function(...args){epoch++;jobs.clear();return originalLogout(...args)};
 }
-window.TopkeyBadmintonFastStart124=Object.freeze({installed:true,contract:'AFTER_LOGIN_HOUSEKEEPING_NONBLOCKING',get pending(){return [...jobs.entries()].filter(([,v])=>v==='scheduled').length}});
+window.TopkeyBadmintonFastStart124=Object.freeze({installed:true,contract:'AFTER_LOGIN_HOUSEKEEPING_NONBLOCKING',get pending(){return [...jobs.entries()].filter(([,v])=>v==='scheduled').length},get overviewRequested(){return overviewRequested},get overviewFlushed(){return overviewFlushed}});
 })();
