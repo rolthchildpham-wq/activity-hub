@@ -84,9 +84,10 @@ function install(){if(installed)return true;if(!base()||!window.Topkey?.App)retu
 // H135: no repeated version stamping or full report modal rebuild every 800ms.
 // Rank explain buttons are reattached when report UI becomes visible.
 document.addEventListener('click',event=>{
- if(event.target?.closest?.('#tk51-ranking-explain-btn'))setTimeout(()=>{
-  hookButton();augmentModal();
- },0);
+ if(event.target?.closest?.('#tk51-ranking-explain-btn')){
+  hookButton(); // bind before native button click fires
+  setTimeout(augmentModal,0);
+ }
 },{passive:true,capture:true});window.TopkeyUpgrade122Hotfix55={installed:true,VERSION,CACHE_TAG,reportHtml,csvText,generate,exportHtml,exportCsv,printReport};return true}
 if(!install()){let n=0;const t=setInterval(()=>{if(install()||++n>100)clearInterval(t)},250)}
 })();
