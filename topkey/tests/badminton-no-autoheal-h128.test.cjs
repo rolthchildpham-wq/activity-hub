@@ -7,7 +7,7 @@ const html=fs.readFileSync('topkey/sports/badminton/index.html','utf8');
 assert.ok(!js.includes('location.replace('),'obsolete H47 self-heal MUST NOT force page reload');
 assert.ok(js.includes('window.TopkeyRelease?.cacheTag'),'legacy code should honor current release');
 assert.ok(loader.includes('upgrade122-hotfix5.js?v=h128-no-auto-reload-20261113'),'new cache key needed to bypass stale SW script');
-assert.ok(html.includes('production-loader.js?v=h133-tab-navigation-20261113'),'entry must load new runtime');
+assert.ok(html.includes('production-loader.js?v=h134-quiet-runtime-20261113'),'entry must load new runtime');
 let redirects=0,swCalls=0,cacheDeletes=0,fetches=0;
 const context={
  window:{TopkeyRelease:{version:'2026-h128',cacheTag:'h128'},addEventListener:()=>{}},
