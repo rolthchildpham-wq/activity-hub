@@ -20,6 +20,8 @@ on:
       - 'topkey/sports/badminton/production-loader.js'
       - 'topkey/sports/badminton/dashboard-smooth-h129.css'
       - 'topkey/sports/badminton/dashboard-smooth-h129.js'
+      - 'topkey/sports/badminton/tab-perf-h133.js'
+      - 'topkey/tests/badminton-rapid-tabs-h133.test.cjs'
       - 'topkey/tests/badminton-dashboard-smooth-h129.test.cjs'
       - 'topkey/hub-compact-h130.css'
       - 'topkey/hub-compact-h130.js'
@@ -60,6 +62,8 @@ jobs:
           node topkey/tests/badminton-no-autoheal-h128.test.cjs
           node --check topkey/sports/badminton/dashboard-smooth-h129.js
           node topkey/tests/badminton-dashboard-smooth-h129.test.cjs
+          node --check topkey/sports/badminton/tab-perf-h133.js
+          node topkey/tests/badminton-rapid-tabs-h133.test.cjs
           node --check topkey/hub-compact-h130.js
           node --check topkey/sports/badminton/sidebar-collapse-h130.js
           node topkey/tests/hub-sidebar-full-patch-h130.test.cjs
