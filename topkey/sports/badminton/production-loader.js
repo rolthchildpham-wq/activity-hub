@@ -53,7 +53,7 @@
   };
   const yieldToBrowser = () => new Promise(resolve => {
     const check = () => {
-      const busy = Date.now() - lastInteractionAt < 420;
+      const busy = Date.now() - lastInteractionAt < 1100;
       const inputPending = typeof navigator.scheduling?.isInputPending === 'function'
         && navigator.scheduling.isInputPending({includeContinuous: true});
       if (busy || inputPending) {setTimeout(check, 150);return;}
