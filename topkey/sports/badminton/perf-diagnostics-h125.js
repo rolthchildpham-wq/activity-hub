@@ -40,12 +40,33 @@ if(typeof PerformanceObserver==='function')try{
  }});
  obs.observe({type:'longtask',buffered:true});
 }catch{}
+// H134: Chrome Long Animation Frame attribution identifies which script is
+// actually blocking the UI. No document content, auth identifiers or URLs
+// with query strings are stored in these local-only diagnostics.
+const longFrames={count:0,maxMs:0,byScript:{}};
+if(typeof PerformanceObserver==='function')try{
+ const observer=new PerformanceObserver(list=>{
+  for(const frame of list.getEntries()){
+   longFrames.count++;
+   longFrames.maxMs=Math.max(longFrames.maxMs,Math.round(frame.duration||0));
+   for(const script of frame.scripts||[]){
+    const raw=String(script.sourceURL||'');
+    const safe=raw.split('?')[0].split('/').pop()||'(inline)';
+    const key=safe.slice(0,90);
+    const item=longFrames.byScript[key]||(longFrames.byScript[key]={count:0,totalMs:0,maxMs:0});
+    const ms=Math.round(script.duration||0);
+    item.count++;item.totalMs+=ms;item.maxMs=Math.max(item.maxMs,ms);
+   }
+  }
+ });
+ observer.observe({type:'long-animation-frame',buffered:true});
+}catch{}
 function snapshot(){
  return {readyMs:metrics.readyMs,longTasks:metrics.longTasks,maxLongTaskMs:metrics.longTaskMaxMs,
  totalLongTaskMs:Math.round(metrics.longTaskTotalMs),samples:metrics.inputSamples,
  maxInputDelayMs:metrics.inputDelayMaxMs,avgInputDelayMs:metrics.inputSamples?Math.round(metrics.inputDelayTotalMs/metrics.inputSamples):0,
  authStates:[...metrics.authStates],navigationType:metrics.navType,pageShows:metrics.pageShows,unexpectedBootOverlays:metrics.unexpectedBootOverlays,verificationOverlays:metrics.verificationOverlays,overviewRequested:window.TopkeyBadmintonFastStart124?.overviewRequested||0,
- overviewFlushed:window.TopkeyBadmintonFastStart124?.overviewFlushed||0,rapidTabs:window.TopkeyTabPerf133?.snapshot||null};
+ overviewFlushed:window.TopkeyBadmintonFastStart124?.overviewFlushed||0,rapidTabs:window.TopkeyTabPerf133?.snapshot||null,longAnimationFrames:{count:longFrames.count,maxMs:longFrames.maxMs,topScripts:Object.entries(longFrames.byScript).sort((a,b)=>b[1].totalMs-a[1].totalMs).slice(0,8).map(([name,v])=>({name,...v}))}};
 }
 function show(){
  const parent=document.getElementById('page-health');if(!parent||parent.classList.contains('hidden'))return;
