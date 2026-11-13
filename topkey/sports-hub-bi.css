@@ -1,0 +1,101 @@
+/* TOPKEY Sports Intelligence UI · design-only enhancement.
+   Intentionally scoped to Hub landing page, not badminton / vnext scoring apps.
+   Respect original role gates, auth, live data and custom background settings. */
+:root{--tk-ink:#ecf4ff;--tk-soft:#a8bed4;--tk-line:#29445e;--tk-accent:#39e0cf;--tk-bg:#071325;--tk-card:#0e233a;--tk-gold:#f4c567;--tk-rose:#fb7185}
+body.tk-bi-hub{background:radial-gradient(ellipse at 82% 0,rgba(27,83,109,.38),transparent 43%),radial-gradient(ellipse at 0 25%,rgba(28,47,105,.25),transparent 48%),#071325;color:var(--tk-ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:.05px}
+body.tk-bi-hub .top{background:rgba(7,19,36,.96);border-bottom:1px solid #24455a;padding:14px clamp(18px,3vw,46px);backdrop-filter:blur(18px);box-shadow:0 4px 25px #0002}
+body.tk-bi-hub .top .brand{max-width:1690px}
+body.tk-bi-hub .top .brand-logo-wrap{width:172px;min-width:172px;height:62px;border-radius:13px;box-shadow:0 8px 24px #0004;padding:6px 10px}
+body.tk-bi-hub .top .brand-title{border-left:1px solid #2f5267;padding-left:21px}
+body.tk-bi-hub .top .brand-title h1{font-size:clamp(17px,1.48vw,26px);line-height:1.19;font-weight:850;letter-spacing:.1px}
+body.tk-bi-hub .top .brand-title .eyebrow{color:#64d3c7;font-size:10px;margin-top:6px;letter-spacing:1.2px}
+body.tk-bi-hub .top .status .pill{font-size:10px;background:#102c42;border:1px solid #2b4f66;color:#a9d5e1;padding:7px 10px}
+body.tk-bi-hub .wrap{max-width:1690px;padding:26px clamp(18px,3vw,46px) 72px}
+body.tk-bi-hub .tk-bi-hero{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:25px;position:relative;overflow:hidden;min-height:178px;margin:0 0 19px;padding:29px clamp(21px,3vw,42px);background:linear-gradient(107deg,#103148 0%,#0e3f55 48%,#136b68 100%);border:1px solid #389d9f66;border-radius:21px;box-shadow:0 18px 40px #02101c55}
+body.tk-bi-hub .tk-bi-hero::before{content:"";position:absolute;width:420px;height:420px;border:1px solid #a7e8dd26;border-radius:50%;right:-65px;top:-248px;box-shadow:0 0 0 52px #b6eee70a,0 0 0 107px #c6ffff07;pointer-events:none}
+body.tk-bi-hub .tk-bi-hero>*{position:relative}
+body.tk-bi-hub .tk-bi-hero-kicker{display:inline-flex;align-items:center;gap:9px;font-size:10px;font-weight:850;letter-spacing:2.3px;color:#abf8e9;text-transform:uppercase}
+body.tk-bi-hub .tk-bi-hero-kicker::before{content:"";width:8px;height:8px;border-radius:50%;background:#6ce8d2;box-shadow:0 0 0 4px #a4fff524}
+body.tk-bi-hub .tk-bi-hero h2{margin:13px 0 8px;font-size:clamp(23px,2.3vw,37px);letter-spacing:-.8px;color:#fff;font-weight:850;line-height:1.17}
+body.tk-bi-hub .tk-bi-hero p{font-size:12px;line-height:1.7;color:#c6e9e9;max-width:720px;margin:0}
+body.tk-bi-hub .tk-bi-hero-cta{display:flex;gap:9px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
+body.tk-bi-hub .tk-bi-link{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 17px;border:1px solid #ffffff39;border-radius:11px;background:#ffffff15;color:#fff;text-decoration:none;font-size:12px;font-weight:790;white-space:nowrap}
+body.tk-bi-hub .tk-bi-link:hover,body.tk-bi-hub .tk-bi-link:focus-visible{background:#ffffff2b;border-color:#ffffff8a;outline:none}
+body.tk-bi-hub .tk-bi-link.primary{background:#e7fff8;color:#105c58;border-color:#d7f4ec;box-shadow:0 5px 16px #021c2630}
+body.tk-bi-hub .tk-bi-section-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:18px 0 10px}
+body.tk-bi-hub .tk-bi-section-heading h2{margin:0;color:#ecf9ff;font-size:15px;letter-spacing:.1px;font-weight:810}
+body.tk-bi-hub .tk-bi-section-heading small{color:#86aebc;font-size:11px;letter-spacing:.15px}
+body.tk-bi-hub .cards.compact-sports{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:11px;padding:0;margin:0 0 22px;background:none;border:0}
+body.tk-bi-hub .cards.compact-sports .sport{min-height:112px;padding:16px 8px!important;justify-content:center;align-items:center;gap:8px;background:linear-gradient(155deg,#102b44,#0b1d33);border:1px solid #294b65;border-radius:16px;box-shadow:0 4px 13px #02101b26}
+body.tk-bi-hub .cards.compact-sports .sport:nth-child(1){--sports-color:#55a9ff}body.tk-bi-hub .cards.compact-sports .sport:nth-child(2){--sports-color:#48d4ba}body.tk-bi-hub .cards.compact-sports .sport:nth-child(3){--sports-color:#f5b85d}body.tk-bi-hub .cards.compact-sports .sport:nth-child(4){--sports-color:#fb818c}body.tk-bi-hub .cards.compact-sports .sport:nth-child(5){--sports-color:#c096ff}body.tk-bi-hub .cards.compact-sports .sport:nth-child(6){--sports-color:#f4cf6c}body.tk-bi-hub .cards.compact-sports .sport:nth-child(7){--sports-color:#53cfdd}
+body.tk-bi-hub .cards.compact-sports .sport::before{content:"";position:absolute;top:0;left:18%;right:18%;height:2px;background:var(--sports-color,#2dd4bf);opacity:.9}
+body.tk-bi-hub .cards.compact-sports .sport .emoji{font-size:31px;line-height:1;filter:drop-shadow(0 5px 7px #0006)}
+body.tk-bi-hub .cards.compact-sports .sport h3{margin:0;font-size:12.5px;color:#e9f7ff;line-height:1.4;text-align:center}
+body.tk-bi-hub .cards.compact-sports .sport:hover,body.tk-bi-hub .cards.compact-sports .sport:focus-visible{transform:translateY(-3px);border-color:var(--sports-color,#2dd4bf);background:linear-gradient(150deg,#173b56,#112d47);box-shadow:0 10px 25px #02101b66;outline:none}
+body.tk-bi-hub .cards.compact-sports .sport:focus-visible{outline:3px solid #80e6e8;outline-offset:3px}
+body.tk-bi-hub .panel{border:1px solid #2c4660;border-radius:17px;background:linear-gradient(160deg,rgba(15,36,57,.97),rgba(10,26,43,.96));box-shadow:0 9px 30px #0002;padding:23px}
+body.tk-bi-hub .panel h2{font-size:18px;font-weight:820;letter-spacing:-.3px}
+body.tk-bi-hub .panel h3{font-weight:780}
+body.tk-bi-hub .feature{background:#0b2135;border:1px solid #28435a;border-radius:13px;padding:16px}
+body.tk-bi-hub .feature b{color:#64e7d6}
+body.tk-bi-hub .feature-grid{gap:13px}
+body.tk-bi-hub .exec-dashboard{padding:23px!important;margin:0 0 20px}
+body.tk-bi-hub .exec-head{align-items:center;gap:18px;margin-bottom:19px}
+body.tk-bi-hub .exec-head h2{margin:0 0 7px;font-size:clamp(18px,1.5vw,25px);font-weight:850;letter-spacing:-.45px}
+body.tk-bi-hub .exec-head .muted{font-size:12px;line-height:1.65;color:#a1bcc9}
+body.tk-bi-hub .exec-btn{border-radius:10px;min-height:42px;padding:10px 15px;background:#14344c;border:1px solid #3c647b;color:#e8f7ff;transition:background .2s,transform .2s}
+body.tk-bi-hub .exec-btn.primary{background:linear-gradient(112deg,#139787,#1683a1);border-color:#29baa9;color:white}
+body.tk-bi-hub .exec-btn:not(:disabled):hover{filter:brightness(1.13)}
+body.tk-bi-hub .exec-kpis{grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin:0 0 18px}
+body.tk-bi-hub .exec-kpi{position:relative;overflow:hidden;min-height:110px;padding:17px 18px;background:linear-gradient(145deg,#12304a,#0c253c);border:1px solid #294e68;border-radius:14px}
+body.tk-bi-hub .exec-kpi:nth-child(4n+1){--kpi-accent:#37d1bf}body.tk-bi-hub .exec-kpi:nth-child(4n+2){--kpi-accent:#68abff}body.tk-bi-hub .exec-kpi:nth-child(4n+3){--kpi-accent:#f0bb64}body.tk-bi-hub .exec-kpi:nth-child(4n){--kpi-accent:#bc91ff}
+body.tk-bi-hub .exec-kpi::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--kpi-accent)}
+body.tk-bi-hub .exec-kpi::after{content:"";position:absolute;right:-25px;bottom:-53px;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,var(--kpi-accent),transparent 67%);opacity:.075;pointer-events:none}
+body.tk-bi-hub .exec-kpi span{font-size:11px;color:#adc2d0;font-weight:630;letter-spacing:.1px}
+body.tk-bi-hub .exec-kpi strong{font-size:clamp(20px,1.85vw,29px);letter-spacing:-.65px;font-weight:850;color:var(--kpi-accent);overflow-wrap:anywhere}
+body.tk-bi-hub .exec-grid{grid-template-columns:1.12fr .88fr;gap:15px;margin-top:15px}
+body.tk-bi-hub .exec-card{border:1px solid #29465c;border-radius:14px;padding:20px;background:#0c243b}
+body.tk-bi-hub .exec-card h3{font-size:15px;margin:0 0 15px;color:#eff8ff;font-weight:810}
+body.tk-bi-hub .exec-card .exec-table-wrap{border-color:#2a485f}
+body.tk-bi-hub .exec-table th{background:#15364e;color:#bddae7;font-size:11px}
+body.tk-bi-hub .exec-table td{color:#d7e6f1;font-size:11.5px;line-height:1.5}
+body.tk-bi-hub .exec-table tbody tr:nth-child(even) td{background:#102b42}
+body.tk-bi-hub .exec-table tbody tr:hover td{background:#19415a}
+body.tk-bi-hub .exec-good{color:#53e4bc}body.tk-bi-hub .exec-bad{color:#ff95a5}body.tk-bi-hub .exec-warn{color:#ffd27b}
+body.tk-bi-hub .exec-bar-row{grid-template-columns:92px 1fr 58px;gap:10px;margin:11px 0;font-size:11px}
+body.tk-bi-hub .exec-bar{height:10px;background:#18364d;border-radius:999px}
+body.tk-bi-hub .exec-bar i{background:linear-gradient(90deg,#168ac7,#27dac1)}
+body.tk-bi-hub .exec-alert{border-radius:11px;border:1px solid #80602f;background:#332713;padding:12px;line-height:1.55}
+body.tk-bi-hub .exec-alert.bad{border-color:#954653;background:#38202e}
+body.tk-bi-hub .exec-champ{border:1px solid #3c4e62;border-radius:11px;background:linear-gradient(115deg,#182a40,#13273d);padding:13px}
+body.tk-bi-hub .exec-champ b{color:#f6d589}
+body.tk-bi-hub .exec-footer-note{color:#8faabc;font-size:10px;padding-top:7px;border-top:1px solid #29465b}
+body.tk-bi-hub .footer{color:#89a9bb}
+body.tk-bi-hub .hub-admin-only{display:none}
+body.tk-bi-hub .hub-admin-only[style*="display: block"],body.tk-bi-hub .hub-admin-only[style*="display:block"]{display:block}
+body.tk-bi-hub .tk-bi-footer{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:18px 2px;margin:20px 0 0;color:#7898ab;font-size:11px;border-top:1px solid #284159}
+@media(max-width:1400px){body.tk-bi-hub .exec-kpis{grid-template-columns:repeat(4,minmax(0,1fr))}body.tk-bi-hub .cards.compact-sports{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:1050px){body.tk-bi-hub .exec-grid{grid-template-columns:1fr}body.tk-bi-hub .exec-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}body.tk-bi-hub .top .brand-logo-wrap{width:152px;min-width:152px;height:58px}}
+@media(max-width:850px){body.tk-bi-hub .top{position:relative}body.tk-bi-hub .top .brand{align-items:stretch}body.tk-bi-hub .tk-bi-hero{grid-template-columns:1fr}body.tk-bi-hub .tk-bi-hero-cta{justify-content:flex-start}body.tk-bi-hub .wrap{padding:18px 16px 58px}}
+@media(max-width:650px){
+ body.tk-bi-hub .top{padding:12px 56px 12px 12px!important;position:relative!important}
+ body.tk-bi-hub .top .brand-title h1{font-size:clamp(15px,4.3vw,21px)!important}
+ body.tk-bi-hub .top .brand-logo-wrap{width:112px;min-width:112px;height:47px}
+ body.tk-bi-hub .wrap{padding:15px 12px 48px!important}
+ body.tk-bi-hub .tk-bi-hero{padding:22px 18px;min-height:0;border-radius:16px}
+ body.tk-bi-hub .tk-bi-hero h2{font-size:22px}
+ body.tk-bi-hub .tk-bi-hero-cta{width:100%}
+ body.tk-bi-hub .tk-bi-link{flex:1 1 auto;min-height:44px}
+ body.tk-bi-hub .cards.compact-sports{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px}
+ body.tk-bi-hub .cards.compact-sports .sport{min-height:93px!important;padding:12px 6px!important}
+ body.tk-bi-hub .cards.compact-sports .sport .emoji{font-size:27px}
+ body.tk-bi-hub .exec-kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ body.tk-bi-hub .exec-kpi{min-height:100px;padding:13px 12px}
+ body.tk-bi-hub .exec-kpi strong{font-size:clamp(17px,4.3vw,22px)}
+ body.tk-bi-hub .exec-dashboard{padding:16px!important}
+ body.tk-bi-hub .exec-card{padding:13px}
+ body.tk-bi-hub .exec-head{align-items:stretch}
+ body.tk-bi-hub .exec-actions{width:100%}
+ body.tk-bi-hub .exec-actions .exec-btn{width:100%;min-height:44px}
+}
+@media(prefers-reduced-motion:reduce){body.tk-bi-hub *,body.tk-bi-hub *::before,body.tk-bi-hub *::after{transition:none!important;scroll-behavior:auto!important}}
