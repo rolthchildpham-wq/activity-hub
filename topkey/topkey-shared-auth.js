@@ -133,7 +133,15 @@
     this._appStartedUid=uid;
     try{await T.App.afterLogin()}
     catch(e){this._appStartedUid='';throw e}
-    setTimeout(()=>this.recoverProductionTournament().catch(e=>console.warn('Tournament recovery',e)),250);
+    // Only schedule tournament recovery after first interactive paint. Do not
+    // churn active-tab subscriptions immediately after Firebase authentication.
+    if(!this._recoveryScheduledUid||this._recoveryScheduledUid!==uid){
+      this._recoveryScheduledUid=uid;
+      setTimeout(()=>{
+        if(this._profileVerifiedUid!==uid||this.ensureAuth()?.currentUser?.uid!==uid)return;
+        this.recoverProductionTournament().catch(e=>console.warn('Tournament recovery',e));
+      },3500);
+    }
     return true;
    }
    attachApp(){return this._startAppIfReady()}
@@ -320,9 +328,15 @@
      const prevRole=this.profile?.role,prevPermissions=JSON.stringify(this.profile?.permissions||{});
      this._lastProfileFingerprint=fingerprint;this.profile=next;
      try{
+      const activeBefore=String(T.App?.currentTab||'overview');
       T.App?.applyRole?.();
       if(prevRole!==next.role||prevPermissions!==JSON.stringify(next.permissions||{}))T.App?.subscribe?.();
-      T.App?.renderAll?.();
+      // Profile-display/role updates must not rebuild every hidden tab.
+      const active=String(T.App?.currentTab||activeBefore);
+      const renderActive=window.TopkeyCoreDataRuntime115?.renderTabFromCache;
+      if(typeof renderActive==='function')renderActive(active);
+      else if(active==='overview')T.App?.renderOverview?.();
+      else T.App?.renderBranch?.(active==='schedule'?'matches':active);
      }catch(e){console.warn('Profile UI refresh deferred',e)}
     };
     ref.on('value',this.profileHandler,error=>console.warn('Profile realtime listener',error));
