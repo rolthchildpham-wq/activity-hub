@@ -111,6 +111,10 @@ jobs:
                grep -Fq "topkey-shared-auth.js?v=h127-auth-visual-stability-20261113" "$html_file" &&
                grep -Fq "perf-diagnostics-h125.js?v=h127-20261113" "$html_file" &&
                grep -Fq "dashboard-smooth-h129.css?v=h129-20261113" "$html_file" &&
+               grep -Fq "sidebar-collapse-h130.css?v=h130-20261113" "$html_file" &&
+               grep -Fq "sidebar-collapse-h130.js?v=h130-20261113" "$html_file" &&
+               curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/sidebar-collapse-h130.js" -o /tmp/tk-sidebar-h130.js 2>/dev/null &&
+               grep -Fq "topkey_badminton_sidebar_collapsed_h130" /tmp/tk-sidebar-h130.js &&
                grep -Fq "dashboard-smooth-h129.js?v=h129-20261113" "$html_file" &&
                curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/dashboard-smooth-h129.js" -o /tmp/tk-dashboard-h129.js 2>/dev/null &&
                grep -Fq "PERSISTENT_SHELL_SINGLE_VISIBLE_TAB_PAINT" /tmp/tk-dashboard-h129.js &&
@@ -132,6 +136,27 @@ jobs:
           else
             echo "::warning::Live Badminton H129 stable dashboard not verified. Confirm EdgeOne Production deployment and CDN propagation."
             echo "### Live Badminton H129 stable dashboard not yet verified." >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Audit live H130 Hub compact assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          ok=0
+          for attempt in 1 2 3 4 5 6; do
+            if curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/index.html" -o /tmp/tk-hub-h130.html 2>/dev/null &&
+               grep -Fq "hub-compact-h130.css?v=h130-20261113" /tmp/tk-hub-h130.html &&
+               grep -Fq "hub-compact-h130.js?v=h130-20261113" /tmp/tk-hub-h130.html &&
+               curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/hub-compact-h130.js" -o /tmp/tk-hub-js-h130.js 2>/dev/null &&
+               grep -Fq "Thiết kế bởi BacPham" /tmp/tk-hub-js-h130.js; then
+              ok=1
+              break
+            fi
+            sleep 5
+          done
+          if [ "$ok" -eq 1 ]; then
+            echo "### Live Hub compact H130 verified." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "::warning::Live Hub H130 assets not verified. Confirm EdgeOne deployment and CDN propagation."
           fi
       - name: Document EdgeOne release settings
         shell: bash
