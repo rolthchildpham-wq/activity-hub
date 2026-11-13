@@ -66,7 +66,7 @@
     // network timeout, delayed profile read or an in-progress session restore.
     document.getElementById('login-screen')?.classList.add('hidden');
     document.getElementById('app-shell')?.classList.add('hidden');
-    document.documentElement.classList.remove('tk-auth-verified');
+    document.documentElement?.classList?.remove('tk-auth-verified');
     let panel=document.getElementById('topkey-auth-verification-pending');
     if(!panel){
      panel=document.createElement('section');
@@ -125,7 +125,7 @@
     document.getElementById('app-shell')?.classList.remove('hidden');
     // The initial Firebase boot placeholder must never cover an authorized tab.
     document.getElementById('topkey-auth-boot-pending')?.remove();
-    document.documentElement.classList.add('tk-auth-verified');
+    document.documentElement?.classList?.add('tk-auth-verified');
     const hint=document.getElementById('topkey-auth-hint');if(hint)hint.textContent='';
     const retry=document.getElementById('auth-retry-profile');if(retry){retry.hidden=true;retry.classList.add?.('hidden')}
     this.transition('AUTHENTICATED',{verified:true});
@@ -156,7 +156,7 @@
     window.__TOPKEY_ADMIN_READY=false;
     if(Array.isArray(T.App?.offs)){for(const off of T.App.offs)try{off()}catch{}T.App.offs=[]}
     this._removeVerificationPending();
-    document.documentElement.classList.remove('tk-auth-verified');
+    document.documentElement?.classList?.remove('tk-auth-verified');
     this.transition(state);this._showLogin();
    }
    async rejectSportAccess(profile=this.profile){
