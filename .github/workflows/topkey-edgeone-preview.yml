@@ -129,7 +129,7 @@ jobs:
                grep -Fq "dashboard-smooth-h129.js?v=h129-20261113" "$html_file" &&
                curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/dashboard-smooth-h129.js" -o /tmp/tk-dashboard-h129.js 2>/dev/null &&
                grep -Fq "PERSISTENT_SHELL_SINGLE_VISIBLE_TAB_PAINT" /tmp/tk-dashboard-h129.js &&
-               grep -Fq "production-loader.js?v=h134-quiet-runtime-20261113" "$html_file" &&
+               grep -Fq "production-loader.js?v=h135-poll-free-reports-20261113" "$html_file" &&
                curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/production-loader.js" -o /tmp/tk-loader-h128.js 2>/dev/null &&
                grep -Fq "upgrade122-hotfix5.js?v=h128-no-auto-reload-20261113" /tmp/tk-loader-h128.js &&
                curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/upgrade122-hotfix5.js" -o /tmp/tk-selfheal-h128.js 2>/dev/null &&
