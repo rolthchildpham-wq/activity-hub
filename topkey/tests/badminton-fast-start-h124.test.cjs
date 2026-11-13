@@ -58,7 +58,7 @@ assert.ok(html.includes("await loadScript('./fast-start-h124.js?v=h126-startup-2
  assert.equal(scheduled.length,1,'one redraw scheduled for three Firebase notifications');
  scheduled.shift()();
  assert.equal(events.filter(x=>x==='overview-render').length,1);
- assert.equal(context.window.TopkeyBadmintonFastStart124.overviewRequested,3);
- assert.equal(context.window.TopkeyBadmintonFastStart124.overviewFlushed,1);
+ assert.equal(context.window.TopkeyBadmintonFastStart124.overviewRequested,4);
+ assert.equal(context.window.TopkeyBadmintonFastStart124.overviewFlushed,2);
  console.log('H124 fast-start: verified-only background housekeeping, no auth bypass, and logout cancellation passed.');
 })().catch(err=>{console.error(err);process.exitCode=1});
