@@ -19,7 +19,7 @@ const auth={
 const context={window:{Topkey:{App:app,Auth:auth,Data:{auth:{currentUser:{uid:'user-a'}}}}},requestIdleCallback:fn=>scheduled.push(fn),setTimeout:fn=>scheduled.push(fn),console};
 vm.runInNewContext(source,context);
 assert.ok(context.window.TopkeyBadmintonFastStart124.installed);
-assert.ok(html.includes("await loadScript('./fast-start-h124.js?v=h124-20261113',7000);state.core=true"));
+assert.ok(html.includes("await loadScript('./fast-start-h124.js?v=h125-20261113',7000);state.core=true"));
 (async()=>{
  // Housekeeping completes after login without waiting for slow RTDB responses.
  await Promise.all([app.ensureSchema(),app.seedIfEmpty()]);
