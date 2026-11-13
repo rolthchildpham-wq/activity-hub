@@ -13,6 +13,8 @@ on:
       - 'topkey/sports/badminton/index.html'
       - 'topkey/sports/badminton/fast-start-h124.js'
       - 'topkey/tests/badminton-fast-start-h124.test.cjs'
+      - 'topkey/sports/badminton/production-loader.js'
+      - 'topkey/sports/badminton/perf-diagnostics-h125.js'
 
 permissions:
   contents: read
@@ -38,6 +40,8 @@ jobs:
           node --check topkey/sports/badminton/production-loader.js
           node topkey/tests/auth-profile-pending.test.cjs
           node --check topkey/sports/badminton/fast-start-h124.js
+          node --check topkey/sports/badminton/production-loader.js
+          node --check topkey/sports/badminton/perf-diagnostics-h125.js
           node topkey/tests/badminton-fast-start-h124.test.cjs
           node topkey/tests/edgeone-host-redirect.test.cjs
           python3 - <<'PY'
@@ -88,7 +92,9 @@ jobs:
             if curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/index.html" -o "$html_file" 2>/dev/null &&
                curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/fast-start-h124.js" -o "$js_file" 2>/dev/null &&
                grep -q "fast-start-h124.js" "$html_file" &&
-               grep -q "AFTER_LOGIN_HOUSEKEEPING_NONBLOCKING" "$js_file"; then
+               grep -q "AFTER_LOGIN_HOUSEKEEPING_NONBLOCKING" "$js_file" &&
+               curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/perf-diagnostics-h125.js" -o /tmp/tk-perf-h125.js 2>/dev/null &&
+               grep -q 'TopkeyBadmintonPerf125' /tmp/tk-perf-h125.js; then
               ok=1
               break
             fi
