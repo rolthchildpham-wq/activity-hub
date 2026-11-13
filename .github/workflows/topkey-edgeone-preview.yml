@@ -18,6 +18,9 @@ on:
       - 'topkey/sports/badminton/fast-start-h124.js'
       - 'topkey/tests/badminton-fast-start-h124.test.cjs'
       - 'topkey/sports/badminton/production-loader.js'
+      - 'topkey/sports/badminton/upgrade122-hotfix55.js'
+      - 'topkey/sports/badminton/upgrade122-hotfix76.js'
+      - 'topkey/tests/badminton-report-polling-h135.test.cjs'
       - 'topkey/sports/badminton/dashboard-smooth-h129.css'
       - 'topkey/sports/badminton/dashboard-smooth-h129.js'
       - 'topkey/sports/badminton/tab-perf-h133.js'
@@ -64,6 +67,9 @@ jobs:
           node topkey/tests/badminton-dashboard-smooth-h129.test.cjs
           node --check topkey/sports/badminton/tab-perf-h133.js
           node topkey/tests/badminton-rapid-tabs-h133.test.cjs
+          node --check topkey/sports/badminton/upgrade122-hotfix55.js
+          node --check topkey/sports/badminton/upgrade122-hotfix76.js
+          node topkey/tests/badminton-report-polling-h135.test.cjs
           node --check topkey/hub-compact-h130.js
           node --check topkey/sports/badminton/sidebar-collapse-h130.js
           node topkey/tests/hub-sidebar-full-patch-h130.test.cjs
@@ -130,6 +136,9 @@ jobs:
                curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/dashboard-smooth-h129.js" -o /tmp/tk-dashboard-h129.js 2>/dev/null &&
                grep -Fq "PERSISTENT_SHELL_SINGLE_VISIBLE_TAB_PAINT" /tmp/tk-dashboard-h129.js &&
                grep -Fq "production-loader.js?v=h135-poll-free-reports-20261113" "$html_file" &&
+               curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/production-loader.js" -o /tmp/tk-loader-h135.js 2>/dev/null &&
+               grep -Fq "upgrade122-hotfix55.js?v=h135-event-reports-20261113" /tmp/tk-loader-h135.js &&
+               grep -Fq "upgrade122-hotfix76.js?v=h135-event-reports-20261113" /tmp/tk-loader-h135.js &&
                curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/production-loader.js" -o /tmp/tk-loader-h128.js 2>/dev/null &&
                grep -Fq "upgrade122-hotfix5.js?v=h128-no-auto-reload-20261113" /tmp/tk-loader-h128.js &&
                curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/upgrade122-hotfix5.js" -o /tmp/tk-selfheal-h128.js 2>/dev/null &&
