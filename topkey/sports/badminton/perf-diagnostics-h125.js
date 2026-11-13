@@ -3,7 +3,7 @@
  */
 (()=>{'use strict';
 if(window.TopkeyBadmintonPerf125)return;
-const started=performance.now(),metrics={longTasks:0,longTaskTotalMs:0,longTaskMaxMs:0,inputSamples:0,inputDelayMaxMs:0,inputDelayTotalMs:0,authStates:[],readyMs:null};
+const started=performance.now(),metrics={longTasks:0,longTaskTotalMs:0,longTaskMaxMs:0,inputSamples:0,inputDelayMaxMs:0,inputDelayTotalMs:0,authStates:[],readyMs:null,navType:performance.getEntriesByType?.('navigation')?.[0]?.type||'unknown',pageShows:0,unexpectedBootOverlays:0,verificationOverlays:0};
 let inputAt=0,queued=false,lastTouch=0;
 const onDown=()=>{inputAt=performance.now();lastTouch=Date.now();if(queued)return;queued=true;
  const draw=()=>{queued=false;if(!inputAt)return;const t=Math.max(0,performance.now()-inputAt);
@@ -18,6 +18,22 @@ window.addEventListener('topkey:auth-state',e=>{const state=String(e.detail?.sta
  if(metrics.authStates.length>12)metrics.authStates.shift();
 },{passive:true});
 window.addEventListener('topkey:admin-ready',()=>{if(metrics.readyMs===null)metrics.readyMs=Math.round(performance.now()-started)},{passive:true});
+window.addEventListener('pageshow',()=>{metrics.pageShows++},{passive:true});
+const inspectAuthUI=()=>{
+ if(metrics.readyMs===null)return;
+ const app=document.getElementById('app-shell');
+ if(!app||app.classList.contains('hidden'))return;
+ const boot=document.getElementById('topkey-auth-boot-pending');
+ if(boot){
+   metrics.unexpectedBootOverlays++;
+   boot.remove(); // A stale placeholder is not an authorization decision.
+ }
+};
+document.addEventListener('visibilitychange',inspectAuthUI,{passive:true});
+window.addEventListener('topkey:auth-state',event=>{
+ if(event.detail?.state==='REVALIDATING')metrics.verificationOverlays++;
+ if(event.detail?.state==='AUTHENTICATED')setTimeout(inspectAuthUI,0);
+},{passive:true});
 if(typeof PerformanceObserver==='function')try{
  const obs=new PerformanceObserver(list=>{for(const entry of list.getEntries()){if(entry.duration<50)continue;
   metrics.longTasks++;metrics.longTaskTotalMs+=entry.duration;metrics.longTaskMaxMs=Math.max(metrics.longTaskMaxMs,Math.round(entry.duration));
@@ -28,7 +44,7 @@ function snapshot(){
  return {readyMs:metrics.readyMs,longTasks:metrics.longTasks,maxLongTaskMs:metrics.longTaskMaxMs,
  totalLongTaskMs:Math.round(metrics.longTaskTotalMs),samples:metrics.inputSamples,
  maxInputDelayMs:metrics.inputDelayMaxMs,avgInputDelayMs:metrics.inputSamples?Math.round(metrics.inputDelayTotalMs/metrics.inputSamples):0,
- authStates:[...metrics.authStates],overviewRequested:window.TopkeyBadmintonFastStart124?.overviewRequested||0,
+ authStates:[...metrics.authStates],navigationType:metrics.navType,pageShows:metrics.pageShows,unexpectedBootOverlays:metrics.unexpectedBootOverlays,verificationOverlays:metrics.verificationOverlays,overviewRequested:window.TopkeyBadmintonFastStart124?.overviewRequested||0,
  overviewFlushed:window.TopkeyBadmintonFastStart124?.overviewFlushed||0};
 }
 function show(){
@@ -44,7 +60,7 @@ function show(){
  }
  const m=snapshot();const p=document.getElementById('tk125-performance-summary');
  if(p)p.textContent='Sẵn sàng: '+(m.readyMs??'đang xác minh')+' ms | Long tasks: '+m.longTasks+' (max '+m.maxLongTaskMs+' ms)\n'
- +'Click delay: TB '+m.avgInputDelayMs+' ms / max '+m.maxInputDelayMs+' ms | Overview redraw '+m.overviewFlushed+'/'+m.overviewRequested;
+ +'Click delay: TB '+m.avgInputDelayMs+' ms / max '+m.maxInputDelayMs+' ms | Overview redraw '+m.overviewFlushed+'/'+m.overviewRequested+'\nNavigation: '+m.navigationType+' | Firebase overlay after ready: '+m.unexpectedBootOverlays+' | quyền xác minh lại: '+m.verificationOverlays;
 }
 window.TopkeyBadmintonPerf125=Object.freeze({snapshot,show});
 const timer=setInterval(show,2600);
