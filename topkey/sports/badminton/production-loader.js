@@ -4,7 +4,7 @@
 
   const BADMINTON_RUNTIME = [
     './upgrade122-hotfix85.js', './testlab122.js', './upgrade121.js',
-    './upgrade122-hotfix5.js', './upgrade122-hotfix6.js', './upgrade122-hotfix7.js',
+    './upgrade122-hotfix5.js?v=h128-no-auto-reload-20261113', './upgrade122-hotfix6.js', './upgrade122-hotfix7.js',
     './upgrade122-hotfix10.js', './upgrade122-hotfix11.js', './upgrade122-hotfix14.js',
     './upgrade122-hotfix15.js', './upgrade122-hotfix18.js', './upgrade122-hotfix20.js',
     './upgrade122-hotfix21.js', './upgrade122-hotfix22.js', './upgrade122-hotfix25.js',
