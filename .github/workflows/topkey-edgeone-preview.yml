@@ -91,7 +91,7 @@ jobs:
             js_file=/tmp/topkey-badminton-h124.js
             if curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/index.html" -o "$html_file" 2>/dev/null &&
                curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/fast-start-h124.js" -o "$js_file" 2>/dev/null &&
-               grep -q "fast-start-h124.js" "$html_file" &&
+               grep -Fq "fast-start-h124.js?v=h126-startup-20261113" "$html_file" &&
                grep -q "AFTER_LOGIN_HOUSEKEEPING_NONBLOCKING" "$js_file" &&
                curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/perf-diagnostics-h125.js" -o /tmp/tk-perf-h125.js 2>/dev/null &&
                grep -q 'TopkeyBadmintonPerf125' /tmp/tk-perf-h125.js; then
@@ -101,10 +101,10 @@ jobs:
             sleep 5
           done
           if [ "$ok" -eq 1 ]; then
-            echo "### Live Badminton fast-start H124 is available on EdgeOne." >> "$GITHUB_STEP_SUMMARY"
+            echo "### Live Badminton fast-start H126 is available on EdgeOne." >> "$GITHUB_STEP_SUMMARY"
           else
             echo "::warning::Live Badminton fast-start H124 not verified. Confirm EdgeOne Production deployment and CDN propagation."
-            echo "### Live Badminton fast-start H124 not yet verified." >> "$GITHUB_STEP_SUMMARY"
+            echo "### Live Badminton fast-start H126 not yet verified." >> "$GITHUB_STEP_SUMMARY"
           fi
       - name: Document EdgeOne release settings
         shell: bash
