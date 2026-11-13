@@ -10,9 +10,9 @@
     './upgrade122-hotfix21.js', './upgrade122-hotfix22.js', './upgrade122-hotfix25.js',
     './upgrade122-hotfix26.js', './upgrade122-hotfix27.js', './upgrade122-hotfix28.js',
     './upgrade122-hotfix29.js', './upgrade122-hotfix30.js', './upgrade122-hotfix37.js',
-    './upgrade122-hotfix53.js', './upgrade122-hotfix55.js', './upgrade122-hotfix56.js',
+    './upgrade122-hotfix53.js', './upgrade122-hotfix55.js?v=h135-event-reports-20261113', './upgrade122-hotfix56.js',
     './upgrade122-hotfix60.js', './upgrade122-hotfix61.js', './upgrade122-hotfix64.js',
-    './upgrade122-hotfix65.js?v=ppt-upload-20261111', './upgrade122-hotfix67.js', './upgrade122-hotfix76.js?v=ppt-upload-20261111',
+    './upgrade122-hotfix65.js?v=ppt-upload-20261111', './upgrade122-hotfix67.js', './upgrade122-hotfix76.js?v=h135-event-reports-20261113',
     './upgrade122-hotfix80.js?v=ppt-upload-20261111', './upgrade122-hotfix41.js', './upgrade122-hotfix63.js',
     './upgrade122-hotfix68.js', './h98-focus.js', '../../h114-runtime-fixes.js',
     './upgrade122-hotfix57.js'
