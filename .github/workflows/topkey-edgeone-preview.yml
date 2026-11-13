@@ -62,7 +62,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if ! curl --fail --silent --show-error --max-time 22 --location "https://topkey-activity-management.edgeone.dev/index.html?__verify=hub-bi-20261113" -o /tmp/topkey-edgeone-live.html; then
+          if ! curl --fail --silent --show-error --max-time 22 --location "https://topkey-activity-management.edgeone.dev/index.html" -o /tmp/topkey-edgeone-live.html; then
             echo "::warning::Could not fetch live EdgeOne website; deployment status is unverified."
             exit 0
           fi
