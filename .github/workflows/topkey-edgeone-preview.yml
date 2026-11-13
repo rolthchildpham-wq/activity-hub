@@ -11,6 +11,10 @@ on:
       - 'topkey/executive-dashboard.css'
       - 'topkey/executive-dashboard.js'
       - 'topkey/sports/badminton/index.html'
+      - 'topkey/sports/vnext/index.html'
+      - 'topkey/sports/vnext/sport-identities-h132.css'
+      - 'topkey/sports/vnext/sport-identities-h132.js'
+      - 'topkey/tests/sport-themes-h132.test.cjs'
       - 'topkey/sports/badminton/fast-start-h124.js'
       - 'topkey/tests/badminton-fast-start-h124.test.cjs'
       - 'topkey/sports/badminton/production-loader.js'
@@ -59,6 +63,8 @@ jobs:
           node --check topkey/hub-compact-h130.js
           node --check topkey/sports/badminton/sidebar-collapse-h130.js
           node topkey/tests/hub-sidebar-full-patch-h130.test.cjs
+          node --check topkey/sports/vnext/sport-identities-h132.js
+          node topkey/tests/sport-themes-h132.test.cjs
           node topkey/tests/edgeone-host-redirect.test.cjs
           python3 - <<'PY'
           import json
