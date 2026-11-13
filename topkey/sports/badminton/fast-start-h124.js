@@ -39,6 +39,36 @@ function deferredMethod(name){
 }
 deferredMethod('ensureSchema');
 deferredMethod('seedIfEmpty');
+/* First authenticated view should render only the visible tab.
+   Previous App.renderAll loops over every module (finance, audit, courts,
+   matches, etc.) synchronously before the user opens any of those tabs.
+   Subsequent explicit refreshes still use the original function. */
+const firstFullRender=app.renderAll;
+let initialRenderReduced=false;
+if(typeof firstFullRender==='function'&&!app.__firstViewLightweight){
+ app.__firstViewLightweight=true;
+ app.renderAll=function(...args){
+  if(initialRenderReduced)return firstFullRender.apply(this,args);
+  const uid=T.Auth?._profileVerifiedUid;
+  if(!uid||uid!==T.Data?.auth?.currentUser?.uid)return firstFullRender.apply(this,args);
+  initialRenderReduced=true;
+  const tab=String(this.currentTab||'overview');
+  const routine=window.TopkeyCoreDataRuntime115?.renderTabFromCache;
+  if(typeof routine==='function'){
+   try{routine(tab);return} catch(e){console.warn('TOPKEY initial tab render fallback',e)}
+  }
+  // Always render active content when core tab router is not yet present.
+  const basic={
+   overview:['renderOverview'],teams:['renderTeams','renderCheckin','renderRegistrations'],
+   schedule:['renderMatches','renderStandings'],control:['renderControl'],
+   umpire:['renderUmpire'],live:['renderLiveScore'],finance:['renderFinance'],
+   announcements:['renderAnnouncements'],audit:['renderAudit'],
+   settings:['renderConfig','renderUsers'],health:['renderHealth']
+  };
+  for(const method of basic[tab]||['renderOverview'])try{this[method]?.()}catch(e){console.warn('TOPKEY initial render',method,e)}
+ };
+}
+
 // A Firestore/RTDB burst may update many branches in one animation frame.
 // The legacy renderBranch() calls renderOverview() on each branch change,
 // which redundantly rebuilds the dashboard and can stall every button press.
