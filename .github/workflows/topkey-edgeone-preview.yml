@@ -72,14 +72,14 @@ jobs:
             echo "::warning::Live EdgeOne is still serving the OLD Hub version; redeploy the latest GitHub main branch in EdgeOne Production."
             echo "**Live EdgeOne is stale**: index.html does not contain sports-hub-bi.css." >> "$GITHUB_STEP_SUMMARY"
           fi
-      - name: Explain existing GitHub-connected EdgeOne deploy
+      - name: Document EdgeOne release settings
         shell: bash
         env:
           EDGEONE_PROJECT_NAME: ${{ vars.EDGEONE_PROJECT_NAME }}
         run: |
           set -euo pipefail
           {
-            echo "## TOPKEY checked; EdgeOne deployment is not triggered here"
+            echo "## TOPKEY checked; EdgeOne deployment is triggered only when EDGEONE_DEPLOY_HOOK is configured"
             echo ""
             echo "The existing EdgeOne project \`topkey-activity-management\` is a GitHub-provider project."
             echo "Its CLI rejects folder/ZIP upload; the GitHub integration in EdgeOne must be configured."
@@ -93,5 +93,5 @@ jobs:
             echo ""
             echo "Go to EdgeOne Makers > project > Settings > Build and Deployment, confirm repo and settings, then request preview redeploy in EdgeOne."
             echo ""
-            echo "**This workflow validates source only; it does not deploy or change Firebase Rules.**"
+            echo "**This workflow validates source and optionally triggers the EdgeOne deploy hook. It never changes Firebase Rules.**"
           } >> "$GITHUB_STEP_SUMMARY"
