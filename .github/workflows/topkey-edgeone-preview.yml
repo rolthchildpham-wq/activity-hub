@@ -10,6 +10,9 @@ on:
       - 'topkey/sports-hub-bi.css'
       - 'topkey/executive-dashboard.css'
       - 'topkey/executive-dashboard.js'
+      - 'topkey/sports/badminton/index.html'
+      - 'topkey/sports/badminton/fast-start-h124.js'
+      - 'topkey/tests/badminton-fast-start-h124.test.cjs'
 
 permissions:
   contents: read
@@ -34,6 +37,8 @@ jobs:
           node --check topkey/topkey-shared-auth.js
           node --check topkey/sports/badminton/production-loader.js
           node topkey/tests/auth-profile-pending.test.cjs
+          node --check topkey/sports/badminton/fast-start-h124.js
+          node topkey/tests/badminton-fast-start-h124.test.cjs
           node topkey/tests/edgeone-host-redirect.test.cjs
           python3 - <<'PY'
           import json
