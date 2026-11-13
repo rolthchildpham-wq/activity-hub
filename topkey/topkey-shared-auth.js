@@ -400,7 +400,15 @@
      // Change of tournament must update subscriptions in place without reload.
      if(Array.isArray(T.App?.offs))for(const off of T.App.offs)try{off()}catch{}
      if(T.App)T.App.offs=[];
-     T.App?.subscribe?.();T.App?.renderAll?.();
+     T.App?.subscribe?.();
+     // Reconnect only the visible tournament panel. Rendering every finance,
+     // umpire, schedule and audit tab synchronously caused seconds of jank
+     // immediately after the Firebase profile had been verified.
+     const active=String(T.App?.currentTab||'overview');
+     const renderActive=window.TopkeyCoreDataRuntime115?.renderTabFromCache;
+     if(typeof renderActive==='function')renderActive(active);
+     else if(active==='overview')T.App?.renderOverview?.();
+     else T.App?.renderBranch?.(active==='schedule'?'matches':active);
      return true;
     }catch(e){console.warn('Non-blocking tournament recovery deferred',e);return false}
    }
