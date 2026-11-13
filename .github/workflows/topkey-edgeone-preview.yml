@@ -164,6 +164,30 @@ jobs:
           else
             echo "::warning::Live Hub H130 assets not verified. Confirm EdgeOne deployment and CDN propagation."
           fi
+      - name: Audit live H132 six-sport dashboard and badminton no-flash boot
+        shell: bash
+        run: |
+          set -euo pipefail
+          good=0
+          for attempt in 1 2 3 4; do
+            if curl --fail --silent --show-error --max-time 12 --location "https://topkey-activity-management.edgeone.dev/sports/vnext/index.html?sport=football" -o /tmp/tk-h132-vnext.html 2>/dev/null &&
+               grep -Fq "sport-identities-h132.css?v=h132-20261113" /tmp/tk-h132-vnext.html &&
+               grep -Fq "tk132-sport-prepaint" /tmp/tk-h132-vnext.html &&
+               curl --fail --silent --show-error --max-time 12 --location "https://topkey-activity-management.edgeone.dev/sports/vnext/sport-identities-h132.css" -o /tmp/tk-h132-theme.css 2>/dev/null &&
+               grep -Fq 'data-tk-sport="cooking"' /tmp/tk-h132-theme.css &&
+               curl --fail --silent --show-error --max-time 12 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/index.html" -o /tmp/tk-h132-badminton.html 2>/dev/null &&
+               grep -Fq '<body class="tk-smooth-admin">' /tmp/tk-h132-badminton.html; then
+              good=1
+              break
+            fi
+            sleep 5
+          done
+          if [ "$good" -eq 1 ]; then
+            echo "### Live H132 badminton first-paint and six-sport UI verified." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "::warning::H132 not verified on EdgeOne live domain; GitHub success alone does not mean Production is active."
+            echo "### Live H132 deploy could not be confirmed." >> "$GITHUB_STEP_SUMMARY"
+          fi
       - name: Document EdgeOne release settings
         shell: bash
         env:
