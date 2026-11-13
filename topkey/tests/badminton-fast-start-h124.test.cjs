@@ -7,6 +7,8 @@ const events=[];
 const scheduled=[];
 let resolveSchema,resolveSeed;
 const app={
+ currentTab:'overview',
+ renderOverview(){events.push('overview-render')},
  ensureSchema(){events.push('schema-start');return new Promise(r=>{resolveSchema=r})},
  seedIfEmpty(){events.push('seed-start');return new Promise(r=>{resolveSeed=r})}
 };
@@ -40,5 +42,12 @@ assert.ok(html.includes("await loadScript('./fast-start-h124.js?v=h124-20261113'
  await app.seedIfEmpty(); // already completed; no pending
  await auth.logout();
  assert.ok(events.includes('logout'));
+ // Repeated Firebase events in one frame should not trigger full repeated DOM redraws.
+ app.renderOverview();app.renderOverview();app.renderOverview();
+ assert.equal(events.filter(x=>x==='overview-render').length,0);
+ await new Promise(r=>setTimeout(r,25));
+ assert.equal(events.filter(x=>x==='overview-render').length,1);
+ assert.equal(context.window.TopkeyBadmintonFastStart124.overviewRequested,3);
+ assert.equal(context.window.TopkeyBadmintonFastStart124.overviewFlushed,1);
  console.log('H124 fast-start: verified-only background housekeeping, no auth bypass, and logout cancellation passed.');
 })().catch(err=>{console.error(err);process.exitCode=1});
