@@ -1,8 +1,8 @@
 (()=>{
 'use strict';
-const CURRENT_VERSION='2026.11.04-vnext-upgrade122-hotfix47-withdrawal-legacy-recovery';
+const CURRENT_VERSION=String(window.TopkeyRelease?.version||'2026.11.04-vnext-upgrade122-hotfix47-withdrawal-legacy-recovery');
 const CURRENT_BUILD='upgrade122';
-const CURRENT_CACHE_TAG='u122h47-20261104';
+const CURRENT_CACHE_TAG=String(window.TopkeyRelease?.cacheTag||'u122h47-20261104');
 const KEEP_CACHES=new Set(['topkey-piper-runtime-ort122-phonemize100','topkey-natural-crowd-public-domain-v1']);
 const $=id=>document.getElementById(id);
 let healPromise=null;
@@ -55,20 +55,12 @@ async function _heal(opts={}){
       if(opts.force) await forceLatestSW(server);
       return true;
     }
-    setText(st,'↻ Phát hiện runtime cũ · đang tự đồng bộ bản mới…');
-    const serverKey=String(server.cacheTag||server.version||server.build||'latest');
-    const guard='topkey_autoheal_'+serverKey;
-    if(sessionStorage.getItem(guard)==='1'&&!opts.force){
-      setText(st,'Runtime vẫn lệch sau lần tự cập nhật. Bấm “Kiểm tra bản mới” để thử lại.');
-      return false;
-    }
-    sessionStorage.setItem(guard,'1');
-    await purgeBadmintonRuntime();
-    await forceLatestSW(server);
-    const u=new URL(location.href);
-    u.searchParams.set('__topkey_build',server.cacheTag||server.build||Date.now());
-    u.searchParams.set('__topkey_sync','1');
-    location.replace(u.href);
+    // H128: The legacy H47 self-heal ran 1.2 seconds after every authenticated
+    // page load and called location.replace on any later release. This produced
+    // a second Firebase loading screen while users were clicking sport tabs.
+    // Only show a status; an actual update requires the separate, explicit
+    // manual H85 release verification and its user confirmation.
+    setText(st,'Có phiên bản máy chủ mới. Không tự tải lại trong lúc sử dụng. Bấm “Kiểm tra bản mới” nếu cần.');
     return false;
   }catch(e){
     setText(st,'Không kiểm tra được bản server: '+(e?.message||e));
