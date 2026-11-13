@@ -25,6 +25,8 @@ assert.ok(html.includes("await loadScript('./fast-start-h124.js?v=h126-startup-2
 (async()=>{
  // Only the visible authorized tab is rendered on the first Firebase login.
  app.renderAll();
+ assert.equal(scheduled.length,1,'first visible tab is scheduled for a single paint');
+ scheduled.shift()();
  assert.deepEqual(events,['overview-render']);
  app.renderAll();
  assert.deepEqual(events,['overview-render','full-render']);
