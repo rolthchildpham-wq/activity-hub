@@ -97,6 +97,11 @@ jobs:
                grep -Fq "fast-start-h124.js?v=h126-startup-20261113" "$html_file" &&
                grep -Fq "topkey-shared-auth.js?v=h127-auth-visual-stability-20261113" "$html_file" &&
                grep -Fq "perf-diagnostics-h125.js?v=h127-20261113" "$html_file" &&
+               grep -Fq "production-loader.js?v=h128-no-auto-reload-20261113" "$html_file" &&
+               curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/production-loader.js" -o /tmp/tk-loader-h128.js 2>/dev/null &&
+               grep -Fq "upgrade122-hotfix5.js?v=h128-no-auto-reload-20261113" /tmp/tk-loader-h128.js &&
+               curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/upgrade122-hotfix5.js" -o /tmp/tk-selfheal-h128.js 2>/dev/null &&
+               ! grep -q "location.replace(" /tmp/tk-selfheal-h128.js &&
                grep -q "AFTER_LOGIN_HOUSEKEEPING_NONBLOCKING" "$js_file" &&
                curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/perf-diagnostics-h125.js" -o /tmp/tk-perf-h125.js 2>/dev/null &&
                grep -q 'TopkeyBadmintonPerf125' /tmp/tk-perf-h125.js; then
@@ -106,10 +111,10 @@ jobs:
             sleep 5
           done
           if [ "$ok" -eq 1 ]; then
-            echo "### Live Badminton auth stability H127 is available on EdgeOne." >> "$GITHUB_STEP_SUMMARY"
+            echo "### Live Badminton H128 anti-autoreload is available on EdgeOne." >> "$GITHUB_STEP_SUMMARY"
           else
-            echo "::warning::Live Badminton fast-start H124 not verified. Confirm EdgeOne Production deployment and CDN propagation."
-            echo "### Live Badminton auth stability H127 not yet verified." >> "$GITHUB_STEP_SUMMARY"
+            echo "::warning::Live Badminton H128 anti-autoreload not verified. Confirm EdgeOne Production deployment and CDN propagation."
+            echo "### Live Badminton H128 anti-autoreload not yet verified." >> "$GITHUB_STEP_SUMMARY"
           fi
       - name: Document EdgeOne release settings
         shell: bash
