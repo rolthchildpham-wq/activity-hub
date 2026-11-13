@@ -6,6 +6,10 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/topkey-edgeone-preview.yml'
+      - 'topkey/index.html'
+      - 'topkey/sports-hub-bi.css'
+      - 'topkey/executive-dashboard.css'
+      - 'topkey/executive-dashboard.js'
 
 permissions:
   contents: read
@@ -39,6 +43,35 @@ jobs:
               json.loads((root/f).read_text(encoding='utf-8'))
           print('TOPKEY static artifacts and auth regression validated')
           PY
+      - name: Trigger EdgeOne deployment if configured
+        shell: bash
+        env:
+          EDGEONE_DEPLOY_HOOK: ${{ secrets.EDGEONE_DEPLOY_HOOK }}
+        run: |
+          set -euo pipefail
+          if [ -z "${EDGEONE_DEPLOY_HOOK}" ]; then
+            echo "::warning::EdgeOne has NOT been deployed. Configure repository secret EDGEONE_DEPLOY_HOOK from the EdgeOne Pages project's Deploy Hook settings."
+            echo "### EdgeOne deployment NOT triggered" >> "$GITHUB_STEP_SUMMARY"
+            echo "No EDGEONE_DEPLOY_HOOK repository secret. GitHub source is newer than live EdgeOne." >> "$GITHUB_STEP_SUMMARY"
+          else
+            curl --fail --silent --show-error --max-time 35 --request POST "${EDGEONE_DEPLOY_HOOK}" --output /dev/null
+            echo "### EdgeOne deploy hook submitted" >> "$GITHUB_STEP_SUMMARY"
+            echo "EdgeOne must still finish its own production deployment; check EdgeOne build history to confirm." >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Audit live EdgeOne dashboard version
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! curl --fail --silent --show-error --max-time 22 --location "https://topkey-activity-management.edgeone.dev/index.html?__verify=hub-bi-20261113" -o /tmp/topkey-edgeone-live.html; then
+            echo "::warning::Could not fetch live EdgeOne website; deployment status is unverified."
+            exit 0
+          fi
+          if grep -q 'sports-hub-bi.css' /tmp/topkey-edgeone-live.html; then
+            echo "Live EdgeOne HTML contains the redesigned Hub stylesheet." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "::warning::Live EdgeOne is still serving the OLD Hub version; redeploy the latest GitHub main branch in EdgeOne Production."
+            echo "**Live EdgeOne is stale**: index.html does not contain sports-hub-bi.css." >> "$GITHUB_STEP_SUMMARY"
+          fi
       - name: Explain existing GitHub-connected EdgeOne deploy
         shell: bash
         env:
