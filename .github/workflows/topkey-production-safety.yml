@@ -52,3 +52,4 @@ jobs:
         run: |
           node --check topkey/topkey-shared-auth.js
           node --check topkey/sports/badminton/production-loader.js
+          node topkey/tests/hub-bi-visual-regression.test.cjs
