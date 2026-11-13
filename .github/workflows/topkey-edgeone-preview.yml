@@ -102,6 +102,10 @@ jobs:
                grep -Fq "fast-start-h124.js?v=h126-startup-20261113" "$html_file" &&
                grep -Fq "topkey-shared-auth.js?v=h127-auth-visual-stability-20261113" "$html_file" &&
                grep -Fq "perf-diagnostics-h125.js?v=h127-20261113" "$html_file" &&
+               grep -Fq "dashboard-smooth-h129.css?v=h129-20261113" "$html_file" &&
+               grep -Fq "dashboard-smooth-h129.js?v=h129-20261113" "$html_file" &&
+               curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/dashboard-smooth-h129.js" -o /tmp/tk-dashboard-h129.js 2>/dev/null &&
+               grep -Fq "PERSISTENT_SHELL_SINGLE_VISIBLE_TAB_PAINT" /tmp/tk-dashboard-h129.js &&
                grep -Fq "production-loader.js?v=h128-no-auto-reload-20261113" "$html_file" &&
                curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/production-loader.js" -o /tmp/tk-loader-h128.js 2>/dev/null &&
                grep -Fq "upgrade122-hotfix5.js?v=h128-no-auto-reload-20261113" /tmp/tk-loader-h128.js &&
@@ -116,10 +120,10 @@ jobs:
             sleep 5
           done
           if [ "$ok" -eq 1 ]; then
-            echo "### Live Badminton H128 anti-autoreload is available on EdgeOne." >> "$GITHUB_STEP_SUMMARY"
+            echo "### Live Badminton H129 stable dashboard is available on EdgeOne." >> "$GITHUB_STEP_SUMMARY"
           else
-            echo "::warning::Live Badminton H128 anti-autoreload not verified. Confirm EdgeOne Production deployment and CDN propagation."
-            echo "### Live Badminton H128 anti-autoreload not yet verified." >> "$GITHUB_STEP_SUMMARY"
+            echo "::warning::Live Badminton H129 stable dashboard not verified. Confirm EdgeOne Production deployment and CDN propagation."
+            echo "### Live Badminton H129 stable dashboard not yet verified." >> "$GITHUB_STEP_SUMMARY"
           fi
       - name: Document EdgeOne release settings
         shell: bash
