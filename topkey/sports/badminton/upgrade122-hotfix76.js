@@ -39,6 +39,10 @@ async function exportPpt(){if(!reportRef||busy)return;busy=true;const domCount=d
 function patchCurrentButton(){if(window.TopkeyUpgrade122Hotfix79)return;const b=$('tk65-download-current');if(!b)return;b.dataset.tk76='1';b.textContent='⬇ Xuất Báo cáo toàn giải';b.onclick=(e)=>{e?.preventDefault?.();e?.stopImmediatePropagation?.();openExport(H65.buildReport())}}
 const oldRenderSettings=G.renderSettings?.bind(G);if(oldRenderSettings&&!G.__tk76Settings){G.__tk76Settings=true;G.renderSettings=function(...a){const r=oldRenderSettings(...a);setTimeout(patchCurrentButton,0);return r}}
 const oldRenderArchives=G.renderArchives?.bind(G);if(oldRenderArchives&&!G.__tk76Archives){G.__tk76Archives=true;G.renderArchives=function(...a){const r=oldRenderArchives(...a);setTimeout(()=>{if(window.TopkeyUpgrade122Hotfix79)return;const box=$('tk9-archive-list');if(!box)return;const rows=Object.values(this.archives||{}).sort((a,b)=>(b.closedAt||b.createdAt||0)-(a.closedAt||a.createdAt||0));const buttons=[...box.querySelectorAll('.tk65-archive-report')];buttons.forEach((b,i)=>{const x=rows[i];if(!x?.tid)return;b.textContent=x.finalReport?'⬇ Xuất báo cáo':'⬇ Xuất báo cáo';b.onclick=async()=>{let rep=x.finalReport;if(!rep&&T.Data?.db){try{rep=(await T.Data.db.ref(`${AUTH_ROOT}/tournamentIndex/${SPORT}/${x.tid}/finalReport`).once('value')).val()}catch{}}if(rep)openExport(rep);else U.toast('Giải này chưa có snapshot báo cáo toàn giải','err')}})},0);return r}}
-setInterval(patchCurrentButton,400);setTimeout(()=>{ensureModal();patchCurrentButton()},1300);
+// H135: report button is already patched on renderSettings/renderArchives.
+ // Remove 400ms forever-polling which kept touching DOM during active matches
+ // and umpire tab use. One-time fallback handles older markup.
+ setTimeout(()=>{ensureModal();patchCurrentButton()},1300);
+ window.addEventListener('focus',()=>{if(!document.hidden)patchCurrentButton()},{passive:true});
 window.TopkeyUpgrade122Hotfix76={VERSION,openExport,reportHtml,getTransientImages:()=>images.length};
 })();
