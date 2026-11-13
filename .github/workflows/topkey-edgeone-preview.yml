@@ -77,6 +77,29 @@ jobs:
             echo "::warning::Live EdgeOne is still serving the OLD Hub version; redeploy the latest GitHub main branch in EdgeOne Production."
             echo "**Live EdgeOne is stale**: index.html does not contain sports-hub-bi.css." >> "$GITHUB_STEP_SUMMARY"
           fi
+      - name: Audit live badminton fast-start assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          ok=0
+          for attempt in 1 2 3 4 5 6; do
+            html_file=/tmp/topkey-badminton-live.html
+            js_file=/tmp/topkey-badminton-h124.js
+            if curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/index.html" -o "$html_file" 2>/dev/null &&
+               curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/fast-start-h124.js" -o "$js_file" 2>/dev/null &&
+               grep -q "fast-start-h124.js" "$html_file" &&
+               grep -q "AFTER_LOGIN_HOUSEKEEPING_NONBLOCKING" "$js_file"; then
+              ok=1
+              break
+            fi
+            sleep 5
+          done
+          if [ "$ok" -eq 1 ]; then
+            echo "### Live Badminton fast-start H124 is available on EdgeOne." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "::warning::Live Badminton fast-start H124 not verified. Confirm EdgeOne Production deployment and CDN propagation."
+            echo "### Live Badminton fast-start H124 not yet verified." >> "$GITHUB_STEP_SUMMARY"
+          fi
       - name: Document EdgeOne release settings
         shell: bash
         env:
