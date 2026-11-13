@@ -45,7 +45,7 @@ function snapshot(){
  totalLongTaskMs:Math.round(metrics.longTaskTotalMs),samples:metrics.inputSamples,
  maxInputDelayMs:metrics.inputDelayMaxMs,avgInputDelayMs:metrics.inputSamples?Math.round(metrics.inputDelayTotalMs/metrics.inputSamples):0,
  authStates:[...metrics.authStates],navigationType:metrics.navType,pageShows:metrics.pageShows,unexpectedBootOverlays:metrics.unexpectedBootOverlays,verificationOverlays:metrics.verificationOverlays,overviewRequested:window.TopkeyBadmintonFastStart124?.overviewRequested||0,
- overviewFlushed:window.TopkeyBadmintonFastStart124?.overviewFlushed||0};
+ overviewFlushed:window.TopkeyBadmintonFastStart124?.overviewFlushed||0,rapidTabs:window.TopkeyTabPerf133?.snapshot||null};
 }
 function show(){
  const parent=document.getElementById('page-health');if(!parent||parent.classList.contains('hidden'))return;
@@ -60,7 +60,7 @@ function show(){
  }
  const m=snapshot();const p=document.getElementById('tk125-performance-summary');
  if(p)p.textContent='Sẵn sàng: '+(m.readyMs??'đang xác minh')+' ms | Long tasks: '+m.longTasks+' (max '+m.maxLongTaskMs+' ms)\n'
- +'Click delay: TB '+m.avgInputDelayMs+' ms / max '+m.maxInputDelayMs+' ms | Overview redraw '+m.overviewFlushed+'/'+m.overviewRequested+'\nNavigation: '+m.navigationType+' | Firebase overlay after ready: '+m.unexpectedBootOverlays+' | quyền xác minh lại: '+m.verificationOverlays;
+ +'Click delay: TB '+m.avgInputDelayMs+' ms / max '+m.maxInputDelayMs+' ms | Overview redraw '+m.overviewFlushed+'/'+m.overviewRequested+'\nNavigation: '+m.navigationType+' | Firebase overlay after ready: '+m.unexpectedBootOverlays+' | quyền xác minh lại: '+m.verificationOverlays+'\nChuyển thẻ: '+(m.rapidTabs?.requests??0)+' lần | hủy render cũ: '+(m.rapidTabs?.cancelled??0)+' | tác vụ render dài: '+(m.rapidTabs?.longRenders??0)+' | render dài nhất: '+(m.rapidTabs?.maxRenderMs??0)+' ms';
 }
 window.TopkeyBadmintonPerf125=Object.freeze({snapshot,show});
 const timer=setInterval(show,2600);
