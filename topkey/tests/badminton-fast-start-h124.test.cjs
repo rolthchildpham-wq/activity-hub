@@ -21,7 +21,7 @@ const auth={
 const context={window:{Topkey:{App:app,Auth:auth,Data:{auth:{currentUser:{uid:'user-a'}}}}},requestIdleCallback:fn=>scheduled.push(fn),setTimeout:fn=>scheduled.push(fn),console};
 vm.runInNewContext(source,context);
 assert.ok(context.window.TopkeyBadmintonFastStart124.installed);
-assert.ok(html.includes("await loadScript('./fast-start-h124.js?v=h126-startup-20261113',7000);state.core=true"));
+assert.ok(html.includes("await loadScript('./fast-start-h124.js?v=h126-startup-20261113',7000);await loadScript('./dashboard-smooth-h129.js?v=h129-20261113',7000);state.core=true"));
 (async()=>{
  // Only the visible authorized tab is rendered on the first Firebase login.
  app.renderAll();
