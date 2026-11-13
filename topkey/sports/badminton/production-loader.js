@@ -38,13 +38,29 @@
   let runtimePromise = null;
   let runtimeScheduled = false;
 
+  // Input-aware background staging: keep scoring/tabs responsive while legacy
+  // optional extensions load. Never delay an explicit user-requested feature.
+  let lastInteractionAt = 0;
+  const markInteraction = () => { lastInteractionAt = Date.now(); };
+  for (const eventName of ['pointerdown', 'keydown', 'touchstart']) {
+    document.addEventListener(eventName, markInteraction, {passive: true, capture: true});
+  }
   const idle = callback => {
     if (typeof window.requestIdleCallback === 'function') {
-      return window.requestIdleCallback(callback, {timeout: 800});
+      return window.requestIdleCallback(callback, {timeout: 1200});
     }
-    return setTimeout(callback, 16);
+    return setTimeout(callback, 80);
   };
-  const yieldToBrowser = () => new Promise(resolve => idle(resolve));
+  const yieldToBrowser = () => new Promise(resolve => {
+    const check = () => {
+      const busy = Date.now() - lastInteractionAt < 420;
+      const inputPending = typeof navigator.scheduling?.isInputPending === 'function'
+        && navigator.scheduling.isInputPending({includeContinuous: true});
+      if (busy || inputPending) {setTimeout(check, 150);return;}
+      idle(() => resolve());
+    };
+    check();
+  });
   const withBuild = source => {
     if (/^https?:\/\//i.test(source)) return source;
     const tag = String(window.TopkeyRelease?.cacheTag || '');
@@ -103,6 +119,9 @@
       const batch = sources.slice(offset, offset + batchSize);
       batch.forEach(preload);
       for (const source of batch) {
+        // Yield between *individual* optional modules, not only groups of four.
+        // Several of these scripts patch App and can freeze the main thread.
+        if (optional) await yieldToBrowser();
         try {
           await loadScript(source);
         } catch (error) {
@@ -134,7 +153,8 @@
     if (!window.__TOPKEY_CORE_READY || !window.__TOPKEY_ADMIN_READY) return runtimePromise;
     if (runtimeScheduled) return runtimePromise;
     runtimeScheduled = true;
-    idle(() => loadRuntime().catch(error => console.warn('TOPKEY runtime staging failed', error)));
+    // Allow the verified application to settle before background extensions run.
+    setTimeout(() => idle(() => loadRuntime().catch(error => console.warn('TOPKEY runtime staging failed', error))), 850);
     const params = new URLSearchParams(location.search);
     if (params.get('testlab') === '1') {
       idle(() => loadFeature('testlab').catch(error => console.warn('TOPKEY Test Lab extension unavailable', error)));
