@@ -1,0 +1,65 @@
+/* TOPKEY Smooth Admin H129 - persistent shell, light workspace, dark green sidebar.
+   Navigation/frame never waits for Firebase. Only page content updates.
+   All selectors scoped to the authenticated sports app. */
+body.tk-smooth-admin{--tk-surface:#eef4f1;--tk-paper:#ffffff;--tk-accent:#097c65;--tk-ink:#122d2a;--tk-quiet:#6b847e;background:var(--tk-surface)!important;background-image:none!important;color:var(--tk-ink)}
+body.tk-smooth-admin #app-shell{display:grid;grid-template-columns:232px minmax(0,1fr);grid-template-rows:72px minmax(0,1fr);min-height:100vh;align-items:start}
+body.tk-smooth-admin #app-shell>.topbar{display:contents!important;position:static!important;backdrop-filter:none!important}
+body.tk-smooth-admin #app-shell .topbar>.brand{grid-row:1;grid-column:1 / -1;position:sticky;top:0;z-index:70;min-width:0;height:72px;background:#fff;border-bottom:1px solid #dbe7e2;padding:12px 27px;box-shadow:0 1px 6px #10382a0a}
+body.tk-smooth-admin #app-shell .brand h1{font-size:18px;font-weight:850;color:#123d33;letter-spacing:-.35px;line-height:1.2}
+body.tk-smooth-admin #app-shell .brand small{color:#69837b;font-weight:500;font-size:12px}
+body.tk-smooth-admin #app-shell .brand .pill{color:#166956;border-color:#b7dfd1;background:#e5f7f0}
+body.tk-smooth-admin #app-shell .brand .hub-back{background:#e9f4ef;color:#166956;border:1px solid #cbe4d7}
+body.tk-smooth-admin #app-shell .brand #logout-btn{background:#143c34;color:#fff;border:0}
+body.tk-smooth-admin #app-shell .topbar>.nav{grid-column:1;grid-row:2;align-self:stretch;display:flex!important;flex-direction:column;align-items:stretch;gap:4px;position:sticky;top:72px;height:calc(100vh - 72px);overflow-y:auto;overflow-x:hidden;background:#0d382f;padding:21px 13px 26px;border-right:1px solid #1c5546;scrollbar-width:thin;scrollbar-color:#477e70 transparent}
+body.tk-smooth-admin #app-shell .nav::before{content:"ĐIỀU HÀNH GIẢI ĐẤU";color:#91cabb;font-size:10px;font-weight:850;letter-spacing:1.6px;padding:4px 13px 12px}
+body.tk-smooth-admin #app-shell .nav [data-tab]{display:flex;align-items:center;text-align:left;white-space:normal;min-height:44px;width:100%;font-size:13px;line-height:1.35;font-weight:650;border-radius:11px;padding:11px 13px;background:transparent;color:#ccede3;border:1px solid transparent;transition:background-color .12s ease,color .12s ease;transform:none!important}
+body.tk-smooth-admin #app-shell .nav [data-tab]:hover{background:#255748;color:#fff}
+body.tk-smooth-admin #app-shell .nav [data-tab].active{background:#e0f5eb;color:#0a5544;box-shadow:none;border-color:transparent}
+body.tk-smooth-admin #app-shell .nav [data-tab].active::before{content:"";height:6px;width:6px;border-radius:50%;background:#0b8f70;margin-right:9px;flex:none}
+body.tk-smooth-admin #app-shell>.shell{grid-column:2;grid-row:2;width:100%;max-width:none;margin:0;min-width:0;padding:28px clamp(16px,2.5vw,38px) 50px;background:#eef4f1;min-height:calc(100vh - 72px)}
+body.tk-smooth-admin #app-shell .shell>.page{animation:none!important;transform:none!important}
+body.tk-smooth-admin #app-shell .shell .grid{gap:16px}
+body.tk-smooth-admin #page-overview .card{border:1px solid #dae7e1;background:#fff;color:#213e37;box-shadow:0 7px 22px rgba(24,69,53,.055);border-radius:16px;backdrop-filter:none;-webkit-backdrop-filter:none}
+body.tk-smooth-admin #page-overview .kpi{position:relative;min-height:128px;padding:22px 23px;border-left:4px solid #0e9b7b;display:flex;flex-direction:column;justify-content:space-between}
+body.tk-smooth-admin #page-overview .kpi:nth-child(2){border-left-color:#4e8de0}
+body.tk-smooth-admin #page-overview .kpi:nth-child(3){border-left-color:#e9a34d}
+body.tk-smooth-admin #page-overview .kpi:nth-child(4){border-left-color:#977fd5}
+body.tk-smooth-admin #page-overview .kpi span{color:#59776f;font-size:13px;font-weight:750}
+body.tk-smooth-admin #page-overview .kpi strong{font-size:34px;color:#174538;font-weight:850;line-height:1.1;font-variant-numeric:tabular-nums}
+body.tk-smooth-admin #page-overview h2{color:#1b4739;font-size:18px}
+body.tk-smooth-admin #page-overview #latest-announcement{color:#5a746c}
+body.tk-smooth-admin #page-overview .table-wrap{border-color:#dbe7e2}
+body.tk-smooth-admin #page-overview table th{background:#eaf3ed;color:#2c6350}
+body.tk-smooth-admin #page-overview table td{color:#2b4b3e;border-color:#e4eee8}
+body.tk-smooth-admin .tk-smooth-intro{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+body.tk-smooth-admin .tk-smooth-intro h2{margin:0 0 5px;font-size:25px;letter-spacing:-.65px;color:#133c30}
+body.tk-smooth-admin .tk-smooth-intro p{margin:0;color:#708a80;font-size:13px}
+body.tk-smooth-admin .tk-smooth-chip{border-radius:99px;padding:9px 13px;display:inline-flex;gap:8px;align-items:center;font-size:12px;font-weight:750;background:#dff5eb;color:#136752;border:1px solid #bae2d0}
+body.tk-smooth-admin .tk-smooth-chip::before{content:"";display:block;width:8px;height:8px;background:#20b286;border-radius:50%}
+body.tk-smooth-admin .page:not(#page-umpire):not(#page-live):not(#page-overview)>.card,
+body.tk-smooth-admin .page:not(#page-umpire):not(#page-live)>.grid>.card{border-radius:16px;box-shadow:0 7px 22px #123c2e0b}
+body.tk-smooth-admin .page .btn:focus-visible,body.tk-smooth-admin .nav button:focus-visible{outline:3px solid #49c9a8;outline-offset:3px}
+body.tk-smooth-admin #app-shell .page .card{transition:none!important}
+@media (max-width:950px){
+ body.tk-smooth-admin #app-shell{grid-template-columns:188px minmax(0,1fr)}
+ body.tk-smooth-admin #app-shell .topbar>.nav{padding:14px 8px}
+ body.tk-smooth-admin #app-shell .nav [data-tab]{padding:10px 8px;font-size:12px}
+ body.tk-smooth-admin #app-shell .topbar>.brand{padding:12px 16px}
+ body.tk-smooth-admin #app-shell>.shell{padding:20px 15px 38px}
+}
+@media(max-width:700px){
+ body.tk-smooth-admin #app-shell{display:block;min-height:100vh}
+ body.tk-smooth-admin #app-shell>.topbar{display:block!important;position:sticky!important;top:0;z-index:70;background:#fff!important;box-shadow:0 2px 12px #173e3114}
+ body.tk-smooth-admin #app-shell .topbar>.brand{height:auto;min-height:67px;padding:10px 13px;position:static}
+ body.tk-smooth-admin #app-shell .brand h1{font-size:15px}
+ body.tk-smooth-admin #app-shell .brand small{display:none}
+ body.tk-smooth-admin #app-shell .topbar>.nav{display:flex!important;flex-direction:row;align-items:stretch;position:static;height:auto;max-height:none;overflow-x:auto;overflow-y:hidden;white-space:nowrap;padding:8px 10px;background:#0d382f;border:0;scroll-snap-type:x proximity}
+ body.tk-smooth-admin #app-shell .nav::before{display:none}
+ body.tk-smooth-admin #app-shell .nav [data-tab]{width:auto;flex:0 0 auto;min-height:43px;white-space:nowrap;padding:10px 12px;scroll-snap-align:start;font-size:12px}
+ body.tk-smooth-admin #app-shell>.shell{min-height:calc(100vh - 116px);padding:17px 11px 32px}
+ body.tk-smooth-admin #page-overview .grid.g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+ body.tk-smooth-admin #page-overview .kpi{min-height:116px;padding:15px}
+ body.tk-smooth-admin #page-overview .kpi strong{font-size:29px}
+ body.tk-smooth-admin .tk-smooth-intro h2{font-size:21px}
+}
+@media (prefers-reduced-motion:reduce){body.tk-smooth-admin #app-shell .nav button{transition:none!important}}
