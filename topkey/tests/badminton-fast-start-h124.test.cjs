@@ -45,7 +45,8 @@ assert.ok(html.includes("await loadScript('./fast-start-h124.js?v=h125-20261113'
  // Repeated Firebase events in one frame should not trigger full repeated DOM redraws.
  app.renderOverview();app.renderOverview();app.renderOverview();
  assert.equal(events.filter(x=>x==='overview-render').length,0);
- await new Promise(r=>setTimeout(r,25));
+ assert.equal(scheduled.length,1,'one redraw scheduled for three Firebase notifications');
+ scheduled.shift()();
  assert.equal(events.filter(x=>x==='overview-render').length,1);
  assert.equal(context.window.TopkeyBadmintonFastStart124.overviewRequested,3);
  assert.equal(context.window.TopkeyBadmintonFastStart124.overviewFlushed,1);
