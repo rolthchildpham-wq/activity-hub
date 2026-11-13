@@ -1,0 +1,92 @@
+/* TOPKEY H131 — six visual identities on the SAME VNext business engine.
+ * Sport is set synchronously in <head> before first paint.
+ * Never touch RTDB, Auth, officials, scores or routing semantics.
+ */
+html[data-tk-sport]{--sport:#17745a;--sport-strong:#0b4436;--sport-soft:#e5f4ec;--sport-highlight:#6acda3;--sport-court:#075344;--sport-outline:#a7d9c4;--sport-emoji:"⚽";--sport-strap:"TRUNG TÂM ĐIỀU HÀNH BÓNG ĐÁ";--sport-sub:"Lịch đấu · Đội bóng · Tỷ số · Bảng xếp hạng"}
+html[data-tk-sport="football"]{--sport:#16805e;--sport-strong:#104638;--sport-soft:#e5f5ec;--sport-highlight:#73d2a3;--sport-court:#0b634a;--sport-outline:#a8dcc2;--sport-emoji:"⚽";--sport-strap:"SÂN CỎ • FOOTBALL OPERATIONS";--sport-sub:"Đội bóng · Sân đấu · Bàn thắng · Bảng xếp hạng"}
+html[data-tk-sport="volleyball"]{--sport:#b35f16;--sport-strong:#593b27;--sport-soft:#fff2df;--sport-highlight:#fac26b;--sport-court:#744923;--sport-outline:#f1c995;--sport-emoji:"🏐";--sport-strap:"SÂN ĐẤU • VOLLEYBALL ARENA";--sport-sub:"Đội bóng · Set đấu · Trọng tài · Kết quả"}
+html[data-tk-sport="running"]{--sport:#a23e60;--sport-strong:#54243e;--sport-soft:#fbe9ef;--sport-highlight:#f1a5bf;--sport-court:#6e3055;--sport-outline:#edb6c9;--sport-emoji:"🏃";--sport-strap:"ĐƯỜNG CHẠY • RACE CONTROL";--sport-sub:"Vận động viên · Làn chạy · Thời gian · Thành tích"}
+html[data-tk-sport="handmade"]{--sport:#7654ba;--sport-strong:#44306d;--sport-soft:#f0eafd;--sport-highlight:#b99def;--sport-court:#57418d;--sport-outline:#d6c2f4;--sport-emoji:"🧶";--sport-strap:"KHÔNG GIAN SÁNG TẠO • MAKERS STUDIO";--sport-sub:"Thí sinh · Tác phẩm · Giám khảo · Xếp hạng"}
+html[data-tk-sport="shuttle"]{--sport:#087d90;--sport-strong:#155064;--sport-soft:#e3f6f6;--sport-highlight:#80d9dc;--sport-court:#0f606f;--sport-outline:#a9e0e5;--sport-emoji:"🪶";--sport-strap:"SÂN ĐÁ CẦU • SHUTTLECOCK";--sport-sub:"Nội dung đơn/đôi · Sân · Set đấu · Live"}
+html[data-tk-sport="cooking"]{--sport:#b74e3b;--sport-strong:#5d302b;--sport-soft:#fff0e7;--sport-highlight:#f8ab8e;--sport-court:#773b31;--sport-outline:#eeb9a8;--sport-emoji:"👨‍🍳";--sport-strap:"NHÀ BẾP THI ĐẤU • CULINARY STUDIO";--sport-sub:"Đội thi · Khu bếp · Giám khảo · Điểm số"}
+html[data-tk-sport] body:not(.tk-public-boot){background:#f0f5f3!important;background-image:none!important;color:#203d36}
+html[data-tk-sport] #app-shell{display:grid;grid-template-columns:218px minmax(0,1fr);grid-template-rows:70px minmax(0,1fr);min-height:100vh;align-items:start}
+html[data-tk-sport] #app-shell>.topbar{display:contents!important;position:static!important;backdrop-filter:none!important}
+html[data-tk-sport] #app-shell .topbar>.brand{grid-row:1;grid-column:1/-1;min-width:0;height:70px;position:sticky;top:0;z-index:80;display:flex;align-items:center;padding:10px 26px;background:#fff!important;border-bottom:1px solid #d9e6e0;box-shadow:0 2px 12px #12382f0b}
+html[data-tk-sport] #app-shell .brand .home-row{display:flex;gap:14px;align-items:center;min-width:0}
+html[data-tk-sport] #app-shell #tournament-title{color:var(--sport-strong)!important;font-size:clamp(15px,1.35vw,19px);letter-spacing:-.3px;margin:0}
+html[data-tk-sport] #app-shell .brand small{color:#58776e!important;font-size:12px}
+html[data-tk-sport] #app-shell .brand .hub-link{border:1px solid var(--sport-outline);border-radius:9px;padding:9px 12px;background:var(--sport-soft);color:var(--sport-strong)!important;text-decoration:none;white-space:nowrap;font-size:12px;font-weight:750}
+html[data-tk-sport] #app-shell #user-label{border:1px solid var(--sport-outline);color:var(--sport-strong);background:var(--sport-soft)}
+html[data-tk-sport] #app-shell #logout-btn{border:0;background:var(--sport-strong);color:#fff}
+html[data-tk-sport] #app-shell .topbar>.nav{grid-column:1;grid-row:2;align-self:stretch;display:flex!important;flex-direction:column;gap:4px;position:sticky;top:70px;height:calc(100vh - 70px);overflow-y:auto;overflow-x:hidden;min-width:0;background:var(--sport-strong);border-right:1px solid var(--sport-outline);padding:22px 11px 24px;scrollbar-width:thin}
+html[data-tk-sport] #app-shell .nav:before{content:var(--sport-strap);padding:4px 12px 15px;color:#ecfffa;font-size:10px;letter-spacing:.7px;line-height:1.6;font-weight:750;opacity:.82}
+html[data-tk-sport] #app-shell .nav [data-tab]{display:flex;align-items:center;text-align:left;gap:10px;min-height:44px;width:100%;padding:11px 11px;border:1px solid transparent;border-radius:11px;font-size:12px;line-height:1.3;white-space:normal;color:#f1fffb;background:transparent;font-weight:700}
+html[data-tk-sport] #app-shell .nav [data-tab]:hover{background:#ffffff22;color:white}
+html[data-tk-sport] #app-shell .nav [data-tab].active{background:var(--sport-soft);color:var(--sport-strong)!important;border-color:var(--sport-outline)}
+html[data-tk-sport] #app-shell .nav [data-tab]:before{display:inline-grid;place-items:center;content:"▦";font-size:17px;min-width:20px}
+html[data-tk-sport] #app-shell .nav [data-tab="overview"]:before{content:var(--sport-emoji)}
+html[data-tk-sport] #app-shell .nav [data-tab="control"]:before{content:"▤"}
+html[data-tk-sport] #app-shell .nav [data-tab="teams"]:before{content:"♙"}
+html[data-tk-sport] #app-shell .nav [data-tab="schedule"]:before{content:"▦"}
+html[data-tk-sport] #app-shell .nav [data-tab="umpire"]:before{content:"◈"}
+html[data-tk-sport] #app-shell .nav [data-tab="live"]:before{content:"●"}
+html[data-tk-sport] #app-shell .nav [data-tab="finance"]:before{content:"₫"}
+html[data-tk-sport] #app-shell .nav [data-tab="announcements"]:before{content:"◉"}
+html[data-tk-sport] #app-shell .nav [data-tab="audit"]:before{content:"≡"}
+html[data-tk-sport] #app-shell .nav [data-tab="health"]:before{content:"◷"}
+html[data-tk-sport] #app-shell .nav [data-tab="settings"]:before{content:"⚙"}
+html[data-tk-sport] #app-shell>.shell{grid-column:2;grid-row:2;min-width:0;min-height:calc(100vh - 70px);width:100%;max-width:none;margin:0;padding:26px clamp(14px,2.4vw,40px) 48px;background:#f0f5f3}
+html[data-tk-sport] #app-shell .shell>.page{animation:none!important;transform:none!important}
+html[data-tk-sport] #page-overview .grid{gap:14px}
+html[data-tk-sport] #page-overview .card{background:#fff!important;border:1px solid #dce8e2;color:#204339!important;box-shadow:0 8px 20px #2246380a;border-radius:15px;backdrop-filter:none!important}
+html[data-tk-sport] #page-overview .kpi{border-left:4px solid var(--sport);min-height:132px;display:flex;flex-direction:column;justify-content:space-between;padding:23px}
+html[data-tk-sport] #page-overview .kpi:nth-child(2){border-left-color:#558bd2}
+html[data-tk-sport] #page-overview .kpi:nth-child(3){border-left-color:#eeaa61}
+html[data-tk-sport] #page-overview .kpi:nth-child(4){border-left-color:#9473c9}
+html[data-tk-sport] #page-overview .kpi span{font-size:13px;color:#4c6a61!important;font-weight:700}
+html[data-tk-sport] #page-overview .kpi strong{color:var(--sport-strong)!important;font-size:33px;font-variant-numeric:tabular-nums}
+html[data-tk-sport] #page-overview .card h2,
+html[data-tk-sport] #page-overview .card h3{color:#1a3b30!important}
+html[data-tk-sport] #page-overview #latest-announcement,
+html[data-tk-sport] #page-overview .muted{color:#526d63!important}
+html[data-tk-sport] #page-overview table th{background:var(--sport-soft);color:var(--sport-strong)!important}
+html[data-tk-sport] #page-overview table td{color:#244537!important;border-color:#e3ede8}
+html[data-tk-sport] #page-overview .table-wrap{border-color:#d9e8df}
+html[data-tk-sport] #app-shell .tk-h132-hero{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:20px 25px;margin-bottom:19px;min-height:106px;background:linear-gradient(113deg,var(--sport-strong),var(--sport));border-radius:17px;color:white;overflow:hidden;position:relative;box-shadow:0 10px 22px #153a2b16}
+html[data-tk-sport] #app-shell .tk-h132-hero:after{content:var(--sport-emoji);position:absolute;right:22px;bottom:-40px;font-size:118px;opacity:.12;pointer-events:none}
+html[data-tk-sport] #app-shell .tk-h132-hero strong{display:block;font-size:20px;letter-spacing:-.35px;position:relative;z-index:1}
+html[data-tk-sport] #app-shell .tk-h132-hero small{display:block;margin-bottom:8px;color:#eafff7;font-size:10px;letter-spacing:1px;font-weight:800}
+html[data-tk-sport] #app-shell .tk-h132-hero p{margin:7px 0 0;color:#f4fff9;font-size:12px}
+html[data-tk-sport] #app-shell .tk-h132-hero>*{position:relative;z-index:1}
+html[data-tk-sport] #app-shell .tk-h132-hero .tk-h132-live{font-size:12px;color:var(--sport-strong);font-weight:800;background:#fff;padding:9px 13px;border-radius:999px;white-space:nowrap}
+html[data-tk-sport] #app-shell .page:not(#page-overview) .card,
+html[data-tk-sport] #app-shell .page:not(#page-overview) .subcard{color:#f0f8ff}
+html[data-tk-sport] #app-shell .page:not(#page-overview) .muted,
+html[data-tk-sport] #app-shell .page:not(#page-overview) .note{color:#c1d7e6!important}
+html[data-tk-sport] #app-shell .page:not(#page-overview)>.split h2,
+html[data-tk-sport] #app-shell .page:not(#page-overview)>.split p{color:#244439}
+html[data-tk-sport] #app-shell :is(button,input,select,a):focus-visible{outline:3px solid var(--sport-highlight);outline-offset:2px}
+html[data-tk-sport] #app-shell .nav [data-tab]:focus-visible{outline-color:#fff}
+@media(max-width:950px){
+ html[data-tk-sport] #app-shell{grid-template-columns:178px minmax(0,1fr)}
+ html[data-tk-sport] #app-shell .nav:before{padding:4px 8px 10px;font-size:9px}
+ html[data-tk-sport] #app-shell .nav [data-tab]{font-size:11px;padding:10px 8px}
+ html[data-tk-sport] #app-shell>.shell{padding:19px 14px}
+}
+@media(max-width:690px){
+ html[data-tk-sport] #app-shell{display:block;min-height:100vh}
+ html[data-tk-sport] #app-shell>.topbar{display:block!important;position:sticky!important;top:0;z-index:70}
+ html[data-tk-sport] #app-shell .topbar>.brand{position:static;height:auto;min-height:68px;padding:10px 12px;flex-wrap:wrap}
+ html[data-tk-sport] #app-shell .topbar>.nav{position:static;height:auto;max-height:none;flex-direction:row;overflow-x:auto;overflow-y:hidden;padding:7px 10px;gap:4px;scroll-snap-type:x proximity}
+ html[data-tk-sport] #app-shell .nav:before{display:none}
+ html[data-tk-sport] #app-shell .nav [data-tab]{width:auto;min-width:max-content;white-space:nowrap;padding:9px 12px;scroll-snap-align:start}
+ html[data-tk-sport] #app-shell>.shell{min-height:calc(100vh - 110px);padding:13px 10px}
+ html[data-tk-sport] #app-shell .tk-h132-hero{padding:17px;min-height:102px}
+ html[data-tk-sport] #app-shell .tk-h132-hero strong{font-size:17px}
+ html[data-tk-sport] #app-shell .tk-h132-hero .tk-h132-live{display:none}
+ html[data-tk-sport] #page-overview .grid.g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+ html[data-tk-sport] #page-overview .kpi{min-height:109px;padding:15px}
+ html[data-tk-sport] #page-overview .kpi strong{font-size:26px}
+}
+@media(prefers-reduced-motion:reduce){html[data-tk-sport] #app-shell .nav button{transition:none!important}}
