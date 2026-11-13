@@ -80,6 +80,13 @@ function augmentModal(){const modal=$('tk51-ranking-modal');if(!modal||augmented
   const g=$('tk51-generate'),h=$('tk51-html'),c=$('tk51-csv'),p=$('tk51-print');if(g)g.onclick=generate;if(h)h.onclick=exportHtml;if(c)c.onclick=exportCsv;if(p)p.onclick=printReport;return true}
 function hookButton(){const b=$('tk51-ranking-explain-btn');if(!b)return false;if(b.dataset.h55==='1')return true;const old=b.onclick;b.dataset.h55='1';b.onclick=(e)=>{old?.call(b,e);setTimeout(()=>{augmentModal();const src=$('tk51-preview .tk51-logo img')?.src;if(src&&!logoData)logoData=src;},0)};return true}
 function stamp(){const T=window.Topkey;if(T){T.VERSION=VERSION;T.CONFIG_VERSION=VERSION;T.RUNTIME_BUILD=VERSION}window.__TOPKEY_BOOT_VERSION=VERSION;window.__TOPKEY_BOOT_CACHE=CACHE_TAG;const h=$('health-version');if(h)h.textContent=VERSION}
-function install(){if(installed)return true;if(!base()||!window.Topkey?.App)return false;installed=true;stamp();hookButton();window.addEventListener('focus',()=>setTimeout(()=>{stamp();hookButton()},0),{passive:true});const timer=setInterval(()=>{stamp();hookButton();if($('tk51-ranking-modal'))augmentModal()},800);setTimeout(()=>clearInterval(timer),30000);window.TopkeyUpgrade122Hotfix55={installed:true,VERSION,CACHE_TAG,reportHtml,csvText,generate,exportHtml,exportCsv,printReport};return true}
+function install(){if(installed)return true;if(!base()||!window.Topkey?.App)return false;installed=true;stamp();hookButton();window.addEventListener('focus',()=>{if(!document.hidden)hookButton()},{passive:true});
+// H135: no repeated version stamping or full report modal rebuild every 800ms.
+// Rank explain buttons are reattached when report UI becomes visible.
+document.addEventListener('click',event=>{
+ if(event.target?.closest?.('#tk51-ranking-explain-btn'))setTimeout(()=>{
+  hookButton();augmentModal();
+ },0);
+},{passive:true,capture:true});window.TopkeyUpgrade122Hotfix55={installed:true,VERSION,CACHE_TAG,reportHtml,csvText,generate,exportHtml,exportCsv,printReport};return true}
 if(!install()){let n=0;const t=setInterval(()=>{if(install()||++n>100)clearInterval(t)},250)}
 })();
