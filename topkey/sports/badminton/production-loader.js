@@ -40,8 +40,15 @@
 
   // Input-aware background staging: keep scoring/tabs responsive while legacy
   // optional extensions load. Never delay an explicit user-requested feature.
-  let lastInteractionAt = 0;
+  // H134: background runtime is not user-critical; wait for a genuinely
+  // quiet navigation period before evaluating each legacy extension.
+  // Explicit report/PPT features still load immediately through loadFeature().
+  let lastInteractionAt = Date.now();
+  let lastTabChangeAt = Date.now();
   const markInteraction = () => { lastInteractionAt = Date.now(); };
+  document.addEventListener('click', event => {
+    if (event.target?.closest?.('[data-tab]')) lastTabChangeAt = Date.now();
+  }, {passive:true,capture:true});
   for (const eventName of ['pointerdown', 'keydown', 'touchstart']) {
     document.addEventListener(eventName, markInteraction, {passive: true, capture: true});
   }
@@ -51,13 +58,22 @@
     }
     return setTimeout(callback, 80);
   };
-  const yieldToBrowser = () => new Promise(resolve => {
+  const yieldToBrowser = (quietMs=0) => new Promise(resolve => {
     const check = () => {
-      const busy = Date.now() - lastInteractionAt < 1100;
+      const sinceInput = Date.now() - lastInteractionAt;
+      const sinceTab = Date.now() - lastTabChangeAt;
       const inputPending = typeof navigator.scheduling?.isInputPending === 'function'
         && navigator.scheduling.isInputPending({includeContinuous: true});
-      if (busy || inputPending) {setTimeout(check, 150);return;}
-      idle(() => resolve());
+      if (sinceInput < quietMs || sinceTab < quietMs || inputPending ||
+          (quietMs && document.hidden)) {
+        setTimeout(check, 180);return;
+      }
+      idle(() => {
+        // Re-check if an input arrived while waiting for idle callback.
+        if (Date.now() - lastInteractionAt < quietMs ||
+            Date.now() - lastTabChangeAt < quietMs) {setTimeout(check,180);return;}
+        resolve();
+      });
     };
     check();
   });
@@ -117,11 +133,12 @@
     const optional = options.optional === true;
     for (let offset = 0; offset < sources.length; offset += batchSize) {
       const batch = sources.slice(offset, offset + batchSize);
-      batch.forEach(preload);
+      // Avoid preloading the next batch during active table/umpire navigation.
+      if (!optional) batch.forEach(preload);
       for (const source of batch) {
-        // Yield between *individual* optional modules, not only groups of four.
-        // Several of these scripts patch App and can freeze the main thread.
-        if (optional) await yieldToBrowser();
+        // Legacy extensions can run expensive top-level JS synchronously.
+        // Wait until 4 seconds without clicks/tab changes before each script.
+        if (optional) await yieldToBrowser(4000);
         try {
           await loadScript(source);
         } catch (error) {
@@ -129,7 +146,8 @@
           console.warn('TOPKEY optional runtime skipped', source, error);
         }
       }
-      await yieldToBrowser();
+      if(optional) await yieldToBrowser(4000);
+      else await yieldToBrowser();
     }
     return true;
   }
