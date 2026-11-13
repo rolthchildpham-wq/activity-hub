@@ -22,7 +22,7 @@ const makeClasses=()=>{
  const values=new Set();return {contains:k=>values.has(k),add:k=>values.add(k),remove:k=>values.delete(k),toggle:(k,v)=>{if(v===undefined)v=!values.has(k);v?values.add(k):values.delete(k);return v}};
 };
 const el=tag=>({tag,id:'',className:'',classList:makeClasses(),children:[],dataset:{},textContent:'',attrs:{},
- append(...nodes){this.children.push(...nodes)},prepend(...nodes){this.children.unshift(...nodes)},
+ append(...nodes){this.children.push(...nodes)},appendChild(node){this.children.push(node)},prepend(...nodes){this.children.unshift(...nodes)},
  replaceChildren(...nodes){this.children=[...nodes];this.textContent=''},querySelector:()=>null,
  setAttribute(k,v){this.attrs[k]=v},getAttribute(k){return this.attrs[k]}});
 const body=el('body'),nav=el('nav'),app=el('main');
