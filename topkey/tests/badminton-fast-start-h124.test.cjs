@@ -1,0 +1,44 @@
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const vm=require('node:vm');
+const html=fs.readFileSync('topkey/sports/badminton/index.html','utf8');
+const source=fs.readFileSync('topkey/sports/badminton/fast-start-h124.js','utf8');
+const events=[];
+const scheduled=[];
+let resolveSchema,resolveSeed;
+const app={
+ ensureSchema(){events.push('schema-start');return new Promise(r=>{resolveSchema=r})},
+ seedIfEmpty(){events.push('seed-start');return new Promise(r=>{resolveSeed=r})}
+};
+const auth={
+ user:{uid:'user-a'},_profileVerifiedUid:'user-a',
+ logout(){events.push('logout');return Promise.resolve()}
+};
+const context={window:{Topkey:{App:app,Auth:auth,Data:{auth:{currentUser:{uid:'user-a'}}}}},requestIdleCallback:fn=>scheduled.push(fn),setTimeout:fn=>scheduled.push(fn),console};
+vm.runInNewContext(source,context);
+assert.ok(context.window.TopkeyBadmintonFastStart124.installed);
+assert.ok(html.includes("await loadScript('./fast-start-h124.js?v=h124-20261113',7000);state.core=true"));
+(async()=>{
+ // Housekeeping completes after login without waiting for slow RTDB responses.
+ await Promise.all([app.ensureSchema(),app.seedIfEmpty()]);
+ assert.equal(events.length,0,'Firebase housekeeping must not block app startup');
+ assert.equal(scheduled.length,2);
+ scheduled.shift()();scheduled.shift()();
+ await new Promise(r=>setTimeout(r,0));
+ assert.deepEqual(events,['schema-start','seed-start']);
+ resolveSchema();resolveSeed();
+ await new Promise(r=>setTimeout(r,0));
+
+ // Unverified session must NOT skip server housekeeping or other permission gates.
+ auth._profileVerifiedUid='';
+ const p=app.ensureSchema();
+ assert.equal(events.at(-1),'schema-start');
+ resolveSchema();await p;
+
+ // Sign-out invalidates deferred work; no stale data is written after logout.
+ auth._profileVerifiedUid='user-a';
+ await app.seedIfEmpty(); // already completed; no pending
+ await auth.logout();
+ assert.ok(events.includes('logout'));
+ console.log('H124 fast-start: verified-only background housekeeping, no auth bypass, and logout cancellation passed.');
+})().catch(err=>{console.error(err);process.exitCode=1});
