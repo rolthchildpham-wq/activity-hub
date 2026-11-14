@@ -832,6 +832,48 @@
       }
     },
     "topkey_handmade_vnext_2026": {
+      "vlog2026": {
+        ".read": true,
+        ".write": "auth != null && (root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('role').val() === 'ADMIN' || (root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('role').val() === 'BTC' && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('sportScope').val() === 'handmade')) && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('active').val() !== false && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('disabled').val() !== true && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('locked').val() !== true && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('enabled').val() !== false && root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('isActive').val() !== false && (!root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('status').exists() || !root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('status').val().matches(/^([dD][iI][sS][aA][bB][lL][eE][dD]|[bB][lL][oO][cC][kK][eE][dD]|[sS][uU][sS][pP][eE][nN][dD][eE][dD]|[iI][nN][aA][cC][tT][iI][vV][eE])$/))",
+        "weights": {
+          ".validate": "newData.hasChildren(['views','likes','shares'])",
+          "views": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000000000"
+          },
+          "likes": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000000000"
+          },
+          "shares": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000000000"
+          }
+        },
+        "entries": {
+          "$entryId": {
+            ".validate": "newData.hasChildren(['name','type','dept','views','likes','shares','url'])",
+            "name": {
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
+            },
+            "type": {
+              ".validate": "newData.isString() && (newData.val() === 'Đội' || newData.val() === 'Cá nhân')"
+            },
+            "dept": {
+              ".validate": "newData.isString() && newData.val().length <= 100"
+            },
+            "views": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000000000"
+            },
+            "likes": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000000000"
+            },
+            "shares": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000000000"
+            },
+            "url": {
+              ".validate": "newData.isString() && newData.val().length <= 500"
+            }
+          }
+        }
+      },
       "health": {
         ".read": "auth != null && (root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('role').val() === 'ADMIN' || root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('permissions/modules/health').val() === 'view' || root.child('topkey_badminton_vnext_2026/users').child(auth.uid).child('permissions/modules/health').val() === 'edit')",
         "$uid": {
