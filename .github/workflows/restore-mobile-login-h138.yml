@@ -1,4 +1,4 @@
-name: Restore mobile login H138 regression
+name: TOPKEY unified sport login H139 regression
 on:
   push:
     branches:
@@ -17,6 +17,8 @@ jobs:
           node-version: '22'
       - name: Shared core JS syntax
         run: node --check topkey/topkey-platform-core.js
+      - name: Shared login guard JS syntax
+        run: node --check topkey/topkey-login-guard.js
       - name: Shared auth JS syntax
         run: node --check topkey/topkey-shared-auth.js
       - name: Early form submit
