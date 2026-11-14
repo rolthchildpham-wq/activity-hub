@@ -206,6 +206,26 @@ jobs:
             echo "::warning::H132 not verified on EdgeOne live domain; GitHub success alone does not mean Production is active."
             echo "### Live H132 deploy could not be confirmed." >> "$GITHUB_STEP_SUMMARY"
           fi
+      - name: Audit live compact share-link entry
+        shell: bash
+        run: |
+          set -euo pipefail
+          found=0
+          for attempt in 1 2 3 4; do
+            if curl --fail --silent --show-error --location --max-time 12 "https://topkey-activity-management.edgeone.dev/l/" -o /tmp/tk-shortlinks-h136.html 2>/dev/null &&
+               grep -Fq "TopkeyShortRedirect" /tmp/tk-shortlinks-h136.html &&
+               curl --fail --silent --show-error --location --max-time 12 "https://topkey-activity-management.edgeone.dev/sports/vnext/index.html?sport=volleyball" -o /tmp/tk-vnext-shortlinks-h136.html 2>/dev/null &&
+               grep -Fq "h97-vnext.bundle.js?v=h136-short-share-20261114" /tmp/tk-vnext-shortlinks-h136.html; then
+              found=1
+              break
+            fi
+            sleep 5
+          done
+          if [ "$found" -eq 1 ]; then
+            echo "### H136 short public link route verified on EdgeOne." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "::warning::H136 compact route not verified on EdgeOne. Confirm deployment and URL host."
+          fi
       - name: Document EdgeOne release settings
         shell: bash
         env:
