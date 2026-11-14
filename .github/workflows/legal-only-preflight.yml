@@ -1,0 +1,22 @@
+name: TOPKEY legal-only isolated preflight
+on:
+  push:
+    branches:
+      - fix/topkey-legal-only-prod-candidate-20261115
+  pull_request:
+    paths:
+      - 'topkey/terms.html'
+      - 'topkey/privacy.html'
+      - 'topkey/tests/legal-public-only.test.cjs'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  pages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node topkey/tests/legal-public-only.test.cjs
