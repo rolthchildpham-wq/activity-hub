@@ -1,0 +1,29 @@
+name: Restore mobile login H138 regression
+on:
+  push:
+    branches:
+      - fix/restore-mobile-login-h138-only-20261114
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static-login-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Shared core JS syntax
+        run: node --check topkey/topkey-platform-core.js
+      - name: Shared auth JS syntax
+        run: node --check topkey/topkey-shared-auth.js
+      - name: Early form submit
+        run: node topkey/tests/mobile-login-submit.test.cjs
+      - name: Prevent native login reload
+        run: node topkey/tests/mobile-login-no-refresh-guard.test.cjs
+      - name: Existing auth cache regression
+        run: node topkey/tests/auth-p5-cache.test.cjs
+      - name: Existing host redirect regression
+        run: node topkey/tests/edgeone-host-redirect.test.cjs
