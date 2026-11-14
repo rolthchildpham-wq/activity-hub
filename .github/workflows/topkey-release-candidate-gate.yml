@@ -1,0 +1,58 @@
+name: TOPKEY release candidate gate
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'topkey/**'
+      - '.github/workflows/topkey-release-candidate-gate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-regressions:
+    name: Source regression matrix
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax and QR, redirects, public mobile
+        run: |
+          set -euo pipefail
+          node --check topkey/sports/vnext/src/public-viewer-h137.js
+          node --check topkey/topkey-shared-auth.js
+          node topkey/tests/h136_qr_shortlink_regression.cjs
+          node topkey/tests/short-public-links-h136.test.cjs
+          node topkey/tests/h137_public_viewer.test.cjs
+          node topkey/tests/edgeone-host-redirect.test.cjs
+      - name: Shared auth and UI regressions
+        run: |
+          set -euo pipefail
+          node topkey/tests/auth-p5-cache.test.cjs
+          node topkey/tests/auth-profile-pending.test.cjs
+          node topkey/tests/badminton-fast-start-h124.test.cjs
+          node topkey/tests/badminton-no-autoheal-h128.test.cjs
+          node topkey/tests/badminton-rapid-tabs-h133.test.cjs
+          node topkey/tests/h135_sharing_contract.cjs
+      - name: Firebase file safety contract (not deployment test)
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('topkey')
+          rules=json.loads((root/'firebase.database.rules.json').read_text())['rules']
+          assert rules.get('.read') is False and rules.get('.write') is False, 'root database must default deny'
+          storage=(root/'firebase.storage.rules').read_text()
+          for sport in ['badminton','football','volleyball','running','handmade','shuttle','cooking']:
+              key=f'topkey_{sport}_vnext_2026'
+              assert key in rules, f'missing RTDB rules {sport}'
+              assert key in storage, f'missing Storage rules {sport}'
+          print('PASS static Firebase root-default-deny and sport rules presence')
+          PY
+      - name: Explain limits
+        run: |
+          echo '### SOURCE TESTS ONLY' >> "$GITHUB_STEP_SUMMARY"
+          echo 'These checks do not validate production, logged-in role behavior, actual phone browsers, deployed Firebase rules or performance.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Release approval requires a separate documented preview E2E test and manual signoff.' >> "$GITHUB_STEP_SUMMARY"
