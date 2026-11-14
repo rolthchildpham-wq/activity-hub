@@ -1,0 +1,22 @@
+name: H137 public spectator mobile
+on:
+  push:
+    branches: [fix/h137-public-mobile-viewer]
+  pull_request:
+    paths:
+      - 'topkey/sports/vnext/index.html'
+      - 'topkey/sports/vnext/src/public-viewer-h137.js'
+      - 'topkey/sports/vnext/public-viewer-h137.css'
+      - 'topkey/tests/h137_public_viewer.test.cjs'
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --check topkey/sports/vnext/src/public-viewer-h137.js
+      - run: node topkey/tests/h137_public_viewer.test.cjs
+      - run: node topkey/tests/h136_qr_shortlink_regression.cjs
+      - run: node topkey/tests/auth-p5-cache.test.cjs
