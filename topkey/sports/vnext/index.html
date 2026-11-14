@@ -33,4 +33,15 @@
  const schedule=()=>{const run=()=>start().catch(error=>console.error('VNext staged runtime fallback',error));if(window.requestIdleCallback)window.requestIdleCallback(run,{timeout:900});else setTimeout(run,16)};
  if(window.__TOPKEY_ADMIN_READY)schedule();else window.addEventListener('topkey:admin-ready',schedule,{once:true,passive:true});
 })();
-</script><script src="./src/schedule-date-h134.js?v=h134-20261114"></script><script src="../../topkey-dynamic-i18n.js?v=u122h123-20261111" defer></script></body></html>
+</script><script src="./src/schedule-date-h134.js?v=h134-20261114"></script><script src="../../topkey-dynamic-i18n.js?v=u122h123-20261111" defer></script><script id="tk-diy-program-2026-entry">
+(()=>{'use strict';
+ if(new URLSearchParams(location.search).get('sport')!=='handmade')return;
+ const nav=document.querySelector('#app-shell .topbar .nav');
+ if(!nav||document.getElementById('tk-diy-program-link'))return;
+ const link=document.createElement('a');
+ link.id='tk-diy-program-link';link.href='../diy-program/index.html';
+ link.textContent='🎨 Chương trình DIY 2026';
+ link.style.cssText='display:inline-flex;align-items:center;min-height:40px;padding:9px 13px;border:1px solid #3b8092;border-radius:10px;color:#c8fff5;text-decoration:none;font-weight:700;white-space:nowrap';
+ nav.appendChild(link);
+})();
+</script></body></html>
