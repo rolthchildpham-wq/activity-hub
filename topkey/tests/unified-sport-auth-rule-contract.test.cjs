@@ -22,7 +22,8 @@ for(const sport of sports){
 for(const sport of sports.filter(x=>x!=='badminton')){
  const key='topkey_'+sport+'_vnext_2026';
  assert.ok(rules[key]['.write'].includes("topkey_badminton_vnext_2026/users"),sport+' must use central account registry');
- assert.ok(rules[key]['.write'].includes("sportScope"),sport+' must retain scoped BTC authorization');
+ assert.ok(rules[key].tournaments.$tid.meta['.write'].includes("sportScope"),sport+' must retain scoped BTC authorization on tournament metadata');
+ assert.ok(rules[key].tournaments.$tid.meta['.write'].includes("=== '"+sport+"'"),sport+' must use the matching BTC scope');
 }
 assert.ok(authSource.includes('policy.canAccess(profile,sport())'),'shared account policy controls sport access');
 console.log('PASS source-only unified auth registry and distinct tournament roots for 7 sports');
