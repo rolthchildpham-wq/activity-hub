@@ -1,0 +1,28 @@
+name: H136 QR + auth + short-link regression
+on:
+  push:
+    branches: [fix/h136-qr-shortlinks-auth-cache]
+  pull_request:
+    paths:
+      - 'topkey/l/**'
+      - 'topkey/vendor/qrcode*'
+      - 'topkey/sports/vnext/index.html'
+      - 'topkey/sports/badminton/index.html'
+      - 'topkey/sports/*/sw.js'
+      - 'topkey/tests/auth-p5-cache.test.cjs'
+      - 'topkey/tests/h136_qr_shortlink_regression.cjs'
+jobs:
+  h136:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: QR and mobile link regression
+        run: node topkey/tests/h136_qr_shortlink_regression.cjs
+      - name: Shared auth and SW version parity
+        run: node topkey/tests/auth-p5-cache.test.cjs
+      - name: Firebase rules syntax and root protections
+        run: |
+          node -e "const r=require('./topkey/firebase.database.rules.json').rules;if(r['.read']!==false||r['.write']!==false)process.exit(1);console.log('PASS Firebase default deny')"
