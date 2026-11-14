@@ -210,6 +210,11 @@ function startSport(options={}){
   await loadFirebase(config,options.firebaseOptions);
   return prepareAuthShell();
  })();
+ // Bind protected sign-in immediately, before any admin bundle is loaded.
+ // A mobile submit must never navigate or silently wait for admin-core hydration.
+ // The shared Firebase/Auth shell is sufficient to authenticate and verify role;
+ // verified admin-ready hydrates the heavy sport runtime separately.
+ bindLogin({ensureCore:()=>shellPromise});
  const ensureCore=()=>{
   if(corePromise)return corePromise;
   corePromise=(async()=>{
