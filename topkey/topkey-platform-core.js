@@ -210,6 +210,8 @@ function startSport(options={}){
   await loadFirebase(config,options.firebaseOptions);
   return prepareAuthShell();
  })();
+ // Bind the login form before loading the heavy admin runtime (mobile-safe).
+ bindLogin({ensureCore:()=>shellPromise});
  const ensureCore=()=>{
   if(corePromise)return corePromise;
   corePromise=(async()=>{
