@@ -17,14 +17,13 @@ small{display:block;color:#688077;margin-top:15px}
 <script>
 (()=>{'use strict';
 const C={b:'badminton',f:'football',v:'volleyball',r:'running',h:'handmade',s:'shuttle',c:'cooking'};
-const P={v:'spectator',r:'register',j:'judge'};
+const P={v:'spectator',r:'register'};
 const q=new URLSearchParams(location.search),sport=C[q.get('s')||''],mode=P[location.hash.slice(1)]||'';
 const tid=q.get('t')||'',token=q.get('k')||'';
 const valid=value=>/^[a-zA-Z0-9_-]{1,100}$/.test(value);
 function target(){
  if(!sport||!mode||!valid(tid)||token&&(!valid(token)||token.length>100))return null;
- // Do not drop public registration/judge tokens. URLs are not access tokens
- // unless the corresponding mode explicitly requires the token in app rules.
+ // Preserve registration tokens and leave verification to existing app rules.
  const page=sport==='badminton'?'../sports/badminton/index.html':'../sports/vnext/index.html';
  const url=new URL(page,location.href);
  if(sport!=='badminton')url.searchParams.set('sport',sport);
