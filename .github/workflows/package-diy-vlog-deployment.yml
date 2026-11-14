@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - fix/diy-mobile-login-release-candidate-20261114
+  pull_request:
   workflow_dispatch:
 permissions:
   contents: read
