@@ -27,6 +27,8 @@ jobs:
         run: node topkey/tests/mobile-login-no-refresh-guard.test.cjs
       - name: Badminton CSS recovery
         run: node topkey/tests/badminton-css-mobile-fallback.test.cjs
+      - name: Vlog native module and scoped-rule contract
+        run: node topkey/tests/diy-vlog-native.test.cjs
       - name: Seven-sport Firebase policy source contract
         run: node topkey/tests/unified-sport-auth-rule-contract.test.cjs
       - name: Existing auth cache regression
