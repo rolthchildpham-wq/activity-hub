@@ -1,0 +1,11 @@
+{
+  "name": "topkey-vlog-rules-test",
+  "private": true,
+  "scripts": {
+    "test": "node vlog-rules-emulator.test.cjs"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^5.0.0",
+    "firebase-tools": "^14.0.0"
+  }
+}
