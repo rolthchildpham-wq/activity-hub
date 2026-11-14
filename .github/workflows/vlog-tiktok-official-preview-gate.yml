@@ -1,0 +1,32 @@
+name: TOPKEY TikTok official sync preview gate
+on:
+  push:
+    branches:
+      - fix/vlog-tiktok-official-sync-20261114
+  pull_request:
+    paths:
+      - 'topkey/functions/**'
+      - 'topkey/sports/diy-vlog/**'
+      - 'topkey/tests/tiktok-official-sync.test.cjs'
+      - '.github/workflows/vlog-tiktok-official-preview-gate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  tiktok-static:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: TikTok Functions syntax
+        run: node --check topkey/functions/index.js
+      - name: TikTok front-end syntax
+        run: node --check topkey/sports/diy-vlog/tiktok-automation.js
+      - name: TikTok auth and permissions contract
+        run: node topkey/tests/tiktok-official-sync.test.cjs
+      - name: TOPKEY Vlog native and Firebase rules contract
+        run: node topkey/tests/diy-vlog-native.test.cjs
+      - name: Seven sports shared authentication contract
+        run: node topkey/tests/mobile-login-no-refresh-guard.test.cjs
