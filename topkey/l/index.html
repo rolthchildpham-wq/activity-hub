@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>TOPKEY • Chuyển đến liên kết giải đấu</title>
+<meta name="theme-color" content="#0b2932">
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:grid;place-items:center;background:#edf5f2;color:#163c32;font:15px/1.6 system-ui,sans-serif;padding:22px}
+main{max-width:480px;width:100%;background:#fff;border:1px solid #d6e5dd;border-radius:18px;padding:28px;box-shadow:0 12px 40px #173c2d14}
+h1{margin:0 0 8px;font-size:22px}p{margin:8px 0 18px;color:#45685e}
+a{display:inline-block;background:#0d755b;color:white;font-weight:700;padding:11px 15px;border-radius:10px;text-decoration:none;min-height:44px}
+small{display:block;color:#688077;margin-top:15px}
+</style>
+<script>
+(()=>{'use strict';
+const C={b:'badminton',f:'football',v:'volleyball',r:'running',h:'handmade',s:'shuttle',c:'cooking'};
+const P={v:'spectator',r:'register',j:'judge'};
+const q=new URLSearchParams(location.search),sport=C[q.get('s')||''],mode=P[location.hash.slice(1)]||'';
+const tid=q.get('t')||'',token=q.get('k')||'';
+const valid=value=>/^[a-zA-Z0-9_-]{1,100}$/.test(value);
+function target(){
+ if(!sport||!mode||!valid(tid)||token&&(!valid(token)||token.length>100))return null;
+ // Do not drop public registration/judge tokens. URLs are not access tokens
+ // unless the corresponding mode explicitly requires the token in app rules.
+ const page=sport==='badminton'?'../sports/badminton/index.html':'../sports/vnext/index.html';
+ const url=new URL(page,location.href);
+ if(sport!=='badminton')url.searchParams.set('sport',sport);
+ url.searchParams.set('tid',tid);
+ if(token)url.searchParams.set('reg',token);
+ url.hash=mode;
+ return url;
+}
+const destination=target();window.TopkeyShortRedirect=destination?.toString()||'';
+if(destination)location.replace(destination.toString());
+})();
+</script>
+</head>
+<body>
+<main>
+<h1>TOPKEY • Liên kết giải đấu</h1>
+<p id="message">Đang mở màn hình giải đấu…</p>
+<a id="return" href="../index.html">Về TOPKEY Sports Hub</a>
+<small>Nếu liên kết không hợp lệ, hãy yêu cầu ban tổ chức chia sẻ lại QR hoặc đường dẫn.</small>
+</main>
+<script>
+if(!window.TopkeyShortRedirect)document.getElementById('message').textContent='Không nhận diện được mã môn, mã giải hoặc loại liên kết.';
+else{
+ document.getElementById('return').href=window.TopkeyShortRedirect;
+ document.getElementById('return').textContent='Mở giải đấu';
+}
+</script>
+</body>
+</html>
