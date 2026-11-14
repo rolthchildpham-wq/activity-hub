@@ -1,0 +1,28 @@
+name: TOPKEY TikTok legal pages preview checks
+on:
+  push:
+    branches:
+      - fix/topkey-vlog-legal-pages-20261115
+  pull_request:
+    paths:
+      - 'topkey/terms.html'
+      - 'topkey/privacy.html'
+      - 'topkey/sports/diy-vlog/index.html'
+      - 'topkey/tests/vlog-legal-pages.test.cjs'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  legal-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify legal pages and links
+        run: node topkey/tests/vlog-legal-pages.test.cjs
+      - name: Keep TikTok sync implementation regression
+        run: node topkey/tests/tiktok-official-sync.test.cjs
+      - name: Verify seven sports shared login
+        run: node topkey/tests/mobile-login-no-refresh-guard.test.cjs
