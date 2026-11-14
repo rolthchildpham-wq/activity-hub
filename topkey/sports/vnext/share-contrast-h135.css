@@ -1,0 +1,52 @@
+/* H135: readable share-link fields and responsive settings tables.
+ * Presentation-only: do not change URL construction, permissions or rules. */
+html[data-tk-sport] #page-settings :is(input[type="url"],input[readonly],input[aria-readonly="true"],textarea[readonly]),
+html[data-tk-sport] #page-settings :is(.table-wrap,.card) input:not([type="checkbox"]):not([type="radio"]):not([type="file"]) {
+  color:#f5faff !important;
+  background-color:#0b233c !important;
+  -webkit-text-fill-color:#f5faff !important;
+  border:1px solid #6b9ac1 !important;
+  opacity:1 !important;
+  font-size:clamp(13px,0.9vw,15px);
+  line-height:1.5;
+  min-height:39px;
+}
+html[data-tk-sport] #page-settings :is(input,textarea)::placeholder {
+  color:#bad0e5 !important;
+  opacity:1 !important;
+}
+html[data-tk-sport] #page-settings :is(input,textarea,select):focus-visible {
+  outline:3px solid #80d5ff !important;
+  outline-offset:2px;
+}
+html[data-tk-sport] #page-settings :is(.table-wrap,table) {
+  max-width:100%;
+}
+html[data-tk-sport] #page-settings .table-wrap {
+  overflow-x:auto;
+  overscroll-behavior-x:contain;
+  -webkit-overflow-scrolling:touch;
+}
+html[data-tk-sport] #page-settings :is(th,td) {
+  color:#e8f3ff;
+  vertical-align:middle;
+  line-height:1.5;
+}
+html[data-tk-sport] #page-settings td input {
+  min-width:200px;
+  width:100%;
+}
+html[data-tk-sport] #page-settings :is(.muted,small,.note) {
+  color:#c0d5e9 !important;
+  opacity:1;
+}
+html[data-tk-sport] #page-settings button,
+html[data-tk-sport] #page-settings .btn{
+  color:#fff;
+  white-space:nowrap;
+}
+@media(max-width:800px){
+  html[data-tk-sport] #page-settings .card{min-width:0}
+  html[data-tk-sport] #page-settings .table-wrap{width:100%}
+  html[data-tk-sport] #page-settings td input{min-width:220px}
+}
