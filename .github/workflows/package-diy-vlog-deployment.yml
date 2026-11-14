@@ -1,0 +1,60 @@
+name: Package TOPKEY DIY Vlog deployment ZIP
+on:
+  push:
+    branches:
+      - fix/diy-mobile-login-release-candidate-20261114
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate native Vlog and mobile auth
+        run: |
+          node topkey/tests/diy-vlog-native.test.cjs
+          node topkey/tests/mobile-login-submit.test.cjs
+          node --check topkey/topkey-platform-core.js
+          node --check topkey/topkey-shared-auth.js
+          python3 -m json.tool topkey/firebase.database.rules.json > /dev/null
+      - name: Build EdgeOne static deployment archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p _deploy_package
+          cp -a topkey/. _deploy_package/
+          rm -rf _deploy_package/node_modules _deploy_package/.git
+          cat > _deploy_package/DEPLOY_README.txt <<'EOF'
+          TOPKEY DIY VLOG 2026 - ED﻿GEONE STATIC DEPLOYMENT
+          Source: rolthchildpham-wq/activity-hub
+          Branch: fix/diy-mobile-login-release-candidate-20261114
+          Git commit: recorded in COMMIT_SHA.txt
+
+          Deploy the CONTENTS OF THIS ZIP as the EdgeOne Pages static site root.
+          Root: index.html
+          DIY Vlog: sports/diy-vlog/index.html
+          DIY / Handmade: sports/vnext/index.html?sport=handmade
+
+          IMPORTANT: Firebase Realtime Database rules in firebase.database.rules.json
+          are SOURCE ONLY and are NOT deployed by uploading this ZIP.
+          Authenticate users using existing TOPKEY Firebase accounts.
+          The EdgeOne hostname must be authorized in Google Cloud API key website
+          referrer restrictions and Firebase Authentication authorized domains.
+          Test Admin and handmade-scoped BTC write access in Firebase sandbox first.
+          Do not deploy to production before TOPKEY Production Gate is passed.
+          EOF
+          git rev-parse HEAD > _deploy_package/COMMIT_SHA.txt
+          cd _deploy_package
+          zip -qr ../TOPKEY_DIY_VLOG_DEPLOYMENT.zip .
+          cd ..
+          unzip -t TOPKEY_DIY_VLOG_DEPLOYMENT.zip | tail -n 2
+          ls -lh TOPKEY_DIY_VLOG_DEPLOYMENT.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: TOPKEY_DIY_VLOG_DEPLOYMENT
+          path: TOPKEY_DIY_VLOG_DEPLOYMENT.zip
+          retention-days: 7
