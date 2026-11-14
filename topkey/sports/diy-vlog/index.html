@@ -33,7 +33,7 @@ button.small,.btn{background:#1a243d;color:#dce8fa;border:1px solid #2c3853;bord
 <script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id),nf=x=>new Intl.NumberFormat('vi-VN').format(Number(x)||0);
-const root='topkey_vlog2026',sample=[['Đội Sài Gòn Rực Rỡ','Đội','',182400,21300,3900],['Đội Hà Nội Mùa Thu','Đội','Đống Đa, Hà Nội',201300,15200,2650],['Nguyễn Minh Anh','Cá nhân','',154800,18900,4120],['Trần Gia Huy','Cá nhân','',98700,12400,2210],['Đội Đà Nẵng Biển Xanh','Đội','Đà Nẵng',76500,9800,1870],['Lê Thu Trang','Cá nhân','',64200,8700,1340],['Phạm Quốc Bảo','Cá nhân','',51900,6100,980],['Đội Cần Thơ Sông Nước','Đội','Cần Thơ',43800,5200,1120]].map((a,i)=>({id:'sample'+i,name:a[0],type:a[1],dept:a[2],views:a[3],likes:a[4],shares:a[5],url:''}));
+const root='topkey_vlog2026',remote={weights:null,entries:null},sample=[['Đội Sài Gòn Rực Rỡ','Đội','',182400,21300,3900],['Đội Hà Nội Mùa Thu','Đội','Đống Đa, Hà Nội',201300,15200,2650],['Nguyễn Minh Anh','Cá nhân','',154800,18900,4120],['Trần Gia Huy','Cá nhân','',98700,12400,2210],['Đội Đà Nẵng Biển Xanh','Đội','Đà Nẵng',76500,9800,1870],['Lê Thu Trang','Cá nhân','',64200,8700,1340],['Phạm Quốc Bảo','Cá nhân','',51900,6100,980],['Đội Cần Thơ Sông Nước','Đội','Cần Thơ',43800,5200,1120]].map((a,i)=>({id:'sample'+i,name:a[0],type:a[1],dept:a[2],views:a[3],likes:a[4],shares:a[5],url:''}));
 let data={weights:{views:1,likes:3,shares:5},entries:sample},real=false,isAdmin=false,db=null,auth=null,loginBusy=false;
 const esc=s=>String(s??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
 const link=s=>{try{const u=new URL(String(s||''));return u.protocol==='https:'?u.href:''}catch{return''}};
@@ -54,7 +54,7 @@ function entryFields(x){const v=k=>String(x[k]??'');for(const k of ['id','name',
 function requireAdmin(){if(!isAdmin||!db)throw Error('Chưa xác minh quyền ADMIN hoặc chưa kết nối Firebase.')}
 function positiveInt(x){const n=Number(x);if(!Number.isSafeInteger(n)||n<0||n>1000000000)throw Error('Số liệu phải là số nguyên từ 0 đến 1 tỷ.');return n}
 $('rows').addEventListener('click',e=>{const b=e.target.closest('[data-edit]');if(!b||!isAdmin||!real)return;const x=data.entries[b.dataset.edit];if(x){entryFields(x);$('editor').hidden=false;$('editor').scrollIntoView({behavior:'smooth'})}});
-$('search').addEventListener('input',render);$('refresh').addEventListener('click',()=>{if(db)db.ref(root).once('value').then(s=>{if(s.val())apply(s.val());else render()}).catch(e=>alert('Lỗi tải dữ liệu: '+e.message));else render()});
+$('search').addEventListener('input',render);$('refresh').addEventListener('click',()=>{if(db)Promise.all([db.ref(root+'/weights').once('value'),db.ref(root+'/entries').once('value')]).then(([w,e])=>{remote.weights=w.val();remote.entries=e.val();apply(remote)}).catch(e=>alert('Lỗi tải dữ liệu: '+e.message));else render()});
 $('export').addEventListener('click',()=>{const rows=[['Hạng','Tên','Loại','Đơn vị','Xem','Thích','Chia sẻ','Điểm','TikTok'],...ranking().map((x,i)=>[i+1,x.name,x.type,x.dept||'',x.views,x.likes,x.shares,x.score,x.url||''])];const csv=rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');const b=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=real?'topkey-vlog-2026.csv':'topkey-vlog-2026-DU-LIEU-MAU.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)});
 const authStatus=message=>{$('admin-auth-status').textContent=message};
 function showAdminLogin(){const p=$('admin-login-panel');p.hidden=false;p.scrollIntoView({behavior:'smooth',block:'start'});if(!auth)authStatus('Firebase Authentication chưa tải được. Kiểm tra kết nối và tải lại trang.')}
@@ -79,7 +79,7 @@ try{
  if(!window.firebase?.apps)throw Error('Firebase SDK không khả dụng');
  const cfg={apiKey:'AIzaSyBSr7buP3bMf6HTg_YDWH_Xk5aNhyvfSRg',authDomain:'topkey-badminton.firebaseapp.com',databaseURL:'https://topkey-badminton-default-rtdb.asia-southeast1.firebasedatabase.app',projectId:'topkey-badminton',storageBucket:'topkey-badminton.firebasestorage.app',messagingSenderId:'907878800245',appId:'1:907878800245:web:aa77e4846656a0ba84913c'};
  if(!firebase.apps.length)firebase.initializeApp(cfg);db=firebase.database();
- db.ref(root).on('value',s=>apply(s.val()),e=>{console.warn('Vlog data read',e);$('refresh-time').textContent='Không tải được dữ liệu Firebase · chỉ hiển thị mẫu'});
+ for(const key of ['weights','entries'])db.ref(root+'/'+key).on('value',s=>{remote[key]=s.val();apply(remote)},e=>{console.warn('Vlog data read',key,e);$('refresh-time').textContent='Không tải được dữ liệu Firebase · chỉ hiển thị mẫu'});
  auth=firebase.auth();
  auth.onAuthStateChanged(async user=>{
  isAdmin=false;$('admin-toggle').hidden=true;$('admin-sign-in').hidden=false;$('admin-sign-out').hidden=true;$('editor').hidden=true;render();
