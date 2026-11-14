@@ -1,0 +1,20 @@
+name: Mobile login regression (isolated)
+on:
+  push:
+    branches:
+      - fix/mobile-login-submit-binding-20261114
+  workflow_dispatch:
+jobs:
+  auth-regression:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Shared login JavaScript syntax
+        run: node --check topkey/topkey-platform-core.js
+      - name: Mobile submit regression
+        run: node topkey/tests/mobile-login-submit.test.cjs
