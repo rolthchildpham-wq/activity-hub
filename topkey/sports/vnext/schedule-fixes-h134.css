@@ -1,0 +1,45 @@
+/* H134: keep status options readable and add admin date editor. */
+html[data-tk-sport] #page-schedule #matches-list select,
+html[data-tk-sport] #page-schedule #matches-list select:focus {
+  min-width:130px;
+  min-height:36px;
+  padding:6px 8px;
+  border:1px solid #84b7e0;
+  border-radius:7px;
+  background:#102f4c !important;
+  color:#ffffff !important;
+  font-size:12px;
+  font-weight:700;
+  color-scheme:dark;
+}
+html[data-tk-sport] #page-schedule #matches-list select option,
+html[data-tk-sport] #page-schedule #matches-list select optgroup {
+  background:#102f4c !important;
+  color:#ffffff !important;
+  font-weight:600;
+}
+html[data-tk-sport] #page-schedule #matches-list select:disabled {
+  opacity:.75;
+}
+html[data-tk-sport] #page-schedule #matches-list .tk134-date-edit {
+  display:inline-block !important;
+  margin:5px 0 0 0 !important;
+  padding:5px 9px !important;
+  min-height:30px;
+  border:1px solid #4aa5ee;
+  background:#174671 !important;
+  color:#f5fbff !important;
+  font-size:11px !important;
+  font-weight:800 !important;
+  line-height:1.25;
+  white-space:nowrap;
+}
+.tk134-modal{position:fixed;inset:0;z-index:11050;display:flex;justify-content:center;align-items:center;padding:16px;background:rgba(1,8,18,.82)}
+.tk134-dialog{width:min(440px,100%);padding:24px;border:1px solid #5d93c2;border-radius:16px;background:#0e263f;color:#f5fbff;box-shadow:0 24px 70px #0009}
+.tk134-dialog h2{margin:0 0 12px;font-size:21px;color:#fff}
+.tk134-help{color:#c9dcef;font-size:14px;line-height:1.6}
+.tk134-dialog label{display:block;margin:15px 0;font-weight:750;color:#fff;font-size:14px}
+.tk134-dialog input{display:block;width:100%;min-height:44px;margin-top:7px;padding:9px 12px;color:#ffffff;background:#102f4c;border:1px solid #8bbce2;border-radius:8px;color-scheme:dark}
+.tk134-actions{display:flex;justify-content:flex-end;gap:12px;margin-top:20px}
+.tk134-actions button{min-height:42px}
+.tk134-error{color:#ffb9bc;padding:8px;background:#4a1724;border-radius:8px}
