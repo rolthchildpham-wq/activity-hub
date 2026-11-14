@@ -1,0 +1,105 @@
+/* TOPKEY H133 - accessibility: legible type across all VNext sports.
+   Readability-only patch: no changes to data, auth, score or schedule behavior.
+   Loaded LAST, after sport-identities-h132.css.
+   Dark public cards use light text; light admin overview retains dark text.
+*/
+html[data-tk-sport] {
+  --tk-readable-main: #f4f9ff;
+  --tk-readable-secondary: #c9daeb;
+  --tk-readable-accent: #8addf6;
+  --tk-readable-light-main: #17382e;
+  --tk-readable-light-secondary: #36564b;
+}
+html[data-tk-sport] body {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+html[data-tk-sport] :is(#public-spectator,#public-register,#public-judge,#login-screen) {
+  --txt: var(--tk-readable-main);
+  --muted: var(--tk-readable-secondary);
+  /* H132 sport-strong is dark for white admin surfaces, but becomes illegible
+     when used in an inline style inside a dark public card. */
+  --sport-strong: #edf7ff;
+  --sport-highlight: #a0e7ff;
+  color: var(--tk-readable-main);
+}
+html[data-tk-sport] :is(#public-spectator,#public-register,#public-judge,#login-screen) .card,
+html[data-tk-sport] :is(#public-spectator,#public-register,#public-judge,#login-screen) .subcard {
+  color: var(--tk-readable-main) !important;
+}
+html[data-tk-sport] :is(#public-spectator,#public-register,#public-judge,#login-screen) :is(h1,h2,h3,h4,h5,h6,strong,b) {
+  color: var(--tk-readable-main) !important;
+  opacity: 1 !important;
+  font-weight: 750;
+}
+html[data-tk-sport] :is(#public-spectator,#public-register,#public-judge,#login-screen) :is(p,small,label,.muted,.note,.caption-text,.meta,.subtitle) {
+  color: var(--tk-readable-secondary) !important;
+  opacity: 1 !important;
+}
+html[data-tk-sport] :is(#public-spectator,#public-register,#public-judge,#login-screen) :is(input,select,textarea) {
+  color: #f6faff !important;
+  background: #091b2d;
+  border-color: #4c708e;
+  font-size: max(14px, 0.9rem);
+}
+html[data-tk-sport] :is(#public-spectator,#public-register,#public-judge,#login-screen) :is(input,textarea)::placeholder {
+  color: #b5c8dd !important;
+  opacity: 1;
+}
+html[data-tk-sport] #public-spectator :is(.card,.subcard) :is(
+  .team-name,.match-name,.match-title,.fixture-title,.event-title,
+  .day-title,.date-title,.schedule-date,.date-group,.day-header,
+  .match-team,.match-opponent,.team-label
+) {
+  color: #f0f8ff !important;
+  opacity: 1 !important;
+  font-weight: 750;
+}
+html[data-tk-sport] #public-spectator :is(.card,.subcard) :is(
+  .match-time,.match-venue,.match-meta,.fixture-meta,.schedule-meta
+) {
+  color: #c8daee !important;
+  opacity: 1 !important;
+}
+html[data-tk-sport] #public-spectator :is(.card,.subcard) :is(.pill,.badge,[class*="status"],[class*="badge"]) {
+  opacity: 1 !important;
+}
+/* Preserve the intended high-contrast text on semantic buttons and statuses. */
+html[data-tk-sport] :is(#public-spectator,#public-register,#public-judge,#login-screen) :is(button,.btn) {
+  font-weight: 750;
+  opacity: 1;
+}
+html[data-tk-sport] #app-shell .page:not(#page-overview) :is(.card,.subcard,.table-wrap) {
+  --txt: #f4f9ff;
+  --muted: #c7daec;
+  color: #f0f8ff;
+}
+html[data-tk-sport] #app-shell .page:not(#page-overview) :is(.card,.subcard) :is(h2,h3,h4,strong,b) {
+  color: #f5faff;
+  opacity: 1;
+}
+html[data-tk-sport] #app-shell .page:not(#page-overview) :is(.muted,.note,.field label,small) {
+  color: #c5daea !important;
+  opacity: 1;
+}
+html[data-tk-sport] #app-shell .page:not(#page-overview) :is(input,select,textarea) {
+  color: #f7fbff;
+}
+html[data-tk-sport] #page-overview :is(h1,h2,h3,h4,strong,b) {
+  color: var(--tk-readable-light-main) !important;
+}
+html[data-tk-sport] #page-overview :is(.muted,.note,small) {
+  color: var(--tk-readable-light-secondary) !important;
+}
+html[data-tk-sport] :is(#public-spectator,#public-register,#public-judge,#app-shell) :is(a,button,input,select,textarea):focus-visible {
+  outline: 3px solid #8addf6;
+  outline-offset: 3px;
+}
+@media(max-width:690px) {
+  html[data-tk-sport] :is(#public-spectator,#public-register,#public-judge) :is(h2,h3) {
+    line-height: 1.35;
+  }
+  html[data-tk-sport] #public-spectator :is(input,select,button,.btn) {
+    min-height: 42px;
+  }
+}
