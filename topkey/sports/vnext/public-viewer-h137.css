@@ -1,0 +1,13 @@
+/* H137 lightweight spectator mobile layout */
+html.tk-public-boot body{background:#071426;color:#eff7ff}
+html.tk-public-boot #public-spectator{display:block!important;min-height:100vh;padding:clamp(12px,3vw,28px);color:#eff7ff}
+html.tk-public-boot #public-spectator>.card{max-width:100%}
+html.tk-public-boot #public-spectator h1,
+html.tk-public-boot #public-spectator h2{color:#f5faff!important;opacity:1}
+html.tk-public-boot #public-spectator .tk137-message{margin:12px 0;padding:12px 15px;border:1px solid #42769a;border-radius:10px;background:#102a44;color:#d7ebff;font-size:14px;line-height:1.5}
+html.tk-public-boot #public-spectator .tk137-error{border-color:#bf7979;background:#4d202d;color:#ffe7e7}
+html.tk-public-boot #public-spectator .tk137-item{display:flex;flex-direction:column;gap:8px;margin:9px 0;padding:14px 16px;border:1px solid #335575;border-radius:12px;background:#0e2742;color:#f3faff}
+html.tk-public-boot #public-spectator .tk137-item strong{font-size:clamp(15px,2vw,17px);line-height:1.45;font-weight:750;color:#f7fbff}
+html.tk-public-boot #public-spectator .tk137-item small{font-size:13px;color:#caddf0;line-height:1.55}
+html.tk-public-boot #public-spectator .grid.g2{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+@media(max-width:760px){html.tk-public-boot #public-spectator .grid.g2{grid-template-columns:minmax(0,1fr)}html.tk-public-boot #public-spectator .split{display:flex;flex-wrap:wrap;gap:10px}}
