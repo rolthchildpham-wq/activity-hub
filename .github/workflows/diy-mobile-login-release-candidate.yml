@@ -21,6 +21,8 @@ jobs:
         run: node --check topkey/topkey-shared-auth.js
       - name: Mobile login regression
         run: node topkey/tests/mobile-login-submit.test.cjs
+      - name: Prevent native mobile login refresh
+        run: node topkey/tests/mobile-login-no-refresh-guard.test.cjs
       - name: DIY native auth and permissions
         run: node topkey/tests/diy-vlog-native.test.cjs
       - name: Validate Firebase rules
