@@ -8,7 +8,7 @@ const {onSchedule}=require("firebase-functions/v2/scheduler");
 const {defineSecret}=require("firebase-functions/params");
 const admin=require("firebase-admin");
 const {randomBytes}=require("node:crypto");
-if(!admin.apps.length)admin.initializeApp();
+if(!admin.apps.length)admin.initializeApp({databaseURL:"https://topkey-badminton-default-rtdb.asia-southeast1.firebasedatabase.app"});
 const db=admin.database(),ROOT="topkey_handmade_vnext_2026/vlog2026";
 const PRIVATE="_topkey_private/tiktok2026";
 const CLIENT_KEY=defineSecret("TIKTOK_CLIENT_KEY");
@@ -124,11 +124,14 @@ exports.tiktokCreatorCallback=onRequest({region:"asia-southeast1",secrets,timeou
   const entry=(await db.ref(ROOT+"/entries/"+saved.entryId).get()).val();
   if(!entry||urlId(entry.url)!==saved.videoId)throw Error("Bài dự thi đã thay đổi");
   const owner=response.open_id;
+  const result=await api("https://open.tiktokapis.com/v2/video/query/?fields=id,view_count,like_count,share_count",{
+    method:"POST",headers:{"Authorization":"Bearer "+response.access_token,"Content-Type":"application/json"},
+    body:JSON.stringify({filters:{video_ids:[saved.videoId]}})
+  });
+  const video=(result.data?.videos||[]).find(v=>String(v.id)===saved.videoId);
+  if(!video)throw Error("Video không thuộc tài khoản vừa cấp quyền.");
   await db.ref(PRIVATE+"/accounts/"+owner).set({accessToken:response.access_token,refreshToken:response.refresh_token,
    accessUntil:Date.now()+Number(response.expires_in||0)*1000,scope:response.scope});
-  const videos=await query(owner,[saved.videoId]);
-  const video=videos.find(v=>String(v.id)===saved.videoId);
-  if(!video)throw Error("Video không thuộc tài khoản vừa cấp quyền.");
   await db.ref(ROOT+"/entries/"+saved.entryId).update({videoId:saved.videoId,tiktokOwner:owner});
   await updateEntry(saved.entryId,{...entry,videoId:saved.videoId,tiktokOwner:owner},video);
   return html("Đã kết nối TikTok và cập nhật số liệu bài dự thi thành công.");
