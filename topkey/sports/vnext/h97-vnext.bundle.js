@@ -832,9 +832,30 @@ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const sportName=()=>T.SPORT?.name||'Cầu lông';
 const isAdmin=()=>T.Auth?.role?.()==='ADMIN';
 
+const LINK_FORMAT_KEY='topkey_share_url_format_h136';
+function linkFormat(){
+  try{return localStorage.getItem(LINK_FORMAT_KEY)==='full'?'full':'short'}catch{return'short'}
+}
 function withTournament(hash,extra={}){
+  // Use a short, static path for public Viewer / Registration only. A private
+  // token is still preserved; short URLs do not bypass Firebase authorization.
+  if(linkFormat()==='short'&&['spectator','register'].includes(hash)&&T.Data?.tid){
+    const sportCodes={badminton:'b',football:'f',volleyball:'v',running:'r',handmade:'h',shuttle:'s',cooking:'c'};
+    const sport=sportCodes[T.SPORT?.key];
+    const tid=String(T.Data.tid);
+    const token=String(extra.reg||'');
+    if(sport&&/^[a-zA-Z0-9_-]{1,100}$/.test(tid)&&(!token||/^[a-zA-Z0-9_-]{1,100}$/.test(token))){
+      const short=new URL('../../l/',location.href);
+      short.searchParams.set('s',sport);
+      short.searchParams.set('t',tid);
+      if(hash==='register'&&token)short.searchParams.set('k',token);
+      short.hash=hash==='spectator'?'v':'r';
+      return short.toString();
+    }
+  }
   const u=new URL(location.href);
   u.hash='';
+  u.searchParams.delete('v'); // release build tags are irrelevant to a public share link
   u.searchParams.set('tid',T.Data.tid);
   Object.entries(extra).forEach(([k,v])=>{if(v===undefined||v===null||v==='')u.searchParams.delete(k);else u.searchParams.set(k,String(v));});
   u.hash=hash;
@@ -857,6 +878,30 @@ function inject(){
   if($('tk14-public-links-card'))return;
   const page=$('page-settings');if(!page)return;
   const card=document.createElement('div');card.id='tk14-public-links-card';card.className='card tk14-public-links';card.innerHTML=`<div class="split"><div><h2>🔗 Liên kết công khai / Chia sẻ</h2><p class="muted">Chỉ ADMIN thấy bảng quản lý này. Link Viewer và Đăng ký có thể mở không cần đăng nhập và luôn trỏ đúng giải hiện tại.</p></div><span class="pill" id="tk14-link-tid"></span></div><div class="table-wrap"><table><thead><tr><th>Màn hình</th><th>Đối tượng</th><th>Đường link</th><th>Thao tác</th></tr></thead><tbody id="tk14-public-links-body"></tbody></table></div>`;
+  // User may choose short routing or the original direct URLs. This
+  // preference is local to the admin browser, not a public database setting.
+  let chooser=$('tk14-link-format');
+  if(!chooser){
+    const bar=document.createElement('div');
+    bar.className='tk14-format-bar';
+    bar.style.cssText='display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:10px 0 14px';
+    const label=document.createElement('label');label.htmlFor='tk14-link-format';
+    label.textContent='Kiểu liên kết chia sẻ:';
+    chooser=document.createElement('select');chooser.id='tk14-link-format';
+    chooser.style.cssText='background:#102d48;color:#fff;border:1px solid #45718b;border-radius:8px;padding:9px 12px;min-height:44px';
+    for(const [value,title] of [['short','Gọn · /l/?s=…'],['full','Trực tiếp · đủ đường dẫn']]){
+      const option=document.createElement('option');option.value=value;option.textContent=title;chooser.appendChild(option);
+    }
+    chooser.value=linkFormat();
+    chooser.addEventListener('change',()=>{
+      try{localStorage.setItem(LINK_FORMAT_KEY,chooser.value)}catch{}
+      render();
+    });
+    const note=document.createElement('small');note.className='muted';
+    note.textContent='Link gọn tự chuyển đến đúng giải; giữ nguyên mã đăng ký. Link đã chia sẻ vẫn hoạt động.';
+    bar.append(label,chooser,note);
+    card.querySelector('.table-wrap')?.before(bar);
+  }
   const firstGrid=page.querySelector('.grid.g2');
   if(firstGrid)firstGrid.insertAdjacentElement('afterend',card);else page.prepend(card);
 
@@ -894,7 +939,7 @@ if(window.TopkeyUpgrade9){window.TopkeyUpgrade9.registrationUrl=registrationUrl;
 const baseRenderAll=App.renderAll?.bind(App);if(baseRenderAll)App.renderAll=function(){const r=baseRenderAll();render();return r;};
 const baseShowTab=App.showTab?.bind(App);if(baseShowTab)App.showTab=function(tab){const r=baseShowTab(tab);if(tab==='settings')setTimeout(render,0);return r;};
 setTimeout(()=>{render();window.TopkeyUpgrade9?.renderRegistrationQR?.();},0);
-window.TopkeyUpgrade14={render,links,spectatorUrl,registrationUrl,hubUrl};
+window.TopkeyUpgrade14={render,links,spectatorUrl,registrationUrl,hubUrl,linkFormat};
 })();
 
 ;
