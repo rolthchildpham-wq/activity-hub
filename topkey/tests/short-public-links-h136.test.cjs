@@ -27,7 +27,7 @@ assert.ok(!register.includes('entry=hub'));
 assert.equal(output('short','register','main_2026','token.with.dot'), 'https://demo.edgeone.dev/sports/vnext/index.html?sport=volleyball&entry=hub&tid=main_2026&reg=token.with.dot#register');
 assert.ok(output('full','spectator','main_2026','').includes('/sports/vnext/index.html?'));
 assert.ok(!output('full','spectator','main_2026','').includes('&v='));
-const pre=html.match(/<script>([\\s\\S]*?)<\\/script>/);
+const pre=html.match(/<script>([\s\S]*?)<\/script>/);
 assert.ok(pre,'short redirect script missing');
 function route(query,hash){
  let assigned='',loaded;
