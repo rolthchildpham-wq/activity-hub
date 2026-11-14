@@ -28,7 +28,9 @@ const rules=fs.readFileSync(path.join(root,'firebase.database.rules.json'),'utf8
    const viewer=env.authenticatedContext('viewer').database();
    const disabled=env.authenticatedContext('disabledAdmin').database();
    const inactive=env.authenticatedContext('inactiveBtc').database();
-   await assertSucceeds(anon.ref(vlogRoot).once('value'));
+   await assertFails(anon.ref(vlogRoot).once('value'));
+   await assertSucceeds(anon.ref(vlogRoot+'/entries').once('value'));
+   await assertSucceeds(anon.ref(vlogRoot+'/weights').once('value'));
    await assertFails(anon.ref(vlogRoot+'/entries/public').set(entry));
    await assertSucceeds(admin.ref(vlogRoot+'/entries/admin').set(entry));
    await assertSucceeds(btc.ref(vlogRoot+'/entries/btc').set(entry));
@@ -40,6 +42,6 @@ const rules=fs.readFileSync(path.join(root,'firebase.database.rules.json'),'utf8
    await assertFails(admin.ref(vlogRoot+'/weights').set({views:1,likes:3,shares:-5}));
    await assertSucceeds(admin.ref(vlogRoot+'/weights').set({views:1,likes:3,shares:5}));
    await assertFails(anon.ref('topkey_handmade_vnext_2026/tournaments').once('value'));
-   console.log('PASS Vlog Firebase emulator: 12 permissions/validation assertions');
+   console.log('PASS Vlog Firebase emulator: 14 permissions/validation assertions');
  }finally{await env.cleanup()}
 })().catch(e=>{console.error(e);process.exitCode=1});
