@@ -1,0 +1,27 @@
+name: DIY Vlog mobile login release candidate
+on:
+  push:
+    branches:
+      - fix/diy-mobile-login-release-candidate-20261114
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Shared platform syntax
+        run: node --check topkey/topkey-platform-core.js
+      - name: Shared Firebase auth syntax
+        run: node --check topkey/topkey-shared-auth.js
+      - name: Mobile login regression
+        run: node topkey/tests/mobile-login-submit.test.cjs
+      - name: DIY native auth and permissions
+        run: node topkey/tests/diy-vlog-native.test.cjs
+      - name: Validate Firebase rules
+        run: python3 -m json.tool topkey/firebase.database.rules.json > /dev/null
