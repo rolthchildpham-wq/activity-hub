@@ -210,7 +210,9 @@ function startSport(options={}){
   await loadFirebase(config,options.firebaseOptions);
   return prepareAuthShell();
  })();
- // Bind login before heavy admin hydration so mobile form submit cannot reload.\n bindLogin({ensureCore:()=>shellPromise});\n const ensureCore=()=>{
+ // Bind login before heavy admin hydration so mobile form submit cannot reload.
+ bindLogin({ensureCore:()=>shellPromise});
+ const ensureCore=()=>{
   if(corePromise)return corePromise;
   corePromise=(async()=>{
    const T=await shellPromise;
