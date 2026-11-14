@@ -1,0 +1,43 @@
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const vm=require('node:vm');
+const html=fs.readFileSync('topkey/l/index.html','utf8');
+const bundle=fs.readFileSync('topkey/sports/vnext/h97-vnext.bundle.js','utf8');
+const entry=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
+assert.ok(entry.includes('h97-vnext.bundle.js?v=h136-short-share-20261114'));
+assert.ok(bundle.includes("const LINK_FORMAT_KEY='topkey_share_url_format_h136'"));
+assert.ok(bundle.includes('tk14-link-format'));
+const start=bundle.indexOf("const LINK_FORMAT_KEY='topkey_share_url_format_h136'");
+const end=bundle.indexOf('function spectatorUrl()',start);
+assert.ok(start>0&&end>start);
+const script=bundle.slice(start,end);
+const output=(mode,hash,tid,token,sport='volleyball')=>{
+ const T={Data:{tid},SPORT:{key:sport}};
+ const storage={getItem:()=>mode};
+ const ctx={T,localStorage:storage,location:{href:'https://demo.edgeone.dev/sports/vnext/index.html?sport='+sport+'&v=u122h123&entry=hub'},URL,console};
+ vm.runInNewContext(script+';globalThis.__getLink=withTournament;',ctx);
+ return ctx.__getLink(hash,{reg:token});
+};
+const viewer=output('short','spectator','main_2026','');
+assert.equal(viewer,'https://demo.edgeone.dev/l/?s=v&t=main_2026#v');
+const register=output('short','register','main_2026','abcd_123');
+assert.equal(register,'https://demo.edgeone.dev/l/?s=v&t=main_2026&k=abcd_123#r');
+assert.ok(!viewer.includes('u122h123'));
+assert.ok(!register.includes('entry=hub'));
+assert.equal(output('short','register','main_2026','token.with.dot'), 'https://demo.edgeone.dev/sports/vnext/index.html?sport=volleyball&entry=hub&tid=main_2026&reg=token.with.dot#register');
+assert.ok(output('full','spectator','main_2026','').includes('/sports/vnext/index.html?'));
+assert.ok(!output('full','spectator','main_2026','').includes('&v='));
+const pre=html.match(/<script>\s*\(\(\)=>\{'use strict';([\s\S]*?)<\/script>/);
+assert.ok(pre,'short redirect script missing');
+function route(query,hash){
+ let assigned='';
+ const ctx={window:{},location:{search:query,hash,href:'https://demo.edgeone.dev/l/',replace:v=>{assigned=v}},URL,URLSearchParams};
+ vm.runInNewContext("(()=>{'use strict';"+pre[1],ctx);
+ return {assigned,valid:!!ctx.window.TopkeyShortRedirect};
+}
+assert.equal(route('?s=v&t=main_2026','#v').assigned,'https://demo.edgeone.dev/sports/vnext/index.html?sport=volleyball&tid=main_2026#spectator');
+assert.equal(route('?s=v&t=main_2026&k=abcd_123','#r').assigned,'https://demo.edgeone.dev/sports/vnext/index.html?sport=volleyball&tid=main_2026&reg=abcd_123#register');
+assert.ok(!route('?s=v&t=main_2026','#bad').valid);
+assert.ok(!route('?s=bad&t=main_2026','#v').valid);
+assert.ok(!route('?s=v&t=../../evil','#v').valid);
+console.log('H136 short links: viewer, registration token, legacy fallback and invalid slug routing passed.');
