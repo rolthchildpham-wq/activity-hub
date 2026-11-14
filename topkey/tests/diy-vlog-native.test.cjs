@@ -13,6 +13,13 @@ assert.ok(html.includes('Bảng xếp hạng <span>Vlog TikTok</span>'));
 assert.ok(html.includes('Top 3 dẫn đầu'));
 assert.ok(html.includes('TỔNG ĐIỂM'));
 assert.ok(html.includes('id="admin-toggle"'));
+assert.ok(html.includes('id="admin-sign-in"'), 'Viewer must have a way to log in as ADMIN on a new preview origin');
+assert.ok(html.includes('id="admin-login-form"'), 'Login must be available without prior Firebase session');
+assert.ok(html.includes('signInWithEmailAndPassword(email,pass)'), 'Use Firebase Auth, never a hardcoded admin password');
+assert.ok(html.includes("String(p.role||'').toUpperCase()==='ADMIN'"), 'Permissions must be verified from Firebase profile');
+assert.ok(html.includes('id="admin-sign-out"'), 'Admin should be able to sign out from Vlog');
+assert.ok(html.includes("if(!isAdmin)return showAdminLogin()"), 'Admin editor remains protected from viewer');
+
 assert.ok(html.includes('id="entry-form"'));
 assert.ok(!html.includes('preview.emergentagent.com'));
 assert.ok(!html.includes('<iframe'));
