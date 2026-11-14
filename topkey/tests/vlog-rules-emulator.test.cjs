@@ -7,7 +7,7 @@ const rules=fs.readFileSync(path.join(root,'firebase.database.rules.json'),'utf8
 (async()=>{
  const env=await initializeTestEnvironment({projectId:'demo-topkey-vlog',database:{rules,host:'127.0.0.1',port:9000}});
  const userRoot='topkey_badminton_vnext_2026/users';
- const vlogRoot='topkey_handmade_vnext_2026/vlog2026';
+ const vlogRoot='topkey_vlog2026';
  const entry={name:'Test Entry',type:'Đội',dept:'TOPKEY',views:123,likes:12,shares:3,url:'https://www.tiktok.com/@test/video/1234567890123456789'};
  try{
    await env.withSecurityRulesDisabled(async ctx=>{
