@@ -1,0 +1,14 @@
+'use strict';
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const path=require('node:path');
+const root=path.resolve(__dirname,'..');
+const html=fs.readFileSync(path.join(root,'sports/badminton/index.html'),'utf8');
+const local=path.join(root,'sports/badminton/styles.css');
+const bundle=path.join(root,'sports/badminton/assets/u122/admin-core.11cda5bc98f3.css');
+assert.ok(fs.existsSync(local),'Base CSS fallback must exist');
+assert.ok(fs.statSync(local).size>1000,'Base CSS fallback must contain real styles');
+assert.ok(fs.existsSync(bundle),'Original admin CSS bundle must be retained');
+assert.match(html,/id="tk-badminton-css-fallback"[^>]+href="\.\/styles\.css\?v=h138-mobile-css-fallback-20261114"/);
+assert.ok(html.includes('admin-core.11cda5bc98f3.css'),'Admin CSS bundle must remain primary');
+console.log('PASS badminton mobile base CSS fallback and existing admin bundle');
