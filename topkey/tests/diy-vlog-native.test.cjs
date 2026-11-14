@@ -27,6 +27,13 @@ assert.ok(hub.includes('href="./sports/diy-vlog/index.html"'));
 assert.ok(diy.includes("get('sport')!=='handmade'"));
 assert.equal(vlog['.read'],true);
 assert.ok(vlog['.write'].includes("=== 'ADMIN'"));
+assert.ok(vlog['.write'].includes("=== 'BTC'"), 'Scoped DIY BTC must be eligible');
+assert.ok(vlog['.write'].includes("=== 'handmade'"), 'BTC must be explicitly scoped to handmade');
+assert.ok(!vlog['.write'].includes("=== 'football'"), 'Cross-sport BTC must not gain Vlog access');
+assert.ok(html.includes("role==='BTC'&&scope==='handmade'"), 'Client view must mirror the scoped role policy');
+assert.ok(html.includes("id=\"admin-login-form\""), 'Preview login form is required');
+assert.ok(html.includes('signInWithEmailAndPassword(email,pass)'), 'Firebase sign-in required');
+
 assert.ok(!vlog['.write'].includes('auth == null'));
 assert.ok(!vlog['.write'].includes('auth === null'));
 assert.ok(vlog.weights && vlog.entries);
