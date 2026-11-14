@@ -31,6 +31,6 @@ jobs:
           cp vlog-rules-package.json package.json
           npm install --no-audit --no-fund
       - name: Firebase emulator role and validation matrix
-        working-directory: topkey/tests
+        working-directory: topkey
         run: |
-          npx firebase emulators:exec --project demo-topkey-vlog --config vlog-emulator.firebase.json --only database "node vlog-rules-emulator.test.cjs"
+          ./tests/node_modules/.bin/firebase emulators:exec --project demo-topkey-vlog --config firebase.vlog-emulator.json --only database "node tests/vlog-rules-emulator.test.cjs"
