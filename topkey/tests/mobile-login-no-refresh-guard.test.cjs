@@ -23,6 +23,6 @@ for(const rel of ['sports/badminton/index.html','sports/vnext/index.html']){
  assert.match(hint,/Đang tải/);
  ctx.window.TopkeyPlatform={state:{loginBound:true}};
  listeners[0]({target:{id:'login-form'},preventDefault(){prevented++}});
- assert.equal(prevented,1,'core listener takes over after binding');
+ assert.equal(prevented,2,'guard still prevents navigation and allows the bound core listener to handle login');
  console.log('PASS '+rel+' login no-native-refresh guard');
 }
