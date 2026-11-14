@@ -1,0 +1,24 @@
+name: TOPKEY isolated Vlog candidate gate
+on:
+  push:
+    branches:
+      - fix/vlog-main-isolated-candidate-20261115
+  pull_request:
+    paths:
+      - 'topkey/index.html'
+      - 'topkey/sports/diy-vlog/**'
+      - 'topkey/tests/vlog-main-isolation.test.cjs'
+permissions:
+  contents: read
+jobs:
+  vlog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: JS syntax
+        run: node --check topkey/sports/diy-vlog/tiktok-automation.js
+      - name: Vlog isolated entrypoint contract
+        run: node topkey/tests/vlog-main-isolation.test.cjs
