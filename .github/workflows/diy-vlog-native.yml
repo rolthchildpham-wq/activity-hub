@@ -1,0 +1,22 @@
+name: DIY Vlog native preview checks
+on:
+  push:
+    branches: [fix/diy-native-vlog-20261114]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate native DIY Vlog and Firebase rules
+        run: node topkey/tests/diy-vlog-native.test.cjs
+      - name: Shared Auth JavaScript syntax
+        run: node --check topkey/topkey-shared-auth.js
+      - name: Shared Platform JavaScript syntax
+        run: node --check topkey/topkey-platform-core.js
