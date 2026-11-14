@@ -7,7 +7,10 @@ on:
     paths:
       - 'topkey/index.html'
       - 'topkey/sports/diy-vlog/**'
-      - 'topkey/tests/vlog-main-isolation.test.cjs'
+      - 'topkey/firebase.database.rules.json'
+      - 'topkey/tests/vlog-*.test.cjs'
+      - 'topkey/tests/vlog-emulator.firebase.json'
+  workflow_dispatch:
 permissions:
   contents: read
 jobs:
@@ -22,3 +25,12 @@ jobs:
         run: node --check topkey/sports/diy-vlog/tiktok-automation.js
       - name: Vlog isolated entrypoint contract
         run: node topkey/tests/vlog-main-isolation.test.cjs
+      - name: Install Firebase emulator test dependencies
+        working-directory: topkey/tests
+        run: |
+          cp vlog-rules-package.json package.json
+          npm install --no-audit --no-fund
+      - name: Firebase emulator role and validation matrix
+        working-directory: topkey/tests
+        run: |
+          npx firebase emulators:exec --project demo-topkey-vlog --config vlog-emulator.firebase.json --only database "node vlog-rules-emulator.test.cjs"
