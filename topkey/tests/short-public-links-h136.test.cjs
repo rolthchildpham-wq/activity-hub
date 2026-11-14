@@ -27,17 +27,29 @@ assert.ok(!register.includes('entry=hub'));
 assert.equal(output('short','register','main_2026','token.with.dot'), 'https://demo.edgeone.dev/sports/vnext/index.html?sport=volleyball&entry=hub&tid=main_2026&reg=token.with.dot#register');
 assert.ok(output('full','spectator','main_2026','').includes('/sports/vnext/index.html?'));
 assert.ok(!output('full','spectator','main_2026','').includes('&v='));
-const pre=html.match(/<script>\s*\(\(\)=>\{'use strict';([\s\S]*?)<\/script>/);
+const pre=html.match(/<script>([\\s\\S]*?)<\\/script>/);
 assert.ok(pre,'short redirect script missing');
 function route(query,hash){
- let assigned='';
- const ctx={window:{},location:{search:query,hash,href:'https://demo.edgeone.dev/l/',replace:v=>{assigned=v}},URL,URLSearchParams};
- vm.runInNewContext("(()=>{'use strict';"+pre[1],ctx);
- return {assigned,valid:!!ctx.window.TopkeyShortRedirect};
+ let assigned='',loaded;
+ const current=new URL('https://demo.edgeone.dev/l/'+query+hash);
+ const nodes={message:{textContent:''},'open-target':{href:'',hidden:true}};
+ const ctx={
+   window:{},
+   location:{search:current.search,hash:current.hash,href:current.href,replace:v=>{assigned=v}},
+   document:{addEventListener:(name,fn)=>{if(name==='DOMContentLoaded')loaded=fn},getElementById:id=>nodes[id],visibilityState:'visible'},
+   URL,URLSearchParams,setTimeout:()=>0,
+ };
+ vm.runInNewContext(pre[1],ctx);
+ assert.equal(typeof loaded,'function','redirect must attach DOM-ready listener');
+ loaded();
+ return {assigned,valid:!!ctx.window.TopkeyShortRedirect,manual:nodes['open-target']};
 }
-assert.equal(route('?s=v&t=main_2026','#v').assigned,'https://demo.edgeone.dev/sports/vnext/index.html?sport=volleyball&tid=main_2026#spectator');
+const a=route('?s=v&t=main_2026','#v');
+assert.equal(a.assigned,'https://demo.edgeone.dev/sports/vnext/index.html?sport=volleyball&tid=main_2026#spectator');
+assert.equal(a.manual.href,a.assigned);
+assert.equal(a.manual.hidden,false);
 assert.equal(route('?s=v&t=main_2026&k=abcd_123','#r').assigned,'https://demo.edgeone.dev/sports/vnext/index.html?sport=volleyball&tid=main_2026&reg=abcd_123#register');
 assert.ok(!route('?s=v&t=main_2026','#bad').valid);
 assert.ok(!route('?s=bad&t=main_2026','#v').valid);
 assert.ok(!route('?s=v&t=../../evil','#v').valid);
-console.log('H136 short links: viewer, registration token, legacy fallback and invalid slug routing passed.');
+console.log('H136 short links: viewer, registration token, manual mobile fallback, invalid slug routing passed.');
