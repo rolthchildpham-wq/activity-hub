@@ -56,7 +56,7 @@ function showVlogScanFailures(failures,testMode,canRetry){
  const all=Array.from(failures||[]);
  window.__TOPKEY_VLOG_SCAN_ERRORS=testMode?all:[];
  const report=$("tiktok-scan-errors");
- if(!report||typeof report.replaceChildren!=='function)return;
+ if(!report||typeof report.replaceChildren!=='function')return;
  if(!testMode||!all.length){report.hidden=true;report.replaceChildren();return}
  const title=document.createElement('h3');title.textContent='⚠ '+all.length+' video cần kiểm tra thủ công';
  const summary=document.createElement('p');
