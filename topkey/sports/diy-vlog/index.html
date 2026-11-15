@@ -134,6 +134,7 @@ function leaveTestMode(){
 }
 const sampleLoadBtn=$('tiktok-load-samples'),sampleDeleteBtn=$('tiktok-delete-samples'),sampleStatus=$('tiktok-test-status');
 function sampleStatusText(t){if(sampleStatus)sampleStatus.textContent=t;}
+function sampleReaderJsonp(params,timeoutMs=30000){return new Promise((resolve,reject)=>{const callback="__topkeySample_"+Date.now()+"_"+Math.random().toString(36).slice(2);const script=document.createElement("script");let done=false;const finish=(err,data)=>{if(done)return;done=true;clearTimeout(timer);delete window[callback];script.remove();err?reject(err):resolve(data)};window[callback]=data=>finish(null,data);script.onerror=()=>finish(Error("Không tải được Reader V2 JSONP. Kiểm tra kết nối mạng hoặc dịch vụ."));const query=new URLSearchParams({...params,callback});script.src="https://topkey-tiktok-stats-reader-s90l8b.v2.appdeploy.ai/api/sample-links-jsonp?"+query.toString();const timer=setTimeout(()=>finish(Error("Reader V2 quá thời gian 30 giây.")),timeoutMs);document.head.appendChild(script);});}
 sampleLoadBtn.addEventListener('click',async()=>{
  if(sampleLoadBtn.disabled)return;
  try{
@@ -149,13 +150,8 @@ sampleLoadBtn.addEventListener('click',async()=>{
    while(items.length<1000&&pageNo<10){
     if(cursorSeen.has(String(cursor)))break;cursorSeen.add(String(cursor));
     sampleStatusText('Đang quét Reader V2 '+(query.keyword||'xu hướng Việt Nam')+' · trang '+(pageNo+1)+' · đã thu '+items.length+'/1.000 link...');
-    const url='https://topkey-tiktok-stats-reader-s90l8b.v2.appdeploy.ai/api/sample-links';
-    const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),30000);
-    let response,payload;
-    try{response=await fetch(url,{method:'POST',mode:'cors',credentials:'omit',headers:{'content-type':'application/json','accept':'application/json'},signal:controller.signal,cache:'no-store',body:JSON.stringify({...query,cursor,count:30})});payload=await response.json().catch(()=>({}));}
-    catch(fetchError){throw Error(fetchError?.name==='AbortError'?'Reader V2 quá thời gian 30 giây. Hãy thử lại.':(fetchError instanceof TypeError?'Không kết nối được Reader V2 (CORS/mạng). Hãy thử tải lại trang.':String(fetchError?.message||fetchError)));}
-    finally{clearTimeout(timer)}
-    if(!response.ok||!payload.ok)throw Error(payload.message||payload.error||('Reader V2 HTTP '+response.status));
+    const payload=await sampleReaderJsonp({keyword:query.keyword||'xu hướng Việt Nam',cursor:String(cursor)});
+    if(!payload?.ok)throw Error(payload?.message||'Reader V2 không trả dữ liệu link mẫu.');
     apiCalls++;
     for(const item of payload.items||[]){
      const id=String(item.id||'').replace(/[^a-zA-Z0-9_-]/g,'');
@@ -238,4 +234,4 @@ try{
  });
 }catch(e){console.warn('TOPKEY Vlog boot',e);$('refresh-time').textContent='Không có kết nối Firebase · dữ liệu mẫu'}
 })();
-</script><footer aria-label="Pháp lý TOPKEY Vlog" style="padding:26px max(22px,calc((100% - 1120px)/2));border-top:1px solid #34425b;color:#b7c9da;font-size:14px;display:flex;gap:22px;flex-wrap:wrap"><a href="../../terms.html" style="color:#78e5e5">Điều khoản sử dụng</a><a href="../../privacy.html" style="color:#78e5e5">Chính sách quyền riêng tư</a><span>TOPKEY Vlog 2026 · Đồng bộ TikTok chỉ thực hiện khi được cấp quyền</span></footer><script src="./tiktok-automation.js?v=reader-v2-cors-sample-api-20261115"></script></body></html>
+</script><footer aria-label="Pháp lý TOPKEY Vlog" style="padding:26px max(22px,calc((100% - 1120px)/2));border-top:1px solid #34425b;color:#b7c9da;font-size:14px;display:flex;gap:22px;flex-wrap:wrap"><a href="../../terms.html" style="color:#78e5e5">Điều khoản sử dụng</a><a href="../../privacy.html" style="color:#78e5e5">Chính sách quyền riêng tư</a><span>TOPKEY Vlog 2026 · Đồng bộ TikTok chỉ thực hiện khi được cấp quyền</span></footer><script src="./tiktok-automation.js?v=reader-v2-jsonp-transport-20261115"></script></body></html>
