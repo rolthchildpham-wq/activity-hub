@@ -31,11 +31,11 @@ async function scenario(n,rejectAuth=false){
 (async()=>{
  for(const n of [10,25]){
   const result=await scenario(n);
-  assert.equal(result.calls,25);assert.equal(result.maxActive,n);assert.equal(result.writes,25);
+  assert.equal(result.calls,25);assert.equal(result.maxActive,5);assert.equal(result.writes,25);
   assert(result.last.includes('25/25'),result.last);assert.equal(result.offset,0);
  }
  const error=await scenario(10,true);
- assert.equal(error.calls,10);assert.equal(error.writes,0);assert.equal(error.offset,0);
+ assert.equal(error.calls,5);assert.equal(error.writes,0);assert.equal(error.offset,0);
  assert(error.last.includes('TẠM DỪNG'),error.last);
- console.log('PASS - 10 and 25 actual in-flight concurrent tasks, 401 stop, no unauthorized writes');
+ console.log('PASS - legacy 10 and 25 presets safely cap at 5 actual in-flight tasks, 401 stop, no unauthorized writes');
 })().catch(e=>{console.error(e);process.exitCode=1});
