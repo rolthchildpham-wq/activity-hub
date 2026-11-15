@@ -143,14 +143,14 @@ header .nav .on{padding:7px 11px}
 @media(max-width:760px){.vlog-scan-errors .vlog-retry-failed{width:100%;justify-content:center;font-size:11px}}
 
 /* Compact responsive hero: title left, formula + refresh/export at the right. */
-.hero .container.hero-flex{display:grid;grid-template-columns:minmax(0,1fr) minmax(350px,.93fr);column-gap:clamp(16px,2.2vw,36px);align-items:center;min-width:0}
+.hero .container.hero-flex{display:grid;grid-template-columns:minmax(0,2fr) minmax(310px,1fr);column-gap:clamp(18px,2.5vw,42px);align-items:center;min-width:0}
 .hero-main,.hero-side{min-width:0}
-.hero-main h1{margin:7px 0;line-height:1.13}
+.hero-main h1{margin:7px 0;line-height:1.12;font-size:clamp(34px,3.6vw,59px);max-width:100%;text-wrap:balance}
 .hero-side{display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:9px;text-align:right}
-.hero .hero-side #formula{max-width:610px;margin:0;font-size:clamp(11px,.95vw,13px);line-height:1.5}
-.hero .hero-side .status{justify-content:flex-end;margin:0;gap:8px 10px}
+.hero .hero-side #formula{max-width:100%;margin:0;font-size:clamp(11px,.9vw,13px);line-height:1.5}
+.hero .hero-side .status{justify-content:flex-end;margin:0;gap:8px;max-width:100%;flex-wrap:wrap}
 .hero .hero-side #refresh-time{min-width:0;overflow-wrap:anywhere}
-@media(max-width:920px){
+@media(max-width:1050px){
  .hero .container.hero-flex{grid-template-columns:1fr;row-gap:10px}
  .hero-side{align-items:flex-start;text-align:left;gap:8px}
  .hero .hero-side #formula{max-width:100%}
