@@ -126,7 +126,34 @@ async function runV2Batch(items,db,root,readerWindow){
  readerWindow.location.href=READER_ORIGIN+"/?batch="+encodeURIComponent(encodeBatch(payload));
  info("Đã chuyển "+batchItems.length+" link sang cửa sổ Reader V2 riêng. Reader sẽ tự đọc và gửi từng kết quả về Vlog để lưu Firebase.");
 }
+// Configure only after deploying the authenticated worker backend.
+// Example: window.__TOPKEY_TIKTOK_WORKER_API = "https://secure-worker.example";
+const WORKER_API=String(window.__TOPKEY_TIKTOK_WORKER_API||"").replace(/\\/$/,"");
+async function runAuthenticatedWorkerBatch(){
+ const user=firebase.auth?.().currentUser;
+ if(!user)throw Error("Cần đăng nhập ADMIN/BTC Vlog trước khi đồng bộ.");
+ const root=window.__TOPKEY_VLOG_TEST_MODE?"topkey_vlog2026_test/entries":"topkey_vlog2026/entries";
+ const snap=await firebase.database().ref(root).once("value"), entries=snap.val()||{};
+ const items=Object.entries(entries).filter(([,e])=>e&&validTikTokVideo(String(e.url||"").trim()));
+ if(!items.length){info("Không có video TikTok hợp lệ để đồng bộ.");return}
+ const token=await user.getIdToken();
+ let queued=0;
+ for(let offset=0;offset<items.length;offset+=100){
+  const batch=items.slice(offset,offset+100).map(([id,e])=>({id,url:String(e.url||"").trim()}));
+  const response=await fetch(WORKER_API+"/v1/jobs",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+token},body:JSON.stringify({entries:batch})});
+  let result={};try{result=await response.json()}catch{}
+  if(!response.ok)throw Error("Worker trả lỗi "+response.status+": "+String(result.detail||"Không thể tạo hàng đợi"));
+  if(String(result.root||"")!==root.split("/")[0])throw Error("Worker đang trỏ sai nhánh Firebase, dừng đồng bộ để bảo vệ dữ liệu.");
+  queued+=Number(result.queued||0);
+  info("Đã đưa "+Math.min(offset+100,items.length)+"/"+items.length+" link vào hàng đợi.");
+ }
+ const response=await fetch(WORKER_API+"/v1/jobs",{headers:{"Authorization":"Bearer "+token}});
+ const report=response.ok?await response.json():{};
+ info("Đã nhận "+queued+" công việc mới từ "+items.length+" link. Worker chạy trên máy chủ; Firebase sẽ tự cập nhật khi xử lý xong. Trạng thái: "+JSON.stringify(report.status||{})+".");
+}
 bulk.addEventListener("click",()=>run(bulk,async()=>{
+ if(WORKER_API){info("Đang đưa các link TikTok vào hàng đợi máy chủ...");await runAuthenticatedWorkerBatch();return;}
+
  if(!window.firebase?.database||!firebase.auth?.().currentUser)throw Error("Chưa đăng nhập Firebase. Hãy đăng nhập lại ADMIN/BTC DIY.");
  const readerWindow=window.open("about:blank","topkeyV2Reader","popup,width=520,height=760");
  if(!readerWindow)throw Error("Trình duyệt đang chặn cửa sổ Reader V2. Hãy cho phép pop-up cho trang Vlog.");
