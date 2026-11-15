@@ -166,6 +166,7 @@ async function importRealVideos(rows,sourceLabel){
   const payload={entries,meta:{createdAt:now,source:sourceLabel,region:'Chưa xác minh',requested:1000,loaded:samples.length,countersVerified:0}};
   sampleStatusText('Đang ghi '+samples.length+' URL vào Firebase nhánh TEST riêng...');
   await db.ref(testRoot).set(payload);
+  try{localStorage.removeItem('topkey_vlog2026_scan:'+testRoot+'/entries')}catch{}
   const verify=await db.ref(testRoot+'/entries').once('value');
   const saved=verify.numChildren();
   if(saved!==samples.length)throw Error('Firebase chỉ xác minh '+saved+'/'+samples.length+' URL đã lưu.');
