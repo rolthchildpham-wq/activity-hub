@@ -25,7 +25,7 @@ button.small,.btn{background:#1a243d;color:#dce8fa;border:1px solid #2c3853;bord
 <div id="tiktok-automation" style="margin-top:24px;border-top:1px solid #34425b;padding-top:20px">
  <h3>🔗 Tự động lấy số liệu TikTok</h3>
  <p class="muted">Dán link video TikTok rồi bấm <b>Đọc số liệu từ link</b> để thử lấy lượt xem, thích và chia sẻ công khai. Số liệu được điền vào biểu mẫu để BTC kiểm tra trước khi lưu. Với video đã được chủ sở hữu cấp quyền, vẫn có thể dùng kết nối TikTok chính thức để đồng bộ định kỳ.</p>
- <div class="actions"><button type="button" id="tiktok-read-link">⚡ Đọc số liệu từ link</button><button type="button" id="tiktok-connect">🔗 Kết nối chủ video</button><button type="button" class="secondary" id="tiktok-sync-now">↻ Đồng bộ video đã cấp quyền</button></div>
+ <div class="actions"><button type="button" id="tiktok-read-link">⚡ Đọc số liệu từ link</button><button type="button" id="tiktok-connect">🔗 Kết nối chủ video</button><button type="button" class="secondary" id="tiktok-sync-now">↻ Đồng bộ video đã cấp quyền</button><button type="button" id="tiktok-sync-all-links">⟳ Quét tất cả link thí sinh & cập nhật</button></div>
  <p id="tiktok-sync-status" role="status" aria-live="polite" class="muted" style="margin-top:12px">Chưa kết nối nguồn dữ liệu TikTok. Số liệu do BTC nhập thủ công chưa được xác thực bởi TikTok.</p>
 </div></section></main>
 <footer>© 2026 TOPKEY Vietnam · Số liệu do Ban tổ chức xác minh · Trang chạy trực tiếp trong TOPKEY DIY Hub</footer>
@@ -98,4 +98,4 @@ try{
  });
 }catch(e){console.warn('TOPKEY Vlog boot',e);$('refresh-time').textContent='Không có kết nối Firebase · dữ liệu mẫu'}
 })();
-</script><footer aria-label="Pháp lý TOPKEY Vlog" style="padding:26px max(22px,calc((100% - 1120px)/2));border-top:1px solid #34425b;color:#b7c9da;font-size:14px;display:flex;gap:22px;flex-wrap:wrap"><a href="../../terms.html" style="color:#78e5e5">Điều khoản sử dụng</a><a href="../../privacy.html" style="color:#78e5e5">Chính sách quyền riêng tư</a><span>TOPKEY Vlog 2026 · Đồng bộ TikTok chỉ thực hiện khi được cấp quyền</span></footer><script src="./tiktok-automation.js?v=tiktok-reader-integration-20261115"></script></body></html>
+</script><footer aria-label="Pháp lý TOPKEY Vlog" style="padding:26px max(22px,calc((100% - 1120px)/2));border-top:1px solid #34425b;color:#b7c9da;font-size:14px;display:flex;gap:22px;flex-wrap:wrap"><a href="../../terms.html" style="color:#78e5e5">Điều khoản sử dụng</a><a href="../../privacy.html" style="color:#78e5e5">Chính sách quyền riêng tư</a><span>TOPKEY Vlog 2026 · Đồng bộ TikTok chỉ thực hiện khi được cấp quyền</span></footer><script src="./tiktok-automation.js?v=tiktok-reader-bulk-links-20261115"></script></body></html>
