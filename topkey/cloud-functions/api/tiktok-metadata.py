@@ -10,6 +10,8 @@ import re
 import time
 from urllib.parse import urlparse
 
+import cachecontrol
+import requests
 import google.auth.transport.requests
 from google.auth.exceptions import TransportError
 from google.oauth2 import id_token
@@ -21,7 +23,10 @@ VIDEO = re.compile(r"^/(?:@[^/]+/video/|share/video/)[0-9]{15,22}/?$")
 SHORT = re.compile(r"^/[A-Za-z0-9_-]+/?$")
 # Google-signed Firebase JWTs can be verified without service-account credentials.
 # Cloud Functions may lack ADC; Admin SDK token checks can hang probing metadata.
-GOOGLE_HTTP = google.auth.transport.requests.Request()
+# Honor Google's Cache-Control/max-age for Firebase signing certificates.
+# A reused warm function can verify many requests without repeated Google calls.
+CERT_HTTP_SESSION = cachecontrol.CacheControl(requests.Session())
+GOOGLE_HTTP = google.auth.transport.requests.Request(session=CERT_HTTP_SESSION)
 
 
 def verify_user_token(token):
