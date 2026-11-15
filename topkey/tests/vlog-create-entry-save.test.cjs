@@ -9,6 +9,10 @@ assert.match(html,/const saved=\(await db\.ref\(root\+'\/entries\/'\+id\)\.once\
 assert.match(html,/remote\.entries=entrySnapshot\.val\(\)/,'Saved entry must refresh rankings');
 assert.match(html,/Đã lưu và đọc lại bài dự thi từ Firebase thành công/,'Save success only after readback');assert.match(html,/Đã lưu và xác minh hệ số trên Firebase thành công/);assert.match(html,/weightsDraft=null/);assert.match(html,/if\(!weightsDraft\)/);assert.match(html,/\.once\('value'\)\)\.val\(\)/);assert.match(html,/const safeLink=s=>/);assert.match(html,/Tạo mới và lưu/);assert.doesNotMatch(html,/\$\('clear-form'\)\.addEventListener\('click',\(\)=>\{\$\('entry-form'\)\.reset\(\)/);assert.match(html,/form\.requestSubmit\(\)/,'Create-new button must save without clearing');assert.match(html,/permission-denied/);
 assert.match(html,/isHandmadeScope=\['handmade','diy','diy \/ handmade','🧶 diy \/ handmade'\]\.includes\(scope\)/,'BTC editor must recognize supported DIY scope labels');
+const rules=JSON.parse(fs.readFileSync(path.join(__dirname,'../firebase.database.rules.json'),'utf8'));
+const vlogWrite=rules.rules.topkey_vlog2026['.write'];
+assert.match(vlogWrite,/assignedSport/,'Firebase write rules must recognize assignedSport');
+assert.match(vlogWrite,/=== 'diy'/,'Firebase write rules must recognize the DIY scope alias');
 const rules=JSON.parse((await tools.mcp__GitHub__fetch_file({repository_full_name:repo,path:'topkey/firebase.database.rules.json',ref:'main'})).result.content);
 const writeRule=rules.rules.topkey_vlog2026['.write'];
 assert.match(writeRule,/assignedSport/,'Vlog write rule must accept the profile assignedSport field');
