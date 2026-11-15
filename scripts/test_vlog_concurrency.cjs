@@ -14,7 +14,7 @@ async function scenario(n,rejectAuth=false){
  }}};
  const firebase={database:()=>db,auth:()=>({currentUser:{uid:'test_admin'}})};
  const ctx={window:{firebase,__TOPKEY_VLOG_TEST_MODE:true},firebase,$:()=>({value:String(n)}),
-   Map,Set,JSON,Number,Date,Object,String,Promise,
+   Map,Set,JSON,Number,Date,Object,String,Promise,setTimeout:fn=>{fn();return 1},
    localStorage:{getItem:k=>store.get(k)||null,setItem:(k,v)=>store.set(k,v)},
    validTikTokVideo:()=>true,info:t=>last=t,
    readEdgeOneMetadata:async()=>{
