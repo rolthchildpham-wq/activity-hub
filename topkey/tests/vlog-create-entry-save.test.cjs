@@ -1,0 +1,19 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
+const html=fs.readFileSync(path.join(__dirname,'../sports/diy-vlog/index.html'),'utf8');
+for(const field of ['entry-views','entry-likes','entry-shares']){
+ const match=html.match(new RegExp('<input id="'+field+'"[^>]+>'));assert.ok(match,'Missing '+field);assert.match(match[0],/value="0"/,'Empty metrics should default to 0');assert.doesNotMatch(match[0],/\srequired\b/,'Name and TikTok URL alone must be enough');
+}
+assert.match(html,/id="entry-save-status"/);assert.match(html,/permission-denied/);
+assert.match(html,/await db\.ref\(root\+'\/entries\/'\+id\)\.set\(obj\)/,'Persist entry with Firebase');
+assert.match(html,/btn\.disabled=true/);
+const linkSource=html.match(/const link=s=>\{[^\n]+\};/);assert.ok(linkSource,'URL helper missing');
+const link=vm.runInNewContext(linkSource[0].replace('const link=','(').replace(/;$/,'')+')',{URL});
+assert.equal(link('https://www.tiktok.com/@test/video/1234567890123456789'),'https://www.tiktok.com/@test/video/1234567890123456789');
+assert.equal(link('https://vm.tiktok.com/ZMabcdefg/'),'https://vm.tiktok.com/ZMabcdefg/');
+assert.throws(()=>link('https://example.com/video/123'),/TikTok/);
+assert.throws(()=>link('not-a-link'),/TikTok/);
+const metricSource=html.match(/function positiveInt\(x\)\{[^\n]+?return n\}/);assert.ok(metricSource);
+const positiveInt=vm.runInNewContext('('+metricSource[0]+')');
+assert.equal(positiveInt(''),0);assert.equal(positiveInt('0'),0);assert.equal(positiveInt('23'),23);assert.throws(()=>positiveInt('-1'));
+console.log('PASS Vlog entry creation: blank metric defaults, valid TikTok URLs, reject invalid links, visible save result');
