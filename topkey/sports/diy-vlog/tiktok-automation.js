@@ -86,71 +86,82 @@ connect?.addEventListener("click",()=>run(connect,async()=>{
  catch{info("Trình duyệt chặn sao chép. Hãy sao chép liên kết TikTok trong hộp thoại.");window.prompt("Sao chép liên kết gửi chủ video:",link)}
 }));
 
-let activeReaderFrame=null,activeBatchNonce=null,batchDb=null,batchSummary=null,pendingWrites=[],activeBatchRoot="topkey_vlog2026/entries";
-let activeBatchItems=[],activeBatchOffset=0;
+let activeBatchRoot="topkey_vlog2026/entries",activeBatchRun=false;
 const READER_ORIGIN="https://topkey-tiktok-stats-reader-s90l8b.v2.appdeploy.ai";
-const READER_CHUNK_SIZE=25;
-function readerBatchUrl(items){
- const payload={nonce:activeBatchNonce,returnOrigin:window.location.origin,items};
- const encoded=btoa(unescape(encodeURIComponent(JSON.stringify(payload)))).replaceAll("+","-").replaceAll("/","_").replace(/=+$/,"");
- return READER_ORIGIN+"/?batch="+encodeURIComponent(encoded);
+async function readWithV2(url){
+ let lastError;
+ for(let attempt=0;attempt<2;attempt++){
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),30000);
+  try{
+   const response=await fetch(READER_ORIGIN+"/api/read-link",{
+    method:"POST",mode:"cors",credentials:"omit",cache:"no-store",signal:controller.signal,
+    headers:{"Content-Type":"application/json","Accept":"application/json"},
+    body:JSON.stringify({url})
+   });
+   const raw=await response.text();let payload;
+   try{payload=JSON.parse(raw)}catch{throw Error("Reader V2 trả dữ liệu không hợp lệ (HTTP "+response.status+").")}
+   if(!response.ok)throw Error(payload?.message||"Reader V2 HTTP "+response.status);
+   return payload;
+  }catch(e){
+   lastError=e;
+   if(e?.name==="AbortError")lastError=Error("Reader V2 quá thời gian 30 giây.");
+   if(attempt===0)await new Promise(resolve=>setTimeout(resolve,900));
+  }finally{clearTimeout(timer)}
+ }
+ throw lastError||Error("Không kết nối được Reader V2.");
 }
-window.addEventListener("message",async event=>{
- if(event.origin!==READER_ORIGIN||event.source!==activeReaderFrame?.contentWindow||!activeBatchNonce)return;
- const message=event.data||{};
- if(message.nonce!==activeBatchNonce)return;
- if(message.type==="TOPKEY_VLOG_READER_RESULT"){
-  batchSummary.processed++;
-  const stats=message.stats||{},patch={};
-  for(const key of ["views","likes","shares"])if(typeof stats[key]==="number"&&Number.isFinite(stats[key])&&stats[key]>=0)patch[key]=Math.round(stats[key]);
-  const count=Object.keys(patch).length;
-  if(count){
-   patch.statsSource=String(message.source||"TikTok Reader V2");
-   patch.statsFetchedAt=new Date().toISOString();
-   patch.statsLastAutoSyncAt=new Date().toISOString();
-   const write=batchDb.ref(activeBatchRoot+"/"+message.id).update(patch);
-   pendingWrites.push(write);
-   try{await write;batchSummary.updated++;if(count<3)batchSummary.partial++;}
-   catch(e){batchSummary.failed++;batchSummary.failures.push(String(message.name||message.id)+": lỗi ghi Firebase - "+String(e?.message||e));}
-  }else{
-   batchSummary.noData++;
-   batchSummary.failures.push(String(message.name||message.id)+": Reader V2 không lấy được số liệu"+(message.message?" ("+String(message.message).slice(0,120)+")":""));
+async function runV2Batch(items,db,root){
+ if(activeBatchRun)throw Error("Đang có một lượt đồng bộ chạy. Vui lòng chờ hoàn tất.");
+ activeBatchRun=true;
+ const summary={total:items.length,processed:0,updated:0,partial:0,noData:0,failed:0,failures:[]};
+ let cursor=0;
+ const worker=async()=>{
+  while(true){
+   const index=cursor++;
+   if(index>=items.length)return;
+   const [id,entry]=items[index];
+   try{
+    const payload=await readWithV2(String(entry.url||"").trim()),stats=payload?.stats||{},patch={};
+    for(const key of ["views","likes","shares"]){
+     const value=stats[key];
+     if(typeof value==="number"&&Number.isFinite(value)&&value>=0)patch[key]=Math.round(value);
+    }
+    const count=Object.keys(patch).length;
+    if(!count){
+     summary.noData++;
+     summary.failures.push(String(entry.name||id)+": "+String(payload?.message||"Reader V2 không trả số liệu").slice(0,150));
+    }else{
+     patch.statsSource=String(payload.source||"TikTok Reader V2");
+     patch.statsFetchedAt=new Date().toISOString();
+     patch.statsLastAutoSyncAt=new Date().toISOString();
+     await db.ref(root+"/"+id).update(patch);
+     summary.updated++;if(count<3)summary.partial++;
+    }
+   }catch(e){
+    summary.failed++;
+    summary.failures.push(String(entry.name||id)+": "+String(e?.message||e).slice(0,150));
+   }finally{
+    summary.processed++;
+    info("Reader V2 chạy nền: "+summary.processed+"/"+summary.total+" link · cập nhật "+summary.updated+" · thiếu dữ liệu "+summary.noData+" · lỗi "+summary.failed+".");
+   }
   }
-  info("Reader V2: "+batchSummary.processed+"/"+batchSummary.total+" link · cập nhật "+batchSummary.updated+" · chưa đọc được "+batchSummary.noData+" · lỗi ghi "+batchSummary.failed+".");
-  return;
- }
- if(message.type==="TOPKEY_VLOG_READER_COMPLETE"){
-  await Promise.allSettled(pendingWrites);
-  pendingWrites=[];
-  const nextOffset=activeBatchOffset+READER_CHUNK_SIZE;
-  if(nextOffset<activeBatchItems.length){
-   activeBatchOffset=nextOffset;
-   const nextItems=activeBatchItems.slice(activeBatchOffset,activeBatchOffset+READER_CHUNK_SIZE);
-   info("Đã xử lý "+batchSummary.processed+"/"+batchSummary.total+" link. Tự chuyển sang lô "+(Math.floor(activeBatchOffset/READER_CHUNK_SIZE)+1)+"...");
-   activeReaderFrame.src=readerBatchUrl(nextItems);
-   return;
-  }
-  const verify=(await batchDb.ref(activeBatchRoot).once("value")).val()||{};
-  const count=Object.keys(verify).length;
-  info("HOÀN TẤT READER V2: "+batchSummary.processed+"/"+batchSummary.total+" link · cập nhật "+batchSummary.updated+" bài ("+batchSummary.partial+" bài thiếu chỉ số) · không đọc được "+batchSummary.noData+" · lỗi ghi "+batchSummary.failed+" · Firebase đã kiểm tra lại "+count+" bài dự thi."+(batchSummary.failures.length?" Chi tiết: "+batchSummary.failures.slice(0,5).join(" | "):""));
-  activeReaderFrame=null;activeBatchNonce=null;batchDb=null;pendingWrites=[];activeBatchItems=[];activeBatchOffset=0;
- }
-});
+ };
+ try{
+  await Promise.all(Array.from({length:Math.min(3,items.length)},()=>worker()));
+  const verify=(await db.ref(root).once("value")).val()||{};
+  const verifyCount=Object.keys(verify).length;
+  info("HOÀN TẤT READER V2: "+summary.processed+"/"+summary.total+" link · cập nhật "+summary.updated+" bài ("+summary.partial+" bài thiếu chỉ số) · không đọc được "+summary.noData+" · lỗi "+summary.failed+" · Firebase đã kiểm tra lại "+verifyCount+" bản ghi."+(summary.failures.length?" Chi tiết: "+summary.failures.slice(0,8).join(" | "):""));
+ }finally{activeBatchRun=false}
+}
 bulk.addEventListener("click",()=>run(bulk,async()=>{
  if(!window.firebase?.database||!firebase.auth?.().currentUser)throw Error("Chưa đăng nhập Firebase. Hãy đăng nhập lại ADMIN/BTC DIY.");
- info("Đang kết nối Firebase và lấy danh sách link thí sinh...");
+ info("Đang kết nối Firebase và lấy danh sách link TikTok...");
  const db=firebase.database(),root=window.__TOPKEY_VLOG_TEST_MODE?"topkey_vlog2026_test/entries":"topkey_vlog2026/entries";activeBatchRoot=root;
  const snap=await db.ref(root).once("value"),entries=snap.val()||{};
- const all=Object.entries(entries).filter(([id,e])=>e&&typeof e==="object");
- const items=all.filter(([id,e])=>validTikTokVideo(String(e.url||"").trim())).map(([id,e])=>({id,name:String(e.name||id),url:String(e.url).trim()}));
- if(!items.length){info("Đã đọc "+all.length+" bài dự thi trong Firebase nhưng không tìm thấy link video TikTok hợp lệ.");return;}
- activeBatchNonce=(window.crypto?.randomUUID?crypto.randomUUID():String(Date.now())+"-"+Math.random().toString(36).slice(2));
- batchDb=db;pendingWrites=[];activeBatchItems=items;activeBatchOffset=0;
- batchSummary={total:items.length,processed:0,updated:0,partial:0,noData:0,failed:0,failures:[]};
- const firstItems=items.slice(0,READER_CHUNK_SIZE);
- if(!activeReaderFrame){activeReaderFrame=document.createElement("iframe");activeReaderFrame.title="TOPKEY TikTok Reader V2";activeReaderFrame.setAttribute("aria-hidden","true");activeReaderFrame.tabIndex=-1;activeReaderFrame.style.cssText="position:fixed;width:1px;height:1px;left:-20px;bottom:0;opacity:0;pointer-events:none;border:0";document.body.appendChild(activeReaderFrame);}
- info("Đã lấy "+items.length+" link từ "+(window.__TOPKEY_VLOG_TEST_MODE?"TEST LAB riêng":"danh sách thí sinh production")+". Bắt đầu lô 1/"+Math.ceil(items.length/READER_CHUNK_SIZE)+"; Reader V2 đọc song song tối đa 3 link và tự chuyển lô.");
- activeReaderFrame.src=readerBatchUrl(firstItems);
+ const items=Object.entries(entries).filter(([id,e])=>e&&typeof e==="object"&&validTikTokVideo(String(e.url||"").trim()));
+ if(!items.length){info("Đã đọc "+Object.keys(entries).length+" bản ghi nhưng không tìm thấy link video TikTok hợp lệ.");return;}
+ info("Đã lấy "+items.length+" link. Bắt đầu gọi trực tiếp API Reader V2 theo 3 luồng nền; không mở tab hoặc iframe.");
+ await runV2Batch(items,db,root);
 }));
 sync?.addEventListener("click",()=>run(sync,async()=>{
  info("Đang cập nhật số liệu các video đã được chủ video cấp quyền...");
