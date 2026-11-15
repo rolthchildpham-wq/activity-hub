@@ -4,7 +4,7 @@ const html=fs.readFileSync(path.join(__dirname,'../sports/diy-vlog/index.html'),
 for(const field of ['entry-views','entry-likes','entry-shares']){
  const match=html.match(new RegExp('<input id="'+field+'"[^>]+>'));assert.ok(match,'Missing '+field);assert.match(match[0],/value="0"/,'Empty metrics should default to 0');assert.doesNotMatch(match[0],/\srequired\b/,'Name and TikTok URL alone must be enough');
 }
-assert.match(html,/id="entry-save-status"/);assert.match(html,/Tạo mới và lưu/);assert.doesNotMatch(html,/\$\('clear-form'\)\.addEventListener\('click',\(\)=>\{\$\('entry-form'\)\.reset\(\)/);assert.match(html,/form\.requestSubmit\(\)/,'Create-new button must save without clearing');assert.match(html,/permission-denied/);
+assert.match(html,/id="entry-save-status"/);assert.match(html,/id="weights-save-status"/);assert.match(html,/Đã lưu và xác minh hệ số trên Firebase thành công/);assert.match(html,/weightsDraft=null/);assert.match(html,/if\(!weightsDraft\)/);assert.match(html,/\.once\('value'\)\)\.val\(\)/);assert.match(html,/const safeLink=s=>/);assert.match(html,/Tạo mới và lưu/);assert.doesNotMatch(html,/\$\('clear-form'\)\.addEventListener\('click',\(\)=>\{\$\('entry-form'\)\.reset\(\)/);assert.match(html,/form\.requestSubmit\(\)/,'Create-new button must save without clearing');assert.match(html,/permission-denied/);
 assert.match(html,/await db\.ref\(root\+'\/entries\/'\+id\)\.set\(obj\)/,'Persist entry with Firebase');
 assert.match(html,/btn\.disabled=true/);
 const linkSource=html.match(/const link=s=>\{[^\n]+\};/);assert.ok(linkSource,'URL helper missing');
