@@ -59,7 +59,7 @@ export async function onRequestPost(context){
    const id=String(v.video_id||v.aweme_id||v.id||'');
    const username=String(v.author?.unique_id||v.author?.uniqueId||'');
    let url=String(v.share_url||v.shareUrl||'');
-   if(!validUrl(url)&&username&&/^\\d{8,22}$/.test(id))url='https://www.tiktok.com/@'+username+'/video/'+id;
+   if(!validUrl(url)&&username&&/^\d{8,22}$/.test(id))url='https://www.tiktok.com/@'+username+'/video/'+id;
    if(!validUrl(url))continue;
    items.push({id,url,username,authorName:String(v.author?.nickname||username||'TikTok VN'),views:Number(v.play_count)||0,likes:Number(v.digg_count)||0,shares:Number(v.share_count)||0});
   }
