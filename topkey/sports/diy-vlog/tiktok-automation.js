@@ -86,51 +86,60 @@ connect?.addEventListener("click",()=>run(connect,async()=>{
  catch{info("Trình duyệt chặn sao chép. Hãy sao chép liên kết TikTok trong hộp thoại.");window.prompt("Sao chép liên kết gửi chủ video:",link)}
 }));
 
-bulk.addEventListener("click",()=>run(bulk,async()=>{
- status.hidden=false;
- if(!window.firebase?.database||!firebase.auth?.().currentUser)throw Error("Chưa đăng nhập Firebase. Hãy đăng nhập lại ADMIN/BTC DIY.");
- const db=firebase.database(),root="topkey_vlog2026/entries";
- info("Đang kết nối Firebase và tải danh sách thí sinh...");
- const snap=await db.ref(root).once("value"),entries=snap.val()||{};
- const all=Object.entries(entries).filter(([id,e])=>e&&typeof e==="object");
- const items=all.filter(([id,e])=>validTikTokVideo(String(e.url||"").trim()));
- if(!items.length){
-  info("Đã đọc "+all.length+" bài dự thi trong Firebase nhưng tìm thấy 0 link video TikTok hợp lệ. Kiểm tra trường đường dẫn video của từng bài.");
+let activeReaderWindow=null,activeBatchNonce=null,batchDb=null,batchSummary=null,pendingWrites=[];
+const READER_ORIGIN="https://topkey-tiktok-stats-reader-s90l8b.v2.appdeploy.ai";
+window.addEventListener("message",async event=>{
+ if(event.origin!==READER_ORIGIN||event.source!==activeReaderWindow||!activeBatchNonce)return;
+ const message=event.data||{};
+ if(message.nonce!==activeBatchNonce)return;
+ if(message.type==="TOPKEY_VLOG_READER_RESULT"){
+  const stats=message.stats||{},patch={};
+  for(const key of ["views","likes","shares"])if(typeof stats[key]==="number"&&Number.isFinite(stats[key])&&stats[key]>=0)patch[key]=Math.round(stats[key]);
+  const count=Object.keys(patch).length;
+  if(count){
+   patch.statsSource=String(message.source||"TikTok Reader V2");
+   patch.statsFetchedAt=new Date().toISOString();
+   patch.statsLastAutoSyncAt=new Date().toISOString();
+   const write=batchDb.ref("topkey_vlog2026/entries/"+message.id).update(patch);
+   pendingWrites.push(write);
+   try{await write;batchSummary.updated++;if(count<3)batchSummary.partial++;}
+   catch(e){batchSummary.failed++;batchSummary.failures.push(String(message.name||message.id)+": lỗi ghi Firebase - "+String(e?.message||e));}
+  }else{
+   batchSummary.noData++;
+   batchSummary.failures.push(String(message.name||message.id)+": Reader V2 không lấy được số liệu"+(message.message? " ("+String(message.message).slice(0,120)+")":""));
+  }
+  info("Reader V2: "+(batchSummary.updated+batchSummary.noData+batchSummary.failed)+"/"+batchSummary.total+" link · cập nhật "+batchSummary.updated+" · chưa đọc được "+batchSummary.noData+" · lỗi ghi "+batchSummary.failed+".");
   return;
  }
- let updated=0,partial=0,failed=0,noData=0;
- const failures=[];
- for(let i=0;i<items.length;i++){
-  const [id,entry]=items[i],url=String(entry.url).trim();
-  info("Đang quét "+(i+1)+"/"+items.length+" · "+String(entry.name||id)+" · đang gọi bộ đọc V2...");
-  try{
-   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),40000);
-   let response,raw,payload;
-   try{
-    response=await fetch(READER_API,{method:"POST",mode:"cors",credentials:"omit",cache:"no-store",signal:controller.signal,headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({url})});
-    raw=await response.text();
-   }finally{clearTimeout(timer)}
-   try{payload=JSON.parse(raw)}catch{throw Error("API trả dữ liệu không phải JSON (HTTP "+response.status+").")}
-   if(!response.ok)throw Error(payload?.message||("HTTP "+response.status));
-   const s=payload?.stats||{},patch={};
-   for(const key of ["views","likes","shares"])if(typeof s[key]==="number"&&Number.isFinite(s[key])&&s[key]>=0)patch[key]=Math.round(s[key]);
-   const count=Object.keys(patch).length;
-   if(!count){noData++;failures.push(String(entry.name||id)+": V2 không trả số liệu");continue;}
-   patch.statsSource=String(payload.source||"TikTok Reader V2");
-   patch.statsFetchedAt=String(payload.fetchedAt||new Date().toISOString());
-   patch.statsLastAutoSyncAt=new Date().toISOString();
-   await db.ref(root+"/"+id).update(patch);
-   updated++;if(count<3)partial++;
-   info("Đã cập nhật "+updated+"/"+items.length+" · vừa xong "+String(entry.name||id)+": "+count+"/3 chỉ số.");
-  }catch(e){
-   failed++;const message=e?.name==="AbortError"?"Quá 40 giây, hết thời gian chờ":String(e?.message||e);
-   failures.push(String(entry.name||id)+": "+message);
-  }
+ if(message.type==="TOPKEY_VLOG_READER_COMPLETE"){
+  await Promise.allSettled(pendingWrites);
+  const verify=(await batchDb.ref("topkey_vlog2026/entries").once("value")).val()||{};
+  const count=Object.keys(verify).length;
+  const tail=message.truncated?" · Lưu ý: Reader giới hạn 25 link mỗi lượt, hãy quét tiếp các link còn lại.":"";
+  info("HOÀN TẤT READER V2: "+batchSummary.total+" link · cập nhật "+batchSummary.updated+" bài ("+batchSummary.partial+" bài thiếu chỉ số) · không đọc được "+batchSummary.noData+" · lỗi ghi "+batchSummary.failed+" · Firebase đã kiểm tra lại "+count+" bài dự thi."+(batchSummary.failures.length?" Chi tiết: "+batchSummary.failures.slice(0,4).join(" | "):"")+tail);
+  activeReaderWindow=null;activeBatchNonce=null;batchDb=null;pendingWrites=[];
  }
- info("HOÀN TẤT QUÉT V2: "+items.length+" link · cập nhật "+updated+" bài ("+partial+" bài thiếu chỉ số) · V2 không có số liệu "+noData+" · lỗi kết nối/ghi "+failed+(failures.length?" · Chi tiết: "+failures.slice(0,4).join(" | "):"")+".");
- const verify=(await db.ref(root).once("value")).val()||{};
- const count=Object.keys(verify).length;
- info(status.textContent+" Đã kiểm tra lại Firebase: "+count+" bài dự thi.");
+});
+bulk.addEventListener("click",()=>run(bulk,async()=>{
+ if(!window.firebase?.database||!firebase.auth?.().currentUser)throw Error("Chưa đăng nhập Firebase. Hãy đăng nhập lại ADMIN/BTC DIY.");
+ const readerWindow=window.open("about:blank","topkeyTikTokReaderBatch");
+ if(!readerWindow)throw Error("Trình duyệt đang chặn mở tab Reader V2. Hãy cho phép cửa sổ bật lên (pop-up) cho trang Vlog rồi bấm quét lại.");
+ info("Đang kết nối Firebase và lấy danh sách link thí sinh...");
+ const db=firebase.database(),root="topkey_vlog2026/entries";
+ const snap=await db.ref(root).once("value"),entries=snap.val()||{};
+ const all=Object.entries(entries).filter(([id,e])=>e&&typeof e==="object");
+ const items=all.filter(([id,e])=>validTikTokVideo(String(e.url||"").trim())).map(([id,e])=>({id,name:String(e.name||id),url:String(e.url).trim()}));
+ if(!items.length){readerWindow.close();info("Đã đọc "+all.length+" bài dự thi trong Firebase nhưng không tìm thấy link video TikTok hợp lệ.");return;}
+ const batchItems=items.slice(0,25);
+ const nonce=(window.crypto?.randomUUID?crypto.randomUUID():String(Date.now())+"-"+Math.random().toString(36).slice(2));
+ activeReaderWindow=readerWindow;activeBatchNonce=nonce;batchDb=db;pendingWrites=[];
+ batchSummary={total:batchItems.length,updated:0,partial:0,noData:0,failed:0,failures:[]};
+ const payload={nonce,returnOrigin:window.location.origin,items:batchItems};
+ const encoded=btoa(unescape(encodeURIComponent(JSON.stringify(payload)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+ const target=READER_ORIGIN+"/?batch="+encodeURIComponent(encoded);
+ info("Đã lấy "+items.length+" link. Đang chuyển "+batchItems.length+" link sang Reader V2 để tự đọc lần lượt...");
+ readerWindow.location.replace(target);
+ if(items.length>batchItems.length)batchSummary.truncated=true;
 }));
 sync?.addEventListener("click",()=>run(sync,async()=>{
  info("Đang cập nhật số liệu các video đã được chủ video cấp quyền...");
