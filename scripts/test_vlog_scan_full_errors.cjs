@@ -4,7 +4,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
 const source=fs.readFileSync(path.join(__dirname,'..','topkey/sports/diy-vlog/tiktok-automation.js'),'utf8');
 const start=source.indexOf('async function runEdgeOneBatch(){'),end=source.indexOf('bulk.addEventListener(',start);
 assert(start>=0&&end>start,'scan function should exist');
-const snippet=source.slice(source.indexOf('function vlogFailureReason('),end);
+const snippet=source.slice(source.indexOf('function vlogFailureReason('),source.indexOf('function errMessage('))+source.slice(start,end);
 const N=1000;
 const makeEntries=n=>Object.fromEntries(Array.from({length:n},(_,i)=>[
  'tt_'+String(i).padStart(4,'0'),
