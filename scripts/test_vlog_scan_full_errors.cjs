@@ -16,7 +16,7 @@ async function simulate({n=N,errors=[],authError=-1,concurrency=25,offset=0}={})
  const fp=n+':'+ids[0]+':'+ids.at(-1)+':';
  if(offset)store.set(key,JSON.stringify({fingerprint:fp,offset}));
  let calls=0,writes=0,active=0,peak=0,reads=0,last='';
- const doc={createElement:tag=>({tagName:tag,children:[],attrs:{},textContent:'',append(...x){this.children.push(...x)},replaceChildren(...x){this.children=x},setAttribute(k,v){this.attrs[k]=v}})};
+ const doc={createElement:tag=>({tagName:tag,children:[],attrs:{},textContent:'',append(...x){this.children.push(...x)},appendChild(x){this.children.push(x)},replaceChildren(...x){this.children=x},setAttribute(k,v){this.attrs[k]=v}})};
  const report={hidden:true,children:[],replaceChildren(...x){this.children=x}};
  const firebase={auth:()=>({currentUser:{uid:'admin'}}),database:()=>({ref:loc=>{
   if(loc==='topkey_vlog2026_test/entries')return {once:async()=>{reads++;return{val:()=>all}}};
