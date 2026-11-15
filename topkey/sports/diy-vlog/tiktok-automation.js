@@ -106,7 +106,9 @@ connect?.addEventListener("click",()=>run(connect,async()=>{
 
 async function runEdgeOneBatch(){
  if(!window.firebase?.database||!firebase.auth?.().currentUser)throw Error("Cần đăng nhập ADMIN/BTC Vlog.");
- const db=firebase.database(),root=window.__TOPKEY_VLOG_TEST_MODE?"topkey_vlog2026_test/entries":"topkey_vlog2026/entries";
+ const userId=firebase.auth().currentUser.uid;
+ const testMode=window.__TOPKEY_VLOG_TEST_MODE===true;
+ const db=firebase.database(),root=testMode?"topkey_vlog2026_test/entries":"topkey_vlog2026/entries";
  const snapshot=await db.ref(root).once("value");
  const entries=Object.entries(snapshot.val()||{}).filter(([,e])=>e&&validTikTokVideo(String(e.url||"").trim()));
  if(!entries.length){info("Không có video TikTok hợp lệ.");return;}
@@ -115,66 +117,91 @@ async function runEdgeOneBatch(){
  let saved={};
  try{saved=JSON.parse(localStorage.getItem(storageKey)||"{}")||{}}catch{}
  const offset=saved.fingerprint===fingerprint&&Number.isInteger(saved.offset)&&saved.offset>=0&&saved.offset<entries.length?saved.offset:0;
- const batch=entries.slice(offset,offset+25);
- const desired=Number($("tiktok-scan-concurrency")?.value||10);
+ const desired=Number($("tiktok-scan-concurrency")?.value||3);
  const concurrency=desired===25?25:desired===10?10:3;
- let cursor=0,done=0,updated=0,partial=0,errors=0,stop=false;
- const details=[],completed=new Set(),retry=new Set();
+ let updated=0,partial=0,errors=0,attempted=0;
+ let stopped=false,stopReason="";
+ const details=[];
  const fatal=e=>{
   const code=Number(e?.status||0),message=String(e?.message||e);
   return [401,403,429,503].includes(code)||e?.name==="AbortError"||e?.name==="TypeError"||
          /network error|failed to fetch|permission.denied|quá thời gian|timeout/i.test(message);
  };
- async function scanOne(idx){
-  const [id,entry]=batch[idx],url=String(entry.url||"").trim();
-  try{
-   const result=await readEdgeOneMetadata(url),patch={};
-   for(const key of ["views","likes","shares"]){
-    const v=result.stats?.[key];
-    if(Number.isSafeInteger(v)&&v>=0&&v<=1000000000)patch[key]=v;
+ const saveCursor=position=>{
+  try{localStorage.setItem(storageKey,JSON.stringify({fingerprint,offset:position}))}catch{}
+ };
+ // Automatic 25-video waves: one click processes all remaining entries without
+ // reloading Firebase or requiring a second click. Pause between waves to avoid
+ // hammering the unofficial TikTok service.
+ const WAVE_SIZE=25;
+ for(let waveStart=offset;waveStart<entries.length;waveStart+=WAVE_SIZE){
+  if(!firebase.auth().currentUser||firebase.auth().currentUser.uid!==userId||
+     (window.__TOPKEY_VLOG_TEST_MODE===true)!==testMode){
+   stopped=true;stopReason="Phiên đăng nhập hoặc chế độ TEST đã thay đổi.";
+   break;
+  }
+  const wave=entries.slice(waveStart,waveStart+WAVE_SIZE);
+  let next=0,abort=false;
+  const completed=new Set();
+  async function worker(){
+   while(!abort&&next<wave.length){
+    const index=next++;
+    const [id,entry]=wave[index],url=String(entry.url||"").trim();
+    try{
+     const result=await readEdgeOneMetadata(url),patch={};
+     for(const key of ["views","likes","shares"]){
+      const v=result.stats?.[key];
+      if(Number.isSafeInteger(v)&&v>=0&&v<=1000000000)patch[key]=v;
+     }
+     if(!Object.keys(patch).length)throw Error("Không có chỉ số hợp lệ");
+     // The identity and selected database must still match before every write.
+     if(!firebase.auth().currentUser||firebase.auth().currentUser.uid!==userId||
+        (window.__TOPKEY_VLOG_TEST_MODE===true)!==testMode)
+      throw Object.assign(Error("Phiên đăng nhập thay đổi; dừng ghi dữ liệu."),{status:403});
+     const at=new Date().toISOString();
+     const tx=await db.ref(root+"/"+id).transaction(current=>{
+      if(!current||String(current.url||"").trim()!==url)return;
+      return {...current,...patch,statsSource:String(result.source||"EdgeOne TikWM"),statsFetchedAt:at,statsLastAutoSyncAt:at};
+     });
+     if(!tx.committed)throw Error("URL thay đổi hoặc không đủ quyền ghi Firebase");
+     updated++;if(Object.keys(patch).length<3)partial++;
+     completed.add(index);
+    }catch(e){
+     errors++;
+     const message=String(e?.message||e);
+     if(details.length<8)details.push(id+": "+message.slice(0,110));
+     if(fatal(e)){abort=true;stopped=true;stopReason=message}
+     else completed.add(index); // deleted/private videos cannot block full 1000 scan
+    }finally{
+     attempted++;
+     info("ĐANG QUÉT "+Math.min(offset+attempted,entries.length)+"/"+entries.length+
+          " URL · "+concurrency+" luồng · cập nhật "+updated+" · lỗi "+errors);
+    }
    }
-   if(!Object.keys(patch).length)throw Error("Không có chỉ số hợp lệ");
-   const at=new Date().toISOString();
-   const tx=await db.ref(root+"/"+id).transaction(current=>{
-    if(!current||String(current.url||"").trim()!==url)return;
-    return {...current,...patch,statsSource:String(result.source||"EdgeOne TikWM"),statsFetchedAt:at,statsLastAutoSyncAt:at};
-   });
-   if(!tx.committed)throw Error("URL thay đổi hoặc không đủ quyền ghi Firebase");
-   updated++;if(Object.keys(patch).length<3)partial++;
-   completed.add(idx);
-  }catch(e){
-   errors++;
-   details.push(id+": "+String(e?.message||e).slice(0,100));
-   if(fatal(e)){stop=true;retry.add(idx)}
-   else completed.add(idx); // unavailable video: record and continue to next link
-  }finally{
-   done++;
-   info("EdgeOne TikTok · "+(offset+done)+"/"+entries.length+
-        " · đồng thời "+Math.min(concurrency,batch.length)+
-        " · cập nhật "+updated+" · lỗi "+errors+(stop?" · đang dừng do lỗi API":""));
   }
- }
- async function worker(){
-  while(!stop&&cursor<batch.length){
-   const idx=cursor++;
-   await scanOne(idx);
+  await Promise.all(Array.from({length:Math.min(concurrency,wave.length)},()=>worker()));
+  let safeCompleted=0;
+  while(safeCompleted<wave.length&&completed.has(safeCompleted))safeCompleted++;
+  const nextOffset=waveStart+safeCompleted;
+  saveCursor(nextOffset>=entries.length?0:nextOffset);
+  if(stopped){
+   info("TẠM DỪNG "+nextOffset+"/"+entries.length+" URL · thành công "+updated+
+        " ("+partial+" thiếu chỉ số) · lỗi "+errors+". "+
+        "Giữ vị trí để thử lại. "+stopReason.slice(0,150)+
+        (details.length?" | "+details.slice(0,4).join(" | "):""));
+   return;
   }
+  info("ĐÃ QUÉT "+Math.min(waveStart+wave.length,entries.length)+"/"+entries.length+
+       " URL · "+concurrency+" luồng · cập nhật "+updated+" · lỗi "+errors+
+       (waveStart+wave.length<entries.length?" · tự động tiếp tục lô kế tiếp...":" · HOÀN TẤT"));
+  if(waveStart+wave.length<entries.length)
+   await new Promise(resolve=>setTimeout(resolve,400));
  }
- await Promise.all(Array.from({length:Math.min(concurrency,batch.length)},()=>worker()));
- // On a fatal error, resume from the earliest item that was not safely completed.
- // In-flight requests may finish out of order; repeating a successful item is safe
- // because URL-checked Firebase transactions are idempotent for identical metrics.
- let advanced=0;
- while(advanced<batch.length&&completed.has(advanced))advanced++;
- const processed=offset+(stop?advanced:batch.length),finished=processed>=entries.length;
- try{localStorage.setItem(storageKey,JSON.stringify({fingerprint,offset:finished?0:processed}))}catch{}
- info((stop?"TẠM DỪNG":"ĐÃ QUÉT")+" "+processed+"/"+entries.length+" URL · "+
-      "đồng thời "+Math.min(concurrency,batch.length)+" · cập nhật "+updated+
+ info("HOÀN TẤT "+entries.length+"/"+entries.length+" URL · cập nhật "+updated+
       " ("+partial+" thiếu chỉ số) · lỗi "+errors+"."+
-      (stop?" Lỗi hệ thống: giữ vị trí để thử lại.":finished?" Đã đến cuối danh sách.":" Bấm quét lần nữa để tiếp tục từ URL "+(processed+1)+".")+
-      (details.length?" Chi tiết: "+details.slice(0,4).join(" | "):""));
+      (details.length?" Video không đọc được: "+details.slice(0,4).join(" | "):""));
 }
-bulk.addEventListener("click",()=>run(bulk,async()=>{info("Đang đọc số liệu qua EdgeOne yt-dlp...");await runEdgeOneBatch();}));
+bulk.addEventListener("click",()=>run(bulk,async()=>{info("Đang quét liên tục qua EdgeOne TikWM...");await runEdgeOneBatch();}));
 sync?.addEventListener("click",()=>run(sync,async()=>{
  info("Đang cập nhật số liệu các video đã được chủ video cấp quyền...");
  const r=await callable("tiktokSyncNow")({});
