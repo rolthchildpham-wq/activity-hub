@@ -3,8 +3,8 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const s=fs.readFileSync(path.join(__dirname,'..','topkey/sports/diy-vlog/index.html'),'utf8');
 assert(s.includes('class="container hero-flex"'));
 assert(s.includes('class="hero-main"')&&s.includes('class="hero-side"'));
-assert(s.includes('.hero .container.hero-flex{display:grid;grid-template-columns:minmax(0,1fr) minmax(350px,.93fr)'));
-assert(s.includes('@media(max-width:920px)')&&s.includes('.hero .container.hero-flex{grid-template-columns:1fr;row-gap:10px}'));
+assert(s.includes('.hero .container.hero-flex{display:grid;grid-template-columns:minmax(0,2fr) minmax(310px,1fr)'));
+assert(s.includes('@media(max-width:1050px)')&&s.includes('.hero .container.hero-flex{grid-template-columns:1fr;row-gap:10px}'));
 assert(s.includes('@media(max-width:520px)'));
 assert.equal((s.match(/id="formula"/g)||[]).length,1);
 assert.equal((s.match(/id="refresh-time"/g)||[]).length,1);
@@ -12,4 +12,4 @@ assert.equal((s.match(/id="refresh"/g)||[]).length,1);
 assert.equal((s.match(/id="export"/g)||[]).length,1);
 assert(s.includes('id="tiktok-scan-errors"')&&s.includes('vlog-i18n.js')&&s.includes('tiktok-automation.js'));
 for(const m of s.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g))if(m[1].trim())new vm.Script(m[1]);
-console.log('PASS Vlog compact hero: desktop right side, phone stacking, all IDs unique, scan+i18n retained, inline JS valid');
+console.log('PASS Vlog 2:1 hero columns: title 2/3, controls 1/3, phone stacking, IDs intact, scan+i18n preserved');
