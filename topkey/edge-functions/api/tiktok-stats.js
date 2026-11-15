@@ -120,6 +120,8 @@ async function viaTikTokPage(videoUrl){
   if(!match)return null;
   const raw=JSON.parse(match[1]);
   const item=raw?.__DEFAULT_SCOPE__?.['webapp.video-detail']?.itemInfo?.itemStruct;
+  const expected=INDIVIDUAL_VIDEO.exec(u.pathname)?.[1];
+  if(item?.id && String(item.id)!==expected)return null;
   const stats=pickCounts(item?.stats,{views:'playCount',likes:'diggCount',shares:'shareCount',comments:'commentCount'});
   return stats?{ok:true,stats,source:'tiktok-page',videoId:String(item.id||'')}:null;
  }finally{clearTimeout(timer)}
