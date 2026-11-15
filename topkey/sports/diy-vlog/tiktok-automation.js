@@ -115,14 +115,14 @@ window.addEventListener("message",async event=>{
   await Promise.allSettled(pendingWrites);
   const verify=(await batchDb.ref("topkey_vlog2026/entries").once("value")).val()||{};
   const count=Object.keys(verify).length;
-  const tail=message.truncated?" · Lưu ý: Reader giới hạn 25 link mỗi lượt, hãy quét tiếp các link còn lại.":"";
+  const tail=batchSummary.truncated?" · Lưu ý: Reader giới hạn 25 link mỗi lượt, hãy quét tiếp các link còn lại.":"";
   info("HOÀN TẤT READER V2: "+batchSummary.total+" link · cập nhật "+batchSummary.updated+" bài ("+batchSummary.partial+" bài thiếu chỉ số) · không đọc được "+batchSummary.noData+" · lỗi ghi "+batchSummary.failed+" · Firebase đã kiểm tra lại "+count+" bài dự thi."+(batchSummary.failures.length?" Chi tiết: "+batchSummary.failures.slice(0,4).join(" | "):"")+tail);
   activeReaderWindow=null;activeBatchNonce=null;batchDb=null;pendingWrites=[];
  }
 });
 bulk.addEventListener("click",()=>run(bulk,async()=>{
  if(!window.firebase?.database||!firebase.auth?.().currentUser)throw Error("Chưa đăng nhập Firebase. Hãy đăng nhập lại ADMIN/BTC DIY.");
- const readerWindow=window.open("about:blank","topkeyTikTokReaderBatch");
+ const readerWindow=window.open("about:blank","_blank");
  if(!readerWindow)throw Error("Trình duyệt đang chặn mở tab Reader V2. Hãy cho phép cửa sổ bật lên (pop-up) cho trang Vlog rồi bấm quét lại.");
  info("Đang kết nối Firebase và lấy danh sách link thí sinh...");
  const db=firebase.database(),root="topkey_vlog2026/entries";
