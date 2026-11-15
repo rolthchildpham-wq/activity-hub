@@ -5,25 +5,36 @@ const status=$("tiktok-sync-status"),connect=$("tiktok-connect"),sync=$("tiktok-
 if(!status||!bulk)return;
 window.__topkeyTikTokStatsMeta=null;
 async function readEdgeOneMetadata(url){
- if(!window.firebase?.auth?.().currentUser)throw Error("Cần đăng nhập ADMIN/BTC trước khi đọc TikTok.");
- const token=await firebase.auth().currentUser.getIdToken();
- const controller=new AbortController();
- const timer=setTimeout(()=>controller.abort(),28000);
- try{
-  const response=await fetch("/api/tiktok-metadata",{
-   method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+token},
-   body:JSON.stringify({url}),signal:controller.signal,cache:"no-store"
-  });
-  const type=response.headers.get("content-type")||"";
-  if(!type.includes("application/json"))throw Error("EdgeOne chưa triển khai API yt-dlp, phản hồi không phải JSON.");
-  const data=await response.json();
-  if(!response.ok||!data.ok){
-   const failure=Error(data.message||("EdgeOne API lỗi "+response.status));
-   failure.status=response.status;
-   throw failure;
-  }
-  return data;
- }finally{clearTimeout(timer)}
+ const user=window.firebase?.auth?.().currentUser;
+ if(!user)throw Error("Cần đăng nhập ADMIN/BTC trước khi đọc TikTok.");
+ async function requestMetadata(forceRefresh){
+  const token=await user.getIdToken(Boolean(forceRefresh));
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),12000);
+  try{
+   const response=await fetch("/api/tiktok-metadata",{
+    method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+token},
+    body:JSON.stringify({url}),signal:controller.signal,cache:"no-store"
+   });
+   if(!(response.headers.get("content-type")||"").includes("application/json"))
+    throw Error("EdgeOne API yt-dlp không trả JSON, kiểm tra deployment.");
+   const data=await response.json();
+   if(!response.ok||!data.ok){
+    const failure=Error(data.message||("EdgeOne API lỗi "+response.status));
+    failure.status=response.status;
+    failure.code=String(data.code||"");
+    throw failure;
+   }
+   return data;
+  }finally{clearTimeout(timer)}
+ }
+ try{return await requestMetadata(false)}
+ catch(e){
+  // Retry stale sign-in token once, but do not retry broken API / Google cert 503.
+  if(e?.status===401 && window.firebase?.auth?.().currentUser===user)
+   return requestMetadata(true);
+  throw e;
+ }
 }
 function info(t){status.hidden=false;status.style.display="block";status.textContent=t}
 function errMessage(e){
@@ -111,7 +122,7 @@ async function runEdgeOneBatch(){
  const details=[],completed=new Set(),retry=new Set();
  const fatal=e=>{
   const code=Number(e?.status||0),message=String(e?.message||e);
-  return [401,403,429].includes(code)||e?.name==="AbortError"||e?.name==="TypeError"||
+  return [401,403,429,503].includes(code)||e?.name==="AbortError"||e?.name==="TypeError"||
          /network error|failed to fetch|permission.denied|quá thời gian|timeout/i.test(message);
  };
  async function scanOne(idx){
