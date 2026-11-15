@@ -3,7 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const root=path.join(__dirname,'..','topkey/sports/diy-vlog');
 const script=fs.readFileSync(path.join(root,'vlog-csv-import.js'),'utf8');
 const page=fs.readFileSync(path.join(root,'index.html'),'utf8');
-const ctx={window:{}};vm.createContext(ctx);new vm.Script(script).runInContext(ctx);
+const ctx={window:{},URL};vm.createContext(ctx);new vm.Script(script).runInContext(ctx);
 const {parseCSV,validateFile}=ctx.window.TopkeyVlogCSV;
 const header=['Hạng','Tên','Loại','Đơn vị','Xem','Thích','Chia sẻ','Điểm','TikTok'];
 const row=['1','Bacpham','Đội','Tv','1470','155','13','168','https://vt.tiktok.com/ZSpqUnyWQ/'];
