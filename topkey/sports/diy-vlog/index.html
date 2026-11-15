@@ -163,14 +163,23 @@ header .nav .on{padding:7px 11px}
  .hero .hero-side .status .small{padding:8px 10px}
  .hero .hero-side #refresh-time{flex-basis:100%}
 }
+
+.vlog-csv-preview{margin:0 0 16px;border-color:#327b89}
+.vlog-csv-preview[hidden]{display:none!important}
+.vlog-csv-preview-rows{display:grid;gap:5px;max-height:260px;overflow:auto;font-size:12px;color:#d6eafa;margin:10px 0}
+.vlog-csv-preview-rows>div{padding:5px 9px;background:#121b30;border-radius:5px;overflow-wrap:anywhere}
+.vlog-csv-error{color:#ff9c9c!important;border-left:2px solid #c84b5b}
+#export,#import-csv{white-space:nowrap}
+@media(max-width:920px){.hero .hero-side .status{flex-wrap:wrap}}
+@media(max-width:520px){#import-csv{padding:8px 10px}}
 </style></head><body>
 <header><div class="bar"><a class="brand" href="../../index.html"><span class="logo">TK</span><span><strong>TOPKEY VIETNAM</strong><small>VLOG 2026</small></span></a><nav class="nav"><a class="on" href="#ranking">♜ Bảng xếp hạng</a><a href="../vnext/index.html?sport=handmade">DIY Hub</a><button id="admin-toggle" type="button" hidden>⚙ Quản trị</button><button id="admin-sign-in" type="button">🔐 Đăng nhập Admin</button><button id="admin-sign-out" type="button" hidden>Đăng xuất Admin</button><div id="vlog-language-picker" class="vlog-language-picker" role="group" aria-label="Ngôn ngữ / Language / 语言" data-vlog-no-i18n>
 <button type="button" data-lang="vi" title="Tiếng Việt" aria-pressed="true">🇻🇳 VI</button>
 <button type="button" data-lang="en" title="English" aria-pressed="false">🇬🇧 EN</button>
 <button type="button" data-lang="zh" title="简体中文" aria-pressed="false">🇨🇳 中</button>
 </div></nav></div></header>
-<div class="hero"><div class="container hero-flex"><div class="hero-main"><div class="kicker">TOPKEY Vietnam · Cuộc thi Vlog 2026</div><h1>Bảng xếp hạng <span>Vlog TikTok</span></h1></div><div class="hero-side"><p id="formula">Điểm = 1 × lượt xem + 3 × lượt thích + 5 × lượt chia sẻ. Bảng tự động tính lại mỗi khi số liệu hoặc hệ số thay đổi.</p><div class="status"><span id="refresh-time">Đang tải dữ liệu…</span><button class="small" id="refresh">↻ Làm mới</button><button class="small" id="export">↓ Xuất CSV</button></div></div></div></div>
-<main class="container content"><div class="warning" id="warning"><strong>⚠ DỮ LIỆU MẪU:</strong> Bảng đang hiển thị các mục giả lập để xem thử, được gắn nhãn riêng. Đây không phải số liệu thật của thí sinh.</div>
+<div class="hero"><div class="container hero-flex"><div class="hero-main"><div class="kicker">TOPKEY Vietnam · Cuộc thi Vlog 2026</div><h1>Bảng xếp hạng <span>Vlog TikTok</span></h1></div><div class="hero-side"><p id="formula">Điểm = 1 × lượt xem + 3 × lượt thích + 5 × lượt chia sẻ. Bảng tự động tính lại mỗi khi số liệu hoặc hệ số thay đổi.</p><div class="status"><span id="refresh-time">Đang tải dữ liệu…</span><button class="small" id="refresh">↻ Làm mới</button><button class="small" id="export">↓ Xuất CSV</button><button class="small" id="import-csv" type="button" hidden>↑ Nhập CSV</button><input type="file" id="import-csv-file" accept=".csv,text/csv" hidden aria-label="Chọn file CSV thí sinh" /></div></div></div></div>
+<main class="container content"><section class="edit-panel vlog-csv-preview" id="import-csv-preview" hidden aria-label="Xem trước nhập CSV"><div class="kicker">NHẬP DỮ LIỆU THÍ SINH</div><h2>Xem trước nhập CSV vào cuộc thi thật</h2><p class="muted">Chỉ bổ sung thí sinh mới, không ghi đè dữ liệu cũ; TEST LAB không bị thay đổi.</p><p data-counts></p><div data-preview class="vlog-csv-preview-rows"></div><div class="actions"><button id="import-csv-confirm" type="button" disabled>Xác nhận thêm bài mới</button><button id="import-csv-cancel" class="secondary" type="button">Hủy</button></div><p id="import-csv-status" role="status" aria-live="polite"></p></section><div class="warning" id="warning"><strong>⚠ DỮ LIỆU MẪU:</strong> Bảng đang hiển thị các mục giả lập để xem thử, được gắn nhãn riêng. Đây không phải số liệu thật của thí sinh.</div>
 <section class="edit-panel" id="admin-login-panel" hidden>
 <div class="kicker">TOPKEY VIETNAM · XÁC THỰC QUẢN TRỊ</div><h2>Đăng nhập Admin</h2>
 <p class="note" style="font-size:12px;color:#aebed2">Dùng tài khoản Firebase TOPKEY đã được cấp quyền ADMIN. Viewer vẫn xem bảng xếp hạng công khai. Không chia sẻ mật khẩu và không dùng tài khoản quản trị mẫu.</p>
@@ -217,6 +226,8 @@ function topCard(x,rank){
  '</div></div>';
 }
 function render(){
+ const importButton=$('import-csv');
+ if(importButton)importButton.hidden=!isAdmin||shareMode||testMode;
  const a=ranking(),s=a.reduce((o,e)=>{o.views+=(+e.views||0);o.likes+=(+e.likes||0);o.shares+=(+e.shares||0);o.score+=e.score;return o},{views:0,likes:0,shares:0,score:0});
  $('stats').innerHTML=[['Bài dự thi',a.length],['Tổng lượt xem',s.views],['Tổng lượt thích',s.likes],['Tổng lượt chia sẻ',s.shares],['Tổng điểm',s.score]].map(([t,n])=>'<div class="stat"><label>'+t+'</label><strong>'+nf(n)+'</strong><div class="detail">'+(testMode?'Dữ liệu kiểm thử riêng':(real?'Dữ liệu cuộc thi':'Số liệu giả lập'))+'</div></div>').join('');
  $('podium').innerHTML=topCard(a[0],1)+topCard(a[1],2)+topCard(a[2],3);
@@ -279,6 +290,42 @@ function positiveInt(x){const n=Number(String(x??'').trim()||0);if(!Number.isSaf
 $('rows').addEventListener('click',e=>{const b=e.target.closest('[data-edit]');if(!b||!isAdmin||shareMode||!real)return;const x=data.entries[b.dataset.edit];if(x){entryFields(x);$('editor').hidden=false;$('editor').scrollIntoView({behavior:'smooth'})}});
 $('search').addEventListener('input',render);$('refresh').addEventListener('click',()=>{if(db)Promise.all([db.ref(root+'/weights').once('value'),db.ref(root+'/entries').once('value')]).then(([w,e])=>{remote.weights=w.val();remote.entries=e.val();apply(remote)}).catch(e=>alert('Lỗi tải dữ liệu: '+e.message));else render()});
 $('export').addEventListener('click',()=>{const rows=[['Hạng','Tên','Loại','Đơn vị','Xem','Thích','Chia sẻ','Điểm','TikTok'],...ranking().map((x,i)=>[i+1,x.name,x.type,x.dept||'',x.views,x.likes,x.shares,x.score,x.url||''])];const csv=rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');const b=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=real?'topkey-vlog-2026.csv':'topkey-vlog-2026-DU-LIEU-MAU.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)});
+window.TopkeyVlogImportGuard=()=>{
+ try{requireAdmin();return Boolean(auth?.currentUser)}catch{return false}
+};
+window.TopkeyVlogExistingEntries=()=>data.entries||{};
+window.TopkeyVlogImportCommit=async rows=>{
+ requireAdmin();
+ if(!auth?.currentUser)throw Error('Chưa đăng nhập Firebase.');
+ if(!Array.isArray(rows)||!rows.length||rows.length>1000)throw Error('Số lượng bài dự thi không hợp lệ.');
+ const uid=auth.currentUser.uid;
+ const entriesRef=db.ref(root+'/entries');
+ const currentSnap=await entriesRef.once('value'),current=currentSnap.val()||{};
+ requireAdmin();
+ if(auth.currentUser?.uid!==uid)throw Error('Tài khoản đã thay đổi, dừng ghi.');
+ const keyOf=e=>[e.name,e.type,e.dept].map(x=>String(x||'').trim().toLowerCase()).join('|');
+ const existingKeys=new Set(Object.values(current).map(keyOf));
+ const existingUrls=new Set(Object.values(current).map(e=>String(e.url||'').trim().toLowerCase()).filter(Boolean));
+ const updates={},keys=[];
+ for(const r of rows){
+  const item={name:String(r.name||'').trim().slice(0,100),type:String(r.type||''),dept:String(r.dept||'').trim().slice(0,100),
+   views:positiveInt(r.views),likes:positiveInt(r.likes),shares:positiveInt(r.shares),url:link(r.url||'')};
+  if(!item.name||!['Đội','Cá nhân'].includes(item.type))throw Error('Dòng nhập không hợp lệ.');
+  const nameKey=keyOf(item),urlKey=item.url.toLowerCase();
+  if(existingKeys.has(nameKey)||(urlKey&&existingUrls.has(urlKey)))throw Error('Bài dự thi đã tồn tại. Tải lại bảng và xem trước file trước khi nhập.');
+  existingKeys.add(nameKey);if(urlKey)existingUrls.add(urlKey);
+  const id=entriesRef.push().key;
+  if(!id)throw Error('Không tạo được ID bài dự thi mới.');
+  updates[id]=item;keys.push(id);
+ }
+ requireAdmin();if(auth.currentUser?.uid!==uid)throw Error('Tài khoản đã thay đổi.');
+ // Multi-location update: append only, never set() the entire entries subtree.
+ await entriesRef.update(updates);
+ const checked=await entriesRef.once('value'),after=checked.val()||{};
+ if(keys.some(id=>!after[id]||after[id].name!==updates[id].name))throw Error('Ghi xong nhưng xác minh Firebase chưa đầy đủ.');
+ remote.entries=after;apply(remote);
+ return keys.length;
+};
 const authStatus=message=>{$('admin-auth-status').textContent=message};
 function showAdminLogin(){const p=$('admin-login-panel');p.hidden=false;p.scrollIntoView({behavior:'smooth',block:'start'});if(!auth)authStatus('Firebase Authentication chưa tải được. Kiểm tra kết nối và tải lại trang.')}
 $('admin-sign-in').addEventListener('click',showAdminLogin);
@@ -434,4 +481,4 @@ try{
  });
 }catch(e){console.warn('TOPKEY Vlog boot',e);$('refresh-time').textContent='Không có kết nối Firebase · dữ liệu mẫu'}
 })();
-</script><footer aria-label="Pháp lý TOPKEY Vlog" style="padding:26px max(22px,calc((100% - 1120px)/2));border-top:1px solid #34425b;color:#b7c9da;font-size:14px;display:flex;gap:22px;flex-wrap:wrap"><a href="../../terms.html" style="color:#78e5e5">Điều khoản sử dụng</a><a href="../../privacy.html" style="color:#78e5e5">Chính sách quyền riêng tư</a><span>TOPKEY Vlog 2026 · Đồng bộ TikTok chỉ thực hiện khi được cấp quyền</span></footer><script src="./tiktok-automation.js?v=tikwm-retryfailed-once-20261115"></script><script src="./vlog-i18n.js?v=vi-en-zh-retryfailed-20261115" defer></script></body></html>
+</script><footer aria-label="Pháp lý TOPKEY Vlog" style="padding:26px max(22px,calc((100% - 1120px)/2));border-top:1px solid #34425b;color:#b7c9da;font-size:14px;display:flex;gap:22px;flex-wrap:wrap"><a href="../../terms.html" style="color:#78e5e5">Điều khoản sử dụng</a><a href="../../privacy.html" style="color:#78e5e5">Chính sách quyền riêng tư</a><span>TOPKEY Vlog 2026 · Đồng bộ TikTok chỉ thực hiện khi được cấp quyền</span></footer><script src="./tiktok-automation.js?v=tikwm-retryfailed-once-20261115"></script><script src="./vlog-i18n.js?v=vi-en-zh-retryfailed-20261115" defer></script><script src="./vlog-csv-import.js?v=20261115-import1" defer></script></body></html>
