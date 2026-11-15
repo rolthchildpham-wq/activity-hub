@@ -83,7 +83,7 @@ try{
  for(const key of ['weights','entries'])db.ref(root+'/'+key).on('value',s=>{remote[key]=s.val();apply(remote)},e=>{console.warn('Vlog data read',key,e);$('refresh-time').textContent='Không tải được dữ liệu Firebase · chỉ hiển thị mẫu'});
  auth=firebase.auth();
  auth.onAuthStateChanged(async user=>{
- isAdmin=false;$('admin-toggle').hidden=true;$('admin-sign-in').hidden=false;$('admin-sign-out').hidden=true;$('editor').hidden=true;render();
+ isAdmin=false;$('admin-toggle').hidden=true;$('tiktok-sync-all-links').hidden=true;$('tiktok-sync-status').hidden=true;$('admin-sign-in').hidden=false;$('admin-sign-out').hidden=true;$('editor').hidden=true;render();
  if(!user){authStatus('Chưa đăng nhập. Viewer tiếp tục xem được bảng xếp hạng.');return}
  authStatus('Đã xác thực Firebase. Đang kiểm tra quyền ADMIN…');
  try{const s=await db.ref('topkey_badminton_vnext_2026/users/'+user.uid).once('value');if(auth.currentUser?.uid!==user.uid)return;const p=s.val()||{};
