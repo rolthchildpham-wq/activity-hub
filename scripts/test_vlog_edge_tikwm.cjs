@@ -14,7 +14,7 @@ async function run(){
   method,headers:{'Content-Type':'application/json',...bearer?{'Authorization':'Bearer '+bearer}:{}},
   ...(method==='POST'?{body:JSON.stringify({url})}:{})
  });
- async function test(t,handlerFetch){global.fetch=handlerFetch;const r=await handler(t);return {status:r.status,body:await r.json(),headers:r.headers}}
+ async function test(t,handlerFetch){global.fetch=handlerFetch;const r=await handler({request:t});return {status:r.status,body:await r.json(),headers:r.headers}}
  let calls=[],profile={role:'ADMIN',active:true},tikwm={code:0,data:{id:'7707908008235355412',play_count:1469,digg_count:155,share_count:13,comment_count:0}};
  const goodFetch=async (url,options)=>{
   calls.push({url:String(url),method:options?.method||'GET'});
