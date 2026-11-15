@@ -86,7 +86,7 @@ function showTestMode(raw){
 }
 function leaveTestMode(){
  testMode=false;window.__TOPKEY_VLOG_TEST_MODE=false;
- if(testListener){testListener.off();testListener=null;}
+ if(testRef&&testListener)testRef.off('value',testListener);testRef=null;testListener=null;
  $('tiktok-sync-all-links').textContent='⟳ Quét tất cả link TikTok thí sinh & cập nhật số liệu';
  apply(remote);
 }
@@ -95,15 +95,15 @@ function sampleStatusText(t){if(sampleStatus)sampleStatus.textContent=t;}
 sampleLoadBtn.addEventListener('click',async()=>{
  if(sampleLoadBtn.disabled)return;
  try{
-  requireAdmin();
+  if(!isAdmin||!db)throw Error('Chưa xác minh quyền quản trị Vlog.');
   if(!confirm('Nạp bộ dữ liệu mẫu mới? Chỉ thay thế nhánh topkey_vlog2026_test, không đụng dữ liệu cuộc thi thật.'))return;
   sampleLoadBtn.disabled=true;sampleDeleteBtn.disabled=true;
   const token=await auth.currentUser.getIdToken(true),seen=new Set(),items=[];
-  const queries=[{kind:'trend',keyword:''},{kind:'search',keyword:'#xuhuong'},{kind:'search',keyword:'#viral'},{kind:'search',keyword:'#fyp'},{kind:'search',keyword:'trend Việt Nam'},{kind:'search',keyword:'TikTok Việt Nam'},{kind:'search',keyword:'#trending'},{kind:'search',keyword:'#tiktoktrend'}];
+  const queries=[{kind:'trend',keyword:''},{kind:'search',keyword:'#xuhuong'},{kind:'search',keyword:'#viral'},{kind:'search',keyword:'#fyp'},{kind:'search',keyword:'trend Việt Nam'},{kind:'search',keyword:'TikTok Việt Nam'},{kind:'search',keyword:'#trending'},{kind:'search',keyword:'#tiktoktrend'},{kind:'search',keyword:'#xuhuongtiktok'},{kind:'search',keyword:'#viralvideo'}];
   let apiCalls=0;
   for(const query of queries){
    let cursor='0',cursorSeen=new Set(),pageNo=0;
-   while(items.length<1000&&pageNo<25){
+   while(items.length<1000&&pageNo<10){
     if(cursorSeen.has(String(cursor)))break;cursorSeen.add(String(cursor));
     sampleStatusText('Đang cào nguồn '+query.keyword+' · trang '+(pageNo+1)+' · đã thu '+items.length+'/1.000 link...');
     const url='/api/tiktok-sample-links';
@@ -120,7 +120,7 @@ sampleLoadBtn.addEventListener('click',async()=>{
     }
     const next=payload.nextCursor;
     if(next===null||next===undefined||String(next)===''||String(next)===String(cursor)||!(payload.hasMore===true))break;
-    cursor=String(next);pageNo++;
+    cursor=String(next);pageNo++;await new Promise(resolve=>setTimeout(resolve,1100));
    }
    if(items.length>=1000)break;
   }
@@ -138,8 +138,8 @@ sampleLoadBtn.addEventListener('click',async()=>{
    sampleStatusText('Đã lưu '+Math.min(i+100,pairs.length)+'/'+pairs.length+' link vào nhánh TEST riêng...');
   }
   await db.ref(testRoot+'/meta').set({source:'TikWM public TikTok VN trend/search',createdAt:now,requested:1000,loaded:pairs.length,apiCalls,region:'VN'});
-  if(testListener)testListener.off();
-  testListener=db.ref(testRoot+'/entries').on('value',snap=>showTestMode({entries:snap.val()}));
+  if(testRef&&testListener)testRef.off('value',testListener);
+  testRef=db.ref(testRoot+'/entries');testListener=snap=>showTestMode({entries:snap.val()});testRef.on('value',testListener);
   window.__TOPKEY_VLOG_TEST_MODE=true;
   sampleStatusText('Đã nạp '+pairs.length+'/1.000 link duy nhất vào TEST LAB. '+(pairs.length<1000?'Nguồn hiện chỉ trả về '+pairs.length+' link; không tự tạo link giả. ':'')+'Bấm “Quét link mẫu bằng Reader V2” để thử đọc số liệu. Production không bị thay đổi.');
  }catch(e){sampleStatusText('Không nạp được dữ liệu mẫu: '+String(e?.message||e));}
@@ -148,7 +148,7 @@ sampleLoadBtn.addEventListener('click',async()=>{
 sampleDeleteBtn.addEventListener('click',async()=>{
  if(sampleDeleteBtn.disabled)return;
  try{
-  requireAdmin();
+  if(!isAdmin||!db)throw Error('Chưa xác minh quyền quản trị Vlog.');
   if(!confirm('Xóa toàn bộ topkey_vlog2026_test? Dữ liệu production topkey_vlog2026 sẽ được giữ nguyên.'))return;
   sampleDeleteBtn.disabled=true;sampleLoadBtn.disabled=true;
   await db.ref(testRoot).remove();
@@ -184,4 +184,4 @@ try{
  });
 }catch(e){console.warn('TOPKEY Vlog boot',e);$('refresh-time').textContent='Không có kết nối Firebase · dữ liệu mẫu'}
 })();
-</script><footer aria-label="Pháp lý TOPKEY Vlog" style="padding:26px max(22px,calc((100% - 1120px)/2));border-top:1px solid #34425b;color:#b7c9da;font-size:14px;display:flex;gap:22px;flex-wrap:wrap"><a href="../../terms.html" style="color:#78e5e5">Điều khoản sử dụng</a><a href="../../privacy.html" style="color:#78e5e5">Chính sách quyền riêng tư</a><span>TOPKEY Vlog 2026 · Đồng bộ TikTok chỉ thực hiện khi được cấp quyền</span></footer><script src="./tiktok-automation.js?v=testlab-1000-vn-isolated-20261115"></script></body></html>
+</script><footer aria-label="Pháp lý TOPKEY Vlog" style="padding:26px max(22px,calc((100% - 1120px)/2));border-top:1px solid #34425b;color:#b7c9da;font-size:14px;display:flex;gap:22px;flex-wrap:wrap"><a href="../../terms.html" style="color:#78e5e5">Điều khoản sử dụng</a><a href="../../privacy.html" style="color:#78e5e5">Chính sách quyền riêng tư</a><span>TOPKEY Vlog 2026 · Đồng bộ TikTok chỉ thực hiện khi được cấp quyền</span></footer><script src="./tiktok-automation.js?v=testlab-1000-vn-isolated-20261115b"></script></body></html>
