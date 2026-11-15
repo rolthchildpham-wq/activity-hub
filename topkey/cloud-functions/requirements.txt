@@ -1,2 +1,4 @@
-yt-dlp>=2026.10
-firebase-admin>=6.5,<8
+yt-dlp>=2026.10,<2027
+google-auth>=2.30,<3
+requests>=2.31,<3
+CacheControl>=0.14,<1

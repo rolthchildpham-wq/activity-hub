@@ -4,11 +4,16 @@ No service-account key, no server-side RTDB write. The signed-in browser
 writes through existing Firebase Realtime Database Rules after approval.
 """
 from http.server import BaseHTTPRequestHandler
+import base64
 import json
 import re
+import time
 from urllib.parse import urlparse
 
+import cachecontrol
+import requests
 import google.auth.transport.requests
+from google.auth.exceptions import TransportError
 from google.oauth2 import id_token
 import yt_dlp
 
@@ -18,23 +23,50 @@ VIDEO = re.compile(r"^/(?:@[^/]+/video/|share/video/)[0-9]{15,22}/?$")
 SHORT = re.compile(r"^/[A-Za-z0-9_-]+/?$")
 # Google-signed Firebase JWTs can be verified without service-account credentials.
 # Cloud Functions may lack ADC; Admin SDK token checks can hang probing metadata.
-GOOGLE_HTTP = google.auth.transport.requests.Request()
+# Honor Google's Cache-Control/max-age for Firebase signing certificates.
+# A reused warm function can verify many requests without repeated Google calls.
+CERT_HTTP_SESSION = cachecontrol.CacheControl(requests.Session())
+GOOGLE_HTTP = google.auth.transport.requests.Request(session=CERT_HTTP_SESSION)
 
 
 def verify_user_token(token):
+    # Unverified claims here are used only to *reject* obviously invalid tokens.
+    # All accepted tokens must still pass Google's RS256 signature check below.
     if not isinstance(token, str) or token.count(".") != 2 or len(token) > 11000:
         raise ValueError("Malformed Firebase ID token")
 
+    try:
+        head, body, _ = token.split(".")
+        def decode_part(part):
+            raw = base64.urlsafe_b64decode(part + "=" * (-len(part) % 4))
+            return json.loads(raw)
+        header, claims = decode_part(head), decode_part(body)
+        now = time.time()
+        if (header.get("alg") != "RS256" or
+            not isinstance(header.get("kid"), str) or
+            not 0 < len(header["kid"]) <= 256 or
+            claims.get("aud") != PROJECT_ID or
+            claims.get("iss") != "https://securetoken.google.com/" + PROJECT_ID or
+            not isinstance(claims.get("sub"), str) or
+            not claims["sub"] or len(claims["sub"]) > 128 or
+            type(claims.get("iat")) is not int or
+            type(claims.get("exp")) is not int or
+            claims["iat"] > now + 60 or claims["exp"] <= now - 60):
+            raise ValueError("Firebase token claims invalid")
+    except (ValueError, KeyError, TypeError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise ValueError("Malformed or expired Firebase ID token") from exc
+
     def request_with_timeout(**params):
-        params["timeout"] = 6
+        params["timeout"] = 4
         return GOOGLE_HTTP(**params)
 
-    claims = id_token.verify_firebase_token(token, request_with_timeout,
-                                            audience=PROJECT_ID)
-    if not claims or not claims.get("sub") or not claims.get("user_id"):
-        raise ValueError("Invalid Firebase token claims")
-    return claims
-
+    # This may fail due to EdgeOne-to-Google network connectivity.
+    # TransportError is NOT a bad user token and must not be called a 401.
+    verified = id_token.verify_firebase_token(token, request_with_timeout,
+                                               audience=PROJECT_ID)
+    if not verified or verified.get("sub") != claims["sub"]:
+        raise ValueError("Firebase token identity invalid")
+    return verified
 
 
 def validate_url(value):
@@ -91,8 +123,13 @@ class handler(BaseHTTPRequestHandler):
             return
         try:
             claims = verify_user_token(token[7:])
+        except TransportError:
+            self.respond(503, {"ok": False, "code": "FIREBASE_CERTS_UNAVAILABLE",
+                               "message": "Google token verification temporarily unavailable"})
+            return
         except Exception:
-            self.respond(401, {"ok": False, "message": "Invalid Firebase ID token"})
+            self.respond(401, {"ok": False, "code": "INVALID_FIREBASE_TOKEN",
+                               "message": "Invalid Firebase ID token"})
             return
         try:
             length = int(self.headers.get("Content-Length", "0"))
