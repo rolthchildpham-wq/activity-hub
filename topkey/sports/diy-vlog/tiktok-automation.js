@@ -117,7 +117,7 @@ async function runEdgeOneBatch(){
  const offset=saved.fingerprint===fingerprint&&Number.isInteger(saved.offset)&&saved.offset>=0&&saved.offset<entries.length?saved.offset:0;
  const batch=entries.slice(offset,offset+25);
  const desired=Number($("tiktok-scan-concurrency")?.value||10);
- const concurrency=desired===25?25:10;
+ const concurrency=desired===25?25:desired===10?10:3;
  let cursor=0,done=0,updated=0,partial=0,errors=0,stop=false;
  const details=[],completed=new Set(),retry=new Set();
  const fatal=e=>{
