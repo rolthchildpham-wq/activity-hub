@@ -14,6 +14,7 @@ from datetime import datetime, timezone
 import firebase_admin
 from firebase_admin import auth, credentials, db
 from fastapi import FastAPI, HTTPException, Header
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 import worker
@@ -28,6 +29,13 @@ if not DATABASE_URL:
 if not firebase_admin._apps:
     firebase_admin.initialize_app(credentials.ApplicationDefault(), {"databaseURL": DATABASE_URL})
 app = FastAPI(title="TOPKEY TikTok authenticated stats", docs_url=None, redoc_url=None)
+# Only the deployed TOPKEY origin may issue browser requests.
+ALLOWED_ORIGIN = os.environ.get("TOPKEY_VLOG_ORIGIN", "https://topkey-activity-management.edgeone.dev")
+if not ALLOWED_ORIGIN.startswith("https://") or "/" in ALLOWED_ORIGIN[8:]:
+    raise RuntimeError("TOPKEY_VLOG_ORIGIN must be a single HTTPS origin")
+app.add_middleware(CORSMiddleware, allow_origins=[ALLOWED_ORIGIN],
+                   allow_credentials=False, allow_methods=["GET", "POST"],
+                   allow_headers=["Authorization", "Content-Type"])
 ID_RE = re.compile(r"^[A-Za-z0-9_-]{1,100}$")
 
 
