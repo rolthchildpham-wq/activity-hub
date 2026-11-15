@@ -141,13 +141,35 @@ header .nav .on{padding:7px 11px}
 .vlog-scan-errors .vlog-retry-failed:hover:not(:disabled){background:#a6434b}
 .vlog-scan-errors .vlog-retry-failed:disabled{opacity:.5;cursor:not-allowed}
 @media(max-width:760px){.vlog-scan-errors .vlog-retry-failed{width:100%;justify-content:center;font-size:11px}}
+
+/* Compact responsive hero: title left, formula + refresh/export at the right. */
+.hero .container.hero-flex{display:grid;grid-template-columns:minmax(0,1fr) minmax(350px,.93fr);column-gap:clamp(16px,2.2vw,36px);align-items:center;min-width:0}
+.hero-main,.hero-side{min-width:0}
+.hero-main h1{margin:7px 0;line-height:1.13}
+.hero-side{display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:9px;text-align:right}
+.hero .hero-side #formula{max-width:610px;margin:0;font-size:clamp(11px,.95vw,13px);line-height:1.5}
+.hero .hero-side .status{justify-content:flex-end;margin:0;gap:8px 10px}
+.hero .hero-side #refresh-time{min-width:0;overflow-wrap:anywhere}
+@media(max-width:920px){
+ .hero .container.hero-flex{grid-template-columns:1fr;row-gap:10px}
+ .hero-side{align-items:flex-start;text-align:left;gap:8px}
+ .hero .hero-side #formula{max-width:100%}
+ .hero .hero-side .status{justify-content:flex-start;gap:8px}
+}
+@media(max-width:520px){
+ .hero .container.hero-flex{row-gap:8px}
+ .hero-main h1{margin:5px 0}
+ .hero .hero-side .status{gap:7px}
+ .hero .hero-side .status .small{padding:8px 10px}
+ .hero .hero-side #refresh-time{flex-basis:100%}
+}
 </style></head><body>
 <header><div class="bar"><a class="brand" href="../../index.html"><span class="logo">TK</span><span><strong>TOPKEY VIETNAM</strong><small>VLOG 2026</small></span></a><nav class="nav"><a class="on" href="#ranking">♜ Bảng xếp hạng</a><a href="../vnext/index.html?sport=handmade">DIY Hub</a><button id="admin-toggle" type="button" hidden>⚙ Quản trị</button><button id="admin-sign-in" type="button">🔐 Đăng nhập Admin</button><button id="admin-sign-out" type="button" hidden>Đăng xuất Admin</button><div id="vlog-language-picker" class="vlog-language-picker" role="group" aria-label="Ngôn ngữ / Language / 语言" data-vlog-no-i18n>
 <button type="button" data-lang="vi" title="Tiếng Việt" aria-pressed="true">🇻🇳 VI</button>
 <button type="button" data-lang="en" title="English" aria-pressed="false">🇬🇧 EN</button>
 <button type="button" data-lang="zh" title="简体中文" aria-pressed="false">🇨🇳 中</button>
 </div></nav></div></header>
-<div class="hero"><div class="container"><div class="kicker">TOPKEY Vietnam · Cuộc thi Vlog 2026</div><h1>Bảng xếp hạng <span>Vlog TikTok</span></h1><p id="formula">Điểm = 1 × lượt xem + 3 × lượt thích + 5 × lượt chia sẻ. Bảng tự động tính lại mỗi khi số liệu hoặc hệ số thay đổi.</p><div class="status"><span id="refresh-time">Đang tải dữ liệu…</span><button class="small" id="refresh">↻ Làm mới</button><button class="small" id="export">↓ Xuất CSV</button></div></div></div>
+<div class="hero"><div class="container hero-flex"><div class="hero-main"><div class="kicker">TOPKEY Vietnam · Cuộc thi Vlog 2026</div><h1>Bảng xếp hạng <span>Vlog TikTok</span></h1></div><div class="hero-side"><p id="formula">Điểm = 1 × lượt xem + 3 × lượt thích + 5 × lượt chia sẻ. Bảng tự động tính lại mỗi khi số liệu hoặc hệ số thay đổi.</p><div class="status"><span id="refresh-time">Đang tải dữ liệu…</span><button class="small" id="refresh">↻ Làm mới</button><button class="small" id="export">↓ Xuất CSV</button></div></div></div></div>
 <main class="container content"><div class="warning" id="warning"><strong>⚠ DỮ LIỆU MẪU:</strong> Bảng đang hiển thị các mục giả lập để xem thử, được gắn nhãn riêng. Đây không phải số liệu thật của thí sinh.</div>
 <section class="edit-panel" id="admin-login-panel" hidden>
 <div class="kicker">TOPKEY VIETNAM · XÁC THỰC QUẢN TRỊ</div><h2>Đăng nhập Admin</h2>
