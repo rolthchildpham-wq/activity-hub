@@ -1,0 +1,40 @@
+/* Vlog UI-only i18n. Uses the same language preference as TOPKEY Hub. */
+(()=>{'use strict';
+ if(window.TopkeyVlogI18n?.installed)return;
+ const KEY='topkey_ui_language_v1';
+ const DICT={"♜ Bảng xếp hạng":["♜ Leaderboard","♜ 排行榜"],"⚙ Quản trị":["⚙ Admin","⚙ 管理"],"🔐 Đăng nhập Admin":["🔐 Admin sign-in","🔐 管理员登录"],"Đăng xuất Admin":["Admin sign-out","管理员退出"],"Bảng xếp hạng":["Leaderboard","排行榜"],"Vlog TikTok":["TikTok Vlog","TikTok 短视频"],"TOPKEY Vietnam · Cuộc thi Vlog 2026":["TOPKEY Vietnam · Vlog Contest 2026","TOPKEY 越南 · 2026 Vlog 比赛"],"Đang tải dữ liệu…":["Loading data…","正在加载数据…"],"↻ Làm mới":["↻ Refresh","↻ 刷新"],"↓ Xuất CSV":["↓ Export CSV","↓ 导出 CSV"],"BỤC VINH QUANG":["PODIUM","领奖台"],"Top 3 dẫn đầu":["Top 3 leaders","前三名"],"DANH SÁCH THÍ SINH":["CONTESTANTS","参赛名单"],"Bảng xếp hạng chi tiết":["Detailed leaderboard","详细排行榜"],"Tìm theo tên đội / cá nhân":["Search team / individual","搜索团队 / 个人"],"Bài dự thi":["Entries","参赛作品"],"Tổng lượt xem":["Total views","总播放量"],"Tổng lượt thích":["Total likes","总点赞"],"Tổng lượt chia sẻ":["Total shares","总分享"],"Tổng điểm":["Total score","总分"],"Dữ liệu kiểm thử riêng":["Separate test data","独立测试数据"],"Dữ liệu cuộc thi":["Contest data","比赛数据"],"Số liệu giả lập":["Simulated data","模拟数据"],"Chưa có thí sinh":["No contestants yet","暂无参赛者"],"Chưa có bài dự thi":["No entries yet","暂无参赛作品"],"Chưa có video":["No video yet","暂无视频"],"HẠNG":["RANK","排名"],"THÍ SINH":["CONTESTANT","参赛者"],"LƯỢT XEM":["VIEWS","播放量"],"LƯỢT THÍCH":["LIKES","点赞"],"CHIA SẺ":["SHARES","分享"],"ĐIỂM":["SCORE","得分"],"Điểm":["Score","得分"],"điểm":["points","分"],"xem":["views","播放"],"thích":["likes","点赞"],"chia sẻ":["shares","分享"],"Xem video ↗":["View video ↗","查看视频 ↗"],"Sửa":["Edit","编辑"],"Đội":["Team","团队"],"Cá nhân":["Individual","个人"],"Email":["Email","电子邮箱"],"Mật khẩu":["Password","密码"],"Đăng nhập Admin":["Admin sign-in","管理员登录"],"Đăng nhập an toàn":["Sign in securely","安全登录"],"Đóng":["Close","关闭"],"Tên thí sinh / đội":["Contestant / team name","参赛者 / 团队名称"],"Bộ phận":["Department","部门"],"Link TikTok":["TikTok link","TikTok 链接"],"Lưu bài dự thi":["Save entry","保存参赛作品"],"Xóa bài dự thi":["Delete entry","删除参赛作品"],"Lưu hệ số":["Save weights","保存权重"],"Luồng đồng thời":["Concurrent workers","并发任务数"],"3 luồng (an toàn)":["3 workers (safe)","3 并发（安全）"],"10 luồng (nhanh)":["10 workers (fast)","10 并发（快速）"],"25 luồng (nhanh)":["25 workers (fast)","25 并发（快速）"],"TEST LAB · TÁCH BIỆT PRODUCTION":["TEST LAB · SEPARATE FROM PRODUCTION","测试实验室 · 与正式环境隔离"],"Bộ 1.000 URL TikTok công khai":["1,000 public TikTok URLs","1,000 个公开 TikTok 链接"],"⬇ Nạp 1.000 URL video mẫu":["⬇ Load 1,000 sample URLs","⬇ 导入 1,000 个样例链接"],"✕ Xóa toàn bộ dữ liệu mẫu":["✕ Delete sample data","✕ 删除测试数据"],"Chưa nạp dữ liệu mẫu.":["No sample data loaded.","尚未导入测试数据。"],"🔗 Tạo link Viewer":["🔗 Create viewer link","🔗 创建观众链接"],"Thu hồi link đang chọn":["Revoke selected link","撤销所选链接"],"Sao chép link":["Copy link","复制链接"],"Điều khoản sử dụng":["Terms of use","使用条款"],"Chính sách quyền riêng tư":["Privacy policy","隐私政策"],"Đã xác minh quyền quản trị Vlog.":["Vlog admin access verified.","已验证 Vlog 管理权限。"],"Chưa đăng nhập. Viewer tiếp tục xem được bảng xếp hạng.":["Not signed in. Public leaderboard remains visible.","尚未登录，仍可查看公开排行榜。"],"Đã xác thực Firebase. Đang kiểm tra quyền ADMIN…":["Firebase authenticated. Checking admin access…","Firebase 已验证，正在检查管理员权限…"],"Dữ liệu mẫu":["Sample data","示例数据"],"DỮ LIỆU MẪU":["SAMPLE DATA","示例数据"],"TEST":["TEST","测试"],"QUẢN TRỊ VLOG":["VLOG ADMIN","VLOG 管理"],"⚠ CHẾ ĐỘ KIỂM THỬ:":["⚠ TEST MODE:","⚠ 测试模式："],"⚠ DỮ LIỆU MẪU:":["⚠ SAMPLE DATA:","⚠ 示例数据："],"Bảng đang hiển thị các mục giả lập để xem thử, được gắn nhãn riêng. Đây không phải số liệu thật của thí sinh.":["Showing labeled demo entries, not real contestant statistics.","当前显示演示条目，并非参赛者的真实数据。"],"Đang xem dữ liệu TikTok mẫu trong nhánh riêng. Không thay đổi BXH production.":["Viewing separate TikTok test data; the production leaderboard is unchanged.","正在查看独立的 TikTok 测试数据，正式排行榜不变。"],"TOPKEY Vlog 2026 · Đồng bộ TikTok chỉ thực hiện khi được cấp quyền":["TOPKEY Vlog 2026 · TikTok sync requires authorization","TOPKEY Vlog 2026 · TikTok 同步需要授权"],"Chỉ ADMIN/BTC DIY được đồng bộ số liệu.":["Only ADMIN / DIY organizers may sync metrics.","仅管理员 / DIY 组织者可以同步指标。"],"Điểm = 1 × lượt xem + 3 × lượt thích + 5 × lượt chia sẻ. Bảng tự động tính lại mỗi khi số liệu hoặc hệ số thay đổi.":["Score = 1 × views + 3 × likes + 5 × shares. Rankings recalculate when metrics or weights change.","得分 = 1 × 播放量 + 3 × 点赞 + 5 × 分享。指标或权重改变时自动重新排名。"]};
+ const state=new WeakMap(),attrs=new WeakMap();
+ const norm=s=>String(s||'vi').startsWith('zh')?'zh':String(s||'vi').startsWith('en')?'en':'vi';
+ let current=(()=>{try{return norm(localStorage.getItem(KEY))}catch{return 'vi'}})(),lock=false,pending=false;
+ function translate(text,lang=current){
+  const s=String(text||''),record=DICT[s];
+  if(lang==='vi')return s;
+  if(record)return record[lang==='en'?0:1];
+  let m=s.match(/^(\\d[\\d.,]*) xem · (\\d[\\d.,]*) thích · (\\d[\\d.,]*) chia sẻ$/);
+  if(m)return lang==='en'?m[1]+' views · '+m[2]+' likes · '+m[3]+' shares':m[1]+' 播放 · '+m[2]+' 点赞 · '+m[3]+' 分享';
+  m=s.match(/^Điểm = (\\d[\\d.,]*) × lượt xem \\+ (\\d[\\d.,]*) × lượt thích \\+ (\\d[\\d.,]*) × lượt chia sẻ/);
+  if(m)return lang==='en'?'Score = '+m[1]+' × views + '+m[2]+' × likes + '+m[3]+' × shares':'得分 = '+m[1]+' × 播放量 + '+m[2]+' × 点赞 + '+m[3]+' × 分享';
+  return s;
+ }
+ function skip(el){return !el||!!el.closest('script,style,textarea,pre,code,select,[contenteditable="true"],[data-vlog-no-i18n],#vlog-language-picker')}
+ function textNode(n){if(skip(n.parentElement))return;const raw=n.nodeValue||'';if(!raw.trim())return;
+  let rec=state.get(n);if(!rec){rec={original:raw.trim(),last:null,pre:raw.match(/^\\s*/)?.[0]||'',post:raw.match(/\\s*$/)?.[0]||''};state.set(n,rec)}
+  else if(raw!==rec.last&&raw.trim()!==rec.original){rec.original=raw.trim();rec.pre=raw.match(/^\\s*/)?.[0]||'';rec.post=raw.match(/\\s*$/)?.[0]||''}
+  const next=rec.pre+translate(rec.original)+rec.post;if(raw!==next)n.nodeValue=next;rec.last=next;
+ }
+ function attributes(el){if(skip(el))return;let rec=attrs.get(el);if(!rec){rec={};attrs.set(el,rec)}for(const a of ['placeholder','title','aria-label']){
+  if(!el.hasAttribute(a))continue;const val=el.getAttribute(a),prev=rec[a],origin=prev&&prev.last===val?prev.original:val,next=translate(origin);
+  if(next!==val)el.setAttribute(a,next);rec[a]={original:origin,last:next};
+ }}
+ function refresh(){if(lock||!document.body)return;lock=true;try{const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT|NodeFilter.SHOW_ELEMENT);let n;while((n=walker.nextNode())){if(n.nodeType===3)textNode(n);else if(n.nodeType===1)attributes(n)}}finally{lock=false}}
+ function setLanguage(lang,save=true){current=norm(lang);if(save)try{localStorage.setItem(KEY,current)}catch{}document.documentElement.lang=current==='zh'?'zh-CN':current;
+  document.querySelectorAll('#vlog-language-picker [data-lang]').forEach(b=>{const active=b.dataset.lang===current;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))});
+  refresh();window.dispatchEvent(new CustomEvent('topkey:languagechange',{detail:{language:current}}));return current;
+ }
+ function init(){const picker=document.getElementById('vlog-language-picker');if(!picker)return;picker.querySelectorAll('[data-lang]').forEach(b=>b.addEventListener('click',()=>setLanguage(b.dataset.lang)));
+  setLanguage(current,false);new MutationObserver(()=>{if(lock||pending)return;pending=true;setTimeout(()=>{pending=false;refresh()},50)}).observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['placeholder','title','aria-label']});
+  window.addEventListener('storage',e=>{if(e.key===KEY)setLanguage(e.newValue,false)});
+ }
+ window.TopkeyVlogI18n={installed:true,setLanguage,get language(){return current},translate,refresh};
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
