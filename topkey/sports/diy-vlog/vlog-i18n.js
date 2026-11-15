@@ -30,6 +30,15 @@
  'Dữ liệu kiểm thử riêng':['Separate test data','独立测试数据']
  };
  Object.assign(DICT,EXTRA);
+ DICT['Ổn định (5 luồng thực tế)']=['Stable (5 actual workers)','稳定（实际 5 并发）'];
+ DICT['Tăng tốc (5 luồng, giãn 300ms)']=['Faster (5 workers, 300 ms spacing)','加速（5 并发，间隔 300 毫秒）'];
+ DICT['MẪU']=['SAMPLE','示例'];
+ DICT['LINK VIEWER RIÊNG:']=['PRIVATE VIEWER LINK:','专用观众链接：'];
+ DICT['Không đọc được']=['Unreadable','无法读取'];
+ DICT['Bản xem chỉ đọc']=['Read-only view','只读视图'];
+ DICT['Tạo lúc']=['Created at','创建于'];
+ DICT['LINK VIEWER']=['VIEWER LINK','观众链接'];
+
  const state=new WeakMap(),attrs=new WeakMap();
 
  // Built-in on-device translation for arbitrary video titles and free-text UI.
