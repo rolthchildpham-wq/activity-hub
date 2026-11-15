@@ -123,7 +123,7 @@ function showTestMode(raw){
  testMode=true;window.__TOPKEY_VLOG_TEST_MODE=true;
  data={weights:{views:Number(weights.views)||1,likes:Number(weights.likes)||3,shares:Number(weights.shares)||5},entries:Object.fromEntries(Object.entries(entries).filter(([id,e])=>e&&typeof e==='object').map(([id,e])=>[id,{...e,id}]))};
  real=true;$('editor').hidden=true;
- $('tiktok-sync-all-links').textContent='⟳ Quét link mẫu bằng Reader V2 (không ghi production)';
+ $('tiktok-sync-all-links').textContent='⟳ Quét link mẫu bằng yt-dlp (không ghi production)';
  render();
 }
 function leaveTestMode(){
@@ -134,7 +134,7 @@ function leaveTestMode(){
 }
 const sampleLoadBtn=$('tiktok-load-samples'),sampleDeleteBtn=$('tiktok-delete-samples'),sampleStatus=$('tiktok-test-status');
 function sampleStatusText(t){if(sampleStatus)sampleStatus.textContent=t;}
-function sampleReaderJsonp(params,timeoutMs=30000){return new Promise((resolve,reject)=>{const callback="__topkeySample_"+Date.now()+"_"+Math.random().toString(36).slice(2);const script=document.createElement("script");let done=false;const finish=(err,data)=>{if(done)return;done=true;clearTimeout(timer);delete window[callback];script.remove();err?reject(err):resolve(data)};window[callback]=data=>finish(null,data);script.onerror=()=>finish(Error("Không tải được Reader V2 JSONP. Kiểm tra kết nối mạng hoặc dịch vụ."));const query=new URLSearchParams({...params,callback});script.src="https://topkey-tiktok-stats-reader-s90l8b.v2.appdeploy.ai/api/sample-links-jsonp?"+query.toString();const timer=setTimeout(()=>finish(Error("Reader V2 quá thời gian 30 giây.")),timeoutMs);document.head.appendChild(script);});}
+function sampleReaderJsonp(params,timeoutMs=30000){return new Promise((resolve,reject)=>{const callback="__topkeySample_"+Date.now()+"_"+Math.random().toString(36).slice(2);const script=document.createElement("script");let done=false;const finish=(err,data)=>{if(done)return;done=true;clearTimeout(timer);delete window[callback];script.remove();err?reject(err):resolve(data)};window[callback]=data=>finish(null,data);script.onerror=()=>finish(Error("Nguồn cung cấp link mẫu cũ không khả dụng; API yt-dlp chỉ đọc metadata từ URL video đã có."));const query=new URLSearchParams({...params,callback});script.src="https://topkey-tiktok-stats-reader-s90l8b.v2.appdeploy.ai/api/sample-links-jsonp?"+query.toString();const timer=setTimeout(()=>finish(Error("Nguồn link mẫu quá thời gian 30 giây.")),timeoutMs);document.head.appendChild(script);});}
 sampleLoadBtn.addEventListener('click',async()=>{
  if(sampleLoadBtn.disabled)return;
  try{
@@ -149,9 +149,9 @@ sampleLoadBtn.addEventListener('click',async()=>{
    let cursor='0',cursorSeen=new Set(),pageNo=0;
    while(items.length<1000&&pageNo<10){
     if(cursorSeen.has(String(cursor)))break;cursorSeen.add(String(cursor));
-    sampleStatusText('Đang quét Reader V2 '+(query.keyword||'xu hướng Việt Nam')+' · trang '+(pageNo+1)+' · đã thu '+items.length+'/1.000 link...');
+    sampleStatusText('Đang tìm link mẫu '+(query.keyword||'xu hướng Việt Nam')+' · trang '+(pageNo+1)+' · đã thu '+items.length+'/1.000 link...');
     const payload=await sampleReaderJsonp({keyword:query.keyword||'xu hướng Việt Nam',cursor:String(cursor)});
-    if(!payload?.ok)throw Error(payload?.message||'Reader V2 không trả dữ liệu link mẫu.');
+    if(!payload?.ok)throw Error(payload?.message||'Nguồn link mẫu cũ chưa khả dụng. Hãy thêm URL TikTok mẫu hợp lệ.');
     apiCalls++;
     for(const item of payload.items||[]){
      const id=String(item.id||'').replace(/[^a-zA-Z0-9_-]/g,'');
@@ -184,7 +184,7 @@ sampleLoadBtn.addEventListener('click',async()=>{
   if(testRef&&testListener)testRef.off('value',testListener);
   testRef=db.ref(testRoot+'/entries');testListener=snap=>showTestMode({entries:snap.val()});testRef.on('value',testListener);
   window.__TOPKEY_VLOG_TEST_MODE=true;
-  sampleStatusText('Đã nạp '+pairs.length+'/1.000 link duy nhất vào TEST LAB. '+(pairs.length<1000?'Nguồn hiện chỉ trả về '+pairs.length+' link; không tự tạo link giả. ':'')+'Bấm “Quét link mẫu bằng Reader V2” để thử đọc số liệu. Production không bị thay đổi.');
+  sampleStatusText('Đã nạp '+pairs.length+'/1.000 link duy nhất vào TEST LAB. '+(pairs.length<1000?'Nguồn hiện chỉ trả về '+pairs.length+' link; không tự tạo link giả. ':'')+'Bấm “Quét link mẫu bằng yt-dlp” để thử đọc số liệu. Production không bị thay đổi.');
  }catch(e){
   const code=String(e?.code||'').toUpperCase();
   const message=code.includes('PERMISSION')||code.includes('DENIED')
@@ -234,4 +234,4 @@ try{
  });
 }catch(e){console.warn('TOPKEY Vlog boot',e);$('refresh-time').textContent='Không có kết nối Firebase · dữ liệu mẫu'}
 })();
-</script><footer aria-label="Pháp lý TOPKEY Vlog" style="padding:26px max(22px,calc((100% - 1120px)/2));border-top:1px solid #34425b;color:#b7c9da;font-size:14px;display:flex;gap:22px;flex-wrap:wrap"><a href="../../terms.html" style="color:#78e5e5">Điều khoản sử dụng</a><a href="../../privacy.html" style="color:#78e5e5">Chính sách quyền riêng tư</a><span>TOPKEY Vlog 2026 · Đồng bộ TikTok chỉ thực hiện khi được cấp quyền</span></footer><script src="./tiktok-automation.js?v=reader-v2-intermediate-window-20261115"></script></body></html>
+</script><footer aria-label="Pháp lý TOPKEY Vlog" style="padding:26px max(22px,calc((100% - 1120px)/2));border-top:1px solid #34425b;color:#b7c9da;font-size:14px;display:flex;gap:22px;flex-wrap:wrap"><a href="../../terms.html" style="color:#78e5e5">Điều khoản sử dụng</a><a href="../../privacy.html" style="color:#78e5e5">Chính sách quyền riêng tư</a><span>TOPKEY Vlog 2026 · Đồng bộ TikTok chỉ thực hiện khi được cấp quyền</span></footer><script src="./tiktok-automation.js?v=yt-dlp-edgeone-v2-20261115b"></script></body></html>
