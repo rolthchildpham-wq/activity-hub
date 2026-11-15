@@ -1,0 +1,35 @@
+'use strict';
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const path=require('node:path');
+const vm=require('node:vm');
+const html=fs.readFileSync(path.join(__dirname,'../sports/diy-vlog/index.html'),'utf8');
+const source=fs.readFileSync(path.join(__dirname,'../sports/diy-vlog/tiktok-automation.js'),'utf8');
+for(const id of ['tiktok-read-link','tiktok-connect','tiktok-sync-now','tiktok-sync-status'])assert.match(html,new RegExp('id="'+id+'"'),'Missing '+id);
+assert.match(html,/tiktok-reader-integration-20261115/);
+assert.match(html,/obj\.statsSource=metricMeta\.source/,'Persist source of automatically read metrics');
+assert.match(html,/obj\.statsFetchedAt=metricMeta\.fetchedAt/,'Persist read timestamp');
+assert.match(source,/https:\/\/topkey-tiktok-stats-reader-s90l8b\.v2\.appdeploy\.ai\/api\/read-link/);
+assert.match(source,/entry-views/);
+assert.match(source,/entry-likes/);
+assert.match(source,/entry-shares/);
+assert.match(source,/Không tự điền số 0 thay cho dữ liệu thiếu/);
+function element(id){return {id,value:id==='entry-url'?'https://www.tiktok.com/@topkey/video/1234567890123456789':id==='entry-shares'?'77':'',textContent:'',disabled:false,listeners:{},addEventListener(type,fn){this.listeners[type]=fn}}}
+const ids=['tiktok-sync-status','tiktok-connect','tiktok-sync-now','tiktok-read-link','entry-url','entry-views','entry-likes','entry-shares'];
+const els=Object.fromEntries(ids.map(id=>[id,element(id)]));
+const window={__topkeyTikTokStatsMeta:null};
+let fetchCalls=0;
+const context={window,document:{getElementById:id=>els[id]||null},URL,AbortController,setTimeout,clearTimeout,Intl,Date,Number,JSON,Error,String,fetch:async(url,options)=>{fetchCalls++;assert.equal(url,'https://topkey-tiktok-stats-reader-s90l8b.v2.appdeploy.ai/api/read-link');assert.equal(JSON.parse(options.body).url,els['entry-url'].value);return {ok:true,status:200,text:async()=>JSON.stringify({stats:{views:1200,likes:155,shares:null},source:'TikWM public metadata',fetchedAt:'2026-11-15T00:00:00.000Z',message:'Partial stats'})}}};
+vm.runInNewContext(source,context);
+(async()=>{
+ await els['tiktok-read-link'].listeners.click();
+ assert.equal(fetchCalls,1);
+ assert.equal(els['entry-views'].value,'1200');
+ assert.equal(els['entry-likes'].value,'155');
+ assert.equal(els['entry-shares'].value,'77','Missing values must not overwrite existing form fields');
+ assert.equal(window.__topkeyTikTokStatsMeta.source,'TikWM public metadata');
+ els['entry-url'].value='https://www.tiktok.com/@topkey/video/9876543210987654321';
+ els['entry-url'].listeners.input();
+ assert.equal(window.__topkeyTikTokStatsMeta,null,'Changing the video URL invalidates old read metadata');
+ console.log('PASS TOPKEY Vlog TikTok link-reader integration: API call, three-field mapping, partial-value safety, source timestamp and URL invalidation');
+})().catch(e=>{console.error(e);process.exitCode=1});
