@@ -13,10 +13,6 @@ const rules=JSON.parse(fs.readFileSync(path.join(__dirname,'../firebase.database
 const vlogWrite=rules.rules.topkey_vlog2026['.write'];
 assert.match(vlogWrite,/assignedSport/,'Firebase write rules must recognize assignedSport');
 assert.match(vlogWrite,/=== 'diy'/,'Firebase write rules must recognize the DIY scope alias');
-const rules=JSON.parse((await tools.mcp__GitHub__fetch_file({repository_full_name:repo,path:'topkey/firebase.database.rules.json',ref:'main'})).result.content);
-const writeRule=rules.rules.topkey_vlog2026['.write'];
-assert.match(writeRule,/assignedSport/,'Vlog write rule must accept the profile assignedSport field');
-assert.match(writeRule,/=== 'diy'/,'Vlog write rule must accept the canonical DIY alias');
 assert.match(html,/await db\.ref\(root\+'\/entries\/'\+id\)\.set\(obj\)/,'Persist entry with Firebase');
 assert.match(html,/btn\.disabled=true/);
 const linkSource=html.match(/const link=s=>\{[^\n]+\};/);assert.ok(linkSource,'URL helper missing');
