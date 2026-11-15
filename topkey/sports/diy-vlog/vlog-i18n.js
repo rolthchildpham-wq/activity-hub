@@ -31,6 +31,50 @@
  };
  Object.assign(DICT,EXTRA);
  const state=new WeakMap(),attrs=new WeakMap();
+
+ // Built-in on-device translation for arbitrary video titles and free-text UI.
+ // Dictionary/rules remain the portable fallback on mobile or unsupported devices.
+ const nativeEngines=new Map(),nativeCache=new Map(),nativeFailed=new Set();
+ let nativeJobs=0;
+ async function nativeEngine(lang){
+  if(lang==='vi'||typeof window.Translator==='undefined')return null;
+  if(nativeEngines.has(lang))return nativeEngines.get(lang);
+  const promise=(async()=>{
+   const opts={sourceLanguage:'vi',targetLanguage:lang};
+   const availability=await window.Translator.availability(opts);
+   if(availability!=='available')return null;
+   return window.Translator.create(opts);
+  })().catch(()=>null);
+  nativeEngines.set(lang,promise);
+  return promise;
+ }
+ function nativeText(n,original,language){
+  // Keep source URLs, numeric counters and video IDs unchanged.
+  if(!n.isConnected||!original||original.length>320||
+     /https?:\/\/|(?:vt|vm|www)\.tiktok\.com\/|^(?:tt_)?\d{15,22}$/.test(original))return;
+  const key=language+'|'+original;
+  if(nativeCache.has(key)){
+   const translated=nativeCache.get(key);
+   const currentRec=state.get(n);
+   if(current===language&&currentRec?.original===original)n.nodeValue=currentRec.pre+translated+currentRec.post;
+   return;
+  }
+  if(nativeFailed.has(key)||nativeJobs>=80)return;
+  nativeJobs++;
+  Promise.resolve().then(async()=>{
+   const engine=await nativeEngine(language);
+   if(!engine)return;
+   const value=await engine.translate(original);
+   if(typeof value!=='string'||!value.trim())return;
+   nativeCache.set(key,value);
+   const rec=state.get(n);
+   if(current===language&&rec?.original===original){
+    n.nodeValue=rec.pre+value+rec.post;
+    rec.last=n.nodeValue;
+   }
+  }).catch(()=>nativeFailed.add(key)).finally(()=>{nativeJobs--});
+ }
+
  const norm=s=>String(s||'vi').startsWith('zh')?'zh':String(s||'vi').startsWith('en')?'en':'vi';
  let current=(()=>{try{return norm(localStorage.getItem(KEY))}catch{return 'vi'}})(),lock=false,pending=false;
  function translate(text,lang=current){
@@ -67,7 +111,9 @@
  function textNode(n){if(skip(n.parentElement))return;const raw=n.nodeValue||'';if(!raw.trim())return;
   let rec=state.get(n);if(!rec){rec={original:raw.trim(),last:null,pre:raw.match(/^\s*/)?.[0]||'',post:raw.match(/\s*$/)?.[0]||''};state.set(n,rec)}
   else if(raw!==rec.last&&raw.trim()!==rec.original){rec.original=raw.trim();rec.pre=raw.match(/^\s*/)?.[0]||'';rec.post=raw.match(/\s*$/)?.[0]||''}
-  const next=rec.pre+translate(rec.original)+rec.post;if(raw!==next)n.nodeValue=next;rec.last=next;
+  const translated=translate(rec.original),next=rec.pre+translated+rec.post;
+  if(raw!==next)n.nodeValue=next;rec.last=next;
+  if(current!=='vi'&&translated===rec.original)nativeText(n,rec.original,current);
  }
  function attributes(el){if(skip(el))return;let rec=attrs.get(el);if(!rec){rec={};attrs.set(el,rec)}for(const a of ['placeholder','title','aria-label']){
   if(!el.hasAttribute(a))continue;const val=el.getAttribute(a),prev=rec[a],origin=prev&&prev.last===val?prev.original:val,next=translate(origin);
