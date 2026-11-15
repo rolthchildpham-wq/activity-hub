@@ -19,7 +19,7 @@
   if(m){const labels=lang==='en'?{'ĐANG QUÉT':'SCANNING','ĐÃ QUÉT':'SCANNED','TẠM DỪNG':'PAUSED','HOÀN TẤT':'COMPLETED'}:{'ĐANG QUÉT':'扫描中','ĐÃ QUÉT':'已扫描','TẠM DỪNG':'已暂停','HOÀN TẤT':'已完成'};return labels[m[1]]+' '+m[2]+'/'+m[3]+' URL'+m[4];}
   return s;
  }
- function skip(el){return !el||!!el.closest('script,style,textarea,pre,code,select,[contenteditable="true"],[data-vlog-no-i18n],#vlog-language-picker')}
+ function skip(el){return !el||!!el.closest('script,style,textarea,pre,code,select,[contenteditable="true"],[data-vlog-no-i18n],#vlog-language-picker,.pod .person,#rows td strong,#rows td .muted')}
  function textNode(n){if(skip(n.parentElement))return;const raw=n.nodeValue||'';if(!raw.trim())return;
   let rec=state.get(n);if(!rec){rec={original:raw.trim(),last:null,pre:raw.match(/^\s*/)?.[0]||'',post:raw.match(/\s*$/)?.[0]||''};state.set(n,rec)}
   else if(raw!==rec.last&&raw.trim()!==rec.original){rec.original=raw.trim();rec.pre=raw.match(/^\s*/)?.[0]||'';rec.post=raw.match(/\s*$/)?.[0]||''}
