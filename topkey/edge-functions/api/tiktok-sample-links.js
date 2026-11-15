@@ -3,9 +3,15 @@
 const FIREBASE_API_KEY='AIzaSyBSr7buP3bMf6HTg_YDWH_Xk5aNhyvfSRg';
 const DB_URL='https://topkey-badminton-default-rtdb.asia-southeast1.firebasedatabase.app';
 const json=(body,status=200)=>new Response(JSON.stringify(body),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff'}});
+const fetchWithTimeout=async(url,options={},timeoutMs=12000)=>{
+ const controller=new AbortController();
+ const timer=setTimeout(()=>controller.abort(),timeoutMs);
+ try{return await fetch(url,{...options,signal:controller.signal});}
+ finally{clearTimeout(timer);}
+};
 async function verify(token){
  if(!token)return null;
- const r=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key='+encodeURIComponent(FIREBASE_API_KEY),{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({idToken:token}),signal:AbortSignal.timeout(7000)});
+ const r=await fetchWithTimeout('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key='+encodeURIComponent(FIREBASE_API_KEY),{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({idToken:token})},7000);
  if(!r.ok)return null;const d=await r.json();return d?.users?.[0]?.localId||null;
 }
 const active=p=>p&&p.active!==false&&p.disabled!==true&&p.locked!==true&&p.enabled!==false&&p.isActive!==false&&!['disabled','blocked','suspended','inactive'].includes(String(p.status||'').toLowerCase());
@@ -23,7 +29,7 @@ export async function onRequestPost(context){
   const token=(request.headers.get('authorization')||'').replace(/^Bearer\s+/i,'').trim(),uid=await verify(token);
   if(!uid)return json({ok:false,error:'AUTH_REQUIRED'},401);
   const profileUrl=DB_URL+'/topkey_badminton_vnext_2026/users/'+encodeURIComponent(uid)+'.json?auth='+encodeURIComponent(token);
-  const profileResponse=await fetch(profileUrl,{signal:AbortSignal.timeout(7000)});
+  const profileResponse=await fetchWithTimeout(profileUrl,{},7000);
   if(!profileResponse.ok)return json({ok:false,error:'PROFILE_READ_FAILED'},502);
   const profile=await profileResponse.json();
   if(!allowed(profile))return json({ok:false,error:'VLOG_ADMIN_REQUIRED'},403);
@@ -34,14 +40,14 @@ export async function onRequestPost(context){
    const u=new URL('https://www.tikwm.com/api/feed/search/');
    u.searchParams.set('keywords',keyword);u.searchParams.set('count',String(count));u.searchParams.set('cursor',cursor);u.searchParams.set('hd','1');
    const headers={'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124.0 Safari/537.36','referer':'https://www.tiktok.com/','accept':'application/json'};
-   upstream=await fetch(u.toString(),{headers,signal:AbortSignal.timeout(18000)});
+   upstream=await fetchWithTimeout(u.toString(),{headers},18000);
    if(upstream.status===403||upstream.status===405||upstream.status===429){
     const form=new URLSearchParams({keywords:keyword,count:String(count),cursor,hd:'1'});
-    upstream=await fetch('https://www.tikwm.com/api/feed/search/',{method:'POST',headers:{...headers,'content-type':'application/x-www-form-urlencoded; charset=UTF-8','cookie':'current_language=en'},body:form,signal:AbortSignal.timeout(18000)});
+    upstream=await fetchWithTimeout('https://www.tikwm.com/api/feed/search/',{method:'POST',headers:{...headers,'content-type':'application/x-www-form-urlencoded; charset=UTF-8','cookie':'current_language=en'},body:form},18000);
    }
   }else{
    const form=new URLSearchParams({region:'VN',count:String(count),cursor,web:'1',hd:'1'});
-   upstream=await fetch('https://www.tikwm.com/api/feed/list/',{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded; charset=UTF-8','user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124.0 Safari/537.36','referer':'https://www.tiktok.com/','cookie':'current_language=en'},body:form,signal:AbortSignal.timeout(18000)});
+   upstream=await fetchWithTimeout('https://www.tikwm.com/api/feed/list/',{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded; charset=UTF-8','user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124.0 Safari/537.36','referer':'https://www.tiktok.com/','cookie':'current_language=en'},body:form},18000);
   }
   payload=await upstream.json().catch(()=>null);
   if(!upstream.ok||!payload)return json({ok:false,error:'SCRAPER_UPSTREAM_'+upstream.status},502);
