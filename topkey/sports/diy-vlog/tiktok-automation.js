@@ -17,7 +17,11 @@ async function readEdgeOneMetadata(url){
   const type=response.headers.get("content-type")||"";
   if(!type.includes("application/json"))throw Error("EdgeOne chưa triển khai API yt-dlp, phản hồi không phải JSON.");
   const data=await response.json();
-  if(!response.ok||!data.ok)throw Error(data.message||("EdgeOne API lỗi "+response.status));
+  if(!response.ok||!data.ok){
+   const e=Error(data.message||("EdgeOne API lỗi "+response.status));
+   e.status=response.status;
+   throw e;
+  }
   return data;
  }finally{clearTimeout(timer)}
 }
@@ -101,7 +105,8 @@ async function runEdgeOneBatch(){
  try{saved=JSON.parse(localStorage.getItem(storageKey)||"{}")||{}}catch{}
  let offset=saved.fingerprint===fingerprint&&Number.isInteger(saved.offset)&&saved.offset>=0&&saved.offset<entries.length?saved.offset:0;
  const batch=entries.slice(offset,offset+25);
- let updated=0,partial=0,errors=0;const details=[];
+ let updated=0,partial=0,errors=0,attempted=0;const details=[];
+ let stopped=false;
  for(const [id,entry] of batch){
   const url=String(entry.url||"").trim();
   try{
@@ -120,13 +125,26 @@ async function runEdgeOneBatch(){
    });
    if(!tx.committed)throw Error("URL thay đổi hoặc không đủ quyền ghi Firebase");
    updated++;if(Object.keys(patch).length<3)partial++;
-  }catch(e){errors++;details.push(id+": "+String(e?.message||e).slice(0,100));}
-  info("EdgeOne yt-dlp: "+(offset+updated+errors)+"/"+entries.length+" · lô "+(updated+errors)+"/"+batch.length+" · cập nhật "+updated+" · lỗi "+errors);
+  }catch(e){
+   errors++;
+   const message=String(e?.message||e);
+   details.push(id+": "+message.slice(0,100));
+   // Systemic auth/network failures must stop the entire batch immediately;
+   // individual inaccessible TikTok videos (HTTP 502) may be skipped.
+   if([401,403,429].includes(e?.status)||e?.name==="AbortError"||
+      e?.name==="TypeError"||/network error|failed to fetch|permission.denied/i.test(message)){
+    stopped=true;
+    info("DỪNG QUÉT: "+message.slice(0,150)+" · giữ vị trí để sửa lỗi rồi thử lại.");
+    break;
+   }
+  }
+  attempted++;
+  info("EdgeOne yt-dlp: "+(offset+attempted)+"/"+entries.length+" · lô "+attempted+"/"+batch.length+" · cập nhật "+updated+" · lỗi "+errors);
  }
- const processed=offset+batch.length,finished=processed>=entries.length;
+ const processed=offset+attempted,finished=processed>=entries.length;
  try{localStorage.setItem(storageKey,JSON.stringify({fingerprint,offset:finished?0:processed}))}catch{}
- info("ĐÃ QUÉT "+processed+"/"+entries.length+" URL trong lượt kiểm tra · lô này thành công "+updated+" ("+partial+" thiếu chỉ số) · lỗi "+errors+"."+
-      (finished?" Đã đến cuối danh sách. Bấm lại để quét vòng mới.":" Bấm quét lần nữa để tiếp tục từ URL "+(processed+1)+".")+
+ info((stopped?"TẠM DỪNG":"ĐÃ QUÉT")+" "+processed+"/"+entries.length+" URL · lô này thành công "+updated+" ("+partial+" thiếu chỉ số) · lỗi "+errors+"."+
+      (stopped?" Có lỗi hệ thống; vị trí quét được giữ nguyên để thử lại sau khi khắc phục.":finished?" Đã đến cuối danh sách. Bấm lại để quét vòng mới.":" Bấm quét lần nữa để tiếp tục từ URL "+(processed+1)+".")+
       (details.length?" Lỗi: "+details.slice(0,4).join(" | "):""));
 }
 bulk.addEventListener("click",()=>run(bulk,async()=>{info("Đang đọc số liệu qua EdgeOne yt-dlp...");await runEdgeOneBatch();}));
