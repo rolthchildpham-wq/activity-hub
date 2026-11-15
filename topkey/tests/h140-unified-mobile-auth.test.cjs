@@ -11,6 +11,7 @@ assert.match(shared,/this\._showVerificationPending\(this\._accessDeniedMessage\
 assert.match(shared,/auth\.onAuthStateChanged/);
 assert.match(shared,/setPersistence\(p\)/);
 assert.match(badminton,/mobile-stability-h140\.css/);
+assert.match(badminton,/__TOPKEY_CSS_FALLBACK_USED/,'Missing CSS asset must have a fallback instead of unstyled page');
 assert.match(badminton,/topkey-shared-auth\.js\?v=h140-unified-mobile-20261115/);
 assert.match(vnext,/topkey-shared-auth\.js\?v=h140-unified-mobile-20261115/);
 const css=read('sports/badminton/mobile-stability-h140.css');
