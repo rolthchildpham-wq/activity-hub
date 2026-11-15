@@ -105,6 +105,7 @@ async function readWithV2(url){
   }catch(e){
    lastError=e;
    if(e?.name==="AbortError")lastError=Error("Reader V2 quá thời gian 30 giây.");
+   else if(e instanceof TypeError)lastError=Error("Không kết nối được Reader V2 (CORS/mạng). Kiểm tra API Reader V2 và thử lại.");
    if(attempt===0)await new Promise(resolve=>setTimeout(resolve,900));
   }finally{clearTimeout(timer)}
  }
