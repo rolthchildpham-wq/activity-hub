@@ -75,11 +75,10 @@ connect?.addEventListener("click",()=>run(connect,async()=>{
 }));
 
 let activeBatchRoot="topkey_vlog2026/entries",activeBatchRun=false;
-const READER_ORIGIN="https://topkey-tiktok-stats-reader-s90l8b.v2.appdeploy.ai";
 function encodeBatch(batch){
  const bytes=new TextEncoder().encode(JSON.stringify(batch));let binary="";
  for(let i=0;i<bytes.length;i++)binary+=String.fromCharCode(bytes[i]);
- return btoa(binary).replace(/\\+/g,"-").replace(/\\//g,"_").replace(/=+$/,"");
+ return btoa(binary).replaceAll("+","-").replaceAll("/","_").replace(/=+$/,"");
 }
 async function runV2Batch(items,db,root,readerWindow){
  if(activeBatchRun)throw Error("Đang có một lượt đồng bộ chạy. Vui lòng chờ hoàn tất.");
