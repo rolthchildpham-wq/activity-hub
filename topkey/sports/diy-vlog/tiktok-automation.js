@@ -95,8 +95,14 @@ async function runEdgeOneBatch(){
  const snapshot=await db.ref(root).once("value");
  const entries=Object.entries(snapshot.val()||{}).filter(([,e])=>e&&validTikTokVideo(String(e.url||"").trim()));
  if(!entries.length){info("Không có video TikTok hợp lệ.");return;}
+ const storageKey="topkey_vlog2026_scan:"+root;
+ const fingerprint=entries.length+":"+entries[0][0]+":"+entries[entries.length-1][0]+":"+String(entries[0][1].sampleCreatedAt||"");
+ let saved={};
+ try{saved=JSON.parse(localStorage.getItem(storageKey)||"{}")||{}}catch{}
+ let offset=saved.fingerprint===fingerprint&&Number.isInteger(saved.offset)&&saved.offset>=0&&saved.offset<entries.length?saved.offset:0;
+ const batch=entries.slice(offset,offset+25);
  let updated=0,partial=0,errors=0;const details=[];
- for(const [id,entry] of entries.slice(0,25)){
+ for(const [id,entry] of batch){
   const url=String(entry.url||"").trim();
   try{
    const result=await readEdgeOneMetadata(url);
@@ -115,11 +121,13 @@ async function runEdgeOneBatch(){
    if(!tx.committed)throw Error("URL thay đổi hoặc không đủ quyền ghi Firebase");
    updated++;if(Object.keys(patch).length<3)partial++;
   }catch(e){errors++;details.push(id+": "+String(e?.message||e).slice(0,100));}
-  info("EdgeOne yt-dlp: "+(updated+errors)+"/"+Math.min(entries.length,25)+" · thành công "+updated+" · lỗi "+errors);
+  info("EdgeOne yt-dlp: "+(offset+updated+errors)+"/"+entries.length+" · lô "+(updated+errors)+"/"+batch.length+" · cập nhật "+updated+" · lỗi "+errors);
  }
- info("HOÀN TẤT: "+updated+" bài ("+partial+" bài thiếu chỉ số) · lỗi "+errors+"."+
-      (entries.length>25?" Còn "+(entries.length-25)+" bài chưa quét.":"")+
-      (details.length?" "+details.slice(0,4).join(" | "):""));
+ const processed=offset+batch.length,finished=processed>=entries.length;
+ try{localStorage.setItem(storageKey,JSON.stringify({fingerprint,offset:finished?0:processed}))}catch{}
+ info("ĐÃ QUÉT "+processed+"/"+entries.length+" URL trong lượt kiểm tra · lô này thành công "+updated+" ("+partial+" thiếu chỉ số) · lỗi "+errors+"."+
+      (finished?" Đã đến cuối danh sách. Bấm lại để quét vòng mới.":" Bấm quét lần nữa để tiếp tục từ URL "+(processed+1)+".")+
+      (details.length?" Lỗi: "+details.slice(0,4).join(" | "):""));
 }
 bulk.addEventListener("click",()=>run(bulk,async()=>{info("Đang đọc số liệu qua EdgeOne yt-dlp...");await runEdgeOneBatch();}));
 sync?.addEventListener("click",()=>run(sync,async()=>{
