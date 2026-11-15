@@ -63,7 +63,7 @@ function showVlogScanFailures(failures,testMode,canRetry){
  summary.textContent='Nhấn kiểm tra lại một lượt cho các link lỗi trước khi kiểm tra thủ công. URL, lần thử cuối và nguyên nhân mới nhất hiển thị bên dưới.';
  const retry=document.createElement('button');
  retry.type='button';retry.className='vlog-retry-failed';retry.textContent='↻ Kiểm tra tự động lại '+all.length+' link lỗi (1 lượt)';
- retry.disabled=!canRetry||Boolean(bulk.disabled);
+ retry.disabled=!canRetry;
  if(typeof retry.addEventListener==='function'){
   retry.addEventListener('click',()=>run(retry,()=>runFailedVlogLinksOnce()));
  }
