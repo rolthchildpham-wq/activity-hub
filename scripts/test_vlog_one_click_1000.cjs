@@ -4,7 +4,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const text=fs.readFileSync(path.join(__dirname,'..','topkey','sports','diy-vlog','tiktok-automation.js'),'utf8');
 const begin=text.indexOf('async function runEdgeOneBatch()'),end=text.indexOf('bulk.addEventListener(',begin);
 assert(begin>=0&&end>begin,'batch function missing');
-const snippet=text.slice(begin,end);
+const snippet=text.slice(text.indexOf('function vlogFailureReason('),end);
 const total=1000;
 function entries(n=total){return Object.fromEntries(Array.from({length:n},(_,i)=>[
  'tt_'+String(i).padStart(4,'0'),
