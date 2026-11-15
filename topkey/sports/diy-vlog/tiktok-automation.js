@@ -123,7 +123,7 @@ async function runV2Batch(items,db,root){
   }
  };
  try{
-  await Promise.all(Array.from({length:Math.min(3,items.length)},()=>worker()));
+  await Promise.all(Array.from({length:Math.min(10,items.length)},()=>worker()));
   const verify=(await db.ref(root).once("value")).val()||{};
   const verifyCount=Object.keys(verify).length;
   info("HOÀN TẤT READER V2: "+summary.processed+"/"+summary.total+" link · cập nhật "+summary.updated+" bài ("+summary.partial+" bài thiếu chỉ số) · không đọc được "+summary.noData+" · lỗi "+summary.failed+" · Firebase đã kiểm tra lại "+verifyCount+" bản ghi."+(summary.failures.length?" Chi tiết: "+summary.failures.slice(0,8).join(" | "):""));
@@ -134,9 +134,10 @@ bulk.addEventListener("click",()=>run(bulk,async()=>{
  info("Đang kết nối Firebase và lấy danh sách link TikTok...");
  const db=firebase.database(),root=window.__TOPKEY_VLOG_TEST_MODE?"topkey_vlog2026_test/entries":"topkey_vlog2026/entries";activeBatchRoot=root;
  const snap=await db.ref(root).once("value"),entries=snap.val()||{};
- const items=Object.entries(entries).filter(([id,e])=>e&&typeof e==="object"&&validTikTokVideo(String(e.url||"").trim()));
+ const allItems=Object.entries(entries).filter(([id,e])=>e&&typeof e==="object"&&validTikTokVideo(String(e.url||"").trim()));
+ const items=allItems.slice(0,1000);
  if(!items.length){info("Đã đọc "+Object.keys(entries).length+" bản ghi nhưng không tìm thấy link video TikTok hợp lệ.");return;}
- info("Đã lấy "+items.length+" link. Bắt đầu gọi trực tiếp API Reader V2 theo 3 luồng nền; không mở tab hoặc iframe.");
+ info("Đã tìm thấy "+allItems.length+" link hợp lệ. Đợt này xử lý "+items.length+" link tối đa, bằng 10 luồng song song; không mở tab hoặc iframe.");
  await runV2Batch(items,db,root);
 }));
 sync?.addEventListener("click",()=>run(sync,async()=>{
