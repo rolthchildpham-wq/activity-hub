@@ -138,7 +138,7 @@ async function viaTikTokEmbed(videoUrl){
   if(!r.ok||Number(r.headers.get('content-length')||0)>300000)return null;
   const html=await r.text();
   if(html.length>300000)return null;
-  const script=html.match(/<script[^>]*id=["']__UNIVERSAL_DATA_FOR_REHYDRATION__["'][^>]*>([\\s\\S]*?)<\\/script>/i);
+  const script=html.match(/<script[^>]*id=["']__UNIVERSAL_DATA_FOR_REHYDRATION__["'][^>]*>([\s\S]*?)<\/script>/i);
   if(!script)return null;
   const data=JSON.parse(script[1]);
   const item=data?.__DEFAULT_SCOPE__?.['webapp.video-detail']?.itemInfo?.itemStruct;
