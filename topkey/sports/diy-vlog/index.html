@@ -176,7 +176,7 @@ sampleLoadBtn.addEventListener('click',async()=>{
   const now=new Date().toISOString(),entries={};
   items.slice(0,1000).forEach((x,i)=>{
    const id='tt_'+x.id;
-   entries[id]={name:String(x.authorName||x.username||('TikTok VN '+(i+1))).slice(0,100),type:'Cá nhân',dept:'TikTok Trending Việt Nam',views:Number(x.views)||0,likes:Number(x.likes)||0,shares:Number(x.shares)||0,url:x.url,testSample:true,statsSource:'TikWM public VN trend/search',sampleCreatedAt:now};
+   entries[id]={name:String(x.authorName||x.username||('TikTok VN '+(i+1))).slice(0,100),type:'Cá nhân',dept:'TikTok Trending Việt Nam',views:Number(x.views)||0,likes:Number(x.likes)||0,shares:Number(x.shares)||0,url:x.url,testSample:true,statsSource:'TikTok public search (TEST)',sampleCreatedAt:now};
   });
   const pairs=Object.entries(entries);
   for(let i=0;i<pairs.length;i+=100){
@@ -184,7 +184,7 @@ sampleLoadBtn.addEventListener('click',async()=>{
    await db.ref(testRoot+'/entries').update(part);
    sampleStatusText('Đã lưu '+Math.min(i+100,pairs.length)+'/'+pairs.length+' link vào nhánh TEST riêng...');
   }
-  await db.ref(testRoot+'/meta').set({source:'TikWM public TikTok VN trend/search',createdAt:now,requested:1000,loaded:pairs.length,apiCalls,region:'VN'});
+  await db.ref(testRoot+'/meta').set({source:'TikTok public search scrape',createdAt:now,requested:1000,loaded:pairs.length,apiCalls,region:'VN'});
   if(testRef&&testListener)testRef.off('value',testListener);
   testRef=db.ref(testRoot+'/entries');testListener=snap=>showTestMode({entries:snap.val()});testRef.on('value',testListener);
   window.__TOPKEY_VLOG_TEST_MODE=true;
