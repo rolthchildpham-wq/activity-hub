@@ -6,7 +6,7 @@ const vm=require('node:vm');
 const html=fs.readFileSync(path.join(__dirname,'../sports/diy-vlog/index.html'),'utf8');
 const source=fs.readFileSync(path.join(__dirname,'../sports/diy-vlog/tiktok-automation.js'),'utf8');
 for(const id of ['tiktok-read-link','tiktok-connect','tiktok-sync-now','tiktok-sync-status'])assert.match(html,new RegExp('id="'+id+'"'),'Missing '+id);
-assert.match(html,/tiktok-reader-integration-20261115/);
+assert.match(html,/viewer-sample-loader-repair-20261115/);
 assert.match(html,/obj\.statsSource=metricMeta\.source/,'Persist source of automatically read metrics');
 assert.match(html,/obj\.statsFetchedAt=metricMeta\.fetchedAt/,'Persist read timestamp');
 assert.match(source,/https:\/\/topkey-tiktok-stats-reader-s90l8b\.v2\.appdeploy\.ai\/api\/read-link/);
@@ -33,3 +33,6 @@ vm.runInNewContext(source,context);
  assert.equal(window.__topkeyTikTokStatsMeta,null,'Changing the video URL invalidates old read metadata');
  console.log('PASS TOPKEY Vlog TikTok link-reader integration: API call, three-field mapping, partial-value safety, source timestamp and URL invalidation');
 })().catch(e=>{console.error(e);process.exitCode=1});
+
+assert.match(html,/function apply\(raw\)\{if\(testMode\|\|shareMode\)return;/,'Viewer snapshot must not be overwritten by production realtime listeners');
+assert.match(html,/new AbortController\(\),timer=setTimeout\(\(\)=>controller\.abort\(\),30000\)/,'Sample scraper request must not depend on AbortSignal.timeout');
