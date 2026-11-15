@@ -19,7 +19,7 @@ button.small,.btn{background:#1a243d;color:#dce8fa;border:1px solid #2c3853;bord
 <form id="admin-login-form" autocomplete="on"><div class="fields" style="grid-template-columns:repeat(auto-fit,minmax(210px,1fr))"><div class="field"><label for="admin-email">Email</label><input type="email" id="admin-email" autocomplete="username" required></div><div class="field"><label for="admin-password">Mật khẩu</label><input type="password" id="admin-password" autocomplete="current-password" required></div></div><div class="actions"><button id="admin-submit" type="submit">Đăng nhập an toàn</button><button id="admin-login-close" class="secondary" type="button">Đóng</button></div></form>
 <p id="admin-auth-status" role="status" aria-live="polite" style="font-size:12px;color:#b7d9e9;margin-top:12px"></p></section>
 <div class="stats" id="stats"></div><section class="section"><div class="kicker">BỤC VINH QUANG</div><h2>Top 3 dẫn đầu</h2><div class="podium" id="podium"></div></section>
-<section id="ranking" class="section"><div class="kicker">DANH SÁCH THÍ SINH</div><div class="utility"><h2>Bảng xếp hạng chi tiết</h2><input id="search" class="search" type="search" placeholder="Tìm theo tên đội / cá nhân" aria-label="Lọc bảng xếp hạng theo tên"></div><section id="vlog-share-tools" class="edit-panel" hidden style="margin:14px 0"><div class="kicker">CHIA SẺ BẢNG XẾP HẠNG</div><p class="muted">Tạo đường dẫn xem riêng cho Viewer. Link chứa ảnh chụp BXH tại thời điểm tạo, chỉ xem Top 3 và toàn bộ danh sách; không có quyền sửa hay đồng bộ.</p><div class="actions"><button type="button" id="vlog-create-share">🔗 Tạo link Viewer</button><button type="button" id="vlog-revoke-share" class="secondary" hidden>Thu hồi link đang chọn</button></div><div id="vlog-share-result" hidden style="margin-top:12px"><label for="vlog-share-url">Link xem BXH</label><input id="vlog-share-url" type="url" readonly><div class="actions" style="margin-top:8px"><button type="button" id="vlog-copy-share">Sao chép link</button></div><p id="vlog-share-status" class="muted" role="status"></p></div></section><section id="tiktok-test-tools" class="edit-panel" hidden style="margin:14px 0;border-color:#168b9a"><div class="kicker">TEST LAB · TÁCH BIỆT PRODUCTION</div><h3 style="margin:6px 0 8px">Bộ dữ liệu TikTok mẫu Việt Nam</h3><p class="muted" style="margin:0 0 12px">Lấy video công khai từ feed xu hướng / tìm kiếm TikTok Việt Nam qua scraper; lưu riêng tại <code>topkey_vlog2026_test</code>. Không ghi vào danh sách thí sinh thật.</p><div class="actions"><button type="button" id="tiktok-load-samples">⬇ Nạp tối đa 1.000 link mẫu</button><button type="button" id="tiktok-delete-samples" class="secondary">✕ Xóa toàn bộ dữ liệu mẫu</button></div><p id="tiktok-test-status" role="status" aria-live="polite" class="muted" style="margin:10px 0 0">Chưa nạp dữ liệu mẫu.</p></section><div class="actions" style="margin:14px 0"><button type="button" id="tiktok-sync-all-links" hidden>⟳ Quét tất cả link TikTok thí sinh & cập nhật số liệu</button></div><p id="tiktok-sync-status" role="status" aria-live="polite" class="muted" style="margin:8px 0 14px" hidden>Chỉ ADMIN/BTC DIY được đồng bộ số liệu.</p><div class="leaderboard"><div class="table-scroll"><table><thead><tr><th>HẠNG</th><th>THÍ SINH / ĐỘI</th><th>LƯỢT XEM</th><th>LƯỢT THÍCH</th><th>CHIA SẺ</th><th>TỔNG ĐIỂM</th><th>VIDEO</th></tr></thead><tbody id="rows"></tbody></table></div></div></section>
+<section id="ranking" class="section"><div class="kicker">DANH SÁCH THÍ SINH</div><div class="utility"><h2>Bảng xếp hạng chi tiết</h2><input id="search" class="search" type="search" placeholder="Tìm theo tên đội / cá nhân" aria-label="Lọc bảng xếp hạng theo tên"></div><section id="vlog-share-tools" class="edit-panel" hidden style="margin:14px 0"><div class="kicker">CHIA SẺ BẢNG XẾP HẠNG</div><p class="muted">Tạo đường dẫn xem riêng cho Viewer. Link chứa ảnh chụp BXH tại thời điểm tạo, chỉ xem Top 3 và toàn bộ danh sách; không có quyền sửa hay đồng bộ.</p><div class="actions"><button type="button" id="vlog-create-share">🔗 Tạo link Viewer</button><button type="button" id="vlog-revoke-share" class="secondary" hidden>Thu hồi link đang chọn</button></div><div id="vlog-share-result" hidden style="margin-top:12px"><label for="vlog-share-url">Link xem BXH</label><input id="vlog-share-url" type="url" readonly><div class="actions" style="margin-top:8px"><button type="button" id="vlog-copy-share">Sao chép link</button></div><p id="vlog-share-status" class="muted" role="status"></p></div></section><section id="tiktok-test-tools" class="edit-panel" hidden style="margin:14px 0;border-color:#168b9a"><div class="kicker">TEST LAB · TÁCH BIỆT PRODUCTION</div><h3 style="margin:6px 0 8px">Bộ 1.000 URL TikTok công khai</h3><p class="muted" style="margin:0 0 12px">Lấy URL video từ bộ dữ liệu công khai có nguồn kiểm chứng, không xác nhận quốc gia; lưu riêng tại <code>topkey_vlog2026_test</code>. Không ghi vào danh sách thí sinh thật.</p><div class="actions"><button type="button" id="tiktok-load-samples">⬇ Nạp 1.000 URL video mẫu</button><button type="button" id="tiktok-delete-samples" class="secondary">✕ Xóa toàn bộ dữ liệu mẫu</button><label style="display:inline-flex;align-items:center;gap:7px;font-size:11px">Hoặc nhập tệp CSV/TXT/JSON <input type="file" id="tiktok-import-file" accept=".csv,.txt,.json" style="max-width:240px"></label></div><p id="tiktok-test-status" role="status" aria-live="polite" class="muted" style="margin:10px 0 0">Chưa nạp dữ liệu mẫu.</p></section><div class="actions" style="margin:14px 0"><button type="button" id="tiktok-sync-all-links" hidden>⟳ Quét tất cả link TikTok thí sinh & cập nhật số liệu</button></div><p id="tiktok-sync-status" role="status" aria-live="polite" class="muted" style="margin:8px 0 14px" hidden>Chỉ ADMIN/BTC DIY được đồng bộ số liệu.</p><div class="leaderboard"><div class="table-scroll"><table><thead><tr><th>HẠNG</th><th>THÍ SINH / ĐỘI</th><th>LƯỢT XEM</th><th>LƯỢT THÍCH</th><th>CHIA SẺ</th><th>TỔNG ĐIỂM</th><th>VIDEO</th></tr></thead><tbody id="rows"></tbody></table></div></div></section>
 <section class="edit-panel" id="editor" hidden><div class="kicker">ADMIN · VLOG 2026</div><h2>Quản trị bài dự thi và hệ số chấm điểm</h2><p class="muted" id="editor-note">Tài khoản ADMIN hoặc BTC phụ trách DIY có thể tạo bài dự thi và hệ số đầu tiên khi dữ liệu cuộc thi còn trống. Dữ liệu mẫu không được ghi lên Firebase.</p><form id="weights"><div class="fields"><div class="field"><label for="wviews">Điểm / lượt xem</label><input id="wviews" type="number" required min="0" step="1"></div><div class="field"><label for="wlikes">Điểm / lượt thích</label><input id="wlikes" type="number" required min="0" step="1"></div><div class="field"><label for="wshares">Điểm / lượt chia sẻ</label><input id="wshares" type="number" required min="0" step="1"></div></div><div class="actions"><button type="submit">Lưu hệ số</button></div><p id="weights-save-status" role="status" aria-live="polite" style="color:#c7ecff;margin:12px 0 0"></p></form>
 <hr style="border:0;border-top:1px solid #34425b;margin:24px 0"><form id="entry-form"><input type="hidden" id="entry-id"><div class="fields"><div class="field"><label for="entry-name">Tên đội hoặc cá nhân</label><input id="entry-name" maxlength="100" required></div><div class="field"><label for="entry-type">Loại</label><select id="entry-type"><option>Đội</option><option>Cá nhân</option></select></div><div class="field"><label for="entry-dept">Đơn vị</label><input id="entry-dept" maxlength="100"></div><div class="field"><label for="entry-views">Lượt xem</label><input id="entry-views" type="number" min="0" max="1000000000" step="1" value="0"></div><div class="field"><label for="entry-likes">Lượt thích</label><input id="entry-likes" type="number" min="0" max="1000000000" step="1" value="0"></div><div class="field"><label for="entry-shares">Lượt chia sẻ</label><input id="entry-shares" type="number" min="0" max="1000000000" step="1" value="0"></div><div class="field"><label for="entry-url">Đường dẫn video TikTok (HTTPS)</label><input type="url" id="entry-url" placeholder="https://..." maxlength="500"></div></div><div class="actions"><button type="submit">Lưu bài dự thi</button><button id="clear-form" type="button" class="secondary" title="Tạo một bài dự thi mới và lưu vào Firebase">Tạo mới và lưu</button><button id="delete" type="button" class="secondary">Xóa bài đang sửa</button></div><p id="entry-save-status" role="status" aria-live="polite" style="color:#c7ecff;margin:12px 0 0"></p></form>
 </section></main>
@@ -134,65 +134,74 @@ function leaveTestMode(){
 }
 const sampleLoadBtn=$('tiktok-load-samples'),sampleDeleteBtn=$('tiktok-delete-samples'),sampleStatus=$('tiktok-test-status');
 function sampleStatusText(t){if(sampleStatus)sampleStatus.textContent=t;}
-function sampleReaderJsonp(params,timeoutMs=30000){return new Promise((resolve,reject)=>{const callback="__topkeySample_"+Date.now()+"_"+Math.random().toString(36).slice(2);const script=document.createElement("script");let done=false;const finish=(err,data)=>{if(done)return;done=true;clearTimeout(timer);delete window[callback];script.remove();err?reject(err):resolve(data)};window[callback]=data=>finish(null,data);script.onerror=()=>finish(Error("Nguồn cung cấp link mẫu cũ không khả dụng; API yt-dlp chỉ đọc metadata từ URL video đã có."));const query=new URLSearchParams({...params,callback});script.src="https://topkey-tiktok-stats-reader-s90l8b.v2.appdeploy.ai/api/sample-links-jsonp?"+query.toString();const timer=setTimeout(()=>finish(Error("Nguồn link mẫu quá thời gian 30 giây.")),timeoutMs);document.head.appendChild(script);});}
-sampleLoadBtn.addEventListener('click',async()=>{
- if(sampleLoadBtn.disabled)return;
+const sampleImportFile=$('tiktok-import-file');
+const SAMPLE_DATA_PATH='./sample-data/tiktok-public-1000.json';
+function parseRealVideoLinks(rows){
+ const map=new Map();
+ for(const item of rows){
+  const value=typeof item==='string'?item:String(item?.url||'').trim();
+  const match=/^https:\/\/(?:www\.)?tiktok\.com\/@[^/]+\/video\/(\d{15,22})(?:[/?#].*)?$/i.exec(value);
+  if(!match||map.has(match[1]))continue;
+  map.set(match[1],{id:match[1],url:value.split(/[?#]/)[0],source:String(item?.source||'user-provided').slice(0,70)});
+  if(map.size===1000)break;
+ }
+ return [...map.values()];
+}
+async function importRealVideos(rows,sourceLabel){
+ if(!isRootAdmin||!db||!auth.currentUser)throw Error('Chỉ ADMIN đã đăng nhập mới được nạp dữ liệu TEST.');
+ const samples=parseRealVideoLinks(rows);
+ if(samples.length===0)throw Error('Không tìm thấy link TikTok /@user/video/ID hợp lệ.');
+ if(!confirm('Ghi '+samples.length+' URL TikTok vào topkey_vlog2026_test? Dữ liệu thử cũ trong nhánh này sẽ được thay thế; dữ liệu cuộc thi thật KHÔNG thay đổi.'))return;
+ sampleLoadBtn.disabled=true;sampleDeleteBtn.disabled=true;if(sampleImportFile)sampleImportFile.disabled=true;
  try{
-  if(!isAdmin||!db)throw Error('Chưa xác minh quyền quản trị Vlog.');
-  if(!confirm('Nạp bộ dữ liệu mẫu mới? Chỉ thay thế nhánh topkey_vlog2026_test, không đụng dữ liệu cuộc thi thật.'))return;
-  sampleLoadBtn.disabled=true;sampleDeleteBtn.disabled=true;
-  if(!isRootAdmin||!auth.currentUser)throw Error('Chỉ ADMIN hệ thống đã đăng nhập mới được nạp dữ liệu TEST.');
-  const seen=new Set(),items=[];
-  const queries=[{kind:'trend',keyword:''},{kind:'search',keyword:'#xuhuong'},{kind:'search',keyword:'#viral'},{kind:'search',keyword:'#fyp'},{kind:'search',keyword:'trend Việt Nam'},{kind:'search',keyword:'TikTok Việt Nam'},{kind:'search',keyword:'#trending'},{kind:'search',keyword:'#tiktoktrend'},{kind:'search',keyword:'#xuhuongtiktok'},{kind:'search',keyword:'#viralvideo'}];
-  let apiCalls=0;
-  for(const query of queries){
-   let cursor='0',cursorSeen=new Set(),pageNo=0;
-   while(items.length<1000&&pageNo<10){
-    if(cursorSeen.has(String(cursor)))break;cursorSeen.add(String(cursor));
-    sampleStatusText('Đang tìm link mẫu '+(query.keyword||'xu hướng Việt Nam')+' · trang '+(pageNo+1)+' · đã thu '+items.length+'/1.000 link...');
-    const payload=await sampleReaderJsonp({keyword:query.keyword||'xu hướng Việt Nam',cursor:String(cursor)});
-    if(!payload?.ok)throw Error(payload?.message||'Nguồn link mẫu cũ chưa khả dụng. Hãy thêm URL TikTok mẫu hợp lệ.');
-    apiCalls++;
-    for(const item of payload.items||[]){
-     const id=String(item.id||'').replace(/[^a-zA-Z0-9_-]/g,'');
-     const link=String(item.url||'').trim();
-     if(!id||!/^https:\/\/(?:www\.)?tiktok\.com\/@[^/]+\/video\/\d{8,22}$/i.test(link)||seen.has(id))continue;
-     seen.add(id);items.push({...item,id,url:link});
-     if(items.length>=1000)break;
-    }
-    await new Promise(resolve=>setTimeout(resolve,1100));
-    const next=payload.nextCursor;
-    if(next===null||next===undefined||String(next)===''||String(next)===String(cursor)||!(payload.hasMore===true))break;
-    cursor=String(next);pageNo++;
-   }
-   if(items.length>=1000)break;
-  }
-  if(!items.length)throw Error('Nguồn không trả về link video TikTok hợp lệ. Không ghi dữ liệu mẫu.');
-  await db.ref(testRoot).remove();
   const now=new Date().toISOString(),entries={};
-  items.slice(0,1000).forEach((x,i)=>{
-   const id='tt_'+x.id;
-   entries[id]={name:String(x.authorName||x.username||('TikTok VN '+(i+1))).slice(0,100),type:'Cá nhân',dept:'TikTok Trending Việt Nam',views:Number(x.views)||0,likes:Number(x.likes)||0,shares:Number(x.shares)||0,url:x.url,testSample:true,statsSource:'TikTok public search (TEST)',sampleCreatedAt:now};
-  });
-  const pairs=Object.entries(entries);
-  for(let i=0;i<pairs.length;i+=100){
-   const part=Object.fromEntries(pairs.slice(i,i+100));
-   await db.ref(testRoot+'/entries').update(part);
-   sampleStatusText('Đã lưu '+Math.min(i+100,pairs.length)+'/'+pairs.length+' link vào nhánh TEST riêng...');
+  for(const [i,x] of samples.entries()){
+   entries['tt_'+x.id]={
+    name:'Video thử nghiệm '+String(i+1).padStart(4,'0'),
+    type:'Cá nhân',dept:'Bộ URL công khai - TEST',url:x.url,
+    views:0,likes:0,shares:0,testSample:true,statsSource:'URL dataset; chưa xác minh chỉ số',
+    sampleSource:x.source,sampleCreatedAt:now
+   };
   }
-  await db.ref(testRoot+'/meta').set({source:'TikTok public search scrape',createdAt:now,requested:1000,loaded:pairs.length,apiCalls,region:'VN'});
+  const payload={entries,meta:{createdAt:now,source:sourceLabel,region:'Chưa xác minh',requested:1000,loaded:samples.length,countersVerified:0}};
+  sampleStatusText('Đang ghi '+samples.length+' URL vào Firebase nhánh TEST riêng...');
+  await db.ref(testRoot).set(payload);
+  try{localStorage.removeItem('topkey_vlog2026_scan:'+testRoot+'/entries')}catch{}
+  const verify=await db.ref(testRoot+'/entries').once('value');
+  const saved=verify.numChildren();
+  if(saved!==samples.length)throw Error('Firebase chỉ xác minh '+saved+'/'+samples.length+' URL đã lưu.');
   if(testRef&&testListener)testRef.off('value',testListener);
   testRef=db.ref(testRoot+'/entries');testListener=snap=>showTestMode({entries:snap.val()});testRef.on('value',testListener);
   window.__TOPKEY_VLOG_TEST_MODE=true;
-  sampleStatusText('Đã nạp '+pairs.length+'/1.000 link duy nhất vào TEST LAB. '+(pairs.length<1000?'Nguồn hiện chỉ trả về '+pairs.length+' link; không tự tạo link giả. ':'')+'Bấm “Quét link mẫu bằng yt-dlp” để thử đọc số liệu. Production không bị thay đổi.');
- }catch(e){
-  const code=String(e?.code||'').toUpperCase();
-  const message=code.includes('PERMISSION')||code.includes('DENIED')
-   ?'Firebase từ chối ghi nhánh TEST. Hãy Publish Rules mới tại Firebase Console và đăng nhập lại ADMIN.'
-   :String(e?.message||e);
-  sampleStatusText('Không nạp được dữ liệu mẫu: '+message);
- }
- finally{sampleLoadBtn.disabled=false;sampleDeleteBtn.disabled=false;}
+  sampleStatusText('Đã xác minh '+saved+' URL duy nhất trong Firebase TEST. Chỉ số 0 là giá trị ban đầu, chưa đọc từ TikTok. Nhấn “Quét link mẫu bằng yt-dlp” để kiểm tra theo lô tối đa 25. Không ghi production.');
+ }finally{sampleLoadBtn.disabled=false;sampleDeleteBtn.disabled=false;if(sampleImportFile)sampleImportFile.disabled=false;}
+}
+sampleLoadBtn.addEventListener('click',async()=>{
+ if(sampleLoadBtn.disabled)return;
+ try{
+  if(!isRootAdmin||!db)throw Error('Chỉ ADMIN hệ thống được nạp bộ dữ liệu TEST.');
+  sampleStatusText('Đang tải bộ 1.000 URL video có nguồn công khai...');
+  const response=await fetch(SAMPLE_DATA_PATH,{cache:'no-store'});
+  if(!response.ok)throw Error('Không tải được bộ URL mẫu (HTTP '+response.status+').');
+  const data=await response.json();
+  if(data.schemaVersion!==1||!Array.isArray(data.items))throw Error('Định dạng dữ liệu mẫu không hợp lệ.');
+  await importRealVideos(data.items,'Hai bộ dữ liệu công khai Bright Data; ngày truy xuất 2026-11-15');
+ }catch(e) {sampleStatusText('Không nạp được dữ liệu mẫu: '+String(e?.message||e));}
+});
+sampleImportFile?.addEventListener('change',async()=>{
+ const file=sampleImportFile.files?.[0];if(!file)return;
+ try{
+  if(file.size>5*1024*1024)throw Error('Tệp tối đa 5 MB');
+  const text=await file.text();let rows;
+  if(file.name.toLowerCase().endsWith('.json')){
+   const data=JSON.parse(text);rows=Array.isArray(data)?data:data.items;
+   if(!Array.isArray(rows))throw Error('JSON phải có mảng items hoặc là mảng URL.');
+  }else{
+   rows=(text.match(/https:\/\/(?:www\.)?tiktok\.com\/@[^\s,";]+\/video\/\d{15,22}(?:\?[^\s,";]*)?/gi)||[]);
+  }
+  await importRealVideos(rows,'Tệp ADMIN tải lên: '+file.name.slice(0,90));
+ }catch(e){sampleStatusText('Không nhập được tệp: '+String(e?.message||e))}
+ finally{sampleImportFile.value='';}
 });
 sampleDeleteBtn.addEventListener('click',async()=>{
  if(sampleDeleteBtn.disabled)return;
