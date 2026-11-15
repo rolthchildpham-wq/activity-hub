@@ -5,6 +5,16 @@ const read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const shared=read('topkey-shared-auth.js'),platform=read('topkey-platform-core.js');
 const badminton=read('sports/badminton/index.html'),vnext=read('sports/vnext/index.html');
 const rules=JSON.parse(read('firebase.database.rules.json')).rules;
+assert.match(platform,/bindLogin\(\{ensureCore:\(\)=>shellPromise\}\)/,'H138 early login binding restored');
+for(const html of [badminton,vnext]){
+ assert.match(html,/<script id="topkey-login-native-refresh-guard">/,'H138 guard must intercept mobile form before boot');
+ assert.ok(html.indexOf('id="topkey-login-native-refresh-guard"') < html.indexOf('src="../../topkey-platform-core.js?'),'guard must execute before boot');
+ assert.match(html,/topkey-platform-core\.js\?v=h140-mobile-h138-recovery-20261115/);
+}
+for(const sw of [read('sports/badminton/sw.js'),read('sports/vnext/sw.js')]){
+ assert.match(sw,/topkey-platform-core\.js\?v=h140-mobile-h138-recovery-20261115/);
+ assert.match(sw,/topkey-shared-auth\.js\?v=h140-unified-mobile-20261115/);
+}
 assert.match(shared,/const authRoot=\(\)=>\s*'topkey_badminton_vnext_2026'/,'All sports must read central profiles');
 assert.doesNotMatch(shared,/location\.replace\('\.\.\/\.\.\/index\.html\?access=denied/,'Do not redirect an authenticated user on scope denial');
 assert.match(shared,/this\._showVerificationPending\(this\._accessDeniedMessage\)/);
