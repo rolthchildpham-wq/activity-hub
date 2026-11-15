@@ -40,13 +40,13 @@ const link=s=>{const value=String(s||'').trim();if(!value)return '';try{const u=
 const safeLink=s=>{try{return link(s)}catch{return''}};
 const score=e=>(+e.views||0)*data.weights.views+(+e.likes||0)*data.weights.likes+(+e.shares||0)*data.weights.shares;
 const ranking=()=>Object.values(data.entries||{}).map(e=>({...e,score:score(e)})).sort((a,b)=>b.score-a.score||String(a.name).localeCompare(String(b.name),'vi'));
-function topCard(x,rank){const style=rank===1?'first':rank===2?'second':'third';if(!x)return '<div class="pod '+style+'"><p class="muted">Chưa có thí sinh</p></div>';return '<div class="pod '+style+'"><div><div class="number">#'+rank+'</div><div class="person">'+esc(x.name)+'</div><div class="meta">'+esc(x.type)+' '+(!real?'<span class="demo">DỮ LIỆU MẪU</span>':'')+'</div><div class="points">'+nf(x.score)+' <small style="font-size:10px;color:#a7bacb">điểm</small></div><div class="tiny">'+nf(x.views)+' xem · '+nf(x.likes)+' thích · '+nf(x.shares)+' chia sẻ</div>'+(safeLink(x.url)?'<a class="view" target="_blank" rel="noopener noreferrer" href="'+esc(safeLink(x.url))+'">Xem video ↗</a>':'<span class="view">Chưa có video</span>')+'</div><div class="pedestal"></div></div>'}
+function topCard(x,rank){const style=rank===1?'first':rank===2?'second':'third';if(!x)return '<div class="pod '+style+'"><p class="muted">Chưa có thí sinh</p></div>';return '<div class="pod '+style+'"><div><div class="number">#'+rank+'</div><div class="person">'+esc(x.name)+'</div><div class="meta">'+esc(x.type)+' '+(testMode?'<span class="demo">TEST · TIKTOK VN</span>':(!real?'<span class="demo">DỮ LIỆU MẪU</span>':''))+'</div><div class="points">'+nf(x.score)+' <small style="font-size:10px;color:#a7bacb">điểm</small></div><div class="tiny">'+nf(x.views)+' xem · '+nf(x.likes)+' thích · '+nf(x.shares)+' chia sẻ</div>'+(safeLink(x.url)?'<a class="view" target="_blank" rel="noopener noreferrer" href="'+esc(safeLink(x.url))+'">Xem video ↗</a>':'<span class="view">Chưa có video</span>')+'</div><div class="pedestal"></div></div>'}
 function render(){
  const a=ranking(),s=a.reduce((o,e)=>{o.views+=(+e.views||0);o.likes+=(+e.likes||0);o.shares+=(+e.shares||0);o.score+=e.score;return o},{views:0,likes:0,shares:0,score:0});
  $('stats').innerHTML=[['Bài dự thi',a.length],['Tổng lượt xem',s.views],['Tổng lượt thích',s.likes],['Tổng lượt chia sẻ',s.shares],['Tổng điểm',s.score]].map(([t,n])=>'<div class="stat"><label>'+t+'</label><strong>'+nf(n)+'</strong><div class="detail">'+(testMode?'Dữ liệu kiểm thử riêng':(real?'Dữ liệu cuộc thi':'Số liệu giả lập'))+'</div></div>').join('');
  $('podium').innerHTML=topCard(a[0],1)+topCard(a[1],2)+topCard(a[2],3);
  const q=$('search').value.trim().toLowerCase();
- $('rows').innerHTML=a.filter(x=>String(x.name+' '+(x.dept||'')).toLowerCase().includes(q)).map(x=>'<tr><td>'+String(a.indexOf(x)+1)+'</td><td><strong>'+esc(x.name)+'</strong> '+(!real?'<span class="demo">DỮ LIỆU MẪU</span>':'')+'<div class="muted">'+esc(x.type||'')+(x.dept?' · '+esc(x.dept):'')+'</div></td><td>'+nf(x.views)+'</td><td>'+nf(x.likes)+'</td><td>'+nf(x.shares)+'</td><td class="score">'+nf(x.score)+'</td><td>'+(safeLink(x.url)?'<a href="'+esc(safeLink(x.url))+'" rel="noopener noreferrer" target="_blank">TikTok ↗</a>':'—')+(isAdmin&&real?' <button type="button" data-edit="'+esc(x.id)+'" class="small">Sửa</button>':'')+'</td></tr>').join('')||'<tr><td class="no-data" colspan="7">Chưa có bài dự thi</td></tr>';
+ $('rows').innerHTML=a.filter(x=>String(x.name+' '+(x.dept||'')).toLowerCase().includes(q)).map(x=>'<tr><td>'+String(a.indexOf(x)+1)+'</td><td><strong>'+esc(x.name)+'</strong> '+(testMode?'<span class="demo">TEST · TIKTOK VN</span>':(!real?'<span class="demo">DỮ LIỆU MẪU</span>':''))+'<div class="muted">'+esc(x.type||'')+(x.dept?' · '+esc(x.dept):'')+'</div></td><td>'+nf(x.views)+'</td><td>'+nf(x.likes)+'</td><td>'+nf(x.shares)+'</td><td class="score">'+nf(x.score)+'</td><td>'+(safeLink(x.url)?'<a href="'+esc(safeLink(x.url))+'" rel="noopener noreferrer" target="_blank">TikTok ↗</a>':'—')+(isAdmin&&real?' <button type="button" data-edit="'+esc(x.id)+'" class="small">Sửa</button>':'')+'</td></tr>').join('')||'<tr><td class="no-data" colspan="7">Chưa có bài dự thi</td></tr>';
  $('warning').hidden=real&&!testMode;if(testMode)$('warning').innerHTML='<strong>⚠ CHẾ ĐỘ KIỂM THỬ:</strong> Đang xem dữ liệu TikTok mẫu trong nhánh riêng. Không thay đổi BXH production.';$('formula').textContent='Điểm = '+nf(data.weights.views)+' × lượt xem + '+nf(data.weights.likes)+' × lượt thích + '+nf(data.weights.shares)+' × lượt chia sẻ. Bảng tự động tính lại mỗi khi số liệu hoặc hệ số thay đổi.';
  if(!weightsDraft){$('wviews').value=data.weights.views;$('wlikes').value=data.weights.likes;$('wshares').value=data.weights.shares;}
  $('refresh-time').textContent=(testMode?'TEST LAB · dữ liệu riêng · ':(real?'Số liệu do BTC quản lý · ':'Dữ liệu mẫu · '))+'Cập nhật '+new Date().toLocaleString('vi-VN');
@@ -118,9 +118,10 @@ sampleLoadBtn.addEventListener('click',async()=>{
      seen.add(id);items.push({...item,id,url:link});
      if(items.length>=1000)break;
     }
+    await new Promise(resolve=>setTimeout(resolve,1100));
     const next=payload.nextCursor;
     if(next===null||next===undefined||String(next)===''||String(next)===String(cursor)||!(payload.hasMore===true))break;
-    cursor=String(next);pageNo++;await new Promise(resolve=>setTimeout(resolve,1100));
+    cursor=String(next);pageNo++;
    }
    if(items.length>=1000)break;
   }
@@ -184,4 +185,4 @@ try{
  });
 }catch(e){console.warn('TOPKEY Vlog boot',e);$('refresh-time').textContent='Không có kết nối Firebase · dữ liệu mẫu'}
 })();
-</script><footer aria-label="Pháp lý TOPKEY Vlog" style="padding:26px max(22px,calc((100% - 1120px)/2));border-top:1px solid #34425b;color:#b7c9da;font-size:14px;display:flex;gap:22px;flex-wrap:wrap"><a href="../../terms.html" style="color:#78e5e5">Điều khoản sử dụng</a><a href="../../privacy.html" style="color:#78e5e5">Chính sách quyền riêng tư</a><span>TOPKEY Vlog 2026 · Đồng bộ TikTok chỉ thực hiện khi được cấp quyền</span></footer><script src="./tiktok-automation.js?v=testlab-1000-vn-isolated-20261115b"></script></body></html>
+</script><footer aria-label="Pháp lý TOPKEY Vlog" style="padding:26px max(22px,calc((100% - 1120px)/2));border-top:1px solid #34425b;color:#b7c9da;font-size:14px;display:flex;gap:22px;flex-wrap:wrap"><a href="../../terms.html" style="color:#78e5e5">Điều khoản sử dụng</a><a href="../../privacy.html" style="color:#78e5e5">Chính sách quyền riêng tư</a><span>TOPKEY Vlog 2026 · Đồng bộ TikTok chỉ thực hiện khi được cấp quyền</span></footer><script src="./tiktok-automation.js?v=testlab-1000-vn-isolated-20261115c"></script></body></html>
