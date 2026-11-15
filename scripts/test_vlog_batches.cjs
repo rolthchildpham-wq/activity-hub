@@ -21,7 +21,7 @@ const db={ref:root=>{
  }};
 }};
 const firebase={auth:()=>({currentUser:{uid:'test_admin'}}),database:()=>db};
-const ctx={window:{firebase,__TOPKEY_VLOG_TEST_MODE:true},firebase,Map,Set,String,Date,Number,Object,JSON,
+const ctx={$:()=>({value:'10'}),window:{firebase,__TOPKEY_VLOG_TEST_MODE:true},firebase,Map,Set,String,Date,Number,Object,JSON,
   localStorage:{getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v),removeItem:k=>storage.delete(k)},
   validTikTokVideo:url=>/^https:\/\/www\.tiktok\.com\/@[^/]+\/video\/\d{15,22}$/.test(url),
   readEdgeOneMetadata:async()=>({ok:true,stats:{views:55,likes:6,shares:2}}),
