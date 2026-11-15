@@ -18,9 +18,9 @@ async function readEdgeOneMetadata(url){
   if(!type.includes("application/json"))throw Error("EdgeOne chưa triển khai API yt-dlp, phản hồi không phải JSON.");
   const data=await response.json();
   if(!response.ok||!data.ok){
-   const e=Error(data.message||("EdgeOne API lỗi "+response.status));
-   e.status=response.status;
-   throw e;
+   const failure=Error(data.message||("EdgeOne API lỗi "+response.status));
+   failure.status=response.status;
+   throw failure;
   }
   return data;
  }finally{clearTimeout(timer)}
@@ -103,49 +103,65 @@ async function runEdgeOneBatch(){
  const fingerprint=entries.length+":"+entries[0][0]+":"+entries[entries.length-1][0]+":"+String(entries[0][1].sampleCreatedAt||"");
  let saved={};
  try{saved=JSON.parse(localStorage.getItem(storageKey)||"{}")||{}}catch{}
- let offset=saved.fingerprint===fingerprint&&Number.isInteger(saved.offset)&&saved.offset>=0&&saved.offset<entries.length?saved.offset:0;
+ const offset=saved.fingerprint===fingerprint&&Number.isInteger(saved.offset)&&saved.offset>=0&&saved.offset<entries.length?saved.offset:0;
  const batch=entries.slice(offset,offset+25);
- let updated=0,partial=0,errors=0,attempted=0;const details=[];
- let stopped=false;
- for(const [id,entry] of batch){
-  const url=String(entry.url||"").trim();
+ const desired=Number($("tiktok-scan-concurrency")?.value||10);
+ const concurrency=desired===25?25:10;
+ let cursor=0,done=0,updated=0,partial=0,errors=0,stop=false;
+ const details=[],completed=new Set(),retry=new Set();
+ const fatal=e=>{
+  const code=Number(e?.status||0),message=String(e?.message||e);
+  return [401,403,429].includes(code)||e?.name==="AbortError"||e?.name==="TypeError"||
+         /network error|failed to fetch|permission.denied|quá thời gian|timeout/i.test(message);
+ };
+ async function scanOne(idx){
+  const [id,entry]=batch[idx],url=String(entry.url||"").trim();
   try{
-   const result=await readEdgeOneMetadata(url);
-   const patch={};
+   const result=await readEdgeOneMetadata(url),patch={};
    for(const key of ["views","likes","shares"]){
     const v=result.stats?.[key];
     if(Number.isSafeInteger(v)&&v>=0&&v<=1000000000)patch[key]=v;
    }
-   if(Object.keys(patch).length===0)throw Error("Không có chỉ số hợp lệ");
-   const ref=db.ref(root+"/"+id);
+   if(!Object.keys(patch).length)throw Error("Không có chỉ số hợp lệ");
    const at=new Date().toISOString();
-   const tx=await ref.transaction(current=>{
+   const tx=await db.ref(root+"/"+id).transaction(current=>{
     if(!current||String(current.url||"").trim()!==url)return;
     return {...current,...patch,statsSource:"EdgeOne yt-dlp",statsFetchedAt:at,statsLastAutoSyncAt:at};
    });
    if(!tx.committed)throw Error("URL thay đổi hoặc không đủ quyền ghi Firebase");
    updated++;if(Object.keys(patch).length<3)partial++;
+   completed.add(idx);
   }catch(e){
    errors++;
-   const message=String(e?.message||e);
-   details.push(id+": "+message.slice(0,100));
-   // Systemic auth/network failures must stop the entire batch immediately;
-   // individual inaccessible TikTok videos (HTTP 502) may be skipped.
-   if([401,403,429].includes(e?.status)||e?.name==="AbortError"||
-      e?.name==="TypeError"||/network error|failed to fetch|permission.denied/i.test(message)){
-    stopped=true;
-    info("DỪNG QUÉT: "+message.slice(0,150)+" · giữ vị trí để sửa lỗi rồi thử lại.");
-    break;
-   }
+   details.push(id+": "+String(e?.message||e).slice(0,100));
+   if(fatal(e)){stop=true;retry.add(idx)}
+   else completed.add(idx); // unavailable video: record and continue to next link
+  }finally{
+   done++;
+   info("EdgeOne yt-dlp · "+(offset+done)+"/"+entries.length+
+        " · đồng thời "+Math.min(concurrency,batch.length)+
+        " · cập nhật "+updated+" · lỗi "+errors+(stop?" · đang dừng do lỗi API":""));
   }
-  attempted++;
-  info("EdgeOne yt-dlp: "+(offset+attempted)+"/"+entries.length+" · lô "+attempted+"/"+batch.length+" · cập nhật "+updated+" · lỗi "+errors);
  }
- const processed=offset+attempted,finished=processed>=entries.length;
+ async function worker(){
+  while(!stop&&cursor<batch.length){
+   const idx=cursor++;
+   await scanOne(idx);
+  }
+ }
+ await Promise.all(Array.from({length:Math.min(concurrency,batch.length)},()=>worker()));
+ // On a fatal error, resume from the earliest item that was not safely completed.
+ // In-flight requests may finish out of order; repeating a successful item is safe
+ // because URL-checked Firebase transactions are idempotent for identical metrics.
+ let advanced=0;
+ while(advanced<batch.length&&completed.has(advanced))advanced++;
+ const processed=offset+(stop?advanced:batch.length),finished=processed>=entries.length;
  try{localStorage.setItem(storageKey,JSON.stringify({fingerprint,offset:finished?0:processed}))}catch{}
- info((stopped?"TẠM DỪNG":"ĐÃ QUÉT")+" "+processed+"/"+entries.length+" URL · lô này thành công "+updated+" ("+partial+" thiếu chỉ số) · lỗi "+errors+"."+
-      (stopped?" Có lỗi hệ thống; vị trí quét được giữ nguyên để thử lại sau khi khắc phục.":finished?" Đã đến cuối danh sách. Bấm lại để quét vòng mới.":" Bấm quét lần nữa để tiếp tục từ URL "+(processed+1)+".")+
-      (details.length?" Lỗi: "+details.slice(0,4).join(" | "):""));
+ info((stop?"TẠM DỪNG":"ĐÃ QUÉT")+" "+processed+"/"+entries.length+" URL · "+
+      "đồng thời "+Math.min(concurrency,batch.length)+" · cập nhật "+updated+
+      " ("+partial+" thiếu chỉ số) · lỗi "+errors+"."+
+      (stop?" Lỗi hệ thống: giữ vị trí để thử lại.":finished?" Đã đến cuối danh sách.":" Bấm quét lần nữa để tiếp tục từ URL "+(processed+1)+".")+
+      (details.length?" Chi tiết: "+details.slice(0,4).join(" | "):""));
 }
 bulk.addEventListener("click",()=>run(bulk,async()=>{info("Đang đọc số liệu qua EdgeOne yt-dlp...");await runEdgeOneBatch();}));
 sync?.addEventListener("click",()=>run(sync,async()=>{
