@@ -8,16 +8,33 @@ import json
 import re
 from urllib.parse import urlparse
 
-import firebase_admin
-from firebase_admin import auth
+import google.auth.transport.requests
+from google.oauth2 import id_token
 import yt_dlp
 
 PROJECT_ID = "topkey-badminton"
 HOSTS = {"www.tiktok.com", "tiktok.com", "m.tiktok.com", "vm.tiktok.com", "vt.tiktok.com"}
 VIDEO = re.compile(r"^/(?:@[^/]+/video/|share/video/)[0-9]{15,22}/?$")
 SHORT = re.compile(r"^/[A-Za-z0-9_-]+/?$")
-if not firebase_admin._apps:
-    firebase_admin.initialize_app(options={"projectId": PROJECT_ID})
+# Google-signed Firebase JWTs can be verified without service-account credentials.
+# Cloud Functions may lack ADC; Admin SDK token checks can hang probing metadata.
+GOOGLE_HTTP = google.auth.transport.requests.Request()
+
+
+def verify_user_token(token):
+    if not isinstance(token, str) or token.count(".") != 2 or len(token) > 11000:
+        raise ValueError("Malformed Firebase ID token")
+
+    def request_with_timeout(**params):
+        params["timeout"] = 6
+        return GOOGLE_HTTP(**params)
+
+    claims = id_token.verify_firebase_token(token, request_with_timeout,
+                                            audience=PROJECT_ID)
+    if not claims or not claims.get("sub") or not claims.get("user_id"):
+        raise ValueError("Invalid Firebase token claims")
+    return claims
+
 
 
 def validate_url(value):
@@ -73,9 +90,7 @@ class handler(BaseHTTPRequestHandler):
             self.respond(401, {"ok": False, "message": "Firebase sign-in required"})
             return
         try:
-            claims = auth.verify_id_token(token[7:], check_revoked=False)
-            if not claims.get("uid"):
-                raise ValueError("Missing UID")
+            claims = verify_user_token(token[7:])
         except Exception:
             self.respond(401, {"ok": False, "message": "Invalid Firebase ID token"})
             return
