@@ -33,7 +33,12 @@ export async function onRequestPost(context){
   if(kind==='search'){
    const u=new URL('https://www.tikwm.com/api/feed/search/');
    u.searchParams.set('keywords',keyword);u.searchParams.set('count',String(count));u.searchParams.set('cursor',cursor);u.searchParams.set('hd','1');
-   upstream=await fetch(u.toString(),{headers:{'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124.0 Safari/537.36','referer':'https://www.tiktok.com/','accept':'application/json'},signal:AbortSignal.timeout(18000)});
+   const headers={'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124.0 Safari/537.36','referer':'https://www.tiktok.com/','accept':'application/json'};
+   upstream=await fetch(u.toString(),{headers,signal:AbortSignal.timeout(18000)});
+   if(upstream.status===403||upstream.status===405||upstream.status===429){
+    const form=new URLSearchParams({keywords:keyword,count:String(count),cursor,hd:'1'});
+    upstream=await fetch('https://www.tikwm.com/api/feed/search/',{method:'POST',headers:{...headers,'content-type':'application/x-www-form-urlencoded; charset=UTF-8','cookie':'current_language=en'},body:form,signal:AbortSignal.timeout(18000)});
+   }
   }else{
    const form=new URLSearchParams({region:'VN',count:String(count),cursor,web:'1',hd:'1'});
    upstream=await fetch('https://www.tikwm.com/api/feed/list/',{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded; charset=UTF-8','user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124.0 Safari/537.36','referer':'https://www.tiktok.com/','cookie':'current_language=en'},body:form,signal:AbortSignal.timeout(18000)});
