@@ -47,11 +47,8 @@
   if(m)return translate(m[1],lang)+' · '+translate(m[2],lang)+' · '+translate(m[3],lang);
   // Translate common dynamic status sentences token by token.
   if(/^(?:ĐANG QUÉT|ĐÃ QUÉT|TẠM DỪNG|HOÀN TẤT|TEST LAB)/.test(s)){
-   const mapped=Object.keys(EXTRA).sort((a,b)=>b.length-a.length).reduce((out,k)=>{
-    const translated=EXTRA[k][lang==='en'?0:1];
-    return out.replace(new RegExp(k.replace(/[.*+?^${}()|[\]\\]/g,'\\  if(record)return record[lang==='en'?0:1];
-  let m=s.match'),'g'),translated);
-   },s);
+   const mapped=Object.keys(EXTRA).sort((a,b)=>b.length-a.length).reduce((out,k)=>
+    out.split(k).join(EXTRA[k][lang==='en'?0:1]),s);
    if(mapped!==s)return mapped;
   }
   m=s.match(/^(\d[\d.,]*) xem · (\d[\d.,]*) thích · (\d[\d.,]*) chia sẻ$/);
