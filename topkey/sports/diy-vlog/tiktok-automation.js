@@ -6,6 +6,23 @@ if(!status||!bulk)return;
 const READER_ORIGIN="https://topkey-tiktok-stats-reader-s90l8b.v2.appdeploy.ai";
 function readerJsonp(path,params,timeoutMs=30000){return new Promise((resolve,reject)=>{const callback="__topkeyReader_"+Date.now()+"_"+Math.random().toString(36).slice(2);const script=document.createElement("script");let done=false;const finish=(err,data)=>{if(done)return;done=true;clearTimeout(timer);delete window[callback];script.remove();err?reject(err):resolve(data)};window[callback]=data=>finish(null,data);script.onerror=()=>finish(Error("Không tải được Reader V2 JSONP. Kiểm tra kết nối mạng hoặc trạng thái dịch vụ."));const query=new URLSearchParams({...params,callback});script.src=READER_ORIGIN+path+"?"+query.toString();const timer=setTimeout(()=>finish(Error("Reader V2 quá thời gian "+Math.round(timeoutMs/1000)+" giây.")),timeoutMs);document.head.appendChild(script);});}
 window.__topkeyTikTokStatsMeta=null;
+async function readEdgeOneMetadata(url){
+ if(!window.firebase?.auth?.().currentUser)throw Error("Cần đăng nhập ADMIN/BTC trước khi đọc TikTok.");
+ const token=await firebase.auth().currentUser.getIdToken();
+ const controller=new AbortController();
+ const timer=setTimeout(()=>controller.abort(),28000);
+ try{
+  const response=await fetch("/api/tiktok-metadata",{
+   method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+token},
+   body:JSON.stringify({url}),signal:controller.signal,cache:"no-store"
+  });
+  const type=response.headers.get("content-type")||"";
+  if(!type.includes("application/json"))throw Error("EdgeOne chưa triển khai API yt-dlp, phản hồi không phải JSON.");
+  const data=await response.json();
+  if(!response.ok||!data.ok)throw Error(data.message||("EdgeOne API lỗi "+response.status));
+  return data;
+ }finally{clearTimeout(timer)}
+}
 function info(t){status.hidden=false;status.style.display="block";status.textContent=t}
 function errMessage(e){
  const code=String(e?.code||""),msg=String(e?.message||"");
@@ -36,7 +53,7 @@ reader?.addEventListener("click",()=>run(reader,async()=>{
  if(!validTikTokVideo(url))throw Error("Dán link video TikTok có /video/ID hoặc link rút gọn vm.tiktok.com / vt.tiktok.com trước.");
  info("Đang đọc metadata video TikTok. Vui lòng chờ...");
  let payload;
- try{payload=await readerJsonp("/api/read-link-jsonp",{url},25000)}
+ try{payload=await readEdgeOneMetadata(url)}
  catch(e){throw Error(String(e?.message||e))}
  if(!payload?.ok)throw Error(payload?.message||"Reader V2 không đọc được link.");
  const s=payload?.stats||{};
@@ -152,7 +169,42 @@ async function runAuthenticatedWorkerBatch(){
  const report=response.ok?await response.json():{};
  info("Đã nhận "+queued+" công việc mới từ "+items.length+" link. Worker chạy trên máy chủ; Firebase sẽ tự cập nhật khi xử lý xong. Trạng thái: "+JSON.stringify(report.status||{})+".");
 }
+async function runEdgeOneBatch(){
+ if(!window.firebase?.database||!firebase.auth?.().currentUser)throw Error("Cần đăng nhập ADMIN/BTC Vlog.");
+ const db=firebase.database(),root=window.__TOPKEY_VLOG_TEST_MODE?"topkey_vlog2026_test/entries":"topkey_vlog2026/entries";
+ const snapshot=await db.ref(root).once("value");
+ const entries=Object.entries(snapshot.val()||{}).filter(([,e])=>e&&validTikTokVideo(String(e.url||"").trim()));
+ if(!entries.length){info("Không có video TikTok hợp lệ.");return;}
+ let updated=0,partial=0,errors=0;const details=[];
+ for(const [id,entry] of entries.slice(0,25)){
+  const url=String(entry.url||"").trim();
+  try{
+   const result=await readEdgeOneMetadata(url);
+   const patch={};
+   for(const key of ["views","likes","shares"]){
+    const v=result.stats?.[key];
+    if(Number.isSafeInteger(v)&&v>=0&&v<=1000000000)patch[key]=v;
+   }
+   if(Object.keys(patch).length===0)throw Error("Không có chỉ số hợp lệ");
+   const ref=db.ref(root+"/"+id);
+   const at=new Date().toISOString();
+   const tx=await ref.transaction(current=>{
+    if(!current||String(current.url||"").trim()!==url)return;
+    return {...current,...patch,statsSource:"EdgeOne yt-dlp",statsFetchedAt:at,statsLastAutoSyncAt:at};
+   });
+   if(!tx.committed)throw Error("URL thay đổi hoặc không đủ quyền ghi Firebase");
+   updated++;if(Object.keys(patch).length<3)partial++;
+  }catch(e){errors++;details.push(id+": "+String(e?.message||e).slice(0,100));}
+  info("EdgeOne yt-dlp: "+(updated+errors)+"/"+Math.min(entries.length,25)+" · thành công "+updated+" · lỗi "+errors);
+ }
+ info("HOÀN TẤT: "+updated+" bài ("+partial+" bài thiếu chỉ số) · lỗi "+errors+"."+
+      (entries.length>25?" Còn "+(entries.length-25)+" bài chưa quét.":"")+
+      (details.length?" "+details.slice(0,4).join(" | "):""));
+}
 bulk.addEventListener("click",()=>run(bulk,async()=>{
+ info("Đang đọc TikTok qua EdgeOne Python và lưu bằng quyền Firebase hiện tại...");
+ await runEdgeOneBatch();
+ return;
  if(WORKER_API){info("Đang đưa các link TikTok vào hàng đợi máy chủ...");await runAuthenticatedWorkerBatch();return;}
 
  if(!window.firebase?.database||!firebase.auth?.().currentUser)throw Error("Chưa đăng nhập Firebase. Hãy đăng nhập lại ADMIN/BTC DIY.");
