@@ -10,7 +10,7 @@ async function readEdgeOneMetadata(url){
  async function requestMetadata(forceRefresh){
   const token=await user.getIdToken(Boolean(forceRefresh));
   const controller=new AbortController();
-  const timer=setTimeout(()=>controller.abort(),12000);
+  const timer=setTimeout(()=>controller.abort(new Error('Quá thời gian chờ phản hồi TikTok 30 giây')),30000);
   try{
    const response=await fetch("/api/tiktok-stats",{
     method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+token},
@@ -26,6 +26,12 @@ async function readEdgeOneMetadata(url){
     throw failure;
    }
    return data;
+  }catch(e){
+   if(controller.signal.aborted){
+    const failure=new Error('Quá thời gian chờ phản hồi TikTok (30 giây)');
+    failure.status=504;failure.code='UPSTREAM_TIMEOUT';throw failure;
+   }
+   throw e;
   }finally{clearTimeout(timer)}
  }
  try{return await requestMetadata(false)}
@@ -116,7 +122,17 @@ async function runEdgeOneBatch(){
  const fingerprint=entries.length+":"+entries[0][0]+":"+entries[entries.length-1][0]+":"+String(entries[0][1].sampleCreatedAt||"");
  let saved={};try{saved=JSON.parse(localStorage.getItem(rootKey)||"{}")||{}}catch{}
  const offset=saved.fingerprint===fingerprint&&Number.isInteger(saved.offset)&&saved.offset>=0&&saved.offset<entries.length?saved.offset:0;
- const desired=Number($("tiktok-scan-concurrency")?.value||3),concurrency=desired===25?25:desired===10?10:3;
+ // Conservative effective concurrency on free EdgeOne + unofficial TikWM:
+ // 25 is the legacy UI preset, NOT 25 simultaneous upstream requests.
+ const desired=Number($("tiktok-scan-concurrency")?.value||3);
+ const concurrency=desired===3?3:5;
+ const START_SPACING_MS=300;
+ let nextStartAt=0;
+ const pace=async()=>{
+  const now=Date.now(),wait=Math.max(0,nextStartAt-now);
+  nextStartAt=Math.max(now,nextStartAt)+START_SPACING_MS;
+  if(wait>0)await new Promise(resolve=>setTimeout(resolve,wait));
+ };
  const failed=new Map(),total=entries.length;
  if(saved.fingerprint===fingerprint && Array.isArray(saved.failures)){
   for(const f of saved.failures)if(f?.id&&f?.url)failed.set(String(f.id),f);
@@ -152,7 +168,7 @@ async function runEdgeOneBatch(){
   try{localStorage.setItem(rootKey,JSON.stringify(data));localStorage.setItem(reportKey,JSON.stringify(data))}catch{}
  };
  const showProgress=()=>{
-  info("ĐANG QUÉT "+completed+"/"+total+" URL · "+concurrency+" luồng · cập nhật "+updated+
+  info("ĐANG QUÉT "+completed+"/"+total+" URL · "+concurrency+" luồng thực tế · cập nhật "+updated+
        " · lỗi "+failed.size+" · tự động tiếp tục...");
  };
  if(report&&typeof report.replaceChildren==='function')report.hidden=true;
@@ -171,6 +187,8 @@ async function runEdgeOneBatch(){
    while(next<wave.length&&!globalStop){
     const index=next++, [id,entry]=wave[index],url=String(entry.url||"").trim();
     try{
+     csrf();
+     await pace();
      csrf();
      const response=await readEdgeOneMetadata(url),patch={};
      for(const key of ["views","likes","shares"]){

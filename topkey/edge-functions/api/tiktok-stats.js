@@ -49,7 +49,7 @@ function permitted(profile){
 }
 async function getJson(url,{headers={},timeout=6000,method='GET',body}={}){
  const controller=new AbortController();
- const timer=setTimeout(()=>controller.abort(),timeout);
+ const timer=setTimeout(()=>controller.abort(new Error('UpstreamTimeout')),timeout);
  try{
   const r=await fetch(url,{method,headers,body,signal:controller.signal,redirect:'follow',cache:'no-store'});
   if(!r.ok)return {status:r.status,data:null};
@@ -89,17 +89,28 @@ function pickCounts(obj,map){
 }
 async function viaTikWM(videoUrl){
  const upstream='https://www.tikwm.com/api/?url='+encodeURIComponent(videoUrl);
- const answer=await getJson(upstream,{timeout:7500,headers:{Accept:'application/json'}});
- if(answer.status!==200||answer.data?.code!==0||!answer.data.data)return null;
- const stats=pickCounts(answer.data.data,SUPPORTED_METRICS);
- return stats?{ok:true,stats,source:'tikwm-unofficial',videoId:String(answer.data.data.id||'')}:null;
+ // Keep a strict per-attempt timeout and one retry for transient errors.
+ // Never retry 4xx other than 429 and do not hammer a rate-limited service.
+ for(let attempt=0;attempt<2;attempt++){
+  let answer=null;
+  try{answer=await getJson(upstream,{timeout:6500,headers:{Accept:'application/json'}})}
+  catch(e){if(attempt===1)return null}
+  if(answer?.status===200&&answer.data?.code===0&&answer.data?.data){
+   const stats=pickCounts(answer.data.data,SUPPORTED_METRICS);
+   if(stats)return {ok:true,stats,source:'tikwm-unofficial',videoId:String(answer.data.data.id||'')};
+   return null; // no metrics: never interpret missing counters as zero
+  }
+  if(answer?.status===400||answer?.status===401||answer?.status===403||answer?.status===404)return null;
+  if(attempt===0)await new Promise(resolve=>setTimeout(resolve,850));
+ }
+ return null;
 }
 async function viaTikTokPage(videoUrl){
  // Fallback only for canonical video URLs. Do not follow a short link to a
  // user-controlled redirect; TikTok may return CAPTCHA/blocked HTML.
  const u=new URL(videoUrl);
  if(!INDIVIDUAL_VIDEO.test(u.pathname)||(u.hostname!=='www.tiktok.com'&&u.hostname!=='tiktok.com'&&u.hostname!=='m.tiktok.com'))return null;
- const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),3500);
+ const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(new Error('TikTokPageTimeout')),3500);
  try{
   const r=await fetch(videoUrl,{signal:ctrl.signal,headers:{Accept:'text/html'},cache:'no-store'});
   if(!r.ok||Number(r.headers.get('content-length')||0)>500000)return null;
@@ -109,8 +120,33 @@ async function viaTikTokPage(videoUrl){
   if(!match)return null;
   const raw=JSON.parse(match[1]);
   const item=raw?.__DEFAULT_SCOPE__?.['webapp.video-detail']?.itemInfo?.itemStruct;
+  const expected=INDIVIDUAL_VIDEO.exec(u.pathname)?.[1];
+  if(item?.id && String(item.id)!==expected)return null;
   const stats=pickCounts(item?.stats,{views:'playCount',likes:'diggCount',shares:'shareCount',comments:'commentCount'});
   return stats?{ok:true,stats,source:'tiktok-page',videoId:String(item.id||'')}:null;
+ }finally{clearTimeout(timer)}
+}
+async function viaTikTokEmbed(videoUrl){
+ // Third fallback: official TikTok video embed HTML, only for canonical URLs.
+ // No scraping of unrelated page counters; return only embedded video metrics.
+ const u=new URL(videoUrl),match=INDIVIDUAL_VIDEO.exec(u.pathname);
+ if(!match||!['www.tiktok.com','tiktok.com','m.tiktok.com'].includes(u.hostname))return null;
+ const videoId=match[1],ctrl=new AbortController();
+ const timer=setTimeout(()=>ctrl.abort(new Error('TikTokEmbedTimeout')),3500);
+ try{
+  const r=await fetch('https://www.tiktok.com/embed/v2/'+videoId,{
+   headers:{Accept:'text/html'},signal:ctrl.signal,cache:'no-store',redirect:'error'
+  });
+  if(!r.ok||Number(r.headers.get('content-length')||0)>300000)return null;
+  const html=await r.text();
+  if(html.length>300000)return null;
+  const script=html.match(/<script[^>]*id=["']__UNIVERSAL_DATA_FOR_REHYDRATION__["'][^>]*>([\s\S]*?)<\/script>/i);
+  if(!script)return null;
+  const data=JSON.parse(script[1]);
+  const item=data?.__DEFAULT_SCOPE__?.['webapp.video-detail']?.itemInfo?.itemStruct;
+  if(String(item?.id||'')!==videoId)return null;
+  const stats=pickCounts(item.stats,{views:'playCount',likes:'diggCount',shares:'shareCount',comments:'commentCount'});
+  return stats?{ok:true,stats,source:'tiktok-embed',videoId}:null;
  }finally{clearTimeout(timer)}
 }
 export default async function onRequest({request}){
@@ -130,7 +166,8 @@ export default async function onRequest({request}){
  try{
   let data=await viaTikWM(videoUrl);
   if(!data){try{data=await viaTikTokPage(videoUrl)}catch{}}
-  if(!data)return reply({ok:false,message:'Không lấy được chỉ số từ TikTok/TikWM'},502);
+  if(!data){try{data=await viaTikTokEmbed(videoUrl)}catch{}}
+  if(!data)return reply({ok:false,code:'VIDEO_UNAVAILABLE',message:'Không đọc được số liệu TikTok/TikWM/Embed; video có thể bị giới hạn hoặc không còn công khai'},502);
   return reply(data);
  }catch(e){
   return reply({ok:false,message:e?.name==='AbortError'?'TikTok upstream timeout':'TikTok upstream unavailable'},502);
