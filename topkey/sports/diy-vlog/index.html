@@ -140,21 +140,22 @@ sampleLoadBtn.addEventListener('click',async()=>{
   if(!isAdmin||!db)throw Error('Chưa xác minh quyền quản trị Vlog.');
   if(!confirm('Nạp bộ dữ liệu mẫu mới? Chỉ thay thế nhánh topkey_vlog2026_test, không đụng dữ liệu cuộc thi thật.'))return;
   sampleLoadBtn.disabled=true;sampleDeleteBtn.disabled=true;
-  const token=await auth.currentUser.getIdToken(true),seen=new Set(),items=[];
+  if(!isRootAdmin||!auth.currentUser)throw Error('Chỉ ADMIN hệ thống đã đăng nhập mới được nạp dữ liệu TEST.');
+  const seen=new Set(),items=[];
   const queries=[{kind:'trend',keyword:''},{kind:'search',keyword:'#xuhuong'},{kind:'search',keyword:'#viral'},{kind:'search',keyword:'#fyp'},{kind:'search',keyword:'trend Việt Nam'},{kind:'search',keyword:'TikTok Việt Nam'},{kind:'search',keyword:'#trending'},{kind:'search',keyword:'#tiktoktrend'},{kind:'search',keyword:'#xuhuongtiktok'},{kind:'search',keyword:'#viralvideo'}];
   let apiCalls=0;
   for(const query of queries){
    let cursor='0',cursorSeen=new Set(),pageNo=0;
    while(items.length<1000&&pageNo<10){
     if(cursorSeen.has(String(cursor)))break;cursorSeen.add(String(cursor));
-    sampleStatusText('Đang cào nguồn '+query.keyword+' · trang '+(pageNo+1)+' · đã thu '+items.length+'/1.000 link...');
-    const url='/api/tiktok-sample-links';
+    sampleStatusText('Đang quét Reader V2 '+(query.keyword||'xu hướng Việt Nam')+' · trang '+(pageNo+1)+' · đã thu '+items.length+'/1.000 link...');
+    const url='https://topkey-tiktok-stats-reader-s90l8b.v2.appdeploy.ai/api/sample-links';
     const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),30000);
     let response,payload;
-    try{response=await fetch(url,{method:'POST',headers:{'content-type':'application/json','authorization':'Bearer '+token},signal:controller.signal,cache:'no-store',body:JSON.stringify({...query,cursor,count:30})});payload=await response.json().catch(()=>({}));}
-    catch(fetchError){throw Error(fetchError?.name==='AbortError'?'Scraper quá thời gian 30 giây. Hãy thử lại.':String(fetchError?.message||fetchError));}
+    try{response=await fetch(url,{method:'POST',mode:'cors',credentials:'omit',headers:{'content-type':'application/json','accept':'application/json'},signal:controller.signal,cache:'no-store',body:JSON.stringify({...query,cursor,count:30})});payload=await response.json().catch(()=>({}));}
+    catch(fetchError){throw Error(fetchError?.name==='AbortError'?'Reader V2 quá thời gian 30 giây. Hãy thử lại.':(fetchError instanceof TypeError?'Không kết nối được Reader V2 (CORS/mạng). Hãy thử tải lại trang.':String(fetchError?.message||fetchError)));}
     finally{clearTimeout(timer)}
-    if(!response.ok||!payload.ok)throw Error(payload.error||('Scraper HTTP '+response.status));
+    if(!response.ok||!payload.ok)throw Error(payload.message||payload.error||('Reader V2 HTTP '+response.status));
     apiCalls++;
     for(const item of payload.items||[]){
      const id=String(item.id||'').replace(/[^a-zA-Z0-9_-]/g,'');
@@ -188,7 +189,13 @@ sampleLoadBtn.addEventListener('click',async()=>{
   testRef=db.ref(testRoot+'/entries');testListener=snap=>showTestMode({entries:snap.val()});testRef.on('value',testListener);
   window.__TOPKEY_VLOG_TEST_MODE=true;
   sampleStatusText('Đã nạp '+pairs.length+'/1.000 link duy nhất vào TEST LAB. '+(pairs.length<1000?'Nguồn hiện chỉ trả về '+pairs.length+' link; không tự tạo link giả. ':'')+'Bấm “Quét link mẫu bằng Reader V2” để thử đọc số liệu. Production không bị thay đổi.');
- }catch(e){sampleStatusText('Không nạp được dữ liệu mẫu: '+String(e?.message||e));}
+ }catch(e){
+  const code=String(e?.code||'').toUpperCase();
+  const message=code.includes('PERMISSION')||code.includes('DENIED')
+   ?'Firebase từ chối ghi nhánh TEST. Hãy Publish Rules mới tại Firebase Console và đăng nhập lại ADMIN.'
+   :String(e?.message||e);
+  sampleStatusText('Không nạp được dữ liệu mẫu: '+message);
+ }
  finally{sampleLoadBtn.disabled=false;sampleDeleteBtn.disabled=false;}
 });
 sampleDeleteBtn.addEventListener('click',async()=>{
