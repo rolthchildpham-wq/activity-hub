@@ -1,4 +1,4 @@
-<!doctype html><html lang="vi" translate="no"><head><meta charset="utf-8"><meta name="google" content="notranslate"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0e1427"><title>TOPKEY Vietnam | Vlog 2026</title>
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0e1427"><title>TOPKEY Vietnam | Vlog 2026</title>
 <style>
 :root{font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:#0d1326;color:#f4f8ff;color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#0d1326}a{color:#6ee7e7;text-decoration:none}button,input{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid #78ecf0;outline-offset:3px}
 header{background:#0b1224;border-bottom:1px solid #1d2845;position:sticky;top:0;z-index:10}.bar{max-width:1320px;margin:auto;min-height:58px;display:flex;align-items:center;justify-content:space-between;padding:12px 22px;gap:14px}.brand{display:flex;align-items:center;gap:10px;color:#fff}.logo{width:31px;height:31px;border-radius:11px;background:#20c5d9;color:#082438;display:grid;place-items:center;font-weight:900;font-size:12px}.brand strong{font-size:12px;display:block}.brand small{font-size:9px;color:#98a6be;letter-spacing:.2em}.nav{display:flex;align-items:center;gap:14px}.nav a,.nav button{font-size:12px;color:#d2d7e8;background:none;border:0}.nav .on{background:#222b43;border-radius:25px;padding:10px 15px}.nav a:hover,.nav button:hover{color:#7deeea}
@@ -129,8 +129,19 @@ header .nav .on{padding:7px 11px}
  .hero .container{padding-top:12px;padding-bottom:12px}
  .hero h1{font-size:clamp(24px,5vw,31px)}
 }
+/* Vlog language choice matches the three languages shared by TOPKEY Hub. */
+.vlog-language-picker{display:inline-flex;gap:3px;padding:3px;background:#131d34;border:1px solid #31435f;border-radius:12px;align-items:center;flex:none}
+.nav .vlog-language-picker button{border:0;border-radius:8px;padding:7px 9px;min-height:32px;color:#aebed4;font-size:11px;font-weight:750;letter-spacing:.02em;white-space:nowrap;line-height:1.1}
+.nav .vlog-language-picker button.active,.nav .vlog-language-picker button[aria-pressed="true"]{background:#246b80;color:#fff}
+.nav .vlog-language-picker button:focus-visible{outline:2px solid #78ecf0;outline-offset:2px}
+@media(max-width:760px){.vlog-language-picker{margin-left:auto}.nav .vlog-language-picker button{padding:7px 8px}}
+@media(max-width:420px){.vlog-language-picker{margin-left:0}.nav .vlog-language-picker button{font-size:10px;padding:7px 7px}}
 </style></head><body>
-<header><div class="bar"><a class="brand" href="../../index.html"><span class="logo">TK</span><span><strong>TOPKEY VIETNAM</strong><small>VLOG 2026</small></span></a><nav class="nav"><a class="on" href="#ranking">♜ Bảng xếp hạng</a><a href="../vnext/index.html?sport=handmade">DIY Hub</a><button id="admin-toggle" type="button" hidden>⚙ Quản trị</button><button id="admin-sign-in" type="button">🔐 Đăng nhập Admin</button><button id="admin-sign-out" type="button" hidden>Đăng xuất Admin</button></nav></div></header>
+<header><div class="bar"><a class="brand" href="../../index.html"><span class="logo">TK</span><span><strong>TOPKEY VIETNAM</strong><small>VLOG 2026</small></span></a><nav class="nav"><a class="on" href="#ranking">♜ Bảng xếp hạng</a><a href="../vnext/index.html?sport=handmade">DIY Hub</a><button id="admin-toggle" type="button" hidden>⚙ Quản trị</button><button id="admin-sign-in" type="button">🔐 Đăng nhập Admin</button><button id="admin-sign-out" type="button" hidden>Đăng xuất Admin</button><div id="vlog-language-picker" class="vlog-language-picker" role="group" aria-label="Ngôn ngữ / Language / 语言" data-vlog-no-i18n>
+<button type="button" data-lang="vi" title="Tiếng Việt" aria-pressed="true">🇻🇳 VI</button>
+<button type="button" data-lang="en" title="English" aria-pressed="false">🇬🇧 EN</button>
+<button type="button" data-lang="zh" title="简体中文" aria-pressed="false">🇨🇳 中</button>
+</div></nav></div></header>
 <div class="hero"><div class="container"><div class="kicker">TOPKEY Vietnam · Cuộc thi Vlog 2026</div><h1>Bảng xếp hạng <span>Vlog TikTok</span></h1><p id="formula">Điểm = 1 × lượt xem + 3 × lượt thích + 5 × lượt chia sẻ. Bảng tự động tính lại mỗi khi số liệu hoặc hệ số thay đổi.</p><div class="status"><span id="refresh-time">Đang tải dữ liệu…</span><button class="small" id="refresh">↻ Làm mới</button><button class="small" id="export">↓ Xuất CSV</button></div></div></div>
 <main class="container content"><div class="warning" id="warning"><strong>⚠ DỮ LIỆU MẪU:</strong> Bảng đang hiển thị các mục giả lập để xem thử, được gắn nhãn riêng. Đây không phải số liệu thật của thí sinh.</div>
 <section class="edit-panel" id="admin-login-panel" hidden>
@@ -396,4 +407,4 @@ try{
  });
 }catch(e){console.warn('TOPKEY Vlog boot',e);$('refresh-time').textContent='Không có kết nối Firebase · dữ liệu mẫu'}
 })();
-</script><footer aria-label="Pháp lý TOPKEY Vlog" style="padding:26px max(22px,calc((100% - 1120px)/2));border-top:1px solid #34425b;color:#b7c9da;font-size:14px;display:flex;gap:22px;flex-wrap:wrap"><a href="../../terms.html" style="color:#78e5e5">Điều khoản sử dụng</a><a href="../../privacy.html" style="color:#78e5e5">Chính sách quyền riêng tư</a><span>TOPKEY Vlog 2026 · Đồng bộ TikTok chỉ thực hiện khi được cấp quyền</span></footer><script src="./tiktok-automation.js?v=tikwm-auto1000-error-report-20261115"></script></body></html>
+</script><footer aria-label="Pháp lý TOPKEY Vlog" style="padding:26px max(22px,calc((100% - 1120px)/2));border-top:1px solid #34425b;color:#b7c9da;font-size:14px;display:flex;gap:22px;flex-wrap:wrap"><a href="../../terms.html" style="color:#78e5e5">Điều khoản sử dụng</a><a href="../../privacy.html" style="color:#78e5e5">Chính sách quyền riêng tư</a><span>TOPKEY Vlog 2026 · Đồng bộ TikTok chỉ thực hiện khi được cấp quyền</span></footer><script src="./tiktok-automation.js?v=tikwm-auto1000-error-report-20261115"></script><script src="./vlog-i18n.js?v=vi-en-zh-scanerrors-20261115" defer></script></body></html>
