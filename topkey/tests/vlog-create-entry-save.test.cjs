@@ -7,7 +7,11 @@ for(const field of ['entry-views','entry-likes','entry-shares']){
 assert.match(html,/id="entry-save-status"/);assert.match(html,/id="weights-save-status"/);
 assert.match(html,/const saved=\(await db\.ref\(root\+'\/entries\/'\+id\)\.once\('value'\)\)\.val\(\)/,'A saved entry must be read back');
 assert.match(html,/remote\.entries=entrySnapshot\.val\(\)/,'Saved entry must refresh rankings');
-assert.match(html,/Đã lưu và đọc lại bài dự thi từ Firebase thành công/,'Save success only after readback');assert.match(html,/Đã lưu và xác minh hệ số trên Firebase thành công/);assert.match(html,/weightsDraft=null/);assert.match(html,/if\(!weightsDraft\)/);assert.match(html,/\.once\('value'\)\)\.val\(\)/);assert.match(html,/const safeLink=s=>/);assert.match(html,/Tạo mới và lưu/);assert.doesNotMatch(html,/\$\('clear-form'\)\.addEventListener\('click',\(\)=>\{\$\('entry-form'\)\.reset\(\)/);assert.match(html,/form\.requestSubmit\(\)/,'Create-new button must save without clearing');assert.match(html,/permission-denied/);
+assert.match(html,/Đã lưu và đọc lại bài dự thi từ Firebase thành công/,'Save success only after readback');
+assert.match(html,/Giữ nguyên các trường để tiếp tục chỉnh sửa/,'Successful create/edit must explicitly retain form values');
+assert.match(html,/\$\('entry-views'\)\.value=String\(saved\.views\?\?obj\.views\)/,'After save, restore verified views into the form');
+assert.match(html,/\$\('entry-likes'\)\.value=String\(saved\.likes\?\?obj\.likes\)/,'After save, restore verified likes into the form');
+assert.match(html,/\$\('entry-shares'\)\.value=String\(saved\.shares\?\?obj\.shares\)/,'After save, restore verified shares into the form');assert.match(html,/Đã lưu và xác minh hệ số trên Firebase thành công/);assert.match(html,/weightsDraft=null/);assert.match(html,/if\(!weightsDraft\)/);assert.match(html,/\.once\('value'\)\)\.val\(\)/);assert.match(html,/const safeLink=s=>/);assert.match(html,/Tạo mới và lưu/);assert.doesNotMatch(html,/\$\('clear-form'\)\.addEventListener\('click',\(\)=>\{\$\('entry-form'\)\.reset\(\)/);assert.match(html,/form\.requestSubmit\(\)/,'Create-new button must save without clearing');assert.match(html,/permission-denied/);
 assert.match(html,/isHandmadeScope=\['handmade','diy','diy \/ handmade','🧶 diy \/ handmade'\]\.includes\(scope\)/,'BTC editor must recognize supported DIY scope labels');
 const rules=JSON.parse(fs.readFileSync(path.join(__dirname,'../firebase.database.rules.json'),'utf8'));
 const vlogWrite=rules.rules.topkey_vlog2026['.write'];
