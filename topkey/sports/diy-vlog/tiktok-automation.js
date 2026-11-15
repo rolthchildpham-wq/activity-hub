@@ -12,12 +12,12 @@ async function readEdgeOneMetadata(url){
   const controller=new AbortController();
   const timer=setTimeout(()=>controller.abort(),12000);
   try{
-   const response=await fetch("/api/tiktok-metadata",{
+   const response=await fetch("/api/tiktok-stats",{
     method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+token},
     body:JSON.stringify({url}),signal:controller.signal,cache:"no-store"
    });
    if(!(response.headers.get("content-type")||"").includes("application/json"))
-    throw Error("EdgeOne API yt-dlp không trả JSON, kiểm tra deployment.");
+    throw Error("EdgeOne API TikWM không trả JSON, kiểm tra deployment.");
    const data=await response.json();
    if(!response.ok||!data.ok){
     const failure=Error(data.message||("EdgeOne API lỗi "+response.status));
@@ -117,7 +117,7 @@ async function runEdgeOneBatch(){
  const offset=saved.fingerprint===fingerprint&&Number.isInteger(saved.offset)&&saved.offset>=0&&saved.offset<entries.length?saved.offset:0;
  const batch=entries.slice(offset,offset+25);
  const desired=Number($("tiktok-scan-concurrency")?.value||10);
- const concurrency=desired===25?25:10;
+ const concurrency=desired===25?25:desired===10?10:3;
  let cursor=0,done=0,updated=0,partial=0,errors=0,stop=false;
  const details=[],completed=new Set(),retry=new Set();
  const fatal=e=>{
@@ -137,7 +137,7 @@ async function runEdgeOneBatch(){
    const at=new Date().toISOString();
    const tx=await db.ref(root+"/"+id).transaction(current=>{
     if(!current||String(current.url||"").trim()!==url)return;
-    return {...current,...patch,statsSource:"EdgeOne yt-dlp",statsFetchedAt:at,statsLastAutoSyncAt:at};
+    return {...current,...patch,statsSource:String(result.source||"EdgeOne TikWM"),statsFetchedAt:at,statsLastAutoSyncAt:at};
    });
    if(!tx.committed)throw Error("URL thay đổi hoặc không đủ quyền ghi Firebase");
    updated++;if(Object.keys(patch).length<3)partial++;
@@ -149,7 +149,7 @@ async function runEdgeOneBatch(){
    else completed.add(idx); // unavailable video: record and continue to next link
   }finally{
    done++;
-   info("EdgeOne yt-dlp · "+(offset+done)+"/"+entries.length+
+   info("EdgeOne TikTok · "+(offset+done)+"/"+entries.length+
         " · đồng thời "+Math.min(concurrency,batch.length)+
         " · cập nhật "+updated+" · lỗi "+errors+(stop?" · đang dừng do lỗi API":""));
   }
