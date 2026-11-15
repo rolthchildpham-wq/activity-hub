@@ -11,6 +11,8 @@ on:
       - 'topkey/executive-dashboard.css'
       - 'topkey/executive-dashboard.js'
       - 'topkey/sports/badminton/index.html'
+      - 'topkey/sports/diy-vlog/**'
+      - 'topkey/tests/vlog-*.test.cjs'
       - 'topkey/sports/vnext/index.html'
       - 'topkey/l/index.html'
       - 'topkey/sports/vnext/h97-vnext.bundle.js'
