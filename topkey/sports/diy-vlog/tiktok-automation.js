@@ -3,7 +3,8 @@
 const $=id=>document.getElementById(id);
 const status=$("tiktok-sync-status"),connect=$("tiktok-connect"),sync=$("tiktok-sync-now"),reader=$("tiktok-read-link"),bulk=$("tiktok-sync-all-links");
 if(!status||!bulk)return;
-const READER_API="https://topkey-tiktok-stats-reader-s90l8b.v2.appdeploy.ai/api/read-link";
+const READER_ORIGIN="https://topkey-tiktok-stats-reader-s90l8b.v2.appdeploy.ai";
+function readerJsonp(path,params,timeoutMs=30000){return new Promise((resolve,reject)=>{const callback="__topkeyReader_"+Date.now()+"_"+Math.random().toString(36).slice(2);const script=document.createElement("script");let done=false;const finish=(err,data)=>{if(done)return;done=true;clearTimeout(timer);delete window[callback];script.remove();err?reject(err):resolve(data)};window[callback]=data=>finish(null,data);script.onerror=()=>finish(Error("Không tải được Reader V2 JSONP. Kiểm tra kết nối mạng hoặc trạng thái dịch vụ."));const query=new URLSearchParams({...params,callback});script.src=READER_ORIGIN+path+"?"+query.toString();const timer=setTimeout(()=>finish(Error("Reader V2 quá thời gian "+Math.round(timeoutMs/1000)+" giây.")),timeoutMs);document.head.appendChild(script);});}
 window.__topkeyTikTokStatsMeta=null;
 function info(t){status.hidden=false;status.style.display="block";status.textContent=t}
 function errMessage(e){
@@ -34,23 +35,10 @@ reader?.addEventListener("click",()=>run(reader,async()=>{
  const url=$("entry-url")?.value?.trim()||"";
  if(!validTikTokVideo(url))throw Error("Dán link video TikTok có /video/ID hoặc link rút gọn vm.tiktok.com / vt.tiktok.com trước.");
  info("Đang đọc metadata video TikTok. Vui lòng chờ...");
- const controller=new AbortController();
- const timeout=setTimeout(()=>controller.abort(),25000);
  let payload;
- try{
-  const response=await fetch(READER_API,{
-   method:"POST",mode:"cors",credentials:"omit",cache:"no-store",signal:controller.signal,
-   headers:{"Content-Type":"application/json","Accept":"application/json"},
-   body:JSON.stringify({url})
-  });
-  const raw=await response.text();
-  try{payload=JSON.parse(raw)}catch{throw Error("Dịch vụ đọc link trả về dữ liệu không hợp lệ (HTTP "+response.status+").")}
-  if(!response.ok)throw Error(payload?.message||"Dịch vụ đọc link lỗi HTTP "+response.status+".");
- }catch(e){
-  if(e?.name==="AbortError")throw Error("Đọc link quá thời gian 25 giây. Thử lại hoặc dùng OCR ảnh.");
-  if(e instanceof TypeError)throw Error("Không kết nối được dịch vụ đọc link từ trình duyệt (có thể bị CORS/mạng chặn). Hãy mở công cụ TikTok Reader riêng hoặc thử lại.");
-  throw e;
- }finally{clearTimeout(timeout)}
+ try{payload=await readerJsonp("/api/read-link-jsonp",{url},25000)}
+ catch(e){throw Error(String(e?.message||e))}
+ if(!payload?.ok)throw Error(payload?.message||"Reader V2 không đọc được link.");
  const s=payload?.stats||{};
  const fields=[["views","entry-views","lượt xem"],["likes","entry-likes","lượt thích"],["shares","entry-shares","lượt chia sẻ"]];
  let count=0;
@@ -87,27 +75,14 @@ connect?.addEventListener("click",()=>run(connect,async()=>{
 }));
 
 let activeBatchRoot="topkey_vlog2026/entries",activeBatchRun=false;
-const READER_ORIGIN="https://topkey-tiktok-stats-reader-s90l8b.v2.appdeploy.ai";
 async function readWithV2(url){
  let lastError;
  for(let attempt=0;attempt<2;attempt++){
-  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),30000);
   try{
-   const response=await fetch(READER_ORIGIN+"/api/read-link",{
-    method:"POST",mode:"cors",credentials:"omit",cache:"no-store",signal:controller.signal,
-    headers:{"Content-Type":"application/json","Accept":"application/json"},
-    body:JSON.stringify({url})
-   });
-   const raw=await response.text();let payload;
-   try{payload=JSON.parse(raw)}catch{throw Error("Reader V2 trả dữ liệu không hợp lệ (HTTP "+response.status+").")}
-   if(!response.ok)throw Error(payload?.message||"Reader V2 HTTP "+response.status);
+   const payload=await readerJsonp("/api/read-link-jsonp",{url},30000);
+   if(!payload?.ok)throw Error(payload?.message||"Reader V2 không đọc được link.");
    return payload;
-  }catch(e){
-   lastError=e;
-   if(e?.name==="AbortError")lastError=Error("Reader V2 quá thời gian 30 giây.");
-   else if(e instanceof TypeError)lastError=Error("Không kết nối được Reader V2 (CORS/mạng). Kiểm tra API Reader V2 và thử lại.");
-   if(attempt===0)await new Promise(resolve=>setTimeout(resolve,900));
-  }finally{clearTimeout(timer)}
+  }catch(e){lastError=e;if(attempt===0)await new Promise(resolve=>setTimeout(resolve,900));}
  }
  throw lastError||Error("Không kết nối được Reader V2.");
 }
