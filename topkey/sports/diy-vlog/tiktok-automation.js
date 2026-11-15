@@ -133,6 +133,7 @@ async function runEdgeOneBatch(){
   const all=[...failed.values()];
   window.__TOPKEY_VLOG_SCAN_ERRORS=testMode?all:[];
   if(!report)return;
+  if(!report||typeof report.replaceChildren!=='function')return;
   if(!all.length){report.hidden=true;report.replaceChildren();return}
   const title=document.createElement("h3");title.textContent="⚠ "+all.length+" video cần kiểm tra thủ công";
   const sub=document.createElement("p");sub.textContent="Các video này được xếp cuối bảng TEST. Kiểm tra URL và nguyên nhân bên dưới khi quét hoàn tất.";
@@ -154,7 +155,7 @@ async function runEdgeOneBatch(){
   info("ĐANG QUÉT "+completed+"/"+total+" URL · "+concurrency+" luồng · cập nhật "+updated+
        " · lỗi "+failed.size+" · tự động tiếp tục...");
  };
- if(report)report.hidden=true;
+ if(report&&typeof report.replaceChildren==='function')report.hidden=true;
  if(testMode&&window.TopkeyVlogSyncErrorsChanged)window.TopkeyVlogSyncErrorsChanged([]);
  // Each queue item runs independently. TikWM 429, 502, 503, timeout, and
  // unreachable videos become explicit failures, never stop the remaining queue.
