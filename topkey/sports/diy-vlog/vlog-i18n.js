@@ -5,14 +5,106 @@
  const DICT={"♜ Bảng xếp hạng":["♜ Leaderboard","♜ 排行榜"],"⚙ Quản trị":["⚙ Admin","⚙ 管理"],"🔐 Đăng nhập Admin":["🔐 Admin sign-in","🔐 管理员登录"],"Đăng xuất Admin":["Admin sign-out","管理员退出"],"Bảng xếp hạng":["Leaderboard","排行榜"],"Vlog TikTok":["TikTok Vlog","TikTok 短视频"],"TOPKEY Vietnam · Cuộc thi Vlog 2026":["TOPKEY Vietnam · Vlog Contest 2026","TOPKEY 越南 · 2026 Vlog 比赛"],"Đang tải dữ liệu…":["Loading data…","正在加载数据…"],"↻ Làm mới":["↻ Refresh","↻ 刷新"],"↓ Xuất CSV":["↓ Export CSV","↓ 导出 CSV"],"BỤC VINH QUANG":["PODIUM","领奖台"],"Top 3 dẫn đầu":["Top 3 leaders","前三名"],"DANH SÁCH THÍ SINH":["CONTESTANTS","参赛名单"],"Bảng xếp hạng chi tiết":["Detailed leaderboard","详细排行榜"],"Tìm theo tên đội / cá nhân":["Search team / individual","搜索团队 / 个人"],"Bài dự thi":["Entries","参赛作品"],"Tổng lượt xem":["Total views","总播放量"],"Tổng lượt thích":["Total likes","总点赞"],"Tổng lượt chia sẻ":["Total shares","总分享"],"Tổng điểm":["Total score","总分"],"Dữ liệu kiểm thử riêng":["Separate test data","独立测试数据"],"Dữ liệu cuộc thi":["Contest data","比赛数据"],"Số liệu giả lập":["Simulated data","模拟数据"],"Chưa có thí sinh":["No contestants yet","暂无参赛者"],"Chưa có bài dự thi":["No entries yet","暂无参赛作品"],"Chưa có video":["No video yet","暂无视频"],"HẠNG":["RANK","排名"],"THÍ SINH":["CONTESTANT","参赛者"],"LƯỢT XEM":["VIEWS","播放量"],"LƯỢT THÍCH":["LIKES","点赞"],"CHIA SẺ":["SHARES","分享"],"ĐIỂM":["SCORE","得分"],"Điểm":["Score","得分"],"điểm":["points","分"],"xem":["views","播放"],"thích":["likes","点赞"],"chia sẻ":["shares","分享"],"Xem video ↗":["View video ↗","查看视频 ↗"],"Sửa":["Edit","编辑"],"Đội":["Team","团队"],"Cá nhân":["Individual","个人"],"Email":["Email","电子邮箱"],"Mật khẩu":["Password","密码"],"Đăng nhập Admin":["Admin sign-in","管理员登录"],"Đăng nhập an toàn":["Sign in securely","安全登录"],"Đóng":["Close","关闭"],"Tên thí sinh / đội":["Contestant / team name","参赛者 / 团队名称"],"Bộ phận":["Department","部门"],"Link TikTok":["TikTok link","TikTok 链接"],"Lưu bài dự thi":["Save entry","保存参赛作品"],"Xóa bài dự thi":["Delete entry","删除参赛作品"],"Lưu hệ số":["Save weights","保存权重"],"Luồng đồng thời":["Concurrent workers","并发任务数"],"3 luồng (an toàn)":["3 workers (safe)","3 并发（安全）"],"10 luồng (nhanh)":["10 workers (fast)","10 并发（快速）"],"25 luồng (nhanh)":["25 workers (fast)","25 并发（快速）"],"TEST LAB · TÁCH BIỆT PRODUCTION":["TEST LAB · SEPARATE FROM PRODUCTION","测试实验室 · 与正式环境隔离"],"Bộ 1.000 URL TikTok công khai":["1,000 public TikTok URLs","1,000 个公开 TikTok 链接"],"⬇ Nạp 1.000 URL video mẫu":["⬇ Load 1,000 sample URLs","⬇ 导入 1,000 个样例链接"],"✕ Xóa toàn bộ dữ liệu mẫu":["✕ Delete sample data","✕ 删除测试数据"],"Chưa nạp dữ liệu mẫu.":["No sample data loaded.","尚未导入测试数据。"],"🔗 Tạo link Viewer":["🔗 Create viewer link","🔗 创建观众链接"],"Thu hồi link đang chọn":["Revoke selected link","撤销所选链接"],"Sao chép link":["Copy link","复制链接"],"Điều khoản sử dụng":["Terms of use","使用条款"],"Chính sách quyền riêng tư":["Privacy policy","隐私政策"],"Đã xác minh quyền quản trị Vlog.":["Vlog admin access verified.","已验证 Vlog 管理权限。"],"Chưa đăng nhập. Viewer tiếp tục xem được bảng xếp hạng.":["Not signed in. Public leaderboard remains visible.","尚未登录，仍可查看公开排行榜。"],"Đã xác thực Firebase. Đang kiểm tra quyền ADMIN…":["Firebase authenticated. Checking admin access…","Firebase 已验证，正在检查管理员权限…"],"Dữ liệu mẫu":["Sample data","示例数据"],"DỮ LIỆU MẪU":["SAMPLE DATA","示例数据"],"TEST":["TEST","测试"],"QUẢN TRỊ VLOG":["VLOG ADMIN","VLOG 管理"],"⚠ CHẾ ĐỘ KIỂM THỬ:":["⚠ TEST MODE:","⚠ 测试模式："],"⚠ DỮ LIỆU MẪU:":["⚠ SAMPLE DATA:","⚠ 示例数据："],"Bảng đang hiển thị các mục giả lập để xem thử, được gắn nhãn riêng. Đây không phải số liệu thật của thí sinh.":["Showing labeled demo entries, not real contestant statistics.","当前显示演示条目，并非参赛者的真实数据。"],"Đang xem dữ liệu TikTok mẫu trong nhánh riêng. Không thay đổi BXH production.":["Viewing separate TikTok test data; the production leaderboard is unchanged.","正在查看独立的 TikTok 测试数据，正式排行榜不变。"],"TOPKEY Vlog 2026 · Đồng bộ TikTok chỉ thực hiện khi được cấp quyền":["TOPKEY Vlog 2026 · TikTok sync requires authorization","TOPKEY Vlog 2026 · TikTok 同步需要授权"],"Chỉ ADMIN/BTC DIY được đồng bộ số liệu.":["Only ADMIN / DIY organizers may sync metrics.","仅管理员 / DIY 组织者可以同步指标。"],"Điểm = 1 × lượt xem + 3 × lượt thích + 5 × lượt chia sẻ. Bảng tự động tính lại mỗi khi số liệu hoặc hệ số thay đổi.":["Score = 1 × views + 3 × likes + 5 × shares. Rankings recalculate when metrics or weights change.","得分 = 1 × 播放量 + 3 × 点赞 + 5 × 分享。指标或权重改变时自动重新排名。"]};
  Object.assign(DICT,{"TOPKEY VIETNAM · XÁC THỰC QUẢN TRỊ":["TOPKEY VIETNAM · ADMIN AUTHENTICATION","TOPKEY 越南 · 管理员身份验证"],"Dùng tài khoản Firebase TOPKEY đã được cấp quyền ADMIN. Viewer vẫn xem bảng xếp hạng công khai. Không chia sẻ mật khẩu và không dùng tài khoản quản trị mẫu.":["Use an authorized TOPKEY Firebase admin account. The public leaderboard remains visible. Never share your password or use a demo account.","请使用已授权的 TOPKEY Firebase 管理员账户。公开排行榜仍可查看。请勿分享密码或使用演示账户。"],"CHIA SẺ BẢNG XẾP HẠNG":["SHARE LEADERBOARD","分享排行榜"],"Tạo đường dẫn xem riêng cho Viewer. Link chứa ảnh chụp BXH tại thời điểm tạo, chỉ xem Top 3 và toàn bộ danh sách; không có quyền sửa hay đồng bộ.":["Create a read-only viewer link with a snapshot of the Top 3 and full leaderboard at the time of creation; viewers cannot edit or sync.","创建包含前三名和完整排行榜快照的只读观众链接；观众无法编辑或同步。"],"Lấy URL video từ bộ dữ liệu công khai có nguồn kiểm chứng, không xác nhận quốc gia; lưu riêng tại":["Load TikTok links from a publicly sourced dataset; region is unverified. Store separately at","从有公开来源的数据集导入 TikTok 链接；地区未经核实。独立保存在"],". Không ghi vào danh sách thí sinh thật。":[". Do not modify real contestant entries.","。不会修改正式参赛名单。"],". Không ghi vào danh sách thí sinh thật.":[". Do not modify real contestant entries.","。不会修改正式参赛名单。"],"Hoặc nhập tệp CSV/TXT/JSON":["Or import a CSV/TXT/JSON file","或导入 CSV/TXT/JSON 文件"],"⟳ Quét tất cả link TikTok thí sinh & cập nhật số liệu":["⟳ Scan all contestant TikTok links and update metrics","⟳ 扫描所有参赛者 TikTok 链接并更新指标"],"⟳ Quét toàn bộ URL mẫu tự động (không ghi production)":["⟳ Automatically scan all sample URLs (no production writes)","⟳ 自动扫描所有样例链接（不写入正式数据）"],"THÍ SINH / ĐỘI":["CONTESTANT / TEAM","参赛者 / 团队"],"TỔNG ĐIỂM":["TOTAL SCORE","总分"],"Quản trị bài dự thi và hệ số chấm điểm":["Manage contest entries and score weights","管理参赛作品和评分权重"],"Tài khoản ADMIN hoặc BTC phụ trách DIY có thể tạo bài dự thi và hệ số đầu tiên khi dữ liệu cuộc thi còn trống. Dữ liệu mẫu không được ghi lên Firebase.":["ADMIN or DIY organizers can create initial entries and weights when the contest is empty. Demo data is never written to Firebase.","比赛尚无数据时，管理员或 DIY 组织者可创建初始作品和权重。演示数据不会写入 Firebase。"],"Điểm / lượt xem":["Points per view","每次播放得分"],"Điểm / lượt thích":["Points per like","每个点赞得分"],"Điểm / lượt chia sẻ":["Points per share","每次分享得分"],"Tên đội hoặc cá nhân":["Team or individual name","队伍或个人名称"],"Loại":["Type","类型"],"Đơn vị":["Department","部门"],"Lượt xem":["Views","播放量"],"Lượt thích":["Likes","点赞"],"Lượt chia sẻ":["Shares","分享"],"Đường dẫn video TikTok (HTTPS)":["TikTok video URL (HTTPS)","TikTok 视频链接 (HTTPS)"],"Tạo mới và lưu":["Create and save","创建并保存"],"Xóa bài đang sửa":["Delete selected entry","删除当前编辑的作品"],"Quản trị hệ số chấm điểm":["Manage scoring weights","管理评分权重"],"Chỉ ADMIN hệ thống được sử dụng TEST LAB.":["Only system ADMIN may use the TEST LAB.","仅系统管理员可使用测试实验室。"],"Chỉ ADMIN hệ thống được nạp bộ dữ liệu TEST.":["Only system ADMIN may load the TEST dataset.","仅系统管理员可导入测试数据集。"],"Chỉ ADMIN đã đăng nhập mới được nạp dữ liệu TEST.":["Only signed-in ADMIN may import test data.","只有已登录的管理员才能导入测试数据。"],"Đang cập nhật số liệu các video đã được chủ video cấp quyền...":["Syncing videos authorized by their owners...","正在同步视频所有者已授权的视频…"],"Không có video TikTok hợp lệ.":["No valid TikTok videos.","没有有效的 TikTok 视频。"],"Đã xác minh quyền quản trị Vlog.":["Vlog administration access verified.","Vlog 管理权限已验证。"],"Đang cập nhật số liệu...":["Updating metrics...","正在更新指标…"],"Chỉ ADMIN/BTC DIY được đồng bộ số liệu.":["Only ADMIN / DIY organizers may sync metrics.","仅管理员 / DIY 组织者可同步指标。"],"Không tải được dữ liệu Firebase · chỉ hiển thị mẫu":["Cannot load Firebase data · showing demo data","无法加载 Firebase 数据 · 显示演示数据"],"Không có kết nối Firebase · dữ liệu mẫu":["Firebase unavailable · sample data","Firebase 不可用 · 示例数据"],"Chỉ cần nhấn quét một lần: hệ thống tự tiếp tục hết danh sách, tối đa 25 luồng song song, không ghi production.":["Click Scan once to process the full list automatically, with up to 25 concurrent tasks; production is unchanged.","只需点击扫描一次，即可自动处理完整列表，最多 25 个并发任务；不会修改正式数据。"]});
  DICT["Các video này được xếp cuối bảng TEST. Kiểm tra URL và nguyên nhân bên dưới khi quét hoàn tất."]=["Failed videos appear at the bottom of the TEST leaderboard. Review the URL and reason below.","失败视频显示在测试排行榜底部。完成扫描后请查看下方链接及错误原因。"];
+ const EXTRA={
+ 'Video thử nghiệm': ['Test video','测试视频'],
+ 'Video thử nghiệm ': ['Test video ','测试视频 '],
+ 'Cá nhân · Bộ URL công khai - TEST':['Individual · Public URL collection - TEST','个人 · 公开链接数据集 - 测试'],
+ 'Bộ URL công khai - TEST':['Public URL collection - TEST','公开链接数据集 - 测试'],
+ 'Số liệu do BTC quản lý':['Organizer-managed statistics','主办方管理的数据'],
+ 'Dữ liệu mẫu':['Sample data','示例数据'],
+ 'Cập nhật':['Updated','更新于'],
+ 'ĐÃ QUÉT':['SCANNED','已扫描'],
+ 'ĐANG QUÉT':['SCANNING','扫描中'],
+ 'HOÀN TẤT':['COMPLETED','已完成'],
+ 'TẠM DỪNG':['PAUSED','已暂停'],
+ 'luồng thực tế':['actual workers','实际并发任务'],
+ 'luồng':['workers','并发任务'],
+ 'cập nhật':['updated','已更新'],
+ 'lỗi':['errors','错误'],
+ 'tự động tiếp tục':['continuing automatically','自动继续'],
+ 'thành công':['successful','成功'],
+ 'thiếu chỉ số':['missing metrics','缺失指标'],
+ 'Video không đọc được':['Unreadable video','无法读取的视频'],
+ 'Quá thời gian chờ phản hồi TikTok (30 giây)':['TikTok response timed out (30 seconds)','TikTok 响应超时（30 秒）'],
+ 'Không lấy được chỉ số từ TikTok/TikWM':['Unable to read TikTok/TikWM statistics','无法读取 TikTok/TikWM 数据'],
+ 'Dữ liệu kiểm thử riêng':['Separate test data','独立测试数据']
+ };
+ Object.assign(DICT,EXTRA);
+ DICT['Ổn định (5 luồng thực tế)']=['Stable (5 actual workers)','稳定（实际 5 并发）'];
+ DICT['Tăng tốc (5 luồng, giãn 300ms)']=['Faster (5 workers, 300 ms spacing)','加速（5 并发，间隔 300 毫秒）'];
+ DICT['MẪU']=['SAMPLE','示例'];
+ DICT['LINK VIEWER RIÊNG:']=['PRIVATE VIEWER LINK:','专用观众链接：'];
+ DICT['Không đọc được']=['Unreadable','无法读取'];
+ DICT['Bản xem chỉ đọc']=['Read-only view','只读视图'];
+ DICT['Tạo lúc']=['Created at','创建于'];
+ DICT['LINK VIEWER']=['VIEWER LINK','观众链接'];
+
  const state=new WeakMap(),attrs=new WeakMap();
+
+ // Built-in on-device translation for arbitrary video titles and free-text UI.
+ // Dictionary/rules remain the portable fallback on mobile or unsupported devices.
+ const nativeEngines=new Map(),nativeCache=new Map(),nativeFailed=new Set();
+ let nativeJobs=0;
+ async function nativeEngine(lang){
+  if(lang==='vi'||typeof window.Translator==='undefined')return null;
+  if(nativeEngines.has(lang))return nativeEngines.get(lang);
+  const promise=(async()=>{
+   const opts={sourceLanguage:'vi',targetLanguage:lang};
+   const availability=await window.Translator.availability(opts);
+   if(availability!=='available')return null;
+   return window.Translator.create(opts);
+  })().catch(()=>null);
+  nativeEngines.set(lang,promise);
+  return promise;
+ }
+ function nativeText(n,original,language){
+  // Keep source URLs, numeric counters and video IDs unchanged.
+  if(!n.isConnected||!original||original.length>320||
+     /https?:\/\/|(?:vt|vm|www)\.tiktok\.com\/|^(?:tt_)?\d{15,22}$/.test(original))return;
+  const key=language+'|'+original;
+  if(nativeCache.has(key)){
+   const translated=nativeCache.get(key);
+   const currentRec=state.get(n);
+   if(current===language&&currentRec?.original===original)n.nodeValue=currentRec.pre+translated+currentRec.post;
+   return;
+  }
+  if(nativeFailed.has(key)||nativeJobs>=80)return;
+  nativeJobs++;
+  Promise.resolve().then(async()=>{
+   const engine=await nativeEngine(language);
+   if(!engine)return;
+   const value=await engine.translate(original);
+   if(typeof value!=='string'||!value.trim())return;
+   nativeCache.set(key,value);
+   const rec=state.get(n);
+   if(current===language&&rec?.original===original){
+    n.nodeValue=rec.pre+value+rec.post;
+    rec.last=n.nodeValue;
+   }
+  }).catch(()=>nativeFailed.add(key)).finally(()=>{nativeJobs--});
+ }
+
  const norm=s=>String(s||'vi').startsWith('zh')?'zh':String(s||'vi').startsWith('en')?'en':'vi';
  let current=(()=>{try{return norm(localStorage.getItem(KEY))}catch{return 'vi'}})(),lock=false,pending=false;
  function translate(text,lang=current){
   const s=String(text||''),record=DICT[s];
   if(lang==='vi')return s;
   if(record)return record[lang==='en'?0:1];
-  let m=s.match(/^(\d[\d.,]*) xem · (\d[\d.,]*) thích · (\d[\d.,]*) chia sẻ$/);
+  // Dataset video titles and dynamic display names must be translated too.
+  // Preserve 4-digit video numbers, TikTok URLs, IDs, and form values.
+  if(/^(?:https?:\/\/|www\.|vt\.tiktok\.com\/|vm\.tiktok\.com\/)/i.test(s)||
+     /^(?:tt_)?\d{15,22}$/.test(s))return s;
+  let m=s.match(/^Video thử nghiệm\s+(\d{1,6})(.*)$/i);
+  if(m)return (lang==='en'?'Test video ':'测试视频 ')+m[1]+translate(m[2],lang);
+  m=s.match(/^(.+?)\s*·\s*(Cá nhân|Đội)\s*·\s*(Bộ URL công khai - TEST)$/i);
+  if(m)return translate(m[1],lang)+' · '+translate(m[2],lang)+' · '+translate(m[3],lang);
+  // Translate common dynamic status sentences token by token.
+  if(/^(?:ĐANG QUÉT|ĐÃ QUÉT|TẠM DỪNG|HOÀN TẤT|TEST LAB)/.test(s)){
+   const mapped=Object.keys(EXTRA).sort((a,b)=>b.length-a.length).reduce((out,k)=>
+    out.split(k).join(EXTRA[k][lang==='en'?0:1]),s);
+   if(mapped!==s)return mapped;
+  }
+  m=s.match(/^(\d[\d.,]*) xem · (\d[\d.,]*) thích · (\d[\d.,]*) chia sẻ$/);
   if(m)return lang==='en'?m[1]+' views · '+m[2]+' likes · '+m[3]+' shares':m[1]+' 播放 · '+m[2]+' 点赞 · '+m[3]+' 分享';
   m=s.match(/^Điểm = (\d[\d.,]*) × lượt xem \+ (\d[\d.,]*) × lượt thích \+ (\d[\d.,]*) × lượt chia sẻ/);
   if(m)return lang==='en'?'Score = '+m[1]+' × views + '+m[2]+' × likes + '+m[3]+' × shares':'得分 = '+m[1]+' × 播放量 + '+m[2]+' × 点赞 + '+m[3]+' × 分享';
@@ -24,11 +116,13 @@
   if(m)return lang==='en'?'ERROR · '+m[1]:'错误 · '+m[1];
   return s;
  }
- function skip(el){return !el||!!el.closest('script,style,textarea,pre,code,select,[contenteditable="true"],[data-vlog-no-i18n],#vlog-language-picker,.pod .person,#rows td strong,#rows td .muted')}
+ function skip(el){return !el||!!el.closest('script,style,textarea,pre,code,select,[contenteditable="true"],[data-vlog-no-i18n],#vlog-language-picker')}
  function textNode(n){if(skip(n.parentElement))return;const raw=n.nodeValue||'';if(!raw.trim())return;
   let rec=state.get(n);if(!rec){rec={original:raw.trim(),last:null,pre:raw.match(/^\s*/)?.[0]||'',post:raw.match(/\s*$/)?.[0]||''};state.set(n,rec)}
   else if(raw!==rec.last&&raw.trim()!==rec.original){rec.original=raw.trim();rec.pre=raw.match(/^\s*/)?.[0]||'';rec.post=raw.match(/\s*$/)?.[0]||''}
-  const next=rec.pre+translate(rec.original)+rec.post;if(raw!==next)n.nodeValue=next;rec.last=next;
+  const translated=translate(rec.original),next=rec.pre+translated+rec.post;
+  if(raw!==next)n.nodeValue=next;rec.last=next;
+  if(current!=='vi'&&translated===rec.original)nativeText(n,rec.original,current);
  }
  function attributes(el){if(skip(el))return;let rec=attrs.get(el);if(!rec){rec={};attrs.set(el,rec)}for(const a of ['placeholder','title','aria-label']){
   if(!el.hasAttribute(a))continue;const val=el.getAttribute(a),prev=rec[a],origin=prev&&prev.last===val?prev.original:val,next=translate(origin);
