@@ -1,0 +1,25 @@
+name: TOPKEY Vlog create-entry save regression
+on:
+  push:
+    branches: [fix/vlog-create-entry-save-20261115]
+  pull_request:
+    paths:
+      - 'topkey/sports/diy-vlog/index.html'
+      - 'topkey/tests/vlog-create-entry-save.test.cjs'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test-create-save:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Vlog create-entry and URL regression
+        run: node topkey/tests/vlog-create-entry-save.test.cjs
+      - name: Existing Vlog isolation regression
+        run: node topkey/tests/vlog-main-isolation.test.cjs
+      - name: Firebase JS syntax check
+        run: node --check topkey/sports/diy-vlog/tiktok-automation.js
