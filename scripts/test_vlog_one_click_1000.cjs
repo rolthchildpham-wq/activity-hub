@@ -60,8 +60,8 @@ async function testRun({n=1000,concurrency=25,failIndex=-1,fatal=false,start=0,c
  assert.equal(x.calls,1000);assert.equal(x.writes,999);assert.equal(x.offset,0);
  assert.match(x.last,/lỗi 1/);
  x=await testRun({failIndex:4,fatal:true});
- assert.equal(x.writes,4);
- assert.equal(x.offset,4);assert.match(x.last,/TẠM DỪNG/);
+ assert.equal(x.writes,24); // in-flight requests are allowed to finish
+ assert.equal(x.offset,4); // but retry cursor starts at failed itemassert.match(x.last,/TẠM DỪNG/);
  x=await testRun({start:75});
  assert.equal(x.calls,925);assert.equal(x.writes,925);assert.equal(x.offset,0);
  x=await testRun({n:25,concurrency:10});
