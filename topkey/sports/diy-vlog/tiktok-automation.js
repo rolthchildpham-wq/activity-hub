@@ -164,7 +164,7 @@ async function runEdgeOneBatch(){
  for(let waveStart=offset;waveStart<total;waveStart+=WAVE_SIZE){
   if(!canWrite()){stopped=true;stopReason="Phiên đăng nhập hoặc chế độ dữ liệu đã thay đổi.";break}
   const wave=entries.slice(waveStart,waveStart+WAVE_SIZE);
-  let next=0,globalStop=false,processed=0;
+  let next=0,globalStop=false,processed=0,authStopIndex=Infinity;
   const statuses=new Array(wave.length).fill(false);
   async function worker(){
    while(next<wave.length&&!globalStop){
@@ -177,6 +177,7 @@ async function runEdgeOneBatch(){
       if(Number.isSafeInteger(v)&&v>=0&&v<=1000000000)patch[key]=v;
      }
      if(!Object.keys(patch).length)throw Error("Không nhận được chỉ số hợp lệ từ TikTok/TikWM");
+     if(globalStop)throw Object.assign(Error("Tạm dừng vì lỗi xác thực ở yêu cầu khác."),{status:401});
      csrf();
      const at=new Date().toISOString();
      const tx=await db.ref(root+"/"+id).transaction(current=>{
@@ -191,9 +192,9 @@ async function runEdgeOneBatch(){
      failed.set(id,{id,name:String(entry.name||entry.title||id).slice(0,110),url,reason,code});
      // A broken token/account is a global authorization failure, not a video error.
      if((code===401||code===403)&&canWrite()){
-      stopped=true;globalStop=true;stopReason=reason;
+      stopped=true;globalStop=true;stopReason=reason;authStopIndex=Math.min(authStopIndex,index);
      }else if(!canWrite()){
-      stopped=true;globalStop=true;stopReason="Phiên đăng nhập thay đổi.";
+      stopped=true;globalStop=true;stopReason="Phiên đăng nhập thay đổi.";authStopIndex=Math.min(authStopIndex,index);
      }
     }finally{
      processed++;statuses[index]=true;completed++;showProgress();
@@ -203,7 +204,7 @@ async function runEdgeOneBatch(){
   await Promise.all(Array.from({length:Math.min(concurrency,wave.length)},()=>worker()));
   let confirmed=0;
   while(confirmed<wave.length&&statuses[confirmed])confirmed++;
-  const resumePosition=waveStart+confirmed;
+  const resumePosition=waveStart+(stopped?Math.min(confirmed,authStopIndex):confirmed);
   persist(resumePosition>=total?0:resumePosition);
   syncFailedView();
   if(testMode&&typeof window.TopkeyVlogSyncErrorsChanged==="function")
