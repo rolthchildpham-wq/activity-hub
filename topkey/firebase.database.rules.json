@@ -872,6 +872,12 @@
           }
         },
         ".read": true
+      },
+      "shares": {
+        ".read": true,
+        "$shareId": {
+          ".validate": "newData.hasChildren(['weights','entries','createdAt'])"
+        }
       }
     },
     "topkey_handmade_vnext_2026": {
