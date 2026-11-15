@@ -87,12 +87,20 @@ connect?.addEventListener("click",()=>run(connect,async()=>{
 }));
 
 let activeReaderWindow=null,activeBatchNonce=null,batchDb=null,batchSummary=null,pendingWrites=[];
+let activeBatchItems=[],activeBatchOffset=0;
 const READER_ORIGIN="https://topkey-tiktok-stats-reader-s90l8b.v2.appdeploy.ai";
+const READER_CHUNK_SIZE=25;
+function readerBatchUrl(items){
+ const payload={nonce:activeBatchNonce,returnOrigin:window.location.origin,items};
+ const encoded=btoa(unescape(encodeURIComponent(JSON.stringify(payload)))).replaceAll("+","-").replaceAll("/","_").replace(/=+$/,"");
+ return READER_ORIGIN+"/?batch="+encodeURIComponent(encoded);
+}
 window.addEventListener("message",async event=>{
  if(event.origin!==READER_ORIGIN||event.source!==activeReaderWindow||!activeBatchNonce)return;
  const message=event.data||{};
  if(message.nonce!==activeBatchNonce)return;
  if(message.type==="TOPKEY_VLOG_READER_RESULT"){
+  batchSummary.processed++;
   const stats=message.stats||{},patch={};
   for(const key of ["views","likes","shares"])if(typeof stats[key]==="number"&&Number.isFinite(stats[key])&&stats[key]>=0)patch[key]=Math.round(stats[key]);
   const count=Object.keys(patch).length;
@@ -106,18 +114,27 @@ window.addEventListener("message",async event=>{
    catch(e){batchSummary.failed++;batchSummary.failures.push(String(message.name||message.id)+": lỗi ghi Firebase - "+String(e?.message||e));}
   }else{
    batchSummary.noData++;
-   batchSummary.failures.push(String(message.name||message.id)+": Reader V2 không lấy được số liệu"+(message.message? " ("+String(message.message).slice(0,120)+")":""));
+   batchSummary.failures.push(String(message.name||message.id)+": Reader V2 không lấy được số liệu"+(message.message?" ("+String(message.message).slice(0,120)+")":""));
   }
-  info("Reader V2: "+(batchSummary.updated+batchSummary.noData+batchSummary.failed)+"/"+batchSummary.total+" link · cập nhật "+batchSummary.updated+" · chưa đọc được "+batchSummary.noData+" · lỗi ghi "+batchSummary.failed+".");
+  info("Reader V2: "+batchSummary.processed+"/"+batchSummary.total+" link · cập nhật "+batchSummary.updated+" · chưa đọc được "+batchSummary.noData+" · lỗi ghi "+batchSummary.failed+".");
   return;
  }
  if(message.type==="TOPKEY_VLOG_READER_COMPLETE"){
   await Promise.allSettled(pendingWrites);
+  pendingWrites=[];
+  const nextOffset=activeBatchOffset+READER_CHUNK_SIZE;
+  if(nextOffset<activeBatchItems.length){
+   activeBatchOffset=nextOffset;
+   const nextItems=activeBatchItems.slice(activeBatchOffset,activeBatchOffset+READER_CHUNK_SIZE);
+   info("Đã xử lý "+batchSummary.processed+"/"+batchSummary.total+" link. Tự chuyển sang lô "+(Math.floor(activeBatchOffset/READER_CHUNK_SIZE)+1)+"...");
+   activeReaderWindow.location.replace(readerBatchUrl(nextItems));
+   return;
+  }
   const verify=(await batchDb.ref("topkey_vlog2026/entries").once("value")).val()||{};
   const count=Object.keys(verify).length;
-  const tail=batchSummary.truncated?" · Lưu ý: Reader giới hạn 25 link mỗi lượt, hãy quét tiếp các link còn lại.":"";
-  info("HOÀN TẤT READER V2: "+batchSummary.total+" link · cập nhật "+batchSummary.updated+" bài ("+batchSummary.partial+" bài thiếu chỉ số) · không đọc được "+batchSummary.noData+" · lỗi ghi "+batchSummary.failed+" · Firebase đã kiểm tra lại "+count+" bài dự thi."+(batchSummary.failures.length?" Chi tiết: "+batchSummary.failures.slice(0,4).join(" | "):"")+tail);
-  activeReaderWindow=null;activeBatchNonce=null;batchDb=null;pendingWrites=[];
+  info("HOÀN TẤT READER V2: "+batchSummary.processed+"/"+batchSummary.total+" link · cập nhật "+batchSummary.updated+" bài ("+batchSummary.partial+" bài thiếu chỉ số) · không đọc được "+batchSummary.noData+" · lỗi ghi "+batchSummary.failed+" · Firebase đã kiểm tra lại "+count+" bài dự thi."+(batchSummary.failures.length?" Chi tiết: "+batchSummary.failures.slice(0,5).join(" | "):""));
+  try{activeReaderWindow.close()}catch{}
+  activeReaderWindow=null;activeBatchNonce=null;batchDb=null;pendingWrites=[];activeBatchItems=[];activeBatchOffset=0;
  }
 });
 bulk.addEventListener("click",()=>run(bulk,async()=>{
@@ -130,16 +147,13 @@ bulk.addEventListener("click",()=>run(bulk,async()=>{
  const all=Object.entries(entries).filter(([id,e])=>e&&typeof e==="object");
  const items=all.filter(([id,e])=>validTikTokVideo(String(e.url||"").trim())).map(([id,e])=>({id,name:String(e.name||id),url:String(e.url).trim()}));
  if(!items.length){readerWindow.close();info("Đã đọc "+all.length+" bài dự thi trong Firebase nhưng không tìm thấy link video TikTok hợp lệ.");return;}
- const batchItems=items.slice(0,25);
- const nonce=(window.crypto?.randomUUID?crypto.randomUUID():String(Date.now())+"-"+Math.random().toString(36).slice(2));
- activeReaderWindow=readerWindow;activeBatchNonce=nonce;batchDb=db;pendingWrites=[];
- batchSummary={total:batchItems.length,updated:0,partial:0,noData:0,failed:0,failures:[]};
- const payload={nonce,returnOrigin:window.location.origin,items:batchItems};
- const encoded=btoa(unescape(encodeURIComponent(JSON.stringify(payload)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
- const target=READER_ORIGIN+"/?batch="+encodeURIComponent(encoded);
- info("Đã lấy "+items.length+" link. Đang chuyển "+batchItems.length+" link sang Reader V2 để tự đọc lần lượt...");
- readerWindow.location.replace(target);
- if(items.length>batchItems.length)batchSummary.truncated=true;
+ activeReaderWindow=readerWindow;
+ activeBatchNonce=(window.crypto?.randomUUID?crypto.randomUUID():String(Date.now())+"-"+Math.random().toString(36).slice(2));
+ batchDb=db;pendingWrites=[];activeBatchItems=items;activeBatchOffset=0;
+ batchSummary={total:items.length,processed:0,updated:0,partial:0,noData:0,failed:0,failures:[]};
+ const firstItems=items.slice(0,READER_CHUNK_SIZE);
+ info("Đã lấy "+items.length+" link. Bắt đầu lô 1/"+Math.ceil(items.length/READER_CHUNK_SIZE)+"; Reader V2 đọc song song tối đa 3 link và tự chuyển lô.");
+ readerWindow.location.replace(readerBatchUrl(firstItems));
 }));
 sync?.addEventListener("click",()=>run(sync,async()=>{
  info("Đang cập nhật số liệu các video đã được chủ video cấp quyền...");
