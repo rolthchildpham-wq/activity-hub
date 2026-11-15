@@ -16,7 +16,7 @@
   if(!policy)throw new Error('TOPKEY platform policy is not available for shared authentication');
   const U=T.U||{};
   const sport=()=>String(T.SPORT.key||'badminton');
-  const authRoot=()=>String(T.AUTH_ROOT||T.ROOT);
+  const authRoot=()=> 'topkey_badminton_vnext_2026'; // Shared canonical ADMIN/BTC permission profiles for every sport
   const safeMessage=e=>String(e?.message||e||'Lỗi không xác định');
   class AuthService{
    constructor(){
@@ -163,9 +163,12 @@
     // Keep the Firebase identity intact: rejecting a sport does not sign the user
     // out of other sports or start an auth-state loop in another tab.
     try{sessionStorage.setItem('topkey_access_denied',JSON.stringify({sport:sport(),uid:this.user?.uid||'',role:profile?.role||'',scope:this.sportScope(profile),at:Date.now()}))}catch{}
-    try{window.TopkeyHubSession?.invalidate?.()}catch{}
-    this._clearProtectedSession('DENIED');
-    location.replace('../../index.html?access=denied&sport='+encodeURIComponent(sport()));
+    // Do not invalidate the cross-sport session or redirect on permission denial:
+    // mobile navigation can otherwise bounce the entire hub back to login.
+    this._accessDeniedMessage='Tài khoản hiện tại không có quyền truy cập môn '+(T.SPORT.name||sport())+'. ADMIN dùng chung được toàn bộ các môn.';
+    this._profileVerifiedUid='';
+    this.transition('DENIED',{reason:'sport-scope'});
+    this._showVerificationPending(this._accessDeniedMessage);
    }
    ensureAuth(){
     if(T.Data?.auth)return T.Data.auth;
@@ -274,7 +277,7 @@
       await this.rejectSportAccess(profile);
       throw new Error('Tài khoản không được cấp quyền môn '+(T.SPORT.name||sport()));
      }
-     this.user=user;this.profile=profile;this.sessionUid=user.uid;
+     this._accessDeniedMessage='';this.user=user;this.profile=profile;this.sessionUid=user.uid;
      this._profileVerifiedUid=user.uid;
      try{window.TopkeyHubSession?.markAuthenticated?.(user.uid)}catch{}
      this._showApp();
@@ -294,7 +297,7 @@
       this.profile=null;this._profileVerifiedUid='';this.transition('ERROR',{reason:'profile-verification',message:safeMessage(e)});
       // Never turn a network hiccup into a fake sign-out. Keep credentials
       // intact and present an explicit retry action only after retries finish.
-      if(!this._suppressTransientLoginUI)this._showLogin(PROFILE_MESSAGE,true);
+      if(!this._suppressTransientLoginUI)this._showLogin(this._accessDeniedMessage||PROFILE_MESSAGE,true);
      }
      throw e;
     }finally{if(this._verifyFlight?.promise===promise)this._verifyFlight=null}
