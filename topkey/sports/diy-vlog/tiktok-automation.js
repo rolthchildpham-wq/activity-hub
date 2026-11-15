@@ -1,8 +1,8 @@
 /* TOPKEY TikTok public-link reader + official owner-consent sync. */
 (()=>{"use strict";
 const $=id=>document.getElementById(id);
-const status=$("tiktok-sync-status"),connect=$("tiktok-connect"),sync=$("tiktok-sync-now"),reader=$("tiktok-read-link");
-if(!status||!connect||!sync||!reader)return;
+const status=$("tiktok-sync-status"),connect=$("tiktok-connect"),sync=$("tiktok-sync-now"),reader=$("tiktok-read-link"),bulk=$("tiktok-sync-all-links");
+if(!status||!connect||!sync||!reader||!bulk)return;
 const READER_API="https://topkey-tiktok-stats-reader-s90l8b.v2.appdeploy.ai/api/read-link";
 window.__topkeyTikTokStatsMeta=null;
 function info(t){status.textContent=t}
@@ -84,6 +84,40 @@ connect.addEventListener("click",()=>run(connect,async()=>{
  if(!link||!link.startsWith("https://www.tiktok.com/v2/auth/authorize/"))throw Error("Không tạo được liên kết cấp quyền.");
  try{await navigator.clipboard.writeText(link);info("Đã sao chép liên kết TikTok. Gửi cho chủ video mở và đồng ý cấp quyền video.list. Liên kết hết hạn sau 15 phút.")}
  catch{info("Trình duyệt chặn sao chép. Hãy sao chép liên kết TikTok trong hộp thoại.");window.prompt("Sao chép liên kết gửi chủ video:",link)}
+}));
+
+bulk.addEventListener("click",()=>run(bulk,async()=>{
+ if(!window.firebase?.database||!firebase.auth().currentUser)throw Error("Cần đăng nhập ADMIN/BTC DIY trước khi quét danh sách thí sinh.");
+ const db=firebase.database(),root="topkey_vlog2026/entries";
+ info("Đang tải danh sách thí sinh và kiểm tra các link TikTok...");
+ const snap=await db.ref(root).once("value"),entries=snap.val()||{};
+ const items=Object.entries(entries).filter(([id,e])=>e&&typeof e==="object"&&validTikTokVideo(String(e.url||"").trim()));
+ if(!items.length){info("Không có bài dự thi nào chứa link video TikTok hợp lệ để quét.");return}
+ let updated=0,partial=0,failed=0,skipped=0;
+ for(let i=0;i<items.length;i++){
+  const [id,entry]=items[i],url=String(entry.url).trim();
+  info("Đang đọc link "+(i+1)+"/"+items.length+": "+String(entry.name||id)+"...");
+  try{
+   const response=await fetch(READER_API,{method:"POST",mode:"cors",credentials:"omit",cache:"no-store",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({url})});
+   const raw=await response.text();let payload;
+   try{payload=JSON.parse(raw)}catch{throw Error("Phản hồi API không phải JSON (HTTP "+response.status+").")}
+   if(!response.ok)throw Error(payload?.message||"HTTP "+response.status);
+   const s=payload?.stats||{},patch={};
+   for(const [key,field] of [["views","views"],["likes","likes"],["shares","shares"]]){
+    if(typeof s[key]==="number"&&Number.isFinite(s[key])&&s[key]>=0)patch[field]=Math.round(s[key]);
+   }
+   const count=Object.keys(patch).length;
+   if(!count){skipped++;continue}
+   patch.statsSource=String(payload.source||"TikTok public metadata");
+   patch.statsFetchedAt=String(payload.fetchedAt||new Date().toISOString());
+   patch.statsLastAutoSyncAt=new Date().toISOString();
+   await db.ref(root+"/"+id).update(patch);
+   updated++;if(count<3)partial++;
+  }catch(e){failed++;console.warn("TikTok bulk read failed",id,e)}
+ }
+ const verify=(await db.ref(root).once("value")).val()||{};
+ const total=Object.keys(verify).length;
+ info("Đã quét "+items.length+"/"+items.length+" link · cập nhật "+updated+" bài ("+partial+" bài có dữ liệu một phần) · không có số liệu "+skipped+" · lỗi "+failed+". Đã đọc lại Firebase ("+total+" bài); bảng xếp hạng tự làm mới.");
 }));
 sync.addEventListener("click",()=>run(sync,async()=>{
  info("Đang cập nhật số liệu các video đã được chủ video cấp quyền...");
