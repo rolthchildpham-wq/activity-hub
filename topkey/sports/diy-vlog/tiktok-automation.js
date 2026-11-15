@@ -86,7 +86,7 @@ connect?.addEventListener("click",()=>run(connect,async()=>{
  catch{info("Trình duyệt chặn sao chép. Hãy sao chép liên kết TikTok trong hộp thoại.");window.prompt("Sao chép liên kết gửi chủ video:",link)}
 }));
 
-let activeReaderWindow=null,activeBatchNonce=null,batchDb=null,batchSummary=null,pendingWrites=[];
+let activeReaderWindow=null,activeBatchNonce=null,batchDb=null,batchSummary=null,pendingWrites=[],activeBatchRoot="topkey_vlog2026/entries";
 let activeBatchItems=[],activeBatchOffset=0;
 const READER_ORIGIN="https://topkey-tiktok-stats-reader-s90l8b.v2.appdeploy.ai";
 const READER_CHUNK_SIZE=25;
@@ -108,7 +108,7 @@ window.addEventListener("message",async event=>{
    patch.statsSource=String(message.source||"TikTok Reader V2");
    patch.statsFetchedAt=new Date().toISOString();
    patch.statsLastAutoSyncAt=new Date().toISOString();
-   const write=batchDb.ref("topkey_vlog2026/entries/"+message.id).update(patch);
+   const write=batchDb.ref(activeBatchRoot+"/"+message.id).update(patch);
    pendingWrites.push(write);
    try{await write;batchSummary.updated++;if(count<3)batchSummary.partial++;}
    catch(e){batchSummary.failed++;batchSummary.failures.push(String(message.name||message.id)+": lỗi ghi Firebase - "+String(e?.message||e));}
@@ -130,7 +130,7 @@ window.addEventListener("message",async event=>{
    activeReaderWindow.location.replace(readerBatchUrl(nextItems));
    return;
   }
-  const verify=(await batchDb.ref("topkey_vlog2026/entries").once("value")).val()||{};
+  const verify=(await batchDb.ref(activeBatchRoot).once("value")).val()||{};
   const count=Object.keys(verify).length;
   info("HOÀN TẤT READER V2: "+batchSummary.processed+"/"+batchSummary.total+" link · cập nhật "+batchSummary.updated+" bài ("+batchSummary.partial+" bài thiếu chỉ số) · không đọc được "+batchSummary.noData+" · lỗi ghi "+batchSummary.failed+" · Firebase đã kiểm tra lại "+count+" bài dự thi."+(batchSummary.failures.length?" Chi tiết: "+batchSummary.failures.slice(0,5).join(" | "):""));
   try{activeReaderWindow.close()}catch{}
@@ -142,7 +142,7 @@ bulk.addEventListener("click",()=>run(bulk,async()=>{
  const readerWindow=window.open("about:blank","_blank");
  if(!readerWindow)throw Error("Trình duyệt đang chặn mở tab Reader V2. Hãy cho phép cửa sổ bật lên (pop-up) cho trang Vlog rồi bấm quét lại.");
  info("Đang kết nối Firebase và lấy danh sách link thí sinh...");
- const db=firebase.database(),root="topkey_vlog2026/entries";
+ const db=firebase.database(),root=window.__TOPKEY_VLOG_TEST_MODE?"topkey_vlog2026_test/entries":"topkey_vlog2026/entries";activeBatchRoot=root;
  const snap=await db.ref(root).once("value"),entries=snap.val()||{};
  const all=Object.entries(entries).filter(([id,e])=>e&&typeof e==="object");
  const items=all.filter(([id,e])=>validTikTokVideo(String(e.url||"").trim())).map(([id,e])=>({id,name:String(e.name||id),url:String(e.url).trim()}));
@@ -152,7 +152,7 @@ bulk.addEventListener("click",()=>run(bulk,async()=>{
  batchDb=db;pendingWrites=[];activeBatchItems=items;activeBatchOffset=0;
  batchSummary={total:items.length,processed:0,updated:0,partial:0,noData:0,failed:0,failures:[]};
  const firstItems=items.slice(0,READER_CHUNK_SIZE);
- info("Đã lấy "+items.length+" link. Bắt đầu lô 1/"+Math.ceil(items.length/READER_CHUNK_SIZE)+"; Reader V2 đọc song song tối đa 3 link và tự chuyển lô.");
+ info("Đã lấy "+items.length+" link từ "+(window.__TOPKEY_VLOG_TEST_MODE?"TEST LAB riêng":"danh sách thí sinh production")+". Bắt đầu lô 1/"+Math.ceil(items.length/READER_CHUNK_SIZE)+"; Reader V2 đọc song song tối đa 3 link và tự chuyển lô.");
  readerWindow.location.replace(readerBatchUrl(firstItems));
 }));
 sync?.addEventListener("click",()=>run(sync,async()=>{
