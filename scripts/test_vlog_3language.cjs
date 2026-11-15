@@ -22,4 +22,4 @@ assert(html.includes('vlog-i18n.js?v=vi-en-zh-scanerrors-20261115'));
 assert(!html.includes('translate="no"'));
 assert(src.includes("topkey_ui_language_v1"));
 assert(!src.includes(".pod .person,#rows td strong,#rows td .muted"),'Video titles and contestant names must be eligible for translation');
-console.log('PASS Vlog i18n: VI/EN/ZH + shared language preference; scores and names unchanged; scan progress translated; responsive picker');
+console.log('PASS Vlog i18n: VI/EN/ZH + shared language preference; scores and URLs unchanged; names eligible for translation; scan progress translated; responsive picker');
