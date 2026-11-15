@@ -130,7 +130,7 @@ function showTestMode(raw){
  testMode=true;window.__TOPKEY_VLOG_TEST_MODE=true;
  data={weights:{views:Number(weights.views)||1,likes:Number(weights.likes)||3,shares:Number(weights.shares)||5},entries:Object.fromEntries(Object.entries(entries).filter(([id,e])=>e&&typeof e==='object').map(([id,e])=>[id,{...e,id}]))};
  real=true;$('editor').hidden=true;
- $('tiktok-sync-all-links').textContent='⟳ Quét link mẫu bằng yt-dlp (không ghi production)';
+ $('tiktok-sync-all-links').textContent='⟳ Quét toàn bộ URL mẫu tự động (không ghi production)';
  render();
 }
 function leaveTestMode(){
@@ -180,7 +180,7 @@ async function importRealVideos(rows,sourceLabel){
   if(testRef&&testListener)testRef.off('value',testListener);
   testRef=db.ref(testRoot+'/entries');testListener=snap=>showTestMode({entries:snap.val()});testRef.on('value',testListener);
   window.__TOPKEY_VLOG_TEST_MODE=true;
-  sampleStatusText('Đã xác minh '+saved+' URL duy nhất trong Firebase TEST. Chỉ số 0 là giá trị ban đầu, chưa đọc từ TikTok. Nhấn “Quét link mẫu bằng yt-dlp” để kiểm tra theo lô tối đa 25. Không ghi production.');
+  sampleStatusText('Đã xác minh '+saved+' URL duy nhất trong Firebase TEST. Chỉ số 0 là giá trị ban đầu, chưa đọc từ TikTok. Chỉ cần nhấn quét một lần: hệ thống tự tiếp tục hết danh sách, tối đa 25 luồng song song, không ghi production.');
  }finally{sampleLoadBtn.disabled=false;sampleDeleteBtn.disabled=false;if(sampleImportFile)sampleImportFile.disabled=false;}
 }
 sampleLoadBtn.addEventListener('click',async()=>{
@@ -250,4 +250,4 @@ try{
  });
 }catch(e){console.warn('TOPKEY Vlog boot',e);$('refresh-time').textContent='Không có kết nối Firebase · dữ liệu mẫu'}
 })();
-</script><footer aria-label="Pháp lý TOPKEY Vlog" style="padding:26px max(22px,calc((100% - 1120px)/2));border-top:1px solid #34425b;color:#b7c9da;font-size:14px;display:flex;gap:22px;flex-wrap:wrap"><a href="../../terms.html" style="color:#78e5e5">Điều khoản sử dụng</a><a href="../../privacy.html" style="color:#78e5e5">Chính sách quyền riêng tư</a><span>TOPKEY Vlog 2026 · Đồng bộ TikTok chỉ thực hiện khi được cấp quyền</span></footer><script src="./tiktok-automation.js?v=tikwm-edge-20261115"></script></body></html>
+</script><footer aria-label="Pháp lý TOPKEY Vlog" style="padding:26px max(22px,calc((100% - 1120px)/2));border-top:1px solid #34425b;color:#b7c9da;font-size:14px;display:flex;gap:22px;flex-wrap:wrap"><a href="../../terms.html" style="color:#78e5e5">Điều khoản sử dụng</a><a href="../../privacy.html" style="color:#78e5e5">Chính sách quyền riêng tư</a><span>TOPKEY Vlog 2026 · Đồng bộ TikTok chỉ thực hiện khi được cấp quyền</span></footer><script src="./tiktok-automation.js?v=tikwm-auto1000-20261115"></script></body></html>
