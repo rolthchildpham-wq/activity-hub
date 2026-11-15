@@ -89,7 +89,7 @@ try{
  try{const s=await db.ref('topkey_badminton_vnext_2026/users/'+user.uid).once('value');if(auth.currentUser?.uid!==user.uid)return;const p=s.val()||{};
  const role=String(p.role||'').trim().toUpperCase(),rawScope=String(p.sportScope||p.assignedSport||'').trim().toLowerCase(),scope=rawScope.normalize?rawScope.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d'):rawScope;
  const scopeList=Array.isArray(p.sportScopes)?p.sportScopes.map(x=>String(x||'').trim().toLowerCase()):[];
- const isHandmadeScope=['handmade','diy','diy / handmade','🧶 diy / handmade'].includes(scope)||scopeList.some(x=>['handmade','diy','diy / handmade','🧶 diy / handmade'].includes(x));
+ const isHandmadeScope=(p.sportAccess?.handmade===true)||['handmade','diy','diy / handmade','🧶 diy / handmade'].includes(scope)||scopeList.some(x=>['handmade','diy','diy / handmade','🧶 diy / handmade'].includes(x));
  const vlogPermission=String(p.permissions?.modules?.vlog||'').toLowerCase();
  isAdmin=(role==='ADMIN'||(role==='BTC'&&isHandmadeScope)||vlogPermission==='edit')&&p.active!==false&&p.disabled!==true&&p.locked!==true&&p.enabled!==false&&p.isActive!==false&&!['disabled','blocked','suspended','inactive'].includes(String(p.status||'').toLowerCase());
  $('admin-toggle').hidden=!isAdmin;$('tiktok-sync-all-links').hidden=!isAdmin;$('tiktok-sync-status').hidden=!isAdmin;$('admin-sign-in').hidden=true;$('admin-sign-out').hidden=false;
@@ -100,4 +100,4 @@ try{
  });
 }catch(e){console.warn('TOPKEY Vlog boot',e);$('refresh-time').textContent='Không có kết nối Firebase · dữ liệu mẫu'}
 })();
-</script><footer aria-label="Pháp lý TOPKEY Vlog" style="padding:26px max(22px,calc((100% - 1120px)/2));border-top:1px solid #34425b;color:#b7c9da;font-size:14px;display:flex;gap:22px;flex-wrap:wrap"><a href="../../terms.html" style="color:#78e5e5">Điều khoản sử dụng</a><a href="../../privacy.html" style="color:#78e5e5">Chính sách quyền riêng tư</a><span>TOPKEY Vlog 2026 · Đồng bộ TikTok chỉ thực hiện khi được cấp quyền</span></footer><script src="./tiktok-automation.js?v=reader-v2-3workers-1000queue-20261115"></script></body></html>
+</script><footer aria-label="Pháp lý TOPKEY Vlog" style="padding:26px max(22px,calc((100% - 1120px)/2));border-top:1px solid #34425b;color:#b7c9da;font-size:14px;display:flex;gap:22px;flex-wrap:wrap"><a href="../../terms.html" style="color:#78e5e5">Điều khoản sử dụng</a><a href="../../privacy.html" style="color:#78e5e5">Chính sách quyền riêng tư</a><span>TOPKEY Vlog 2026 · Đồng bộ TikTok chỉ thực hiện khi được cấp quyền</span></footer><script src="./tiktok-automation.js?v=admin-multiscope-permissions-20261115"></script></body></html>
