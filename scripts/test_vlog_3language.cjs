@@ -18,7 +18,7 @@ assert.match(i.translate('TẠM DỪNG 100/1000 URL','zh'),/^已暂停 100\/1000
 assert.equal(i.translate('Nguyễn Văn A','en'),'Nguyễn Văn A');
 assert.equal(i.translate('https://vt.tiktok.com/example','en'),'https://vt.tiktok.com/example');
 assert(html.includes('data-lang="vi"')&&html.includes('data-lang="en"')&&html.includes('data-lang="zh"'));
-assert(html.includes('vlog-i18n.js?v=vi-en-zh-scanerrors-20261115'));
+assert(html.includes('vlog-i18n.js?v=vi-en-zh-retryfailed-20261115'));
 assert(!html.includes('translate="no"'));
 assert(src.includes("topkey_ui_language_v1"));
 assert(!src.includes(".pod .person,#rows td strong,#rows td .muted"),'Video titles and contestant names must be eligible for translation');

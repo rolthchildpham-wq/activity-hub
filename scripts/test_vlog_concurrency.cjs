@@ -23,7 +23,7 @@ async function scenario(n,rejectAuth=false){
     if(rejectAuth){const e=Error('Firebase token invalid');e.status=401;throw e}
     return {ok:true,stats:{views:100,likes:10,shares:2}};
    }};
- vm.createContext(ctx);vm.runInContext(code.slice(a,b),ctx);
+ vm.createContext(ctx);vm.runInContext(code.slice(code.indexOf('function vlogFailureReason('),code.indexOf('function errMessage('))+code.slice(a,b),ctx);
  await ctx.runEdgeOneBatch();
  const saved=JSON.parse(store.get('topkey_vlog2026_scan:topkey_vlog2026_test/entries'));
  return {calls,maxActive,writes,last,offset:saved.offset};

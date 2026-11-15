@@ -39,6 +39,16 @@
  DICT['Tạo lúc']=['Created at','创建于'];
  DICT['LINK VIEWER']=['VIEWER LINK','观众链接'];
 
+ DICT['Nhấn kiểm tra lại một lượt cho các link lỗi trước khi kiểm tra thủ công. URL, lần thử cuối và nguyên nhân mới nhất hiển thị bên dưới.']=[
+ 'Retry failed links once before manual review. The URL, latest attempt and latest error appear below.',
+ '人工检查前，先自动重试失败链接一次。下方显示链接、最近尝试时间及最新错误原因。'];
+ DICT['Không lấy được dữ liệu']=['Could not retrieve data','无法获取数据'];
+ DICT['Máy chủ TikTok/TikWM tạm lỗi']=['TikTok/TikWM service temporarily unavailable','TikTok/TikWM 服务暂时不可用'];
+ DICT['TikWM giới hạn tần suất']=['TikWM rate-limited requests','TikWM 请求频率受限'];
+ DICT['Quá thời gian chờ']=['Request timed out','请求超时'];
+ DICT['Không đọc được chỉ số']=['Could not read metrics','无法读取指标'];
+ DICT['Firebase từ chối ghi dữ liệu']=['Firebase refused to save data','Firebase 拒绝保存数据'];
+ DICT['Không đủ quyền đăng nhập']=['Insufficient account access','账号权限不足'];
  const state=new WeakMap(),attrs=new WeakMap();
 
  // Built-in on-device translation for arbitrary video titles and free-text UI.
@@ -90,6 +100,14 @@
   const s=String(text||''),record=DICT[s];
   if(lang==='vi')return s;
   if(record)return record[lang==='en'?0:1];
+  let retryMatch=s.match(/^↻ Kiểm tra tự động lại (\d+) link lỗi \(1 lượt\)$/);
+  if(retryMatch)return lang==='en'?'↻ Retry '+retryMatch[1]+' failed links (once)':'↻ 自动重试 '+retryMatch[1]+' 个失败链接（一次）';
+  retryMatch=s.match(/^⚠ (\d+) video cần kiểm tra thủ công$/);
+  if(retryMatch)return lang==='en'?'⚠ '+retryMatch[1]+' videos need manual review':'⚠ '+retryMatch[1]+' 个视频需要人工检查';
+  retryMatch=s.match(/^KIỂM TRA LẠI (\d+)\/(\d+) link lỗi · đã khôi phục (\d+) · còn lỗi (\d+)$/);
+  if(retryMatch)return lang==='en'? 'RECHECK '+retryMatch[1]+'/'+retryMatch[2]+' failed links · recovered '+retryMatch[3]+' · remaining '+retryMatch[4]:
+   '重新检查 '+retryMatch[1]+'/'+retryMatch[2]+' 个失败链接 · 已恢复 '+retryMatch[3]+' · 剩余 '+retryMatch[4];
+
   // Dataset video titles and dynamic display names must be translated too.
   // Preserve 4-digit video numbers, TikTok URLs, IDs, and form values.
   if(/^(?:https?:\/\/|www\.|vt\.tiktok\.com\/|vm\.tiktok\.com\/)/i.test(s)||

@@ -136,6 +136,11 @@ header .nav .on{padding:7px 11px}
 .nav .vlog-language-picker button:focus-visible{outline:2px solid #78ecf0;outline-offset:2px}
 @media(max-width:760px){.vlog-language-picker{margin-left:auto}.nav .vlog-language-picker button{padding:7px 8px}}
 @media(max-width:420px){.vlog-language-picker{margin-left:0}.nav .vlog-language-picker button{font-size:10px;padding:7px 7px}}
+
+.vlog-scan-errors .vlog-retry-failed{display:inline-flex;align-items:center;gap:6px;background:#90333c;border:1px solid #e17c82;color:#fff;border-radius:9px;padding:10px 14px;margin:3px 0 10px;font-size:12px;font-weight:800;min-height:40px}
+.vlog-scan-errors .vlog-retry-failed:hover:not(:disabled){background:#a6434b}
+.vlog-scan-errors .vlog-retry-failed:disabled{opacity:.5;cursor:not-allowed}
+@media(max-width:760px){.vlog-scan-errors .vlog-retry-failed{width:100%;justify-content:center;font-size:11px}}
 </style></head><body>
 <header><div class="bar"><a class="brand" href="../../index.html"><span class="logo">TK</span><span><strong>TOPKEY VIETNAM</strong><small>VLOG 2026</small></span></a><nav class="nav"><a class="on" href="#ranking">♜ Bảng xếp hạng</a><a href="../vnext/index.html?sport=handmade">DIY Hub</a><button id="admin-toggle" type="button" hidden>⚙ Quản trị</button><button id="admin-sign-in" type="button">🔐 Đăng nhập Admin</button><button id="admin-sign-out" type="button" hidden>Đăng xuất Admin</button><div id="vlog-language-picker" class="vlog-language-picker" role="group" aria-label="Ngôn ngữ / Language / 语言" data-vlog-no-i18n>
 <button type="button" data-lang="vi" title="Tiếng Việt" aria-pressed="true">🇻🇳 VI</button>
@@ -407,4 +412,4 @@ try{
  });
 }catch(e){console.warn('TOPKEY Vlog boot',e);$('refresh-time').textContent='Không có kết nối Firebase · dữ liệu mẫu'}
 })();
-</script><footer aria-label="Pháp lý TOPKEY Vlog" style="padding:26px max(22px,calc((100% - 1120px)/2));border-top:1px solid #34425b;color:#b7c9da;font-size:14px;display:flex;gap:22px;flex-wrap:wrap"><a href="../../terms.html" style="color:#78e5e5">Điều khoản sử dụng</a><a href="../../privacy.html" style="color:#78e5e5">Chính sách quyền riêng tư</a><span>TOPKEY Vlog 2026 · Đồng bộ TikTok chỉ thực hiện khi được cấp quyền</span></footer><script src="./tiktok-automation.js?v=tikwm-resilient-5w-20261115"></script><script src="./vlog-i18n.js?v=vi-en-zh-scanerrors-20261115" defer></script></body></html>
+</script><footer aria-label="Pháp lý TOPKEY Vlog" style="padding:26px max(22px,calc((100% - 1120px)/2));border-top:1px solid #34425b;color:#b7c9da;font-size:14px;display:flex;gap:22px;flex-wrap:wrap"><a href="../../terms.html" style="color:#78e5e5">Điều khoản sử dụng</a><a href="../../privacy.html" style="color:#78e5e5">Chính sách quyền riêng tư</a><span>TOPKEY Vlog 2026 · Đồng bộ TikTok chỉ thực hiện khi được cấp quyền</span></footer><script src="./tiktok-automation.js?v=tikwm-retryfailed-once-20261115"></script><script src="./vlog-i18n.js?v=vi-en-zh-retryfailed-20261115" defer></script></body></html>

@@ -4,7 +4,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
 const source=fs.readFileSync(path.join(__dirname,'..','topkey/sports/diy-vlog/tiktok-automation.js'),'utf8');
 const start=source.indexOf('async function runEdgeOneBatch(){'),end=source.indexOf('bulk.addEventListener(',start);
 assert(start>=0&&end>start,'scan function should exist');
-const snippet=source.slice(start,end);
+const snippet=source.slice(source.indexOf('function vlogFailureReason('),source.indexOf('function errMessage('))+source.slice(start,end);
 const N=1000;
 const makeEntries=n=>Object.fromEntries(Array.from({length:n},(_,i)=>[
  'tt_'+String(i).padStart(4,'0'),
@@ -56,6 +56,6 @@ async function simulate({n=N,errors=[],authError=-1,concurrency=25,offset=0}={})
  assert(html.includes('id="tiktok-scan-errors"')&&html.includes('.vlog-failed-row{'));
  assert(html.includes('const failedMap=new Map(testMode?'));
  assert(html.includes('vlog-error-label'));
- assert(html.includes('tiktok-automation.js?v=tikwm-resilient-5w-20261115'));
+ assert(html.includes('tiktok-automation.js?v=tikwm-retryfailed-once-20261115'));
  console.log('PASS: 1000/1000 5-worker paced, 6 video errors continue, end red report, auth 401 stops, resume 75, 10/3-way, role-guard and compact header CSS');
 })().catch(e=>{console.error(e);process.exitCode=1});
