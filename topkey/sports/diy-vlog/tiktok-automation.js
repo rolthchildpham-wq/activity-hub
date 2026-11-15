@@ -43,6 +43,117 @@ async function readEdgeOneMetadata(url){
  }
 }
 function info(t){status.hidden=false;status.style.display="block";status.textContent=t}
+function vlogFailureReason(error){
+ const code=Number(error?.status||error?.code||0);
+ const raw=String(error?.message||error||'Không lấy được dữ liệu').slice(0,200);
+ const type=code===429?'TikWM giới hạn tần suất':code===502||code===503?'Máy chủ TikTok/TikWM tạm lỗi':
+  code===504||/timeout|abort|quá thời gian/i.test(raw)?'Quá thời gian chờ':
+  code===401||code===403?'Không đủ quyền đăng nhập':
+  /permission.denied/i.test(raw)?'Firebase từ chối ghi dữ liệu':'Không đọc được chỉ số';
+ return {code,reason:type+' — '+raw};
+}
+function showVlogScanFailures(failures,testMode,canRetry){
+ const all=Array.from(failures||[]);
+ window.__TOPKEY_VLOG_SCAN_ERRORS=testMode?all:[];
+ const report=$("tiktok-scan-errors");
+ if(!report||typeof report.replaceChildren!=='function)return;
+ if(!testMode||!all.length){report.hidden=true;report.replaceChildren();return}
+ const title=document.createElement('h3');title.textContent='⚠ '+all.length+' video cần kiểm tra thủ công';
+ const summary=document.createElement('p');
+ summary.textContent='Nhấn kiểm tra lại một lượt cho các link lỗi trước khi kiểm tra thủ công. URL, lần thử cuối và nguyên nhân mới nhất hiển thị bên dưới.';
+ const retry=document.createElement('button');
+ retry.type='button';retry.className='vlog-retry-failed';retry.textContent='↻ Kiểm tra tự động lại '+all.length+' link lỗi (1 lượt)';
+ retry.disabled=!canRetry||Boolean(bulk.disabled);
+ if(typeof retry.addEventListener==='function'){
+  retry.addEventListener('click',()=>run(retry,()=>runFailedVlogLinksOnce()));
+ }
+ const list=document.createElement('ol');list.className='vlog-scan-error-list';
+ for(const f of all){
+  const li=document.createElement('li'),name=document.createElement('strong'),reason=document.createElement('span'),url=document.createElement('a');
+  name.textContent=f.name||f.id;
+  reason.textContent=' — '+(f.reason||'Chưa xác định nguyên nhân')+
+    ' · thử lại '+Number(f.retryCount||0)+' lần'+(f.lastCheckedAt?' · kiểm tra '+f.lastCheckedAt:'');
+  url.textContent='TikTok ↗';url.href=f.url;url.target='_blank';url.rel='noopener noreferrer';
+  li.append(name,reason,' ',url);list.appendChild(li);
+ }
+ report.replaceChildren(title,summary,retry,list);report.hidden=false;
+}
+async function runFailedVlogLinksOnce(){
+ if(!window.__TOPKEY_VLOG_TEST_MODE)throw Error('Chỉ cho phép kiểm tra lại các link lỗi trong TEST LAB.');
+ const auth=window.firebase?.auth?.(),user=auth?.currentUser;
+ if(!user||!window.firebase?.database)throw Error('Cần đăng nhập ADMIN để kiểm tra lại link lỗi.');
+ if(bulk.disabled)throw Error('Đang quét toàn bộ, không thể chạy song song.');
+ const uid=user.uid,root='topkey_vlog2026_test/entries',db=firebase.database(),key='topkey_vlog2026_scan:'+root;
+ const snapshot=await db.ref(root).once('value');
+ const data=snapshot.val()||{},rows=Object.entries(data).filter(([,e])=>e&&validTikTokVideo(String(e.url||'').trim()));
+ if(!rows.length)throw Error('TEST LAB chưa có URL hợp lệ.');
+ const fingerprint=rows.length+':'+rows[0][0]+':'+rows[rows.length-1][0]+':'+String(rows[0][1].sampleCreatedAt||'');
+ let saved={};try{saved=JSON.parse(localStorage.getItem(key)||'{}')||{}}catch{}
+ if(saved.fingerprint!==fingerprint||!Array.isArray(saved.failures)||!saved.failures.length)
+  throw Error('Không có link lỗi thuộc bộ TEST hiện tại để kiểm tra lại.');
+ const retryMap=new Map(saved.failures.filter(x=>x?.id&&x?.url).map(x=>[String(x.id),x]));
+ const pending=[...retryMap.values()].filter(f=>data[f.id]&&
+   String(data[f.id].url||'').trim()===f.url&&validTikTokVideo(f.url));
+ if(!pending.length)throw Error('Các link lỗi không còn trong bộ TEST hiện tại.');
+ const safe=()=>auth.currentUser?.uid===uid&&window.__TOPKEY_VLOG_TEST_MODE===true;
+ if(!safe())throw Error('Phiên đăng nhập hoặc chế độ TEST đã thay đổi.');
+ const count=5,spacing=300;let next=0,nextStart=0,success=0,finished=0,authFailure=null;
+ const pause=async()=>{
+  const now=Date.now(),wait=Math.max(0,nextStart-now);
+  nextStart=Math.max(now,nextStart)+spacing;
+  if(wait>0)await new Promise(resolve=>setTimeout(resolve,wait));
+ };
+ const commit=()=>{
+  const result={...saved,failures:[...retryMap.values()]};
+  try{localStorage.setItem(key,JSON.stringify(result));
+   localStorage.setItem('topkey_vlog2026_scan_errors:'+root,JSON.stringify(result))}catch{}
+  showVlogScanFailures(result.failures,true,true);
+  window.TopkeyVlogSyncErrorsChanged?.(result.failures);
+ };
+ bulk.disabled=true;
+ try{
+  async function worker(){
+   while(next<pending.length&&!authFailure){
+    const f=pending[next++],entry=data[f.id];
+    try{
+     if(!safe())throw Object.assign(Error('Phiên đăng nhập đã thay đổi'),{status:403});
+     await pause();
+     if(!safe())throw Object.assign(Error('Phiên đăng nhập đã thay đổi'),{status:403});
+     const res=await readEdgeOneMetadata(f.url),patch={};
+     for(const metric of ['views','likes','shares']){
+      const v=res.stats?.[metric];if(Number.isSafeInteger(v)&&v>=0&&v<=1e9)patch[metric]=v;
+     }
+     if(!Object.keys(patch).length)throw Error('Không có chỉ số hợp lệ');
+     if(!safe()||authFailure)throw Object.assign(Error('Phiên đăng nhập đã thay đổi'),{status:403});
+     const at=new Date().toISOString();
+     const tx=await db.ref(root+'/'+f.id).transaction(current=>{
+      if(!current||String(current.url||'').trim()!==f.url)return;
+      return {...current,...patch,statsSource:String(res.source||'EdgeOne TikWM'),
+       statsFetchedAt:at,statsLastAutoSyncAt:at};
+     });
+     if(!tx.committed)throw Error('URL đã thay đổi hoặc Firebase từ chối ghi');
+     retryMap.delete(f.id);success++;
+    }catch(error){
+     const failure=vlogFailureReason(error);
+     retryMap.set(f.id,{...f,...failure,retryCount:Number(f.retryCount||0)+1,lastCheckedAt:new Date().toISOString()});
+     if(failure.code===401||failure.code===403||!safe())authFailure=error;
+    }finally{
+     finished++;info('KIỂM TRA LẠI '+finished+'/'+pending.length+' link lỗi · đã khôi phục '+success+
+      ' · còn lỗi '+retryMap.size);
+    }
+   }
+  }
+  await Promise.all(Array.from({length:Math.min(count,pending.length)},()=>worker()));
+  commit();
+  if(authFailure){
+   info('TẠM DỪNG kiểm tra lại: '+String(authFailure?.message||authFailure)+
+    '. Giữ danh sách lỗi để kiểm tra sau khi đăng nhập lại.');
+   return;
+  }
+  info('HOÀN TẤT kiểm tra lại '+pending.length+' link lỗi · khôi phục '+success+
+   ' · còn '+retryMap.size+' link cần kiểm tra tay. Xem lý do mới nhất bên dưới.');
+ }finally{bulk.disabled=false;showVlogScanFailures([...retryMap.values()],safe(),true)}
+}
 function errMessage(e){
  const code=String(e?.code||""),msg=String(e?.message||"");
  if(code.includes("not-found")||code.includes("unavailable")||code.includes("internal"))return "Dịch vụ TikTok chưa được triển khai hoặc chưa kết nối. BTC vẫn có thể nhập số liệu thủ công. ("+code+")";
@@ -146,22 +257,7 @@ async function runEdgeOneBatch(){
  let completed=offset,updated=0,partial=0,rejected=0,stopped=false,stopReason="";
  // Limit memory and avoid writing any TEST errors into production Firestore/RTDB.
  function syncFailedView(){
-  const all=[...failed.values()];
-  window.__TOPKEY_VLOG_SCAN_ERRORS=testMode?all:[];
-  if(!report)return;
-  if(!report||typeof report.replaceChildren!=='function')return;
-  if(!all.length){report.hidden=true;report.replaceChildren();return}
-  const title=document.createElement("h3");title.textContent="⚠ "+all.length+" video cần kiểm tra thủ công";
-  const sub=document.createElement("p");sub.textContent="Các video này được xếp cuối bảng TEST. Kiểm tra URL và nguyên nhân bên dưới khi quét hoàn tất.";
-  const list=document.createElement("ol");list.className="vlog-scan-error-list";
-  for(const f of all){
-   const item=document.createElement("li"),name=document.createElement("strong"),
-    reason=document.createElement("span"),link=document.createElement("a");
-   name.textContent=f.name||f.id;reason.textContent=" — "+f.reason;
-   link.textContent="TikTok ↗";link.href=f.url;link.target="_blank";link.rel="noopener noreferrer";
-   item.append(name,reason," ",link);list.appendChild(item);
-  }
-  report.replaceChildren(title,sub,list);report.hidden=false;
+  showVlogScanFailures([...failed.values()],testMode,true);
  }
  const persist=(cursor)=>{
   const data={fingerprint,offset:cursor,failures:[...failed.values()]};
@@ -207,8 +303,10 @@ async function runEdgeOneBatch(){
      failed.delete(id);updated++;if(Object.keys(patch).length<3)partial++;
     }catch(e){
      rejected++;
-     const code=Number(e?.status||0),reason=String(e?.message||e).slice(0,220);
-     failed.set(id,{id,name:String(entry.name||entry.title||id).slice(0,110),url,reason,code});
+     const {code,reason}=vlogFailureReason(e);
+     const prior=failed.get(id);
+     failed.set(id,{id,name:String(entry.name||entry.title||id).slice(0,110),url,reason,code,
+       retryCount:Number(prior?.retryCount||0),lastCheckedAt:new Date().toISOString()});
      // A broken token/account is a global authorization failure, not a video error.
      if((code===401||code===403)&&canWrite()){
       stopped=true;globalStop=true;stopReason=reason;authStopIndex=Math.min(authStopIndex,index);
