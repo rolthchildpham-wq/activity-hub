@@ -210,6 +210,8 @@ function startSport(options={}){
   await loadFirebase(config,options.firebaseOptions);
   return prepareAuthShell();
  })();
+ // Restore H138 last-known-good mobile submit interception before admin hydration.
+ bindLogin({ensureCore:()=>shellPromise});
  const ensureCore=()=>{
   if(corePromise)return corePromise;
   corePromise=(async()=>{
