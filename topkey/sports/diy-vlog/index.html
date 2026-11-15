@@ -87,7 +87,7 @@ try{
  if(!user){authStatus('Chưa đăng nhập. Viewer tiếp tục xem được bảng xếp hạng.');return}
  authStatus('Đã xác thực Firebase. Đang kiểm tra quyền ADMIN…');
  try{const s=await db.ref('topkey_badminton_vnext_2026/users/'+user.uid).once('value');if(auth.currentUser?.uid!==user.uid)return;const p=s.val()||{};
- const role=String(p.role||'').trim().toUpperCase(),rawScope=String(p.sportScope||p.assignedSport||'').trim().toLowerCase(),scope=rawScope.normalize?rawScope.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/đ/g,'d'):rawScope;
+ const role=String(p.role||'').trim().toUpperCase(),rawScope=String(p.sportScope||p.assignedSport||'').trim().toLowerCase(),scope=rawScope.normalize?rawScope.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d'):rawScope;
  const isHandmadeScope=['handmade','diy','diy / handmade','🧶 diy / handmade'].includes(scope);
  isAdmin=(role==='ADMIN'||(role==='BTC'&&isHandmadeScope))&&p.active!==false&&p.disabled!==true&&p.locked!==true&&p.enabled!==false&&p.isActive!==false&&!['disabled','blocked','suspended','inactive'].includes(String(p.status||'').toLowerCase());
  $('admin-toggle').hidden=!isAdmin;$('admin-sign-in').hidden=true;$('admin-sign-out').hidden=false;
