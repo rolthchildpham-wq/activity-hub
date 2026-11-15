@@ -10,16 +10,16 @@
   const s=String(text||''),record=DICT[s];
   if(lang==='vi')return s;
   if(record)return record[lang==='en'?0:1];
-  let m=s.match(/^(\\d[\\d.,]*) xem · (\\d[\\d.,]*) thích · (\\d[\\d.,]*) chia sẻ$/);
+  let m=s.match(/^(\d[\d.,]*) xem · (\d[\d.,]*) thích · (\d[\d.,]*) chia sẻ$/);
   if(m)return lang==='en'?m[1]+' views · '+m[2]+' likes · '+m[3]+' shares':m[1]+' 播放 · '+m[2]+' 点赞 · '+m[3]+' 分享';
-  m=s.match(/^Điểm = (\\d[\\d.,]*) × lượt xem \\+ (\\d[\\d.,]*) × lượt thích \\+ (\\d[\\d.,]*) × lượt chia sẻ/);
+  m=s.match(/^Điểm = (\d[\d.,]*) × lượt xem \+ (\d[\d.,]*) × lượt thích \+ (\d[\d.,]*) × lượt chia sẻ/);
   if(m)return lang==='en'?'Score = '+m[1]+' × views + '+m[2]+' × likes + '+m[3]+' × shares':'得分 = '+m[1]+' × 播放量 + '+m[2]+' × 点赞 + '+m[3]+' × 分享';
   return s;
  }
  function skip(el){return !el||!!el.closest('script,style,textarea,pre,code,select,[contenteditable="true"],[data-vlog-no-i18n],#vlog-language-picker')}
  function textNode(n){if(skip(n.parentElement))return;const raw=n.nodeValue||'';if(!raw.trim())return;
-  let rec=state.get(n);if(!rec){rec={original:raw.trim(),last:null,pre:raw.match(/^\\s*/)?.[0]||'',post:raw.match(/\\s*$/)?.[0]||''};state.set(n,rec)}
-  else if(raw!==rec.last&&raw.trim()!==rec.original){rec.original=raw.trim();rec.pre=raw.match(/^\\s*/)?.[0]||'';rec.post=raw.match(/\\s*$/)?.[0]||''}
+  let rec=state.get(n);if(!rec){rec={original:raw.trim(),last:null,pre:raw.match(/^\s*/)?.[0]||'',post:raw.match(/\s*$/)?.[0]||''};state.set(n,rec)}
+  else if(raw!==rec.last&&raw.trim()!==rec.original){rec.original=raw.trim();rec.pre=raw.match(/^\s*/)?.[0]||'';rec.post=raw.match(/\s*$/)?.[0]||''}
   const next=rec.pre+translate(rec.original)+rec.post;if(raw!==next)n.nodeValue=next;rec.last=next;
  }
  function attributes(el){if(skip(el))return;let rec=attrs.get(el);if(!rec){rec={};attrs.set(el,rec)}for(const a of ['placeholder','title','aria-label']){
