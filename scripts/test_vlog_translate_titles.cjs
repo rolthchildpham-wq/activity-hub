@@ -1,0 +1,24 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
+const script=fs.readFileSync(path.join(__dirname,'..','topkey/sports/diy-vlog/vlog-i18n.js'),'utf8');
+const html=fs.readFileSync(path.join(__dirname,'..','topkey/sports/diy-vlog/index.html'),'utf8');
+const ctx={window:{dispatchEvent:()=>{}},document:{readyState:'loading',addEventListener:()=>{}},
+ localStorage:{getItem:()=> 'vi'},WeakMap,Map,Set,Promise,console,CustomEvent:class{},MutationObserver:class{}};
+vm.createContext(ctx);new vm.Script(script).runInContext(ctx);
+const t=ctx.window.TopkeyVlogI18n.translate;
+assert.equal(t('Video thử nghiệm 0080','en'),'Test video 0080');
+assert.equal(t('Video thử nghiệm 0080','zh'),'测试视频 0080');
+assert.equal(t('Cá nhân · Bộ URL công khai - TEST','en'),'Individual · Public URL collection - TEST');
+assert.equal(t('Cá nhân · Bộ URL công khai - TEST','zh'),'个人 · 公开链接数据集 - 测试');
+assert.equal(t('Lượt xem','en'),'Views');
+assert.equal(t('Lượt xem','zh'),'播放量');
+assert.match(t('ĐANG QUÉT 75/1000 URL · 5 luồng thực tế · cập nhật 50 · lỗi 2','en'),/^SCANNING 75\/1000 URL/);
+assert.equal(t('https://www.tiktok.com/@creator/video/7500000000000000000','en'),'https://www.tiktok.com/@creator/video/7500000000000000000');
+assert.equal(t('tt_7500000000000000000','zh'),'tt_7500000000000000000');
+assert.equal(t('Video thử nghiệm 0080','vi'),'Video thử nghiệm 0080');
+assert(!script.includes('.pod .person,#rows td strong,#rows td .muted'),'titles and names should not be skipped');
+assert(html.includes('id="vlog-language-picker"'));
+assert(html.includes('id="tiktok-scan-errors"'));
+assert(html.includes('tiktok-automation.js?v=tikwm-resilient-5w-20261115'));
+assert(script.includes('window.Translator.availability'),'optional native translation for arbitrary free-text');
+console.log('PASS: video titles VI EN ZH, dynamic stats, URLs and IDs unchanged, free-text native optional, TEST errors retained');
