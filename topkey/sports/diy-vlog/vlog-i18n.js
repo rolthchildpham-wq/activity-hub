@@ -49,6 +49,16 @@
  DICT['Không đọc được chỉ số']=['Could not read metrics','无法读取指标'];
  DICT['Firebase từ chối ghi dữ liệu']=['Firebase refused to save data','Firebase 拒绝保存数据'];
  DICT['Không đủ quyền đăng nhập']=['Insufficient account access','账号权限不足'];
+ Object.assign(DICT,{
+ '↑ Nhập CSV':['↑ Import CSV','↑ 导入 CSV'],
+ 'NHẬP DỮ LIỆU THÍ SINH':['IMPORT CONTESTANTS','导入参赛者'],
+ 'Xem trước nhập CSV vào cuộc thi thật':['Preview CSV import into live contest','预览正式比赛的 CSV 导入'],
+ 'Chỉ bổ sung thí sinh mới, không ghi đè dữ liệu cũ; TEST LAB không bị thay đổi.':['Only add new contestants; existing entries and TEST LAB remain unchanged.','仅新增参赛者；现有记录和测试实验室不变。'],
+ 'Xác nhận thêm bài mới':['Confirm adding new entries','确认新增作品'],
+ '↑ Nhập CSV':['↑ Import CSV','↑ 导入 CSV'],
+ 'Hủy':['Cancel','取消'],
+ 'Chọn file CSV thí sinh':['Select contestant CSV file','选择参赛者 CSV 文件']
+ });
  const state=new WeakMap(),attrs=new WeakMap();
 
  // Built-in on-device translation for arbitrary video titles and free-text UI.
