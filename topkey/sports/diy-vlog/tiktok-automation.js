@@ -128,7 +128,8 @@ async function runV2Batch(items,db,root,readerWindow){
 }
 // Configure only after deploying the authenticated worker backend.
 // Example: window.__TOPKEY_TIKTOK_WORKER_API = "https://secure-worker.example";
-const WORKER_API=String(window.__TOPKEY_TIKTOK_WORKER_API||"").replace(/\\/$/,"");
+const configuredWorkerOrigin=String(window.__TOPKEY_TIKTOK_WORKER_API||"").trim();
+const WORKER_API=configuredWorkerOrigin.endsWith("/")?configuredWorkerOrigin.slice(0,-1):configuredWorkerOrigin;
 async function runAuthenticatedWorkerBatch(){
  const user=firebase.auth?.().currentUser;
  if(!user)throw Error("Cần đăng nhập ADMIN/BTC Vlog trước khi đồng bộ.");
