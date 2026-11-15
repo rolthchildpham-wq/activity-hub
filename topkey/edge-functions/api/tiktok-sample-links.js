@@ -29,24 +29,31 @@ export async function onRequestPost(context){
   if(!allowed(profile))return json({ok:false,error:'VLOG_ADMIN_REQUIRED'},403);
   const body=await request.json(),kind=body?.kind==='search'?'search':'trend',keyword=String(body?.keyword||'').slice(0,80),cursor=String(body?.cursor??'0').slice(0,100),count=Math.max(1,Math.min(30,Number(body?.count)||30));
   if(kind==='search'&&!keyword)return json({ok:false,error:'KEYWORD_REQUIRED'},400);
-  const endpoint=kind==='search'?'https://www.tikwm.com/api/feed/search/':'https://www.tikwm.com/api/feed/list/';
-  const form=new URLSearchParams(kind==='search'?{keywords:keyword,count:String(count),cursor,hd:'1'}:{region:'VN',count:String(count),cursor,web:'1',hd:'1'});
-  const upstream=await fetch(endpoint,{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded; charset=UTF-8','user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124.0 Safari/537.36','referer':'https://www.tiktok.com/','cookie':'current_language=en'},body:form,signal:AbortSignal.timeout(18000)});
-  const payload=await upstream.json().catch(()=>null);
+  let upstream,payload;
+  if(kind==='search'){
+   const u=new URL('https://www.tikwm.com/api/feed/search/');
+   u.searchParams.set('keywords',keyword);u.searchParams.set('count',String(count));u.searchParams.set('cursor',cursor);u.searchParams.set('hd','1');
+   upstream=await fetch(u.toString(),{headers:{'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124.0 Safari/537.36','referer':'https://www.tiktok.com/','accept':'application/json'},signal:AbortSignal.timeout(18000)});
+  }else{
+   const form=new URLSearchParams({region:'VN',count:String(count),cursor,web:'1',hd:'1'});
+   upstream=await fetch('https://www.tikwm.com/api/feed/list/',{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded; charset=UTF-8','user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124.0 Safari/537.36','referer':'https://www.tiktok.com/','cookie':'current_language=en'},body:form,signal:AbortSignal.timeout(18000)});
+  }
+  payload=await upstream.json().catch(()=>null);
   if(!upstream.ok||!payload)return json({ok:false,error:'SCRAPER_UPSTREAM_'+upstream.status},502);
+  if(Number(payload.code)!==0)return json({ok:false,error:'TIKWM_'+String(payload.msg||payload.message||payload.code||'FAILED').slice(0,150)},502);
   const root=payload.data||payload;
   const list=Array.isArray(root)?root:(Array.isArray(root.videos)?root.videos:Array.isArray(root.items)?root.items:[]);
   const items=[];
   for(const v of list){
    const id=String(v.video_id||v.aweme_id||v.id||'');
-   const username=String(v.author?.unique_id||v.author?.uniqueId||v.author?.uniqueId||'');
+   const username=String(v.author?.unique_id||v.author?.uniqueId||'');
    let url=String(v.share_url||v.shareUrl||'');
-   if(!validUrl(url)&&username&&/^\d{8,22}$/.test(id))url='https://www.tiktok.com/@'+username+'/video/'+id;
+   if(!validUrl(url)&&username&&/^\\d{8,22}$/.test(id))url='https://www.tiktok.com/@'+username+'/video/'+id;
    if(!validUrl(url))continue;
    items.push({id,url,username,authorName:String(v.author?.nickname||username||'TikTok VN'),views:Number(v.play_count)||0,likes:Number(v.digg_count)||0,shares:Number(v.share_count)||0});
   }
   const next=root.cursor??payload.cursor??root.next_cursor??payload.next_cursor??null;
-  const hasMore=(root.hasMore===true||root.has_more===true||payload.hasMore===true||payload.has_more===true)&&(next!==null&&String(next)!==cursor);
+  const hasMore=kind==='search'&&(root.hasMore===true||root.has_more===true||payload.hasMore===true||payload.has_more===true)&&(next!==null&&String(next)!==cursor);
   return json({ok:true,items,nextCursor:hasMore?String(next):null,hasMore,source:'TikWM public '+(kind==='trend'?'VN trending feed':'TikTok public search'),region:'VN',returned:items.length});
  }catch(e){return json({ok:false,error:String(e?.message||e).slice(0,220)},502)}
 }
