@@ -1,0 +1,22 @@
+/* H140 mobile layout guard: scoped to badminton, no auth or sport-rule changes. */
+@media (max-width: 767px) {
+  html, body { width:100%; max-width:100%; overflow-x:clip; }
+  #app-shell, #login-screen, #public-spectator, #public-register { max-width:100%; box-sizing:border-box; }
+  #login-screen .card, #login-screen form, #login-screen input,
+  #app-shell .card, #app-shell .panel, #app-shell .content,
+  #app-shell .main, #app-shell .modal, #app-shell .dialog {
+    box-sizing:border-box;
+    min-width:0;
+    max-width:100%;
+  }
+  #login-screen .card { width: min(100% - 24px, 480px); margin-inline:auto; }
+  #login-screen input, #login-screen button { max-width:100%; }
+  #app-shell img, #app-shell video, #app-shell canvas,
+  #public-spectator img, #public-spectator video { max-width:100%; height:auto; }
+  #app-shell :is(table, .table, .grid-table) { max-width:100%; }
+  #app-shell :is(.table-wrap,.table-container,.data-table-wrap,.schedule-table-wrap) {
+    max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch;
+  }
+  #app-shell :is(.modal,.dialog,[role="dialog"]) { max-height:calc(100dvh - 24px); overflow-y:auto; }
+  #app-shell :is(input,select,textarea) { font-size:max(16px,1em); }
+}
