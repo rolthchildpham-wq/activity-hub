@@ -27,7 +27,84 @@ button.small,.btn{background:#1a243d;color:#dce8fa;border:1px solid #2c3853;bord
 .leaderboard{overflow:hidden;margin-top:9px}.table-scroll{overflow:auto}table{border-collapse:collapse;width:100%;min-width:780px}th,td{text-align:left;padding:15px 17px;border-bottom:1px solid #25304a}th{font-size:10px;color:#9cacc5;font-weight:750;background:#111a31}td{font-size:12px}td strong{color:#f5f8ff}.score{color:#72e5e6;font-weight:900}.muted{font-size:10px;color:#8d9bb7;margin-top:4px}.no-data{text-align:center;padding:35px;color:#adb8ca}.utility{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.search{padding:10px;border:1px solid #364666;border-radius:9px;background:#10182e;color:white;min-width:200px}
 .edit-panel{padding:20px;margin-top:24px}.edit-panel[hidden]{display:none!important}#tiktok-test-tools[hidden]{display:none!important}.fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:15px 0}.field label{display:block;font-size:11px;margin-bottom:5px;color:#afc3db}.field input,.field select{width:100%;min-height:40px;padding:10px;border:1px solid #394963;border-radius:8px;background:#0c1428;color:white}.actions{display:flex;gap:9px;flex-wrap:wrap}.actions button{background:#087e8d;border:1px solid #1babb5;color:white;border-radius:8px;padding:11px 13px}.actions .secondary{background:#26314c}footer{border-top:1px solid #26314c;text-align:center;font-size:10px;color:#7a8aa8;padding:22px}
 @media(max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}.stat:last-child{grid-column:span 2}.podium{grid-template-columns:1fr;gap:8px}.podium .pod{grid-column:auto}.pod{padding:10px 12px;min-height:88px}.pod .person{font-size:12px}.pod .points{font-size:16px}.fields{grid-template-columns:1fr}.hero .container{padding-top:22px;padding-bottom:20px}.nav{gap:7px}.nav a{font-size:11px}}@media(max-width:370px){.pod .tiny{font-size:9px}}
-@media(min-width:701px) and (max-width:1050px){.stats{grid-template-columns:repeat(3,minmax(0,1fr))}.stat{min-height:72px}}@media(max-width:700px){.content{padding-top:12px}.section{margin-top:22px}.section.podium-section{margin-top:18px}.stats{gap:8px}.stat{padding:10px 11px}.stat strong{font-size:19px}.status{gap:8px}.hero p{max-width:100%}}</style></head><body>
+@media(min-width:701px) and (max-width:1050px){.stats{grid-template-columns:repeat(3,minmax(0,1fr))}.stat{min-height:72px}}@media(max-width:700px){.content{padding-top:12px}.section{margin-top:22px}.section.podium-section{margin-top:18px}.stats{gap:8px}.stat{padding:10px 11px}.stat strong{font-size:19px}.status{gap:8px}.hero p{max-width:100%}}
+/* Fluid, viewport-driven Vlog layout: desktop, laptop, tablet and touch phone. */
+:root{--vlog-gutter:clamp(12px,2.2vw,26px);--vlog-gap:clamp(8px,1vw,14px)}
+html{min-width:0;overflow-x:clip}
+body{min-width:0}
+.container,.bar{width:100%;max-width:1440px;padding-left:var(--vlog-gutter);padding-right:var(--vlog-gutter)}
+.bar{min-width:0;gap:clamp(8px,1.5vw,20px)}
+.brand,.nav{min-width:0}
+.nav{gap:clamp(6px,1vw,14px);flex-wrap:wrap;justify-content:flex-end}
+.hero .container{padding-top:clamp(18px,2.6vw,38px);padding-bottom:clamp(16px,2vw,30px)}
+.hero h1{font-size:clamp(27px,3vw,42px);overflow-wrap:break-word}
+.hero p{max-width:68ch;font-size:clamp(12px,1.05vw,14px)}
+.status{gap:clamp(7px,1vw,12px);margin-top:clamp(10px,1.3vw,17px)}
+.content{padding-top:clamp(12px,1.6vw,22px);padding-bottom:clamp(24px,3vw,44px)}
+.stats{gap:var(--vlog-gap);grid-template-columns:repeat(5,minmax(0,1fr))}
+.stat{min-width:0;padding:clamp(10px,1.1vw,15px)}
+.stat label{letter-spacing:.10em;overflow-wrap:anywhere}
+.stat strong{font-size:clamp(18px,1.8vw,25px);overflow-wrap:anywhere}
+.section{margin-top:clamp(18px,2vw,30px)}
+.section.podium-section{margin-top:clamp(14px,1.7vw,24px)}
+.section h2{margin-bottom:clamp(8px,1vw,14px)}
+.podium{gap:var(--vlog-gap)}
+.pod{min-width:0;min-height:clamp(98px,9vw,118px);padding:clamp(10px,1vw,14px)}
+.pod-body{min-width:0}
+.pod .tiny{overflow-wrap:anywhere}
+.utility{gap:var(--vlog-gap)}
+.table-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+.edit-panel{padding:clamp(12px,1.5vw,20px);min-width:0}
+.fields{grid-template-columns:repeat(3,minmax(0,1fr))}
+.fields>*{min-width:0}
+.actions>*{max-width:100%}
+@media(max-width:1100px){
+ .bar{flex-wrap:wrap;justify-content:space-between;row-gap:8px}
+ .stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .stat:last-child{grid-column:auto}
+ .pod .number{width:32px;height:32px}
+ .pod .points{font-size:clamp(15px,1.7vw,18px)}
+ .fields{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:760px){
+ .bar{align-items:center;padding-top:9px;padding-bottom:9px}
+ .nav{width:100%;justify-content:flex-start;gap:5px 12px}
+ .nav .on{padding:7px 11px}
+ .hero .container{padding-top:18px;padding-bottom:18px}
+ .hero h1{font-size:clamp(26px,5.4vw,36px);line-height:1.12}
+ .hero p{font-size:12px}
+ .status{margin-top:10px}
+ .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .stat:last-child{grid-column:span 2}
+ .stat strong{font-size:clamp(18px,4vw,23px)}
+ .podium{grid-template-columns:1fr;gap:8px}
+ .pod{min-height:0;padding:10px 12px}
+ .pod .person{white-space:normal;overflow-wrap:anywhere}
+ .fields{grid-template-columns:1fr}
+ .utility .search{width:100%;min-width:0}
+ .actions{gap:7px}
+ .actions button{min-height:40px}
+ .table-scroll{margin-right:0}
+}
+@media(max-width:420px){
+ .brand strong{font-size:11px}
+ .nav a,.nav button{font-size:11px}
+ .nav .on{padding:7px 9px}
+ .stat{padding:10px}
+ .stat label{font-size:8px}
+ .stat strong{font-size:18px}
+ .hero h1{font-size:clamp(24px,7vw,29px)}
+ .pod .number{width:30px;height:30px}
+ .pod .points{font-size:16px}
+ .status .small{padding:8px 10px}
+ .edit-panel{padding:12px}
+}
+@media(min-width:1500px){
+ .container,.bar{max-width:1500px}
+ .hero .container{padding-top:32px;padding-bottom:28px}
+ .stats{gap:14px}
+}
+</style></head><body>
 <header><div class="bar"><a class="brand" href="../../index.html"><span class="logo">TK</span><span><strong>TOPKEY VIETNAM</strong><small>VLOG 2026</small></span></a><nav class="nav"><a class="on" href="#ranking">♜ Bảng xếp hạng</a><a href="../vnext/index.html?sport=handmade">DIY Hub</a><button id="admin-toggle" type="button" hidden>⚙ Quản trị</button><button id="admin-sign-in" type="button">🔐 Đăng nhập Admin</button><button id="admin-sign-out" type="button" hidden>Đăng xuất Admin</button></nav></div></header>
 <div class="hero"><div class="container"><div class="kicker">TOPKEY Vietnam · Cuộc thi Vlog 2026</div><h1>Bảng xếp hạng <span>Vlog TikTok</span></h1><p id="formula">Điểm = 1 × lượt xem + 3 × lượt thích + 5 × lượt chia sẻ. Bảng tự động tính lại mỗi khi số liệu hoặc hệ số thay đổi.</p><div class="status"><span id="refresh-time">Đang tải dữ liệu…</span><button class="small" id="refresh">↻ Làm mới</button><button class="small" id="export">↓ Xuất CSV</button></div></div></div>
 <main class="container content"><div class="warning" id="warning"><strong>⚠ DỮ LIỆU MẪU:</strong> Bảng đang hiển thị các mục giả lập để xem thử, được gắn nhãn riêng. Đây không phải số liệu thật của thí sinh.</div>
