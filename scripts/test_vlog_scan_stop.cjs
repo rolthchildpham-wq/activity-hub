@@ -5,6 +5,7 @@ const base=path.join(__dirname,'..','topkey','sports','diy-vlog');
 const js=fs.readFileSync(path.join(base,'tiktok-automation.js'),'utf8');
 const start=js.indexOf('async function runEdgeOneBatch()');
 const end=js.indexOf('bulk.addEventListener(',start);
+const helpers=js.slice(js.indexOf('function vlogFailureReason('),js.indexOf('function errMessage('));
 assert(start>=0&&end>start);
 const entries=Object.fromEntries(Array.from({length:1000},(_,i)=>[
  'tt_'+String(i).padStart(6,'0'),{url:'https://www.tiktok.com/@test/video/'+String(7400000000000000000n+BigInt(i))}
@@ -20,10 +21,11 @@ const ctx={
  readEdgeOneMetadata:async()=>{calls++;const err=Error('Invalid Firebase ID token');err.status=401;throw err},
  info:x=>{last=x}
 };
-vm.createContext(ctx);vm.runInContext(js.slice(start,end),ctx);
+ctx.window.firebase=ctx.firebase;ctx.$=id=>id==='tiktok-scan-errors'?null:{value:'3'};ctx.setTimeout=cb=>{cb();return 1};
+vm.createContext(ctx);vm.runInContext(helpers+js.slice(start,end),ctx);
 (async()=>{
  await ctx.runEdgeOneBatch();
- assert.equal(calls,1,'Must stop immediately on auth failure');
+ assert(calls>=1&&calls<=3,'Must stop after in-flight workers on auth failure');
  assert.equal(writes,0,'Cannot write failed metadata');
  assert(last.includes('TẠM DỪNG')&&last.includes('0/1000'),last);
  const state=JSON.parse(store.get('topkey_vlog2026_scan:topkey_vlog2026_test/entries'));
