@@ -501,16 +501,16 @@ try{
  if(!user){$('tiktok-test-tools').hidden=true;$('vlog-share-tools').hidden=true;authStatus('Chưa đăng nhập. Viewer tiếp tục xem được bảng xếp hạng.');const shareId=new URLSearchParams(location.search).get('share');if(shareId)loadViewerShare(shareId);return}
  authStatus('Đã xác thực Firebase. Đang kiểm tra quyền ADMIN…');
  try{const s=await db.ref('topkey_badminton_vnext_2026/users/'+user.uid).once('value');if(auth.currentUser?.uid!==user.uid)return;const p=s.val()||{};
- const role=String(p.role||'').trim().toUpperCase(),rawScope=String(p.sportScope||p.assignedSport||'').trim().toLowerCase(),scope=rawScope.normalize?rawScope.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d'):rawScope;
- const scopeList=Array.isArray(p.sportScopes)?p.sportScopes.map(x=>String(x||'').trim().toLowerCase()):[];
- const isHandmadeScope=(p.sportAccess?.handmade===true)||['handmade','diy','diy / handmade','🧶 diy / handmade'].includes(scope)||scopeList.some(x=>['handmade','diy','diy / handmade','🧶 diy / handmade'].includes(x));
- const vlogPermission=String(p.permissions?.modules?.vlog||'').toLowerCase();
- const hasVlogScope=p.sportAccess?.vlog===true||scopeList.includes('vlog')||scope==='vlog';
+ const role=String(p.role||'');
+ const allowedDiyScopes=['handmade','diy','DIY','DIY / Handmade','Diy / Handmade','🧶 DIY / Handmade'];
+ const isHandmadeScope=p.sportAccess?.handmade===true||[p.sportScope,p.assignedSport].some(x=>allowedDiyScopes.includes(x));
+ const vlogPermission=p.permissions?.modules?.vlog==='edit';
+ const hasVlogScope=p.sportAccess?.vlog===true;
  isRootAdmin=role==='ADMIN'&&p.active!==false&&p.disabled!==true&&p.locked!==true&&p.enabled!==false&&p.isActive!==false&&!['disabled','blocked','suspended','inactive'].includes(String(p.status||'').toLowerCase());
- isAdmin=(role==='ADMIN'||(role==='BTC'&&isHandmadeScope)||vlogPermission==='edit'||(role==='BTC'&&hasVlogScope))&&p.active!==false&&p.disabled!==true&&p.locked!==true&&p.enabled!==false&&p.isActive!==false&&!['disabled','blocked','suspended','inactive'].includes(String(p.status||'').toLowerCase());
+ isAdmin=(role==='ADMIN'||(role==='BTC'&&isHandmadeScope)||vlogPermission||(role==='BTC'&&hasVlogScope))&&p.active!==false&&p.disabled!==true&&p.locked!==true&&p.enabled!==false&&p.isActive!==false&&!['disabled','blocked','suspended','inactive'].includes(String(p.status||'').toLowerCase());
  $('admin-toggle').hidden=!isAdmin;$('tiktok-sync-all-links').hidden=!isAdmin;setTestLabVisibility(isRootAdmin);$('tiktok-sync-status').hidden=!isAdmin;$('vlog-share-tools').hidden=!isAdmin;$('admin-sign-in').hidden=true;$('admin-sign-out').hidden=false;
  if(isAdmin){$('admin-login-panel').hidden=true;authStatus('Đã xác minh quyền quản trị Vlog.');$('editor').hidden=false}
- else authStatus('Tài khoản đã đăng nhập nhưng không có quyền quản trị DIY trên TOPKEY. Liên hệ quản trị hệ thống.');
+ else authStatus('Tài khoản không có quyền quản trị Vlog trong Firebase. ADMIN cần cấp sportAccess.vlog=true hoặc permissions.modules.vlog=edit cho BTC phụ trách Vlog.');
  render();const shareId=new URLSearchParams(location.search).get('share');if(shareId)loadViewerShare(shareId);
  }catch(e){leaveTestMode();isAdmin=false;isRootAdmin=false;setTestLabVisibility(false);console.warn('Vlog admin profile',e);authStatus('Không thể xác minh quyền Admin: '+e.message+'. Kiểm tra Firebase Database Rules.');$('admin-sign-in').hidden=true;$('admin-sign-out').hidden=false}
  });
