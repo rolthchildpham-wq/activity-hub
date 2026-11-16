@@ -57,13 +57,13 @@ function showVlogScanFailures(failures,testMode,canRetry){
  window.__TOPKEY_VLOG_SCAN_ERRORS=testMode?all:[];
  const report=$("tiktok-scan-errors");
  if(!report||typeof report.replaceChildren!=='function')return;
- if(!testMode||!all.length){report.hidden=true;report.replaceChildren();return}
+ if(!all.length){report.hidden=true;report.replaceChildren();return}
  const title=document.createElement('h3');title.textContent='⚠ '+all.length+' video cần kiểm tra thủ công';
  const summary=document.createElement('p');
- summary.textContent='Nhấn kiểm tra lại một lượt cho các link lỗi trước khi kiểm tra thủ công. URL, lần thử cuối và nguyên nhân mới nhất hiển thị bên dưới.';
+ summary.textContent=testMode?'Có thể thử lại các URL lỗi một lượt trong TEST LAB. URL và nguyên nhân mới nhất hiển thị bên dưới.':'Các video lỗi giữ nguyên chỉ số đã lưu, không tự ghi số 0. Kiểm tra nguyên nhân và đường dẫn bên dưới; sau khi khắc phục, nhấn Quét tất cả để thử đồng bộ lại.';
  const retry=document.createElement('button');
  retry.type='button';retry.className='vlog-retry-failed';retry.textContent='↻ Kiểm tra tự động lại '+all.length+' link lỗi (1 lượt)';
- retry.disabled=!canRetry;
+ retry.disabled=!canRetry;retry.hidden=!testMode;
  if(typeof retry.addEventListener==='function'){
   retry.addEventListener('click',()=>run(retry,()=>runFailedVlogLinksOnce()));
  }
@@ -265,7 +265,7 @@ async function runEdgeOneBatch(){
  };
  const showProgress=()=>{
   info("ĐANG QUÉT "+completed+"/"+total+" URL · "+concurrency+" luồng thực tế · cập nhật "+updated+
-       " · lỗi "+failed.size+" · tự động tiếp tục...");
+       " · lỗi chưa khắc phục "+failed.size+" · tự động tiếp tục...");
  };
  if(report&&typeof report.replaceChildren==='function')report.hidden=true;
  if(testMode&&window.TopkeyVlogSyncErrorsChanged)window.TopkeyVlogSyncErrorsChanged([]);
@@ -337,7 +337,7 @@ async function runEdgeOneBatch(){
  if(testMode&&typeof window.TopkeyVlogSyncErrorsChanged==="function")
   window.TopkeyVlogSyncErrorsChanged([...failed.values()]);
  info("HOÀN TẤT "+total+"/"+total+" URL · cập nhật "+updated+" ("+partial+" thiếu chỉ số)"+
-      " · lỗi "+failed.size+". Danh sách lỗi màu đỏ bên dưới để kiểm tra thủ công.");
+      " · lỗi chưa khắc phục "+failed.size+". Xem danh sách lỗi và nguyên nhân bên dưới; số liệu cũ được giữ nguyên khi lỗi.");
 }
 bulk.addEventListener("click",()=>run(bulk,async()=>{info("Đang quét liên tục qua EdgeOne TikWM...");await runEdgeOneBatch();}));
 sync?.addEventListener("click",()=>run(sync,async()=>{
