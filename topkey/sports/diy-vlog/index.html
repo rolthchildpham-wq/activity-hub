@@ -474,10 +474,10 @@ try{
  const cfg={apiKey:'AIzaSyBSr7buP3bMf6HTg_YDWH_Xk5aNhyvfSRg',authDomain:'topkey-badminton.firebaseapp.com',databaseURL:'https://topkey-badminton-default-rtdb.asia-southeast1.firebasedatabase.app',projectId:'topkey-badminton',storageBucket:'topkey-badminton.firebasestorage.app',messagingSenderId:'907878800245',appId:'1:907878800245:web:aa77e4846656a0ba84913c'};
  if(!firebase.apps.length)firebase.initializeApp(cfg);db=firebase.database();
  for(const key of ['weights','entries'])db.ref(root+'/'+key).on('value',s=>{
- remote[key]=s.val();remoteLoaded[key]=true;firebaseReadError='';apply(remote);
+ remote[key]=s.val();remoteLoaded[key]=true;if(remoteLoaded.weights&&remoteLoaded.entries)firebaseReadError='';apply(remote);
 },e=>{
  console.warn('Vlog data read',key,e);
- firebaseReadError=String(e?.message||e||'Không có quyền truy cập').slice(0,180);
+ remoteLoaded[key]=false;firebaseReadError=String(e?.message||e||'Không có quyền truy cập').slice(0,180);
  real=false;data={weights:{views:1,likes:3,shares:5},entries:{}};render();
 });
  auth=firebase.auth();
