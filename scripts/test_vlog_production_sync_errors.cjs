@@ -1,0 +1,21 @@
+/* Regression: live Vlog must show per-video sync failures while preserving existing counters. */
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
+const source=fs.readFileSync(path.join(__dirname,'..','topkey/sports/diy-vlog/tiktok-automation.js'),'utf8');
+const start=source.indexOf('function showVlogScanFailures('),end=source.indexOf('async function runFailedVlogLinksOnce()',start);
+assert(start>=0&&end>start);
+const report={hidden:true,children:[],replaceChildren(...xs){this.children=xs}};
+const doc={createElement(tag){return {tag,textContent:'',hidden:false,disabled:false,children:[],append(...xs){this.children.push(...xs)},appendChild(x){this.children.push(x)},addEventListener(){}}}};
+const sandbox={document:doc,window:{},$:id=>id==='tiktok-scan-errors'?report:null,run(){}};
+vm.createContext(sandbox);vm.runInContext(source.slice(start,end),sandbox);
+const failures=[{id:'one',name:'Thí sinh A',url:'https://www.tiktok.com/@a/video/7500000000000000000',reason:'VIDEO_UNAVAILABLE'}];
+sandbox.showVlogScanFailures(failures,false,false);
+assert.equal(report.hidden,false,'production must display reasons');
+assert.match(report.children[0].textContent,/1 video cần kiểm tra/);
+assert.equal(report.children[2].hidden,true,'test-only retry must be hidden in production');
+assert.match(report.children[1].textContent,/giữ nguyên chỉ số đã lưu/);
+sandbox.showVlogScanFailures([],false,false);
+assert.equal(report.hidden,true);
+assert.match(source,/if\(!Object\.keys\(patch\)\.length\)throw Error/);
+assert.match(source,/return \{\.\.\.current,\.\.\.patch,statsSource/);
+console.log('PASS: live failures visible, retry TEST-only, no data replacement on missing metrics');
