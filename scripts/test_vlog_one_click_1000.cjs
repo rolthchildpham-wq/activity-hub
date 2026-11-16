@@ -58,7 +58,7 @@ async function testRun({n=1000,concurrency=25,failIndex=-1,fatal=false,start=0,c
  assert.match(x.last,/HOÀN TẤT 1000\/1000/);
  x=await testRun({failIndex:2});
  assert.equal(x.calls,1000);assert.equal(x.writes,999);assert.equal(x.offset,0);
- assert.match(x.last,/lỗi 1/);
+ assert.match(x.last,/lỗi chưa khắc phục 1/);
  x=await testRun({failIndex:4,fatal:true});
  assert.equal(x.writes,4); // stop later writes when authorization fails
  assert.equal(x.offset,4); // retry cursor starts at first blocked item
