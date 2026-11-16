@@ -56,6 +56,6 @@ async function simulate({n=N,errors=[],authError=-1,concurrency=25,offset=0}={})
  assert(html.includes('id="tiktok-scan-errors"')&&html.includes('.vlog-failed-row{'));
  assert(html.includes('const failedMap=new Map(testMode?'));
  assert(html.includes('vlog-error-label'));
- assert(html.includes('tiktok-automation.js?v=tikwm-retryfailed-once-20261115'));
+ assert(html.includes('tiktok-automation.js?v=vlog-sync-errors-20261116-093b3b3'));
  console.log('PASS: 1000/1000 5-worker paced, 6 video errors continue, end red report, auth 401 stops, resume 75, 10/3-way, role-guard and compact header CSS');
 })().catch(e=>{console.error(e);process.exitCode=1});
