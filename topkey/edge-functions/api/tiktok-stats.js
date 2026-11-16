@@ -35,17 +35,16 @@ function readUntrustedUid(token){
 }
 function permitted(profile){
  if(!profile||typeof profile!=='object')return false;
- const role=String(profile.role||'').trim().toUpperCase();
+ const role=String(profile.role||'');
  const status=String(profile.status||'').toLowerCase();
  if(profile.active===false||profile.disabled===true||profile.locked===true||
    profile.enabled===false||profile.isActive===false||
    ['disabled','blocked','inactive','suspended'].includes(status))return false;
- const scopes=[profile.sportScope,profile.assignedSport,...(Array.isArray(profile.sportScopes)?profile.sportScopes:[])]
-  .map(x=>String(x||'').trim().toLowerCase());
- const diy=scopes.some(x=>['diy','handmade','diy / handmade','🧶 diy / handmade'].includes(x))||
+ const diyScopes=['handmade','diy','DIY','DIY / Handmade','Diy / Handmade','🧶 DIY / Handmade'];
+ const diy=[profile.sportScope,profile.assignedSport].some(x=>diyScopes.includes(x))||
   profile.sportAccess?.handmade===true;
  return role==='ADMIN'||profile.permissions?.modules?.vlog==='edit'||
-  role==='BTC'&&(diy||profile.sportAccess?.vlog===true||scopes.includes('vlog'));
+  role==='BTC'&&(diy||profile.sportAccess?.vlog===true);
 }
 async function getJson(url,{headers={},timeout=6000,method='GET',body}={}){
  const controller=new AbortController();
