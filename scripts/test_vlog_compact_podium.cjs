@@ -5,8 +5,8 @@ const h=fs.readFileSync(path.join(__dirname,'..','topkey','sports','diy-vlog','i
 for(const name of ['first','second','third'])assert(h.includes('.pod.'+name+'{grid-column:auto'),name+' order CSS');
 assert(h.includes('grid-template-columns:repeat(3,minmax(0,1fr))'));
 assert(h.includes('.podium{grid-template-columns:1fr;gap:8px}'));
-assert(h.includes('.section.podium-section{margin-top:27px}'));
-assert(h.includes('min-height:116px'));
+assert(h.includes('.section.podium-section{margin-top:20px}'));
+assert(h.includes('.pod{padding:10px 12px;min-height:100px'));
 assert(!h.includes('min-height:212px'));
 assert(!h.includes('min-height:87px'));
 assert(!h.includes('<div class="pedestal">'));
