@@ -205,6 +205,8 @@ button.small:hover,.btn:hover{background:#315678}
 .warning{font-size:14px;color:#ffdf92;background:#302b23;border-color:#af8642}
 .no-data{font-size:15px;color:#e0ecff}
 @media(max-width:760px){.hero-main h1{font-size:clamp(27px,6vw,36px)}.hero p,.hero .hero-side #formula{font-size:13px}.brand strong{font-size:13px}.nav a,.nav button{font-size:13px}.stat{min-height:84px}.stat label{font-size:11px}.stat strong{font-size:23px}.pod .person{font-size:15px}.pod .points{font-size:19px}td,th{font-size:13px;padding:12px}.section h2{font-size:19px}}
+
+#vlog-permissions-table th:not(:first-child),#vlog-permissions-table td:not(:first-child){text-align:center;width:125px}#vlog-permissions-table input[type=checkbox]{width:19px;height:19px;accent-color:#23bea4;cursor:pointer}#vlog-permissions-table input:disabled{opacity:.65;cursor:not-allowed}#vlog-permissions-table td{padding:11px 12px}#vlog-permissions-panel .table-scroll{max-height:none}#vlog-permissions-panel .muted{line-height:1.5}
 </style></head><body>
 <header><div class="bar"><a class="brand" href="../../index.html"><span class="logo">TK</span><span><strong>TOPKEY VIETNAM</strong><small>VLOG 2026</small></span></a><nav class="nav"><a class="on" href="#ranking">♜ Bảng xếp hạng</a><a href="../vnext/index.html?sport=handmade">DIY Hub</a><button id="admin-toggle" type="button" hidden>⚙ Quản trị</button><button id="admin-sign-in" type="button">🔐 Đăng nhập Admin</button><button id="admin-sign-out" type="button" hidden>Đăng xuất Admin</button><div id="vlog-language-picker" class="vlog-language-picker" role="group" aria-label="Ngôn ngữ / Language / 语言" data-vlog-no-i18n>
 <button type="button" data-lang="vi" title="Tiếng Việt" aria-pressed="true">🇻🇳 VI</button>
@@ -220,7 +222,12 @@ button.small:hover,.btn:hover{background:#315678}
 <p id="admin-auth-status" role="status" aria-live="polite" style="font-size:12px;color:#b7d9e9;margin-top:12px"></p></section>
 <div class="stats" id="stats"></div><section class="section podium-section"><div class="kicker">BỤC VINH QUANG</div><h2>Top 3 dẫn đầu</h2><div class="podium" id="podium"></div></section>
 <section id="ranking" class="section"><div class="kicker">DANH SÁCH THÍ SINH</div><div class="utility"><h2>Bảng xếp hạng chi tiết</h2><input id="search" class="search" type="search" placeholder="Tìm theo tên đội / cá nhân" aria-label="Lọc bảng xếp hạng theo tên"></div><section id="vlog-share-tools" class="edit-panel" hidden style="margin:14px 0"><div class="kicker">CHIA SẺ BẢNG XẾP HẠNG</div><p class="muted">Tạo đường dẫn xem riêng cho Viewer. Link chứa ảnh chụp BXH tại thời điểm tạo, chỉ xem Top 3 và toàn bộ danh sách; không có quyền sửa hay đồng bộ.</p><div class="actions"><button type="button" id="vlog-create-share">🔗 Tạo link Viewer</button><button type="button" id="vlog-revoke-share" class="secondary" hidden>Thu hồi link đang chọn</button></div><div id="vlog-share-result" hidden style="margin-top:12px"><label for="vlog-share-url">Link xem BXH</label><input id="vlog-share-url" type="url" readonly><div class="actions" style="margin-top:8px"><button type="button" id="vlog-copy-share">Sao chép link</button></div><p id="vlog-share-status" class="muted" role="status"></p></div></section><section id="tiktok-test-tools" class="edit-panel" hidden inert aria-hidden="true" style="margin:14px 0;border-color:#168b9a"><div class="kicker">TEST LAB · TÁCH BIỆT PRODUCTION</div><h3 style="margin:6px 0 8px">Bộ 1.000 URL TikTok công khai</h3><p class="muted" style="margin:0 0 12px">Lấy URL video từ bộ dữ liệu công khai có nguồn kiểm chứng, không xác nhận quốc gia; lưu riêng tại <code>topkey_vlog2026_test</code>. Không ghi vào danh sách thí sinh thật.</p><div class="actions"><button type="button" id="tiktok-load-samples">⬇ Nạp 1.000 URL video mẫu</button><button type="button" id="tiktok-delete-samples" class="secondary">✕ Xóa toàn bộ dữ liệu mẫu</button><label style="display:inline-flex;align-items:center;gap:7px;font-size:11px">Hoặc nhập tệp CSV/TXT/JSON <input type="file" id="tiktok-import-file" accept=".csv,.txt,.json" style="max-width:240px"></label></div><p id="tiktok-test-status" role="status" aria-live="polite" class="muted" style="margin:10px 0 0">Chưa nạp dữ liệu mẫu.</p></section><div class="actions" style="margin:14px 0"><button type="button" id="tiktok-sync-all-links" hidden>⟳ Quét tất cả link TikTok thí sinh & cập nhật số liệu</button><label for="tiktok-scan-concurrency" style="font-size:12px;color:#dce8fa;display:inline-flex;align-items:center;gap:6px">Luồng đồng thời <select id="tiktok-scan-concurrency" style="background:#1a243d;color:#fff;border:1px solid #3b4967;border-radius:8px;padding:8px"><option value="3" selected>3 luồng (an toàn)</option><option value="10">Ổn định (5 luồng thực tế)</option><option value="25">Tăng tốc (5 luồng, giãn 300ms)</option></select></label></div><p id="tiktok-sync-status" role="status" aria-live="polite" class="muted" style="margin:8px 0 14px" hidden>Chỉ ADMIN/BTC DIY được đồng bộ số liệu.</p><div class="leaderboard"><div class="table-scroll"><table><thead><tr><th>HẠNG</th><th>THÍ SINH / ĐỘI</th><th>LƯỢT XEM</th><th>LƯỢT THÍCH</th><th>CHIA SẺ</th><th>TỔNG ĐIỂM</th><th>VIDEO</th></tr></thead><tbody id="rows"></tbody></table></div></div><section id="tiktok-scan-errors" class="vlog-scan-errors" hidden aria-live="polite" aria-label="Danh sách video lỗi cần kiểm tra" data-vlog-admin-only></section></section>
-<section class="edit-panel" id="editor" hidden><div class="kicker">ADMIN · VLOG 2026</div><h2>Quản trị bài dự thi và hệ số chấm điểm</h2><p class="muted" id="editor-note">Tài khoản ADMIN hoặc BTC phụ trách DIY có thể tạo bài dự thi và hệ số đầu tiên khi dữ liệu cuộc thi còn trống. Dữ liệu mẫu không được ghi lên Firebase.</p><form id="weights"><div class="fields"><div class="field"><label for="wviews">Điểm / lượt xem</label><input id="wviews" type="number" required min="0" step="1"></div><div class="field"><label for="wlikes">Điểm / lượt thích</label><input id="wlikes" type="number" required min="0" step="1"></div><div class="field"><label for="wshares">Điểm / lượt chia sẻ</label><input id="wshares" type="number" required min="0" step="1"></div></div><div class="actions"><button type="submit">Lưu hệ số</button></div><p id="weights-save-status" role="status" aria-live="polite" style="color:#c7ecff;margin:12px 0 0"></p></form>
+<section class="edit-panel" id="vlog-permissions-panel" hidden aria-label="Phân quyền Vlog" style="margin:16px 0">
+<div class="kicker">ADMIN · THIẾT LẬP QUYỀN</div><h2>Phân quyền chi tiết Vlog</h2>
+<p class="muted">Admin tích chọn quyền cho BTC Vlog và Viewer. Các quyền quản lý hệ thống và TEST LAB chỉ dành cho Admin.</p>
+<div class="table-scroll"><table id="vlog-permissions-table"><thead><tr><th>Chức năng</th><th>Admin</th><th>BTC Vlog</th><th>Viewer</th></tr></thead><tbody id="vlog-permissions-body"></tbody></table></div>
+<div class="actions" style="margin-top:12px"><button type="button" id="vlog-permissions-save">Lưu phân quyền</button><button type="button" class="secondary" id="vlog-permissions-reset">Khôi phục mặc định</button></div>
+<p id="vlog-permissions-status" role="status" aria-live="polite" class="muted"></p></section><section class="edit-panel" id="editor" hidden><div class="kicker">ADMIN · VLOG 2026</div><h2>Quản trị bài dự thi và hệ số chấm điểm</h2><p class="muted" id="editor-note">Tài khoản ADMIN hoặc BTC phụ trách DIY có thể tạo bài dự thi và hệ số đầu tiên khi dữ liệu cuộc thi còn trống. Dữ liệu mẫu không được ghi lên Firebase.</p><form id="weights"><div class="fields"><div class="field"><label for="wviews">Điểm / lượt xem</label><input id="wviews" type="number" required min="0" step="1"></div><div class="field"><label for="wlikes">Điểm / lượt thích</label><input id="wlikes" type="number" required min="0" step="1"></div><div class="field"><label for="wshares">Điểm / lượt chia sẻ</label><input id="wshares" type="number" required min="0" step="1"></div></div><div class="actions"><button type="submit">Lưu hệ số</button></div><p id="weights-save-status" role="status" aria-live="polite" style="color:#c7ecff;margin:12px 0 0"></p></form>
 <hr style="border:0;border-top:1px solid #34425b;margin:24px 0"><form id="entry-form"><input type="hidden" id="entry-id"><div class="fields"><div class="field"><label for="entry-name">Tên đội hoặc cá nhân</label><input id="entry-name" maxlength="100" required></div><div class="field"><label for="entry-type">Loại</label><select id="entry-type"><option>Đội</option><option>Cá nhân</option></select></div><div class="field"><label for="entry-dept">Đơn vị</label><input id="entry-dept" maxlength="100"></div><div class="field"><label for="entry-views">Lượt xem</label><input id="entry-views" type="number" min="0" max="1000000000" step="1" value="0"></div><div class="field"><label for="entry-likes">Lượt thích</label><input id="entry-likes" type="number" min="0" max="1000000000" step="1" value="0"></div><div class="field"><label for="entry-shares">Lượt chia sẻ</label><input id="entry-shares" type="number" min="0" max="1000000000" step="1" value="0"></div><div class="field"><label for="entry-url">Đường dẫn video TikTok (HTTPS)</label><input type="url" id="entry-url" placeholder="https://..." maxlength="500"></div></div><div class="actions"><button type="submit">Lưu bài dự thi</button><button id="clear-form" type="button" class="secondary" title="Tạo một bài dự thi mới và lưu vào Firebase">Tạo mới và lưu</button><button id="delete" type="button" class="secondary">Xóa bài đang sửa</button></div><p id="entry-save-status" role="status" aria-live="polite" style="color:#c7ecff;margin:12px 0 0"></p></form>
 </section></main>
 
@@ -260,7 +267,7 @@ function topCard(x,rank){
 }
 function render(){
  const importButton=$('import-csv');
- if(importButton)importButton.hidden=!isAdmin||shareMode||testMode;
+ if(importButton)importButton.hidden=!vlogCan('csv_import')||shareMode||testMode;
  const a=ranking(),s=a.reduce((o,e)=>{o.views+=(+e.views||0);o.likes+=(+e.likes||0);o.shares+=(+e.shares||0);o.score+=e.score;return o},{views:0,likes:0,shares:0,score:0});
  $('stats').innerHTML=[['Bài dự thi',a.length],['Tổng lượt xem',s.views],['Tổng lượt thích',s.likes],['Tổng lượt chia sẻ',s.shares],['Tổng điểm',s.score]].map(([t,n])=>'<div class="stat"><label>'+t+'</label><strong>'+nf(n)+'</strong><div class="detail">'+(testMode?'Dữ liệu kiểm thử riêng':(real?'Dữ liệu cuộc thi':'Số liệu giả lập'))+'</div></div>').join('');
  $('podium').innerHTML=topCard(a[0],1)+topCard(a[1],2)+topCard(a[2],3);
@@ -318,24 +325,86 @@ $('vlog-create-share').addEventListener('click',async()=>{const b=$('vlog-create
 $('vlog-revoke-share').addEventListener('click',async()=>{const b=$('vlog-revoke-share');b.disabled=true;try{await revokeViewerShare()}catch(e){$('vlog-share-status').textContent='Không thu hồi được link: '+e.message}finally{b.disabled=false}});
 $('vlog-copy-share').addEventListener('click',async()=>{const value=$('vlog-share-url').value;try{await navigator.clipboard.writeText(value);$('vlog-share-status').textContent='Đã sao chép link.'}catch{$('vlog-share-url').focus();$('vlog-share-url').select();$('vlog-share-status').textContent='Hãy sao chép link đã chọn.'}});
 function entryFields(x){window.__topkeyTikTokStatsMeta=null;const v=k=>String(x[k]??'');for(const k of ['id','name','type','dept','views','likes','shares','url'])$('entry-'+k).value=v(k)}
-function requireAdmin(){if(!isAdmin||!db)throw Error('Chưa xác minh quyền ADMIN/BTC hoặc chưa kết nối Firebase.');if(shareMode)throw Error('Link Viewer chỉ có quyền xem.');if(testMode)throw Error('Đang ở chế độ kiểm thử. Tạm khóa sửa bài và hệ số production để bảo vệ dữ liệu thật.');}
+const vlogRights=[
+ ['entries_add','Thêm tên thí sinh/đội thi'],
+ ['entries_delete','Sửa, xóa thí sinh'],
+ ['links_edit','Thêm, sửa link TikTok'],
+ ['csv_import','Nhập danh sách từ CSV'],
+ ['weights_edit','Điều chỉnh hệ số tính điểm'],
+ ['stats_sync','Quét và cập nhật lượt xem, thích, chia sẻ'],
+ ['leaderboard_view','Xem bảng xếp hạng'],
+ ['users_manage','Quản lý tài khoản hệ thống'],
+ ['test_lab','Truy cập TEST LAB']
+];
+const defaultVlogRights=()=>({
+ btc:Object.fromEntries(vlogRights.map(([key],i)=>[key,i<7])),
+ viewer:Object.fromEntries(vlogRights.map(([key])=>[key,key==='leaderboard_view']))
+});
+let vlogRightsConfig=defaultVlogRights();
+function vlogCan(key){
+ if(isRootAdmin)return true;
+ if(key==='leaderboard_view'&&!isAdmin)return vlogRightsConfig.viewer.leaderboard_view===true;
+ return Boolean(isAdmin&&vlogRightsConfig.btc[key]===true);
+}
+window.TopkeyVlogMay=vlogCan;
+function drawVlogPermissions(){
+ const box=$('vlog-permissions-panel');if(!box)return;
+ box.hidden=!isRootAdmin||shareMode;
+ $('vlog-permissions-body').innerHTML=vlogRights.map(([key,label])=>
+ '<tr><td>'+esc(label)+'</td><td><input type="checkbox" checked disabled aria-label="Admin: '+esc(label)+'"></td>'+
+ ['btc','viewer'].map(role=>'<td><input type="checkbox" data-vlog-right="'+key+'" data-vlog-role="'+role+'" '+(vlogRightsConfig[role][key]?'checked ':'')+
+ ((role==='viewer'&&key!=='leaderboard_view')||key==='users_manage'||key==='test_lab'?'disabled ':'')+
+ 'aria-label="'+(role==='btc'?'BTC Vlog':'Viewer')+': '+esc(label)+'"></td>').join('')+'</tr>').join('');
+}
+function applyVlogRights(){
+ const editor=$('editor');if(editor)editor.hidden=!isAdmin||(!vlogCan('entries_add')&&!vlogCan('links_edit')&&!vlogCan('weights_edit')&&!vlogCan('entries_delete'));
+ const weights=$('weights');if(weights)weights.hidden=!vlogCan('weights_edit');
+ const entry=$('entry-form');if(entry)entry.hidden=!isAdmin||(!vlogCan('entries_add')&&!vlogCan('links_edit')&&!vlogCan('entries_delete'));
+ const csv=$('import-csv');if(csv)csv.hidden=!vlogCan('csv_import')||testMode||shareMode;
+ const sync=$('tiktok-sync-all-links');if(sync)sync.hidden=!vlogCan('stats_sync')||shareMode;
+ const syncStatus=$('tiktok-sync-status');if(syncStatus)syncStatus.hidden=!vlogCan('stats_sync')||shareMode;
+ const share=$('vlog-share-tools');if(share)share.hidden=!isAdmin||shareMode;
+ const test=$('tiktok-test-tools');if(test){test.hidden=!isRootAdmin||shareMode;test.inert=!isRootAdmin||shareMode;}
+ const del=$('delete');if(del)del.hidden=!vlogCan('entries_delete');
+ const podium=$('podium'),rank=$('rows');
+ const show=vlogCan('leaderboard_view')||shareMode;
+ if(podium)podium.closest('.podium')?.toggleAttribute('hidden',!show);
+ if(rank)rank.closest('.leaderboard')?.toggleAttribute('hidden',!show);
+ drawVlogPermissions();
+}
+$('vlog-permissions-save').addEventListener('click',async()=>{
+ if(!isRootAdmin||!db||!auth?.currentUser||shareMode)return;
+ const next=defaultVlogRights();
+ document.querySelectorAll('[data-vlog-right]').forEach(input=>{if(!input.disabled)next[input.dataset.vlogRole][input.dataset.vlogRight]=input.checked});
+ for(const role of ['btc','viewer']){next[role].users_manage=false;next[role].test_lab=false}
+ for(const [key] of vlogRights)if(key!=='leaderboard_view')next.viewer[key]=false;
+ const status=$('vlog-permissions-status'),btn=$('vlog-permissions-save');btn.disabled=true;
+ try{await db.ref(root+'/permissions').set(next);
+ const snap=await db.ref(root+'/permissions').once('value');
+ if(JSON.stringify(snap.val())!==JSON.stringify(next))throw Error('Không xác minh được cấu hình đã lưu.');
+ vlogRightsConfig=next;status.textContent='Đã lưu và đọc lại phân quyền trên Firebase.';applyVlogRights();
+ }catch(e){status.textContent='Không lưu được phân quyền: '+e.message}
+ finally{btn.disabled=false}
+});
+$('vlog-permissions-reset').addEventListener('click',()=>{if(!isRootAdmin)return;vlogRightsConfig=defaultVlogRights();drawVlogPermissions();$('vlog-permissions-status').textContent='Đã khôi phục mặc định trên biểu mẫu; bấm Lưu phân quyền để áp dụng.'});
+function requireAdmin(permission){if(!isAdmin||!db)throw Error('Chưa xác minh quyền ADMIN/BTC hoặc chưa kết nối Firebase.');if(shareMode)throw Error('Link Viewer chỉ có quyền xem.');if(testMode)throw Error('Đang ở chế độ kiểm thử. Tạm khóa sửa bài và hệ số production để bảo vệ dữ liệu thật.');if(permission&&!vlogCan(permission))throw Error('Không có quyền: '+permission);}
 function positiveInt(x){const n=Number(String(x??'').trim()||0);if(!Number.isSafeInteger(n)||n<0||n>1000000000)throw Error('Số liệu phải là số nguyên từ 0 đến 1 tỷ.');return n}
-$('rows').addEventListener('click',e=>{const b=e.target.closest('[data-edit]');if(!b||!isAdmin||shareMode||!real)return;const x=data.entries[b.dataset.edit];if(x){entryFields(x);$('editor').hidden=false;$('editor').scrollIntoView({behavior:'smooth'})}});
+$('rows').addEventListener('click',e=>{const b=e.target.closest('[data-edit]');if(!b||!vlogCan('entries_add')||shareMode||!real)return;const x=data.entries[b.dataset.edit];if(x){entryFields(x);$('editor').hidden=false;$('editor').scrollIntoView({behavior:'smooth'})}});
 $('search').addEventListener('input',render);$('refresh').addEventListener('click',()=>{if(db)Promise.all([db.ref(root+'/weights').once('value'),db.ref(root+'/entries').once('value')]).then(([w,e])=>{remote.weights=w.val();remote.entries=e.val();apply(remote)}).catch(e=>alert('Lỗi tải dữ liệu: '+e.message));else render()});
 $('export').addEventListener('click',()=>{const rows=[['Hạng','Tên','Loại','Đơn vị','Xem','Thích','Chia sẻ','Điểm','TikTok'],...ranking().map((x,i)=>[i+1,x.name,x.type,x.dept||'',x.views,x.likes,x.shares,x.score,x.url||''])];const csv=rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');const b=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=real?'topkey-vlog-2026.csv':'topkey-vlog-2026-DU-LIEU-MAU.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)});
 window.TopkeyVlogImportGuard=()=>{
- try{requireAdmin();return Boolean(auth?.currentUser)}catch{return false}
+ try{requireAdmin('csv_import');return Boolean(auth?.currentUser)}catch{return false}
 };
 window.TopkeyVlogExistingEntries=()=>data.entries||{};
 window.TopkeyVlogImportCommit=async rows=>{
- requireAdmin();
+ requireAdmin('csv_import');
  if(!auth?.currentUser)throw Error('Chưa đăng nhập Firebase.');
  if(!Array.isArray(rows)||!rows.length||rows.length>1000)throw Error('Số lượng bài dự thi không hợp lệ.');
  const uid=auth.currentUser.uid;
  const entriesRef=db.ref(root+'/entries');
  const currentSnap=await entriesRef.once('value'),current=currentSnap.val()||{};
  requireAdmin();
- if(auth.currentUser?.uid!==uid)throw Error('Tài khoản đã thay đổi, dừng ghi.');
+ if(auth.currentUser?.uid!==uid)throw Error('Tài khoản đã thay đổi, dừng ghi.');requireAdmin('csv_import');
  const keyOf=e=>[e.name,e.type,e.dept].map(x=>String(x||'').trim().toLowerCase()).join('|');
  const existingKeys=new Set(Object.values(current).map(keyOf));
  const existingUrls=new Set(Object.values(current).map(e=>String(e.url||'').trim().toLowerCase()).filter(Boolean));
@@ -373,9 +442,9 @@ $('admin-login-form').addEventListener('submit',async e=>{e.preventDefault();if(
  finally{loginBusy=false;btn.disabled=false;btn.textContent='Đăng nhập an toàn'}
 });
 $('clear-form').addEventListener('click',()=>{const form=$('entry-form');if(!form.reportValidity()){$('entry-save-status').textContent='Vui lòng nhập đủ thông tin hợp lệ trước khi tạo mới.';return}const prior=$('entry-id').value;if(prior&&!confirm('Bạn đang sửa một bài dự thi. Tạo bản ghi MỚI với dữ liệu hiện tại?'))return;$('entry-id').value='';form.requestSubmit()});
-for(const id of ['wviews','wlikes','wshares'])$(id).addEventListener('input',()=>{weightsDraft={views:$('wviews').value,likes:$('wlikes').value,shares:$('wshares').value}});$('weights').addEventListener('submit',async e=>{e.preventDefault();const status=$('weights-save-status'),btn=$('weights').querySelector('button[type="submit"]');if(btn.disabled)return;weightsDraft={views:$('wviews').value,likes:$('wlikes').value,shares:$('wshares').value};status.textContent='Đang lưu hệ số lên Firebase…';btn.disabled=true;try{requireAdmin();const weights={views:positiveInt(weightsDraft.views),likes:positiveInt(weightsDraft.likes),shares:positiveInt(weightsDraft.shares)};await db.ref(root+'/weights').set(weights);const stored=(await db.ref(root+'/weights').once('value')).val();if(!stored||['views','likes','shares'].some(k=>Number(stored[k])!==weights[k]))throw Error('Không thể xác nhận hệ số đã được lưu vào Firebase.');weightsDraft=null;status.textContent='Đã lưu và xác minh hệ số trên Firebase thành công.'}catch(x){const code=String(x?.code||'');status.textContent=code.includes('permission-denied')?'Firebase từ chối lưu hệ số (permission_denied). Kiểm tra Rules thực tế và quyền ADMIN/BTC DIY.':('Không lưu được hệ số: '+(x?.message||String(x)));console.warn('Vlog weights save failed',code,x);for(const [k,id] of [['views','wviews'],['likes','wlikes'],['shares','wshares']])$(id).value=weightsDraft[k]}finally{btn.disabled=false}});
-$('entry-form').addEventListener('submit',async e=>{e.preventDefault();const status=$('entry-save-status'),btn=$('entry-form').querySelector('button[type="submit"]'),editing=Boolean($('entry-id').value);if(btn.disabled)return;status.textContent=editing?'Đang cập nhật bài dự thi và giữ nguyên nội dung biểu mẫu…':'Đang lưu bài dự thi và giữ nguyên nội dung biểu mẫu…';btn.disabled=true;try{requireAdmin();const id=$('entry-id').value||db.ref(root+'/entries').push().key;const obj={name:$('entry-name').value.trim().slice(0,100),type:$('entry-type').value,dept:$('entry-dept').value.trim().slice(0,100),views:positiveInt($('entry-views').value),likes:positiveInt($('entry-likes').value),shares:positiveInt($('entry-shares').value),url:link($('entry-url').value)};if(!obj.name)throw Error('Nhập tên thí sinh');const metricMeta=window.__topkeyTikTokStatsMeta;if(metricMeta&&metricMeta.url===obj.url){obj.statsSource=metricMeta.source;obj.statsFetchedAt=metricMeta.fetchedAt}if($('entry-id').value){const old=data.entries?.[id];if(old?.url===obj.url&&old.videoId&&old.tiktokOwner){obj.videoId=old.videoId;obj.tiktokOwner=old.tiktokOwner;obj.source=old.source||'tiktok_api';obj.lastSyncedAt=old.lastSyncedAt||0}}await db.ref(root+'/entries/'+id).set(obj);const saved=(await db.ref(root+'/entries/'+id).once('value')).val();if(!saved||saved.name!==obj.name||saved.url!==obj.url)throw Error('Đã gửi bài nhưng không đọc lại được từ Firebase. Vui lòng kiểm tra quyền đọc và thử tải lại bảng.');const [entrySnapshot,weightSnapshot]=await Promise.all([db.ref(root+'/entries').once('value'),db.ref(root+'/weights').once('value')]);remote.entries=entrySnapshot.val();remote.weights=weightSnapshot.val();apply(remote);$('entry-form').reset();$('entry-id').value='';window.__topkeyTikTokStatsMeta=null;status.textContent=editing?'Đã cập nhật bài dự thi thành công và xác minh trên Firebase. Biểu mẫu đã được làm trống để nhập bài tiếp theo.':'Đã tạo bài dự thi thành công và xác minh trên Firebase. Biểu mẫu đã được làm trống để nhập bài tiếp theo.';}catch(x){const code=String(x?.code||'');status.textContent=code.includes('permission-denied')?'Firebase từ chối ghi/đọc bài dự thi (PERMISSION_DENIED). Kiểm tra quyền ADMIN/BTC và nhánh topkey_vlog2026/entries.':('Không xác minh được bài dự thi: '+(x?.message||String(x)));console.warn('Vlog entry save failed',code,x)}finally{btn.disabled=false}});
-$('delete').addEventListener('click',async()=>{try{requireAdmin();const id=$('entry-id').value;if(!id)return alert('Chọn bài dự thi trước');if(!confirm('Xóa bài dự thi này?'))return;await db.ref(root+'/entries/'+id).remove();$('entry-form').reset();$('entry-id').value=''}catch(x){alert(x.message)}});
+for(const id of ['wviews','wlikes','wshares'])$(id).addEventListener('input',()=>{weightsDraft={views:$('wviews').value,likes:$('wlikes').value,shares:$('wshares').value}});$('weights').addEventListener('submit',async e=>{e.preventDefault();const status=$('weights-save-status'),btn=$('weights').querySelector('button[type="submit"]');if(btn.disabled)return;weightsDraft={views:$('wviews').value,likes:$('wlikes').value,shares:$('wshares').value};status.textContent='Đang lưu hệ số lên Firebase…';btn.disabled=true;try{requireAdmin('weights_edit');const weights={views:positiveInt(weightsDraft.views),likes:positiveInt(weightsDraft.likes),shares:positiveInt(weightsDraft.shares)};await db.ref(root+'/weights').set(weights);const stored=(await db.ref(root+'/weights').once('value')).val();if(!stored||['views','likes','shares'].some(k=>Number(stored[k])!==weights[k]))throw Error('Không thể xác nhận hệ số đã được lưu vào Firebase.');weightsDraft=null;status.textContent='Đã lưu và xác minh hệ số trên Firebase thành công.'}catch(x){const code=String(x?.code||'');status.textContent=code.includes('permission-denied')?'Firebase từ chối lưu hệ số (permission_denied). Kiểm tra Rules thực tế và quyền ADMIN/BTC DIY.':('Không lưu được hệ số: '+(x?.message||String(x)));console.warn('Vlog weights save failed',code,x);for(const [k,id] of [['views','wviews'],['likes','wlikes'],['shares','wshares']])$(id).value=weightsDraft[k]}finally{btn.disabled=false}});
+$('entry-form').addEventListener('submit',async e=>{e.preventDefault();const status=$('entry-save-status'),btn=$('entry-form').querySelector('button[type="submit"]'),editing=Boolean($('entry-id').value);if(btn.disabled)return;status.textContent=editing?'Đang cập nhật bài dự thi và giữ nguyên nội dung biểu mẫu…':'Đang lưu bài dự thi và giữ nguyên nội dung biểu mẫu…';btn.disabled=true;try{requireAdmin($('entry-id').value?'entries_add':'entries_add');const id=$('entry-id').value||db.ref(root+'/entries').push().key;const obj={name:$('entry-name').value.trim().slice(0,100),type:$('entry-type').value,dept:$('entry-dept').value.trim().slice(0,100),views:positiveInt($('entry-views').value),likes:positiveInt($('entry-likes').value),shares:positiveInt($('entry-shares').value),url:link($('entry-url').value)};if(!obj.name)throw Error('Nhập tên thí sinh');const metricMeta=window.__topkeyTikTokStatsMeta;if(metricMeta&&metricMeta.url===obj.url){obj.statsSource=metricMeta.source;obj.statsFetchedAt=metricMeta.fetchedAt}if($('entry-id').value){const old=data.entries?.[id];if(old?.url===obj.url&&old.videoId&&old.tiktokOwner){obj.videoId=old.videoId;obj.tiktokOwner=old.tiktokOwner;obj.source=old.source||'tiktok_api';obj.lastSyncedAt=old.lastSyncedAt||0}}await db.ref(root+'/entries/'+id).set(obj);const saved=(await db.ref(root+'/entries/'+id).once('value')).val();if(!saved||saved.name!==obj.name||saved.url!==obj.url)throw Error('Đã gửi bài nhưng không đọc lại được từ Firebase. Vui lòng kiểm tra quyền đọc và thử tải lại bảng.');const [entrySnapshot,weightSnapshot]=await Promise.all([db.ref(root+'/entries').once('value'),db.ref(root+'/weights').once('value')]);remote.entries=entrySnapshot.val();remote.weights=weightSnapshot.val();apply(remote);$('entry-form').reset();$('entry-id').value='';window.__topkeyTikTokStatsMeta=null;status.textContent=editing?'Đã cập nhật bài dự thi thành công và xác minh trên Firebase. Biểu mẫu đã được làm trống để nhập bài tiếp theo.':'Đã tạo bài dự thi thành công và xác minh trên Firebase. Biểu mẫu đã được làm trống để nhập bài tiếp theo.';}catch(x){const code=String(x?.code||'');status.textContent=code.includes('permission-denied')?'Firebase từ chối ghi/đọc bài dự thi (PERMISSION_DENIED). Kiểm tra quyền ADMIN/BTC và nhánh topkey_vlog2026/entries.':('Không xác minh được bài dự thi: '+(x?.message||String(x)));console.warn('Vlog entry save failed',code,x)}finally{btn.disabled=false}});
+$('delete').addEventListener('click',async()=>{try{requireAdmin('entries_delete');const id=$('entry-id').value;if(!id)return alert('Chọn bài dự thi trước');if(!confirm('Xóa bài dự thi này?'))return;await db.ref(root+'/entries/'+id).remove();$('entry-form').reset();$('entry-id').value=''}catch(x){alert(x.message)}});
 function apply(raw){if(testMode||shareMode)return;if(!raw||typeof raw!=='object'||(!raw.weights&&!raw.entries)){real=false;data={weights:{views:1,likes:3,shares:5},entries:{}};render();return}const w=raw.weights||{views:1,likes:3,shares:5};data={weights:{views:Number(w.views)||0,likes:Number(w.likes)||0,shares:Number(w.shares)||0},entries:Object.fromEntries(Object.entries(raw.entries||{}).filter(([id,e])=>e&&typeof e==='object').map(([id,e])=>[id,{...e,id}]))};real=true;render()}
 function setTestLabVisibility(allowed){
  const panel=$('tiktok-test-tools');
@@ -496,7 +565,7 @@ try{
  for(const key of ['weights','entries'])db.ref(root+'/'+key).on('value',s=>{remote[key]=s.val();apply(remote)},e=>{console.warn('Vlog data read',key,e);$('refresh-time').textContent='Không tải được dữ liệu Firebase · không hiển thị dữ liệu giả'});
  auth=firebase.auth();
  auth.onAuthStateChanged(async user=>{
- leaveTestMode();isAdmin=false;isRootAdmin=false;setTestLabVisibility(false);$('admin-toggle').hidden=true;$('tiktok-sync-all-links').hidden=true;$('tiktok-sync-status').hidden=true;$('tiktok-test-tools').hidden=true;$('vlog-share-tools').hidden=true;$('admin-sign-in').hidden=false;$('admin-sign-out').hidden=true;$('editor').hidden=true;render();
+ leaveTestMode();isAdmin=false;isRootAdmin=false;setTestLabVisibility(false);$('admin-toggle').hidden=true;$('tiktok-sync-all-links').hidden=true;$('tiktok-sync-status').hidden=true;$('tiktok-test-tools').hidden=true;$('vlog-share-tools').hidden=true;$('admin-sign-in').hidden=false;$('admin-sign-out').hidden=true;$('editor').hidden=true;vlogRightsConfig=defaultVlogRights();applyVlogRights();render();
  if(!user){$('tiktok-test-tools').hidden=true;$('vlog-share-tools').hidden=true;authStatus('Chưa đăng nhập. Viewer tiếp tục xem được bảng xếp hạng.');const shareId=new URLSearchParams(location.search).get('share');if(shareId)loadViewerShare(shareId);return}
  authStatus('Đã xác thực Firebase. Đang kiểm tra quyền ADMIN…');
  try{const s=await db.ref('topkey_badminton_vnext_2026/users/'+user.uid).once('value');if(auth.currentUser?.uid!==user.uid)return;const p=s.val()||{};
@@ -507,10 +576,17 @@ try{
  const hasVlogScope=p.sportAccess?.vlog===true||scopeList.includes('vlog')||scope==='vlog';
  isRootAdmin=role==='ADMIN'&&p.active!==false&&p.disabled!==true&&p.locked!==true&&p.enabled!==false&&p.isActive!==false&&!['disabled','blocked','suspended','inactive'].includes(String(p.status||'').toLowerCase());
  isAdmin=(role==='ADMIN'||(role==='BTC'&&isHandmadeScope)||vlogPermission==='edit'||(role==='BTC'&&hasVlogScope))&&p.active!==false&&p.disabled!==true&&p.locked!==true&&p.enabled!==false&&p.isActive!==false&&!['disabled','blocked','suspended','inactive'].includes(String(p.status||'').toLowerCase());
- $('admin-toggle').hidden=!isAdmin;$('tiktok-sync-all-links').hidden=!isAdmin;setTestLabVisibility(isRootAdmin);$('tiktok-sync-status').hidden=!isAdmin;$('vlog-share-tools').hidden=!isAdmin;$('admin-sign-in').hidden=true;$('admin-sign-out').hidden=false;
+ try{const policy=await db.ref(root+'/permissions').once('value');
+  if(auth.currentUser?.uid!==user.uid)return;
+  const saved=policy.val();
+  if(saved&&typeof saved==='object')for(const roleKey of ['btc','viewer'])for(const [key] of vlogRights){
+   if(typeof saved[roleKey]?.[key]==='boolean')vlogRightsConfig[roleKey][key]=saved[roleKey][key];
+  }
+ }catch(e){console.warn('Vlog permissions load',e)}
+  $('admin-toggle').hidden=!isAdmin;$('tiktok-sync-all-links').hidden=!isAdmin;setTestLabVisibility(isRootAdmin);$('tiktok-sync-status').hidden=!isAdmin;$('vlog-share-tools').hidden=!isAdmin;$('admin-sign-in').hidden=true;$('admin-sign-out').hidden=false;
  if(isAdmin){$('admin-login-panel').hidden=true;authStatus('Đã xác minh quyền quản trị Vlog.');$('editor').hidden=false}
  else authStatus('Tài khoản đã đăng nhập nhưng không có quyền quản trị DIY trên TOPKEY. Liên hệ quản trị hệ thống.');
- render();const shareId=new URLSearchParams(location.search).get('share');if(shareId)loadViewerShare(shareId);
+ applyVlogRights();render();const shareId=new URLSearchParams(location.search).get('share');if(shareId)loadViewerShare(shareId);
  }catch(e){leaveTestMode();isAdmin=false;isRootAdmin=false;setTestLabVisibility(false);console.warn('Vlog admin profile',e);authStatus('Không thể xác minh quyền Admin: '+e.message+'. Kiểm tra Firebase Database Rules.');$('admin-sign-in').hidden=true;$('admin-sign-out').hidden=false}
  });
 }catch(e){console.warn('TOPKEY Vlog boot',e);$('refresh-time').textContent='Không có kết nối Firebase · chưa có dữ liệu'}
