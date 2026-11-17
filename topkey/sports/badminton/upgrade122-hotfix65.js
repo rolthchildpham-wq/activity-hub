@@ -91,16 +91,18 @@ const baseFinish=G.finishTournament?.bind(G);if(baseFinish)G.finishTournament=as
  const beforeStatus=App.state.config?.tournamentStatus;
  const r=await baseFinish(...a);
  if(!canFinalize||!ready||beforeStatus==='CLOSED')return r;
- const cfg=(await T.Data.db.ref(T.Data.path('config')).once('value')).val();
- if(cfg?.tournamentStatus!=='CLOSED')return r;
- if(T.Data.pending)throw Error('Đã yêu cầu đóng giải nhưng còn dữ liệu chờ đồng bộ; cần kiểm tra trạng thái trước khi tiếp tục');
- const report=currentReport;
- if(!report||report.tid!==T.Data.tid)throw Error('Đã đóng giải nhưng chưa xác định được snapshot báo cáo');
- const idx=T.Data.db.ref(`${AUTH_ROOT}/tournamentIndex/${SPORT}/${T.Data.tid}`);
- await idx.update({finalReport:report,reportReady:true,reportGeneratedAt:report.generatedAt});
- const saved=(await idx.child('finalReport/tid').once('value')).val();
- if(saved!==T.Data.tid)throw Error('Đã đóng giải nhưng Firebase chưa xác nhận báo cáo lịch sử');
- await this.loadArchives?.();
+ try{
+  const cfg=(await T.Data.db.ref(T.Data.path('config')).once('value')).val();
+  if(cfg?.tournamentStatus!=='CLOSED')return r;
+  if(T.Data.pending)throw Error('Còn dữ liệu chờ đồng bộ');
+  const report=currentReport;
+  if(!report||report.tid!==T.Data.tid)throw Error('Không có snapshot báo cáo đúng giải');
+  const idx=T.Data.db.ref(`${AUTH_ROOT}/tournamentIndex/${SPORT}/${T.Data.tid}`);
+  await idx.update({finalReport:report,reportReady:true,reportGeneratedAt:report.generatedAt});
+  const saved=(await idx.child('finalReport/tid').once('value')).val();
+  if(saved!==T.Data.tid)throw Error('Firebase chưa xác nhận báo cáo lịch sử');
+  await this.loadArchives?.();
+ }catch(e){console.error('TOPKEY tournament archive report verification',e);U.toast('Giải có thể đã đóng nhưng chưa xác minh được báo cáo lịch sử: '+(e?.message||e),'err')}
  return r;
 };
 const maintain=()=>{renderCurrent();if(allFinished())ensureReport(false)};window.TopkeyLifecycle?.bind(maintain,{settleTicks:8,settleEvery:350,debounceMs:80});
