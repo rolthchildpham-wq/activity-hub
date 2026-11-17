@@ -94,6 +94,7 @@ function patchRosterMethods(){
      if(codeTeam&&norm(codeTeam.name)!==norm(name))throw new Error('Mã đội '+code+' đã thuộc đội khác');
      const nameMatches=existing.filter(t=>norm(t.name)===norm(name));
      if(!codeTeam&&nameMatches.length>1)throw new Error('Nhiều đội trùng tên: '+name+'; cần mã đội chính xác');
+     if(!codeTeam&&code&&nameMatches.length&&clean(nameMatches[0].code)!==code)throw new Error('Tên đội '+name+' đã có mã '+nameMatches[0].code+'; không tự ghép nhầm mã '+code);
      const team=codeTeam||nameMatches[0];
      if(team){
       if(!Array.isArray(team.roster)||!team.roster.some(x=>clean(x?.name))){
