@@ -114,8 +114,30 @@ async function closeTest({online=true,saveError=false,cancel=false}={}){
   assert.equal(archiveLoads,1);
  }
 }
+async function historyRenderTest(){
+ const fragment=reportSource.slice(reportSource.indexOf('const baseRenderArchives=G.renderArchives?.bind(G);'),reportSource.indexOf('const baseFinish=G.finishTournament?.bind(G);'));
+ assert(fragment.startsWith('const baseRenderArchives='));
+ const report={tid:'hist1',generatedAt:1700000000000,title:'Giải trước'};
+ const cards=[{children:[],appendChild(node){this.children.push(node)}},{children:[],appendChild(node){this.children.push(node)}}];
+ const box={querySelectorAll(sel){return sel==='.list-card'?cards:[]}};
+ let calls=0,downloaded=null;
+ const G={archives:{hist1:{tid:'hist1',title:'Giải trước',closedAt:1700000000000,status:'CLOSED',finalReport:report,reportReady:true},
+  active2:{tid:'active2',title:'Giải đang thi',createdAt:1600000000000,status:'ACTIVE',reportReady:false}},
+  renderArchives(){calls++}};
+ const context={G,document:{getElementById:id=>id==='tk9-archive-list'?box:null,createElement:()=>({style:{},remove(){}})},
+  T:{Data:{db:dbFactory(),tid:'active2'}},AUTH_ROOT:'auth',SPORT:'badminton',
+  downloadReport:r=>{downloaded=r},U:{toast(){}}};
+ vm.createContext(context);vm.runInContext(fragment,context);G.renderArchives();
+ assert.equal(calls,1);
+ assert.equal(cards[0].children.length,1,'Closed archive must show report action');
+ assert.equal(cards[0].children[0].disabled,false);
+ assert.equal(cards[1].children[0].disabled,true,'Unfinished tournament has no final report');
+ await cards[0].children[0].onclick();
+ assert.equal(downloaded.tid,'hist1','Historical report must download its own snapshot');
+}
 (async()=>{
  await wizardTest();
+ await historyRenderTest();
  await closeTest();
  await closeTest({online:false});
  await closeTest({saveError:true});
