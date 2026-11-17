@@ -73,7 +73,38 @@ function renderCurrent(){if(currentReport&&String(currentReport.tid)!==String(T.
 async function loadCurrentFromIndex(){if(!isAdmin()||!T.Data?.db)return;try{const tid=T.Data.tid,s=await T.Data.db.ref(`${AUTH_ROOT}/tournamentIndex/${SPORT}/${tid}/finalReport`).once('value'),r=s.val();if(T.Data.tid===tid&&r){currentReport=r;lastSig=r.signature||'';renderCurrent()}}catch{} }
 const baseRenderSettings=G.renderSettings?.bind(G);if(baseRenderSettings)G.renderSettings=function(...a){const x=baseRenderSettings(...a);renderCurrent();if(allFinished())setTimeout(()=>ensureReport(false),0);return x};
 const baseRenderArchives=G.renderArchives?.bind(G);if(baseRenderArchives)G.renderArchives=function(){baseRenderArchives();const box=document.getElementById('tk9-archive-list');if(!box)return;const rows=Object.values(this.archives||{}).sort((a,b)=>(b.closedAt||b.createdAt||0)-(a.closedAt||a.createdAt||0));box.querySelectorAll('.tk65-archive-report').forEach(x=>x.remove());const cards=[...box.querySelectorAll('.list-card')];cards.forEach((card,i)=>{const x=rows[i];if(!x?.tid)return;const b=document.createElement('button');b.className='btn mini ok tk65-archive-report';b.textContent=x.finalReport?'⬇ Báo cáo toàn giải':'⬇ Tải báo cáo';b.style.marginLeft='8px';b.disabled=!(x.finalReport||x.reportReady);b.onclick=async()=>{let r=x.finalReport;if(!r&&T.Data?.db){try{r=(await T.Data.db.ref(`${AUTH_ROOT}/tournamentIndex/${SPORT}/${x.tid}/finalReport`).once('value')).val()}catch{}}if(r)downloadReport(r);else U.toast('Giải này chưa có snapshot báo cáo toàn giải','err')};card.appendChild(b)})};
-const baseFinish=G.finishTournament?.bind(G);if(baseFinish)G.finishTournament=async function(...a){await ensureReport(true);const r=await baseFinish(...a);if(currentReport&&isAdmin()&&T.Data?.db){try{await T.Data.db.ref(`${AUTH_ROOT}/tournamentIndex/${SPORT}/${T.Data.tid}/finalReport`).set(currentReport);await T.Data.db.ref(`${AUTH_ROOT}/tournamentIndex/${SPORT}/${T.Data.tid}`).update({reportReady:true,reportGeneratedAt:currentReport.generatedAt});await this.loadArchives?.()}catch{}}return r};
+const baseFinish=G.finishTournament?.bind(G);if(baseFinish)G.finishTournament=async function(...a){
+ const canFinalize=isAdmin()&&!!T.Data?.db;
+ const hasMatches=Object.keys(App.state.matches||{}).length>0;
+ const ready=hasMatches&&allFinished();
+ if(canFinalize&&ready){
+  if(!T.Data.connected)return U.toast('Firebase chưa kết nối. Chưa đóng giải để tránh mất báo cáo.','err');
+  try{
+   const report=await ensureReport(true);
+   if(!report||report.tid!==T.Data.tid)throw Error('Chưa tạo được báo cáo đúng giải');
+   const reportRef=T.Data.db.ref(`${AUTH_ROOT}/tournamentIndex/${SPORT}/${T.Data.tid}/finalReport`);
+   await reportRef.set(report);
+   const saved=(await reportRef.child('tid').once('value')).val();
+   if(saved!==T.Data.tid)throw Error('Firebase chưa xác nhận báo cáo cuối giải');
+  }catch(e){U.toast('Chưa thể đóng giải: không lưu được báo cáo cuối giải ('+(e?.message||e)+')','err');return}
+ }
+ const beforeStatus=App.state.config?.tournamentStatus;
+ const r=await baseFinish(...a);
+ if(!canFinalize||!ready||beforeStatus==='CLOSED')return r;
+ try{
+  const cfg=(await T.Data.db.ref(T.Data.path('config')).once('value')).val();
+  if(cfg?.tournamentStatus!=='CLOSED')return r;
+  if(T.Data.pending)throw Error('Còn dữ liệu chờ đồng bộ');
+  const report=currentReport;
+  if(!report||report.tid!==T.Data.tid)throw Error('Không có snapshot báo cáo đúng giải');
+  const idx=T.Data.db.ref(`${AUTH_ROOT}/tournamentIndex/${SPORT}/${T.Data.tid}`);
+  await idx.update({finalReport:report,reportReady:true,reportGeneratedAt:report.generatedAt});
+  const saved=(await idx.child('finalReport/tid').once('value')).val();
+  if(saved!==T.Data.tid)throw Error('Firebase chưa xác nhận báo cáo lịch sử');
+  await this.loadArchives?.();
+ }catch(e){console.error('TOPKEY tournament archive report verification',e);U.toast('Giải có thể đã đóng nhưng chưa xác minh được báo cáo lịch sử: '+(e?.message||e),'err')}
+ return r;
+};
 const maintain=()=>{renderCurrent();if(allFinished())ensureReport(false)};window.TopkeyLifecycle?.bind(maintain,{settleTicks:8,settleEvery:350,debounceMs:80});
 setTimeout(()=>{installCurrentUi();loadCurrentFromIndex();renderCurrent();if(allFinished())ensureReport(false)},1200);
 window.TopkeyUpgrade122Hotfix65={VERSION,buildReport,downloadReport,ensureReport};
