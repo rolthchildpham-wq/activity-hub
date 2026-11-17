@@ -37,7 +37,6 @@ function plan(rows,teams,nextCode,newId,defaultCategory){
   const matched=byCode||existing.find(t=>normalize(t.name)===normalize(name)&&(!category||str(t.category)===category));
   if(matched){
    if(category&&str(matched.category)&&str(matched.category)!==category)throw new Error('Sai nội dung thi của '+name+'. Hủy import.');
-   if(roster.length&&!Array.isArray(matched.roster)){ /* legacy team with no roster */ }
    if(roster.length&&(!Array.isArray(matched.roster)||!matched.roster.length)){
     updates['teams/'+matched.id+'/roster']=roster;
     updates['teams/'+matched.id+'/updatedAt']=Date.now();
