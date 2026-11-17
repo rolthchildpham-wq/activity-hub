@@ -64,7 +64,7 @@ async function wizardTest(){
  await $('tk79-new-create').onclick();
  assert.equal(writes.length,1,'Retrying same title must not create a duplicate tournament');
  assert($('tk79-new-status').textContent.includes('đã có'),'Existing tournament must be reported');
- const open=added.find(x=>x.textContent==='Mở giải đã tạo');
+ const open=$('tk79-new-status').children.find(x=>x.textContent==='Mở giải đã tạo');
  assert(open&&typeof open.onclick==='function');
  open.onclick();
  assert.equal(redirects,2);
