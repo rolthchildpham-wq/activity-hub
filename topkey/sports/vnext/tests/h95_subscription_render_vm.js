@@ -9,6 +9,7 @@ const active = new Map();
 const frames = [];
 const renders = {};
 const windowListeners = {};
+let auditPageReads = 0;
 
 function listen(branch, callback) {
   handlers.set(branch, callback);
@@ -29,17 +30,19 @@ const App = {
   renderUsers() { renders.users = (renders.users || 0) + 1; },
   renderCourts() { renders.courts = (renders.courts || 0) + 1; },
   renderAll() { renders.all = (renders.all || 0) + 1; },
+  renderAudit() { renders.audit = (renders.audit || 0) + 1; },
   showTab(tab) { this.currentTab = tab; return tab; }
 };
 const Data = {
   ready: true,
   listen,
-  listenAuthUsers(callback) { return listen('users', callback); }
+  listenAuthUsers(callback) { return listen('users', callback); },
+  async readPage(branch) { assert.strictEqual(branch, 'audit'); auditPageReads++; return {items: [], nextCursor: null, hasMore: false}; }
 };
 const Topkey = {App, Data, Auth: {role: () => 'ADMIN'}};
 const sandbox = {
   window: {Topkey},
-  document: {hidden: false, addEventListener() {}},
+  document: {hidden: false, addEventListener() {}, getElementById() { return null; }},
   requestAnimationFrame(callback) { frames.push(callback); return frames.length; },
   setTimeout,
   clearTimeout,
@@ -76,11 +79,13 @@ frames.shift()();
 assert.strictEqual(renders.matches, matchesBeforeHiddenUpdate, 'inactive schedule DOM must not render on finance tab');
 App.showTab('audit');
 assert.strictEqual(active.get('finance'), 1, 'finance listener must remain available for cross-tab reports');
-assert.strictEqual(active.get('audit'), 1, 'audit listener must attach on audit tab');
+assert.strictEqual(active.get('audit') || 0, 0, 'audit must use bounded pagination instead of a full-tree listener');
+assert.strictEqual(auditPageReads, 1, 'audit tab must request one bounded page');
 App.showTab('audit');
-assert.strictEqual(active.get('audit'), 1, 'reopening the same tab must not duplicate listeners');
+assert.strictEqual(active.get('audit') || 0, 0, 'reopening audit must not attach a full-tree listener');
+assert.strictEqual(auditPageReads, 1, 'reopening audit must not restart initial page');
 App.showTab('settings');
-assert.strictEqual(active.get('audit'), 0, 'previous heavy listener must be removed');
+assert.strictEqual(active.get('audit') || 0, 0, 'audit must remain detached after leaving tab');
 assert.strictEqual(active.get('users'), 1, 'ADMIN users listener must attach only in settings');
 App.showTab('control');
 assert.strictEqual(active.get('users'), 1, 'ADMIN users listener must remain available for court assignments');
