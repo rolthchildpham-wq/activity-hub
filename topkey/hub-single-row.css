@@ -1,0 +1,54 @@
+/* TOPKEY Hub: one compact full-width sport navigation row.
+   Layout only. Keep the original <a class="sport"> links for the shared login/session flow. */
+body.tk-bi-hub .wrap{width:100%;max-width:none;box-sizing:border-box}
+body.tk-bi-hub #topkey-sports.cards,
+body.tk-bi-hub #topkey-sports.cards.compact-sports{
+ display:grid!important;
+ grid-template-columns:repeat(8,minmax(0,1fr))!important;
+ gap:clamp(5px,.65vw,12px)!important;
+ width:100%;max-width:100%;min-width:0;
+ margin:0 0 14px!important;padding:0!important;
+ box-sizing:border-box;overflow:visible;
+}
+body.tk-bi-hub #topkey-sports.cards .sport,
+body.tk-bi-hub #topkey-sports.cards.compact-sports .sport{
+ min-width:0;min-height:68px!important;height:68px;
+ padding:8px 4px!important;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;
+ gap:4px!important;border-radius:12px;
+ box-sizing:border-box;
+}
+body.tk-bi-hub #topkey-sports .sport .emoji{font-size:23px!important;line-height:1!important;margin:0!important}
+body.tk-bi-hub #topkey-sports .sport h3{
+ font-size:clamp(10px,.8vw,12px)!important;line-height:1.22!important;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+ width:100%;max-width:100%;margin:0!important;
+}
+body.tk-bi-hub #topkey-sports .sport .badge,
+body.tk-bi-hub #topkey-sports .sport p,
+body.tk-bi-hub #topkey-sports .sport .open{display:none!important}
+body.tk-bi-hub .tk-bi-section-heading{margin:3px 0 10px!important}
+body.tk-bi-hub .tk-bi-section-heading h2{font-size:14px!important}
+@media(max-width:1100px){
+ body.tk-bi-hub #topkey-sports.cards,
+ body.tk-bi-hub #topkey-sports.cards.compact-sports{
+  display:flex!important;flex-wrap:nowrap!important;
+  gap:8px!important;overflow-x:auto;overflow-y:hidden;
+  scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;
+  overscroll-behavior-x:contain;padding-bottom:6px!important;
+  scrollbar-width:thin;
+ }
+ body.tk-bi-hub #topkey-sports.cards .sport,
+ body.tk-bi-hub #topkey-sports.cards.compact-sports .sport{
+  flex:0 0 clamp(110px,16vw,152px);width:auto;scroll-snap-align:start;
+ }
+ body.tk-bi-hub #topkey-sports .sport h3{font-size:11px!important}
+}
+@media(max-width:650px){
+ body.tk-bi-hub #topkey-sports.cards .sport,
+ body.tk-bi-hub #topkey-sports.cards.compact-sports .sport{
+  flex-basis:114px;min-height:62px!important;height:62px;padding:7px 5px!important;
+ }
+ body.tk-bi-hub #topkey-sports .sport .emoji{font-size:21px!important}
+ body.tk-bi-hub .tk-bi-section-heading small{display:none}
+}
