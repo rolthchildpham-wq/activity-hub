@@ -9,7 +9,7 @@ const timeout=Number(process.env.TOPKEY_TEST_TIMEOUT_MS||15000);
 const rows=files.map(file=>{
  const source=fs.readFileSync(path.join(testDir,file),'utf8');
  const pinned=/u122h\d+-20\d{6}|build\.(?:cacheTag|version|build)[^\n]{0,100}|assets\/u118\/|hotfix\d+-20\d{6}/.test(source);
- const proc=cp.spawnSync(process.execPath,[path.join(testDir,file)],{cwd:testDir,encoding:'utf8',timeout,maxBuffer:1024*1024});
+ const proc=cp.spawnSync(process.execPath,[path.join(testDir,file)],{cwd:path.dirname(testDir),encoding:'utf8',timeout,maxBuffer:1024*1024});
  const output=(proc.stderr||'')+'\n'+(proc.stdout||'');
  return {file,status:proc.status===0?'PASS':'FAIL',category:proc.status===0?'passed':proc.error?.code==='ETIMEDOUT'?'timeout':pinned?'legacy-contract-candidate':'unclassified-failure',exit:proc.status,detail:output.slice(-1000)};
 });
