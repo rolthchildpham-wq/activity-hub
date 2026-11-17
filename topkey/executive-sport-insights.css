@@ -4,7 +4,7 @@
 .exec-insights-heading p{font-size:12px;margin:0 0 15px;color:#a5bfd5}
 .exec-eyebrow{font-size:10px;letter-spacing:.15em;font-weight:800;color:#55ded4}
 .exec-insights-tabs{display:flex;gap:7px;overflow-x:auto;padding:0 0 10px;scrollbar-width:thin}
-.exec-insights-tab{border:1px solid #375774;white-space:nowrap;background:#112d47;color:#bad4e6;border-radius:999px;padding:9px 13px;font:700 12px inherit;cursor:pointer;flex-shrink:0}
+.exec-insights-tab{border:1px solid #375774;white-space:nowrap;background:#112d47;color:#bad4e6;border-radius:999px;padding:9px 13px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;flex-shrink:0}
 .exec-insights-tab:hover,.exec-insights-tab:focus-visible{border-color:#5ddfd6;color:#fff}
 .exec-insights-tab[aria-pressed="true"]{background:#14b8a6;color:#05283a;border-color:#5de7da;box-shadow:0 0 0 1px #16a6a366}
 .exec-insights-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
