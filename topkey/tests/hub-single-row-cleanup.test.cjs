@@ -1,0 +1,32 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+const root=path.resolve(__dirname,'..');
+const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
+const css=fs.readFileSync(path.join(root,'hub-single-row.css'),'utf8');
+const flow=fs.readFileSync(path.join(root,'hub-auth-flow.js'),'utf8');
+const hub=fs.readFileSync(path.join(root,'hub-layout94.js'),'utf8');
+const cards=html.match(/<section class="cards" id="topkey-sports">([\s\S]*?)<\/section>/);
+assert(cards,'Sport menu missing');
+const links=[...cards[1].matchAll(/<a class="sport(?: badminton)?" href="([^"]+)"/g)];
+assert.equal(links.length,8,'All eight sports including Vlog must remain accessible');
+for(const sport of ['football','volleyball','running','handmade','shuttle','cooking']){
+ assert(links.some(x=>x[1].includes('sport='+sport)),'Missing sport '+sport);
+}
+assert(links.some(x=>x[1].includes('sports/badminton/index.html')),'Badminton link missing');
+assert(links.some(x=>x[1].includes('sports/diy-vlog/index.html')),'Vlog link missing');
+assert.match(flow,/closest\?\.\('a\.sport'\)/,'Hub authentication routing missing');
+assert.match(hub,/classList\.add\('compact-sports'\)/,'Existing compact Hub layout missing');
+assert.match(html,/id="executive-dashboard"/);
+assert.match(html,/executive-sport-insights\.js/);
+assert.match(html,/id="system-admin-launch"/);
+assert.match(html,/id="password-change-launch"/);
+assert.doesNotMatch(html,/id="sport-management"|sport-management-launch\.(?:js|css)|Nền tảng dùng chung/,'Duplicated management and promotional card must not load');
+assert.match(html,/hub-single-row\.css\?v=20261117-r1/);
+assert(html.indexOf('hub-single-row.css')>html.indexOf('hub-compact-h130.css'),'New layout override must load last');
+assert.match(css,/grid-template-columns:repeat\(8,minmax\(0,1fr\)\)!important/);
+assert.match(css,/max-width:none/);
+assert.match(css,/flex-wrap:nowrap!important/);
+assert.match(css,/overflow-x:auto/);
+assert.match(css,/@media\(max-width:650px\)/);
+assert.doesNotMatch(css,/@import|url\(/,'Layout CSS must have no external dependencies');
+console.log('PASS: 8 one-row sports, responsive overflow, full width, Hub auth, reports, system/password entry and duplicate removal');
