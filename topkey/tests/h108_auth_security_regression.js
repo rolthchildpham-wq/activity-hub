@@ -1,7 +1,7 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert'),path=require('path');
 const root=path.resolve(__dirname,'..');
 function store(){let o={};return {getItem:k=>o[k]||null,setItem:(k,v)=>{o[k]=v},removeItem:k=>{delete o[k]}}}
-function node(){const set=new Set(['hidden']);return{dataset:{},textContent:'',hidden:false,addEventListener(){},classList:{add:k=>set.add(k),remove:k=>set.delete(k),contains:k=>set.has(k),toggle:(k,v)=>v===true?set.add(k):v===false?set.delete(k):set.delete(k)},style:{}}}
+function node(){const set=new Set(['hidden']);return{dataset:{},textContent:'',hidden:false,addEventListener(){},remove(){},querySelector(){return null},classList:{add:k=>set.add(k),remove:k=>set.delete(k),contains:k=>set.has(k),toggle:(k,v)=>v===true?set.add(k):v===false?set.delete(k):set.delete(k)},style:{}}}
 const badBundle=fs.readFileSync(path.join(root,'sports/badminton/assets/u122/admin-core.h85full.js'),'utf8');
 const a=badBundle.indexOf('/* SOURCE: ./src/auth.js */'),b=badBundle.indexOf('/* SOURCE: ./src/app.js */');assert(a>=0&&b>a);
 const scripts={badminton:badBundle.slice(a,b),vnext:fs.readFileSync(path.join(root,'sports/vnext/src/auth.js'),'utf8')};

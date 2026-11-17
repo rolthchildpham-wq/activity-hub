@@ -19,6 +19,6 @@ assert.equal(t('Video thử nghiệm 0080','vi'),'Video thử nghiệm 0080');
 assert(!script.includes('.pod .person,#rows td strong,#rows td .muted'),'titles and names should not be skipped');
 assert(html.includes('id="vlog-language-picker"'));
 assert(html.includes('id="tiktok-scan-errors"'));
-assert(html.includes('tiktok-automation.js?v=tikwm-retryfailed-once-20261115'));
+assert(html.includes('tiktok-automation.js?v=vlog-sync-errors-20261116-093b3b3'));
 assert(script.includes('window.Translator.availability'),'optional native translation for arbitrary free-text');
 console.log('PASS: video titles VI EN ZH, dynamic stats, URLs and IDs unchanged, free-text native optional, TEST errors retained');
