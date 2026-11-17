@@ -1,0 +1,25 @@
+/* TOPKEY sport management entry: navigation only, never grants permissions. */
+body.tk-bi-hub .tk-mgmt-panel{display:block;margin:18px 0 22px;padding:22px;border:1px solid #2d7482;border-radius:20px;background:linear-gradient(125deg,#10314b 0%,#0c263d 62%,#112941 100%);box-shadow:0 12px 36px #00101e60;color:#eaf8ff}
+body.tk-bi-hub .tk-mgmt-top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap}
+body.tk-bi-hub .tk-mgmt-heading h2{font-size:clamp(20px,2vw,28px);font-weight:850;margin:5px 0 8px;color:#fff}
+body.tk-bi-hub .tk-mgmt-heading p{font-size:12px;line-height:1.55;color:#bcd6e3;max-width:760px;margin:0}
+body.tk-bi-hub .tk-mgmt-kicker{font-size:10px;font-weight:850;letter-spacing:.14em;color:#7ef4db}
+body.tk-bi-hub .tk-mgmt-state{display:inline-flex;max-width:360px;border:1px solid #386680;border-radius:999px;padding:8px 13px;background:#092239;font-size:11px;color:#aee2e0}
+body.tk-bi-hub .tk-mgmt-tabs{display:flex;align-items:center;gap:8px;overflow:auto;padding:18px 1px 12px;scrollbar-width:thin}
+body.tk-bi-hub .tk-mgmt-tab{flex:0 0 auto;padding:11px 14px;border-radius:12px;border:1px solid #385a72;background:#15344e;color:#c6e3f3;font-size:12px;font-weight:750;cursor:pointer;min-height:44px}
+body.tk-bi-hub .tk-mgmt-tab[aria-pressed="true"]{border-color:#70fae4;background:#14b8a6;color:#042b34}
+body.tk-bi-hub .tk-mgmt-tab:focus-visible,body.tk-bi-hub .tk-mgmt-action:focus-visible{outline:2px solid #b2faff;outline-offset:3px}
+body.tk-bi-hub .tk-mgmt-detail{padding:18px;border:1px solid #34526c;border-radius:15px;background:#091d31}
+body.tk-bi-hub .tk-mgmt-name{margin:0 0 6px;font-size:19px;color:#fff}
+body.tk-bi-hub .tk-mgmt-desc{color:#9dbed3;font-size:12px;margin:0 0 15px}
+body.tk-bi-hub .tk-mgmt-actions{display:flex;gap:10px;flex-wrap:wrap}
+body.tk-bi-hub .tk-mgmt-actions a.sport{display:inline-flex!important;align-items:center;justify-content:center;gap:8px;width:auto;min-height:45px;text-decoration:none;padding:11px 18px;margin:0;border-radius:11px;font-size:13px;font-weight:850;box-shadow:none;transform:none}
+body.tk-bi-hub .tk-mgmt-actions .tk-mgmt-view{background:#153d5b!important;border:1px solid #397894!important;color:#e8f4ff!important}
+body.tk-bi-hub .tk-mgmt-actions .tk-mgmt-manage{background:#12a998!important;border:1px solid #52dccd!important;color:#032d31!important}
+body.tk-bi-hub .tk-mgmt-note{margin:13px 0 0;font-size:11px;line-height:1.55;color:#9bb8cb}
+body.tk-bi-hub .tk-mgmt-steps{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}
+body.tk-bi-hub .tk-mgmt-steps span{padding:7px 11px;font-size:11px;color:#b7d4e2;background:#12314a;border-radius:8px;border:1px solid #30526b}
+body.tk-bi-hub .tk-mgmt-extra{display:flex;flex-wrap:wrap;gap:15px;margin-top:17px}
+body.tk-bi-hub .tk-mgmt-extra a{font-size:12px;color:#8ce8dc;font-weight:800;text-decoration:underline;text-underline-offset:4px}
+body.tk-bi-hub .tk-mgmt-footer{font-size:11px;color:#90aeca;margin:12px 0 0}
+@media(max-width:680px){body.tk-bi-hub .tk-mgmt-panel{padding:15px;margin:14px 0 20px}body.tk-bi-hub .tk-mgmt-top{gap:10px}body.tk-bi-hub .tk-mgmt-actions{display:grid;grid-template-columns:1fr}body.tk-bi-hub .tk-mgmt-actions a.sport{width:100%}body.tk-bi-hub .tk-mgmt-detail{padding:14px}body.tk-bi-hub .tk-mgmt-tab{padding:10px 12px}}
