@@ -5,7 +5,7 @@ const source=fs.readFileSync(path.join(root,'src/volleyball-roster-registration-
 const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
 assert.match(html,/volleyball-roster-registration-audit\.js\?v=20261117-reg-audit-r1/);
 const context={
- window:{Topkey:{SPORT:{key:'volleyball'},Auth:{role:()=> 'VIEWER',profile:{}},App:{state:{teams:{},registrations:{}}},Data:{path:x=>'root/'+x}},__TOPKEY_VNEXT_BOOT:null},
+ window:{Topkey:{SPORT:{key:'volleyball'},Auth:{role:()=> 'VIEWER',profile:{}},App:{state:{teams:{},registrations:{}}},Data:{path:x=>'root/'+x}},__TOPKEY_VNEXT_BOOT:null,addEventListener:()=>{}},
  document:{readyState:'complete',getElementById:()=>null},console,Promise,Object,Array,Set,Date,String,JSON,Error
 };
 vm.createContext(context);new vm.Script(source,{filename:'volleyball-roster-registration-audit.js'}).runInContext(context);
