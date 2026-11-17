@@ -60,6 +60,10 @@ const sourceRoster=[{name:'Nguyễn Văn A',jersey:'10',employeeId:'NV001',shirt
  await ctx.App.importTeamsCSV(file(malformed),{value:'x'});
  assert.equal(writeCalls.length,1,'Malformed CSV cannot write');
  assert(toasts.some(x=>x.level==='err'&&x.msg.includes('không hợp lệ')),'Malformed JSON must be surfaced');
+ const conflicting=testCsv([{Ma:'T099',Ten:'TRANG TRÍ',DoiTruong:'Trưởng đội C',DanhSachCauThu_JSON:JSON.stringify([{name:'Không được ghi',jersey:'99'}])}]);
+ await ctx.App.importTeamsCSV(file(conflicting),{value:'x'});
+ assert.equal(writeCalls.length,1,'Incorrect team code must not attach players to an unrelated scheduled team');
+ assert(toasts.some(x=>x.level==='err'&&x.msg.includes('không tự ghép nhầm mã')));
  const newCSV=testCsv([{Ma:'T005',Ten:'ĐỘI MỚI',DoiTruong:'Đội trưởng E',DanhSachCauThu_JSON:JSON.stringify([{name:'Cầu thủ E',jersey:'5'}])}]);
  await ctx.App.importTeamsCSV(file(newCSV),{value:'x'});
  assert.equal(Object.keys(state.teams).length,5);
