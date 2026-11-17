@@ -37,7 +37,7 @@ const ctx={window:{Topkey},document,console};ctx.window.window=ctx.window;ctx.wi
 vm.createContext(ctx);vm.runInContext(src,ctx);
 const H=ctx.window.TopkeyUpgrade122Hotfix38;assert(H&&H.installed);
 const women=H.canonicalRanking({category:'WOMEN'});
-assert.deepStrictEqual(Array.from(women, x=>x.id).sort(),['w2','w3','w4']); // withdrawn excluded
+assert.deepStrictEqual(Array.from(women, x=>x.id).sort(),['w1','w2','w3','w4']); // historical results remain visible
 const by=Object.fromEntries(women.map(x=>[x.id,x]));
 assert.equal(by.w2.played,2); // loss to W1 + win over W3; KO ignored; ambiguous ignored
 assert.equal(by.w2.w,1);assert.equal(by.w2.l,1);assert.equal(by.w2.points,3);
@@ -48,7 +48,9 @@ assert.equal(by.w3.setsFor-by.w3.setsAgainst,0); // +2 WO, -2 vs W2
 assert.equal(by.w3.pointsFor-by.w3.pointsAgainst,17); // +22 WO, then 37-42 = -5 => +17? Let's assert exact below
 assert(women.anomalies.some(x=>x.type==='MISSING_WINNER'&&x.matchId==='bad'));
 const allW=H.canonicalRanking({category:'WOMEN',includeWithdrawn:true});
-assert(allW[allW.length-1].id==='w1'); // withdrawn always below active teams
+assert(allW.some(x=>x.id==='w1')); // withdrawn historical results remain visible
+const qualified=App.rankingEligible({category:'WOMEN'});
+assert.deepStrictEqual(Array.from(qualified, x=>x.id).sort(),['w2','w3','w4']); // withdrawn cannot qualify
 const men=H.canonicalRanking({category:'MEN'});assert.equal(men[0].id,'m1');assert.equal(men[0].points,3);
 const mix=H.canonicalRanking({category:'MIX'}), mx=Object.fromEntries(mix.map(x=>[x.id,x]));
 assert.equal(mx.x2.w,1);assert.equal(mx.x1.l,1);assert.equal(mx.x2.points,3);
