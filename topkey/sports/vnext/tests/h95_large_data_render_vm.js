@@ -12,7 +12,7 @@ class Element {
     this.textContent = '';
     this.innerHTML = '';
   }
-  appendChild(child) { this.children.push(child); return child; }
+  appendChild(child) { if (child.isFragment) this.children.push(...child.children); else this.children.push(child); return child; }
   append(...children) { this.children.push(...children); }
   replaceChildren(...children) { this.children = [...children]; }
   querySelectorAll() { return []; }
@@ -26,6 +26,7 @@ const element = id => {
 const document = {
   hidden: false,
   createElement() { return new Element(); },
+  createDocumentFragment() { const node = new Element(); node.isFragment = true; return node; },
   getElementById: element,
   querySelectorAll() { return []; },
   addEventListener() {}
