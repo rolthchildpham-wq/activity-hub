@@ -17,8 +17,9 @@ assert(reportSource.includes('function buildReport()'),'Final report compiler mu
 function dbFactory(){
  const store={},updates=[];
  const setPath=(key,val)=>{store[key]=val};
+ const getPath=key=>{if(Object.prototype.hasOwnProperty.call(store,key))return store[key];let parts=key.split('/');while(parts.length){const parent=parts.join('/'),source=store[parent];if(source!==undefined){const rest=key.slice(parent.length+1).split('/');return rest.reduce((o,k)=>o?.[k],source)??null}parts.pop()}return null};
  const ref=(key='')=>({
-  async once(){return {val:()=>store[key]??null}},
+  async once(){return {val:()=>getPath(key)}},
   child(child){return ref(key+'/'+child)},
   async set(val){setPath(key,val)},
   async update(val){
@@ -38,7 +39,7 @@ async function wizardTest(){
  $('tk79-new-title').value='Cầu lông 2027';$('tk79-new-location').value='Sân cầu lông Công ty Topkey';$('tk79-new-create').disabled=false;
  let next='',redirects=0;
  const context={
-  T:{Auth:{role:()=> 'ADMIN'},Data:{db},ROOT:rootPath,DEFAULT_RULES:{},SCHEMA_VERSION:1,VERSION:'test'},
+  T:{Auth:{role:()=> 'ADMIN'},Data:{db},ROOT:rootPath,DEFAULT_RULES:{},SCHEMA_VERSION:1,VERSION:'test'},App:{state:{config:{location:'Topkey'}}},
   AUTH_ROOT:authRoot,SPORT:sport,S:{name:'Cầu lông',mode:'court',venueLabel:'Sân'},G:{randomToken:()=> 'testtoken'},
   $ ,esc:x=>String(x),normalizePrize:x=>({...x,id:x.id||'p1'}),clone:x=>JSON.parse(JSON.stringify(x)),ensureCss(){},
   U:{toast(){},},document:{body:{appendChild(){}},createElement:()=>({style:{},appendChild(node){added.push(node)},remove(){},set innerHTML(x){this.html=x},get innerHTML(){return this.html||''}})},
