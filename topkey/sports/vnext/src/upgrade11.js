@@ -43,7 +43,27 @@ function injectRosterUI(){
   if(!$('tk11-roster-modal')){const m=document.createElement('div');m.id='tk11-roster-modal';m.className='modal hidden';m.innerHTML=`<div class="modal-box wide tk11-scroll-modal"><div class="split"><div><h2>👕 Chỉnh đội hình</h2><p id="tk11-roster-team-name" class="muted"></p></div><button id="tk11-roster-close" class="btn mini">Đóng</button></div><input id="tk11-roster-team-id" type="hidden"><div id="tk11-edit-roster" class="tk11-roster-list"></div><div class="split" style="margin-top:12px"><button id="tk11-edit-roster-add" class="btn primary">+ Cầu thủ</button><button id="tk11-edit-roster-save" class="btn ok">💾 Lưu đội hình</button></div></div>`;document.body.appendChild(m);$('tk11-roster-close').onclick=()=>m.classList.add('hidden');$('tk11-edit-roster-add').onclick=()=>$('tk11-edit-roster').appendChild(rosterRow());$('tk11-edit-roster-save').onclick=saveRosterEdit;}
 }
 async function saveRosterEdit(){const id=$('tk11-roster-team-id').value,t=App.state.teams?.[id];if(!t)return;const roster=collectRoster($('tk11-edit-roster'));try{validateRoster(roster)}catch(e){return U.toast(e.message,'err')}const after={...t,roster,updatedAt:Date.now()};await T.Data.queueSet('teams/'+id,after,{type:'TEAM_UPDATE'});await T.Data.audit('UPDATE_ROSTER','participant',id,t,after);$('tk11-roster-modal').classList.add('hidden');}
-function openRoster(id){const t=App.state.teams?.[id];if(!t)return;$('tk11-roster-team-id').value=id;$('tk11-roster-team-name').textContent=`${t.name||''} · ${t.category||''}`;mountRoster($('tk11-edit-roster'),Array.isArray(t.roster)?t.roster:[]);$('tk11-roster-modal').classList.remove('hidden');}
+function rosterForEdit(team,registrations){
+ const own=Array.isArray(team?.roster)?team.roster.filter(x=>x&&String(x.name||'').trim()):[];
+ if(own.length)return{rows:own,source:'team'};
+ const reg=team?.registrationId&&registrations?.[team.registrationId];
+ const linked=reg&&reg.status==='APPROVED'&&(!reg.teamId||reg.teamId===team.id);
+ const previous=linked&&Array.isArray(reg.roster)?reg.roster.filter(x=>x&&String(x.name||'').trim()):[];
+ return previous.length?{rows:previous,source:'registration'}:{rows:[],source:'missing'};
+}
+function openRoster(id){
+ const t=App.state.teams?.[id];if(!t)return;
+ $('tk11-roster-team-id').value=id;$('tk11-roster-team-name').textContent=`${t.name||''} · ${t.category||''}`;
+ const resolved=rosterForEdit(t,App.state.registrations);
+ let hint=$('tk11-roster-hint');
+ if(!hint){hint=document.createElement('p');hint.id='tk11-roster-hint';hint.className='note';hint.setAttribute('role','status');$('tk11-edit-roster').parentNode.insertBefore(hint,$('tk11-edit-roster'));}
+ hint.textContent=resolved.source==='registration'
+  ?`Tìm thấy ${resolved.rows.length} cầu thủ trong phiếu đăng ký đã duyệt. Kiểm tra và bấm “Lưu đội hình” để liên kết vào đội; lịch thi đấu giữ nguyên.`
+  :resolved.source==='missing'
+  ?'Đội đã đăng ký nhưng chưa có danh sách cầu thủ được lưu. Lịch thi đấu không tự tạo đội hình. Hãy nhập danh sách hoặc import CSV đúng mẫu; không cần tạo lại đội và lịch.'
+  :`Đã lưu ${resolved.rows.length} cầu thủ trong đội hình.`;
+ mountRoster($('tk11-edit-roster'),resolved.rows);$('tk11-roster-modal').classList.remove('hidden');
+}
 function patchRosterMethods(){
   if(!TEAM_ROSTER)return;
   App.addTeam=async e=>{e.preventDefault();const f=new FormData(e.target),id=U.id('team'),roster=collectRoster($('tk11-team-roster')),row={id,code:App.nextCode('T',App.state.teams),name:String(f.get('name')||'').trim(),p1:String(f.get('p1')||'').trim(),p2:String(f.get('p2')||'').trim(),dept:String(f.get('dept')||'').trim(),category:f.get('category'),roster,checkedIn:false,withdrawn:false,createdAt:Date.now()};if(!row.name||!row.p1)return U.toast('Thiếu tên đội / đội trưởng','err');try{validateRoster(roster)}catch(err){return U.toast(err.message,'err')}await T.Data.queueSet('teams/'+id,row,{type:'TEAM_CREATE'});await T.Data.audit('CREATE','participant',id,null,row);e.target.reset();mountRoster($('tk11-team-roster'));};
@@ -52,6 +72,49 @@ function patchRosterMethods(){
   App.renderCheckin=function(){const q=String($('checkin-search')?.value||'').toLowerCase(),box=$('checkin-list');if(!box)return;box.replaceChildren();Object.values(this.state.teams||{}).filter(t=>[t.name,t.p1,t.p2,t.code,...(t.roster||[]).flatMap(x=>[x.name,x.employeeId,x.jersey])].join(' ').toLowerCase().includes(q)).forEach(t=>{const d=document.createElement('div');d.className='checkin-row';const s=document.createElement('span');s.textContent=`${t.code} · ${t.name} · ${t.roster?.length||0} cầu thủ${t.withdrawn?' · BỎ CUỘC':''}`;const b=document.createElement('button');b.className='btn '+(t.checkedIn?'ok':'');b.textContent=t.checkedIn?'Đã check-in':'Check-in';b.disabled=!!t.withdrawn;b.onclick=()=>this.toggleCheckin(t.id);d.append(s,b);box.appendChild(d)});};
   const baseRender=App.renderTeams.bind(App);App.renderTeams=function(){baseRender();const teams=Object.values(this.state.teams||{}).sort((a,b)=>(a.code||'').localeCompare(b.code||''));const rows=[...document.querySelectorAll('#teams-list tr')];rows.forEach((tr,i)=>{const t=teams[i];if(!t)return;const td=tr.lastElementChild;if(!td||td.querySelector('.tk11-roster-btn'))return;const b=document.createElement('button');b.className='btn mini primary tk11-roster-btn';b.textContent=`Đội hình (${t.roster?.length||0})`;b.onclick=()=>openRoster(t.id);td.prepend(b)});};
   App.downloadTeamTemplate=function(){const sample=JSON.stringify([{name:'Nguyễn Văn A',jersey:'10',employeeId:'NV001',shirtSize:'L'}]);const csv='\uFEFFMa,Ten,DoiTruong,HLV,DonVi,NoiDung,DanhSachCauThu_JSON\nT001,Topkey A,Nguyen Van A,Tran Van B,Topkey,'+S.categories[0]+',"'+sample.replaceAll('\"','\"\"')+'"\n';U.download(`Topkey_${S.key}_Mau_Danh_Sach.csv`,new Blob([csv],{type:'text/csv;charset=utf-8'}));};
+  App.importTeamsCSV=async function(file,input){
+   if(!file)return;
+   try{
+    const rows=U.parseCsv(await file.text()),existing=Object.values(this.state.teams||{}),updates={};
+    let created=0,recovered=0,unchanged=0;const importedNames=new Set();
+    const clean=v=>String(v||'').trim(),norm=v=>clean(v).toLocaleLowerCase('vi-VN');
+    for(const r of rows){
+     const name=clean(r.Ten||r.TenDoi||r.Name),code=clean(r.Ma||r.Code);
+     if(!name)continue;
+     const key=norm(name)+'|'+code;if(importedNames.has(key))throw new Error('Đội trùng trong CSV: '+name);
+     importedNames.add(key);
+     let roster=[];const raw=clean(r.DanhSachCauThu_JSON||r.Roster_JSON||'');
+     if(raw){
+      let parsed;try{parsed=JSON.parse(raw)}catch{throw new Error('DanhSachCauThu_JSON không hợp lệ cho '+name)}
+      if(!Array.isArray(parsed))throw new Error('DanhSachCauThu_JSON phải là mảng cho '+name);
+      roster=parsed.map(x=>({name:clean(x?.name),jersey:clean(x?.jersey),employeeId:clean(x?.employeeId),shirtSize:clean(x?.shirtSize)}));
+      if(roster.length)validateRoster(roster);
+     }
+     const codeTeam=code?existing.find(t=>clean(t.code)===code):null;
+     if(codeTeam&&norm(codeTeam.name)!==norm(name))throw new Error('Mã đội '+code+' đã thuộc đội khác');
+     const nameMatches=existing.filter(t=>norm(t.name)===norm(name));
+     if(!codeTeam&&nameMatches.length>1)throw new Error('Nhiều đội trùng tên: '+name+'; cần mã đội chính xác');
+     const team=codeTeam||nameMatches[0];
+     if(team){
+      if(!Array.isArray(team.roster)||!team.roster.some(x=>clean(x?.name))){
+       if(roster.length){updates[T.Data.path('teams/'+team.id)]={...team,roster,updatedAt:Date.now()};recovered++}
+       else unchanged++;
+      }else unchanged++;
+      continue;
+     }
+     const p1=clean(r.DoiTruong||r.ThanhVien1||r.VDV1||r.Member1);
+     if(!p1)throw new Error('Thiếu cột DoiTruong/ThanhVien1 cho '+name);
+     const id=U.id('team');
+     const reserved=new Set([...existing.map(x=>clean(x.code)),...Object.values(updates).map(x=>clean(x.code))]);
+     const newCode=code||('T'+String(existing.length+created+1).padStart(3,'0'));
+     if(reserved.has(newCode))throw new Error('Mã đội bị trùng: '+newCode);
+     updates[T.Data.path('teams/'+id)]={id,code:newCode,name,p1,p2:clean(r.HLV||r.ThanhVien2||r.VDV2),dept:clean(r.DonVi||r.BoPhan),category:clean(r.NoiDung||S.categories[0]),roster,checkedIn:false,withdrawn:false,createdAt:Date.now()};
+     created++;
+    }
+    if(Object.keys(updates).length)await T.Data.queueMulti(updates,{type:'IMPORT_TEAMS'});
+    U.toast(`CSV: ${created} đội mới · ${recovered} đội được bổ sung cầu thủ · ${unchanged} đội giữ nguyên. Không thay đổi lịch.`,'ok');
+   }catch(e){U.toast('Chưa nhập CSV: '+e.message,'err')}finally{if(input)input.value=''}
+  };
   App.exportTeamsCSV=function(){const rows=Object.values(this.state.teams||{}).map(t=>({Ma:t.code,Ten:t.name,DoiTruong:t.p1,HLV:t.p2,DonVi:t.dept,NoiDung:t.category,DanhSachCauThu_JSON:JSON.stringify(t.roster||[]),CheckIn:t.checkedIn?1:0,BoCuoc:t.withdrawn?1:0}));U.download(`Topkey_${S.key}_Danh_Sach.csv`,new Blob(['\uFEFF'+U.csv(rows)],{type:'text/csv;charset=utf-8'}));};
 }
 function installLocalFeedback(){const baseLoad=App.loadOfficial?.bind(App);if(baseLoad)App.loadOfficial=function(){const r=baseLoad();if(this.selectedMatch&&this.currentCourt)U.toast('Đã nạp lịch vào màn hình điều hành','ok');return r};}
