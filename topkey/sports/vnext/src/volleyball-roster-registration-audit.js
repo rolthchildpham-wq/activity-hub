@@ -52,7 +52,7 @@ function install(){
  const out=document.createElement('div');out.className='table-wrap';
  wrap.append(h,desc,trigger,feedback,out);
  const teamsCard=registrationList.closest('.card');
- (teamsCard?.parentElement||registrationList.parentElement).appendChild(wrap);
+ if(teamsCard?.parentElement?.after)teamsCard.parentElement.after(wrap);else (teamsCard?.parentElement||registrationList.parentElement).appendChild(wrap);
  let fetched={registrations:{},teams:{}};
  async function scan(){
   if(!authorized()){feedback.textContent='Không có quyền kiểm tra dữ liệu';return}
@@ -120,6 +120,8 @@ function install(){
  trigger.onclick=scan;
 }
 function boot(){if(T?.App?.state&&T?.Data?.path)install();}
+window.addEventListener('topkey:admin-ready',boot);
+if(window.__TOPKEY_ADMIN_READY)boot();
 if(window.__TOPKEY_VNEXT_BOOT?.then)window.__TOPKEY_VNEXT_BOOT.then(boot).catch(()=>{});
 else if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});
 else boot();
