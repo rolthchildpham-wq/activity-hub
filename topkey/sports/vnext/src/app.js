@@ -85,12 +85,12 @@ const App=T.App={
  const media=navigator.mediaDevices;
  if(!media?.getUserMedia)throw new Error('Trình duyệt không hỗ trợ camera.');
  const desired=facing==='user'?'user':'environment';
- const video={width:{ideal:1280},height:{ideal:720},facingMode:{ideal:desired}};
+ const video={width:{ideal:1280},height:{ideal:720},facingMode:{exact:desired}};
  try{return await media.getUserMedia({video,audio:true})}
  catch(err){
-  // Do not fall back when permission is denied or capture is blocked.
+  // Never retry a denied permission; relax facing constraint only if unsupported.
   if(!['OverconstrainedError','NotFoundError','TypeError'].includes(err?.name))throw err;
-  return media.getUserMedia({video:true,audio:true});
+  return media.getUserMedia({video:{width:{ideal:1280},height:{ideal:720},facingMode:{ideal:desired}},audio:true});
  }
 },
 async switchCamera(){
