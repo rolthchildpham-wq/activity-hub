@@ -56,9 +56,8 @@
     if (!app?.commentaryForScore || app.__h153Installed ||
         !['football','volleyball'].includes(T?.SPORT?.key)) return false;
     app.__h153Installed=true;
-    let mode='SMART';
-    try{mode=localStorage.getItem(key)||'SMART'}catch{}
-    if(!(mode in modes))mode='SMART';
+    let mode='FULL'; // Announce every scored point by default.
+    try { localStorage.setItem(key, 'FULL'); } catch {}
     const select=document.createElement('select');
     select.id='tk153-density';
     select.setAttribute('aria-label','Mật độ bình luận tỷ số');
