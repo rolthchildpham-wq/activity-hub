@@ -41,8 +41,8 @@
    if(kind==='EMBED'){
     let hostname='';
     try{hostname=new URL(url).hostname}catch{}
-    if(!/(^|\.)(youtube\.com|youtube-nocookie\.com|youtu\.be|player\.vimeo\.com)$/.test(hostname))
-     return T.U.toast('Viewer hỗ trợ Embed YouTube hoặc Vimeo HTTPS','err');
+    if(!/(^|\.)(youtube\.com|youtube-nocookie\.com|youtu\.be|player\.vimeo\.com|player\.twitch\.tv)$/.test(hostname))
+     return T.U.toast('Viewer hỗ trợ Embed YouTube, Vimeo hoặc Twitch HTTPS','err');
    }
    return original();
   };

@@ -57,6 +57,14 @@
      return "https://www.youtube-nocookie.com/embed/"+id;
     }
     if(host==="player.vimeo.com" && /^\/video\/[0-9]+/.test(url.pathname))return url.href;
+    if(host==="player.twitch.tv" && url.pathname==="/"){
+      const channel=String(url.searchParams.get("channel")||"").toLowerCase();
+      if(!/^[a-z0-9_]{4,25}$/.test(channel))return null;
+      // Twitch requires parent=the *actual* embedded host, not a saved
+      // previous production/preview domain. Never trust stored parent params.
+      return "https://player.twitch.tv/?channel="+encodeURIComponent(channel)+
+        "&parent="+encodeURIComponent(location.hostname)+"&autoplay=false";
+    }
    }
   }catch{}
   return null;
@@ -137,7 +145,17 @@
    const frame=document.createElement("iframe");
    frame.src=url;frame.title="Truyền hình trực tiếp";frame.allow="autoplay; fullscreen; picture-in-picture";
    frame.allowFullscreen=true;frame.referrerPolicy="strict-origin-when-cross-origin";
-   node.media.appendChild(frame);node.player=frame;return;
+   node.media.appendChild(frame);node.player=frame;
+   if(url.startsWith("https://player.twitch.tv/")){
+     const channel=new URL(url).searchParams.get("channel");
+     const fallback=document.createElement("a");
+     fallback.href="https://www.twitch.tv/"+encodeURIComponent(channel);
+     fallback.target="_blank";fallback.rel="noopener noreferrer";
+     fallback.textContent="Mở trực tiếp trong ứng dụng/trang Twitch nếu màn hình quá nhỏ";
+     fallback.className="tk161-twitch-fallback";
+     node.media.appendChild(fallback);
+   }
+   return;
   }
   if(type==="HLS"){
    const video=document.createElement("video");
