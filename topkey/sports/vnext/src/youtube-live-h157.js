@@ -62,10 +62,12 @@
         const previousToken=readonlyToken;
         readonlyToken=null;
         channelName='';
+        const newLink=$('tk157-youtube-url');
+        if(newLink)newLink.value=''; // New channel requires an explicit new public Live link.
         if(previousToken){
           try{window.google.accounts.oauth2.revoke(previousToken,()=>{})}catch{}
         }
-        setStatus('Chọn một tài khoản Google khác trong cửa sổ Google chính thức.');
+        setStatus('Chọn tài khoản Google khác. Live đang phát trên sân không thay đổi cho đến khi bạn dán và xác nhận URL mới.');
       }
       if(!tokenClient)tokenClient=window.google.accounts.oauth2.initTokenClient({
         client_id:oauthClientId,scope:'https://www.googleapis.com/auth/youtube.readonly',
