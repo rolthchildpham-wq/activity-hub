@@ -11,3 +11,10 @@ html.tk-public-boot #public-spectator .tk137-item strong{font-size:clamp(15px,2v
 html.tk-public-boot #public-spectator .tk137-item small{font-size:13px;color:#caddf0;line-height:1.55}
 html.tk-public-boot #public-spectator .grid.g2{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
 @media(max-width:760px){html.tk-public-boot #public-spectator .grid.g2{grid-template-columns:minmax(0,1fr)}html.tk-public-boot #public-spectator .split{display:flex;flex-wrap:wrap;gap:10px}}
+
+/* H143: stable public scoreboard and playable remote stream panel. */
+html.tk-public-boot #public-spectator .tk143-live{gap:10px}
+html.tk-public-boot #public-spectator .tk143-score{font-size:clamp(22px,5vw,34px);letter-spacing:.02em;color:#b5fbda}
+html.tk-public-boot #public-spectator .tk143-media{width:100%;min-width:0}
+html.tk-public-boot #public-spectator .tk143-media :is(video,iframe){display:block;width:100%;aspect-ratio:16/9;background:#061528;border:0;border-radius:10px}
+html.tk-public-boot #public-spectator .tk143-stream-note{font-size:14px;line-height:1.55;color:#ffebbd;background:#1f3145;border:1px solid #7a7480;padding:12px;border-radius:9px}

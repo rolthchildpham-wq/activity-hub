@@ -4,15 +4,15 @@ const html=fs.readFileSync("topkey/sports/vnext/index.html","utf8");
 const publicJs=fs.readFileSync("topkey/sports/vnext/src/public-viewer-h137.js","utf8");
 const styles=fs.readFileSync("topkey/sports/vnext/public-viewer-h137.css","utf8");
 assert.ok(html.includes('window.__TOPKEY_PUBLIC_ROUTE==="spectator"'));
-assert.ok(html.includes('src/public-viewer-h137.js?v=h137-20261114'));
-assert.ok(html.includes('public-viewer-h137.css?v=h137-20261114'));
+assert.ok(html.includes('src/public-viewer-h137.js?v=h143-20261121'));
+assert.ok(html.includes('public-viewer-h137.css?v=h143-20261121'));
 assert.ok(publicJs.includes('{auth:false}'));
 assert.ok(!publicJs.includes("queueSet("));
 assert.ok(!publicJs.includes("ref.set("));
 assert.ok(!publicJs.includes("ref.update("));
 assert.ok(styles.includes("@media(max-width:760px)"));
 new vm.Script(publicJs);
-function element(){return {classList:{add(){},remove(){},toggle(){}},textContent:"",children:[],replaceChildren(){this.children=[]},appendChild(x){this.children.push(x)},after(){},querySelector(){return null},setAttribute(){}}}
+function element(){return {classList:{add(){},remove(){},toggle(){}},textContent:"",children:[],replaceChildren(){this.children=[]},appendChild(x){this.children.push(x)},append(...xs){this.children.push(...xs)},remove(){},after(){},querySelector(){return null},setAttribute(){}}}
 const nodes={"public-spectator":element(),"spectator-schedule":element(),"spectator-live":element(),"spectator-title":element(),"login-screen":element(),"app-shell":element()};
 nodes["public-spectator"].querySelector=()=>({after(){}});
 const callbacks={};
