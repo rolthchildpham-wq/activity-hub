@@ -63,8 +63,20 @@ test('account switching requests Google account chooser and revokes stale token'
  assert.match(source,/channelName=''/);
  assert.match(source,/connectReadOnly\(\{switchAccount:true\}\)/);
 });
-test('Live Now integration links to the official app and overlay instructions, not an unknown SDK',()=>{
- assert.match(source,/https:\/\/livenow\.one\//);
- assert.match(source,/add-a-url-overlay-to-a-live-stream/);
- assert.doesNotMatch(source,/iframe[^;]*livenow\.one/);
+
+
+test('H159 removes Live Now app UI and provides official camera + YouTube Studio path',()=>{
+ assert.doesNotMatch(source,/livenow\.one|Live Now/);
+ assert.match(source,/id="tk159-camera-check"/);
+ assert.match(source,/id="tk159-camera-stop"/);
+ assert.match(source,/id="tk159-youtube-webcam"/);
+ assert.match(source,/https:\/\/studio\.youtube\.com\//);
+ assert.match(source,/navigator\.mediaDevices\.getUserMedia/);
+ assert.match(source,/previewStream\.getTracks\(\)\.forEach\(track=>track\.stop\(\)\)/);
+ assert.match(source,/watch URL|liên kết xem|liên kết video Live/i);
+});
+test('H159 webcam path never exposes credentials or uploads local stream through Firebase',()=>{
+ assert.doesNotMatch(source,/streamKey|stream_key|rtmps:\/\//i);
+ assert.doesNotMatch(source,/queueMulti\(|queueSet\(/);
+ assert.match(source,/source\.value='EMBED'/);
 });

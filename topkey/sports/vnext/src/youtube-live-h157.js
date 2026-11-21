@@ -100,11 +100,14 @@
     wrapper.className='tk157-panel';
     wrapper.innerHTML=`
       <h3>▶ YouTube Live → TOPKEY Viewer</h3>
-      <p class="tk157-hint">Dùng Live Now trên điện thoại để quay trận, gắn logo/bảng tỷ số và phát lên YouTube. TOPKEY chỉ nhúng video YouTube; không nhúng nguyên ứng dụng Live Now.</p>
+      <p class="tk157-hint">Phát camera thật của điện thoại/PC trực tiếp bằng YouTube Studio (Webcam). Không cần ứng dụng trung gian hoặc VPS. Camera do trang YouTube quản lý; TOPKEY không thể tự gửi WebRTC vào YouTube RTMPS.</p>
       <div class="tk157-buttons">
-        <a href="https://livenow.one/" target="_blank" rel="noopener noreferrer">Mở Live Now (website chính thức)</a>
-        <a href="https://livenow.one/docs/how-to/live-sports/add-a-url-overlay-to-a-live-stream/" target="_blank" rel="noopener noreferrer">Hướng dẫn đưa TOPKEY lên hình Live Now</a>
+        <button type="button" id="tk159-camera-check">📹 Kiểm tra camera</button>
+        <button type="button" id="tk159-camera-stop">⏹ Tắt xem thử</button>
+        <a href="https://studio.youtube.com/" target="_blank" rel="noopener noreferrer" id="tk159-youtube-webcam">▶ Phát camera bằng YouTube Studio</a>
       </div>
+      <video id="tk159-camera-preview" autoplay playsinline muted controls style="display:none;max-width:100%;width:100%;aspect-ratio:16/9;object-fit:contain;background:#000;border-radius:9px"></video>
+      <small class="tk157-hint">Trên máy tính: YouTube Studio → Tạo → Phát trực tiếp → Webcam → chọn camera/micro → Phát. Sau đó dán đường dẫn video Live vào TOPKEY. Trên điện thoại: dùng chức năng Live của ứng dụng YouTube nếu kênh đủ điều kiện.</small>
       <p class="tk157-hint">Phát trên kênh YouTube chính thức, sau đó dán liên kết xem công khai. Không nhập mật khẩu, stream key hoặc token vào TOPKEY.</p>
       <div class="tk157-buttons">
         <a href="https://studio.youtube.com/" target="_blank" rel="noopener noreferrer">Mở YouTube Studio</a>
@@ -123,6 +126,32 @@
     const input=$('tk157-youtube-url');
     const status=$('tk157-status');
     status.textContent=STATUS.start;
+    let previewStream=null;
+    const preview=$('tk159-camera-preview');
+    function stopPreview(){
+      if(previewStream){previewStream.getTracks().forEach(track=>track.stop());previewStream=null}
+      if(preview){preview.srcObject=null;preview.style.display='none'}
+    }
+    $('tk159-camera-check').onclick=async()=>{
+      stopPreview();
+      if(!navigator.mediaDevices?.getUserMedia){
+        setStatus('Thiết bị/trình duyệt không hỗ trợ camera HTTPS.');return;
+      }
+      try{
+        previewStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false});
+        preview.srcObject=previewStream;preview.style.display='block';
+        await preview.play().catch(()=>{});
+        setStatus('Camera sẵn sàng. Đã mở xem thử nội bộ; bấm Phát camera bằng YouTube Studio để cấp quyền cho YouTube.');
+      }catch(error){setStatus('Không mở được camera: '+error.message)}
+    };
+    $('tk159-camera-stop').onclick=()=>{
+      stopPreview();setStatus('Đã tắt xem thử camera.');
+    };
+    $('tk159-youtube-webcam').addEventListener('click',()=>{
+      stopPreview();
+      setStatus('Mở YouTube Studio ở tab mới. Chọn Webcam, cho phép camera/micro, bấm Phát rồi dán liên kết xem vào TOPKEY.');
+    });
+    window.addEventListener('pagehide',stopPreview,{once:true});
     $('tk157-connect').onclick=()=>connectReadOnly();
     $('tk158-switch-account').onclick=()=>connectReadOnly({switchAccount:true});
     void readConfig().then(id=>{oauthClientId=id;if(!id)setStatus(STATUS.noId)});
