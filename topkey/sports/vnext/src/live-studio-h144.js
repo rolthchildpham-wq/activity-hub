@@ -80,12 +80,19 @@
     const syncCourt=()=>{
       const selected=$('stream-court')?.value;
       const target=$('umpire-court');
-      if(selected && target && target.value!==selected){
-        target.value=selected;
-        app.currentCourt=selected;
-        app.renderOfficial();
-        app.renderLiveScore();
+      if(!selected || !target) return;
+      const changed=target.value!==selected || app.currentCourt!==selected;
+      if(!changed) return;
+      target.value=selected;
+      app.currentCourt=selected;
+      const active=app.state?.activeMatches?.[selected];
+      if(active?.matchId){
+        const matchSelect=$('umpire-match');
+        if(matchSelect) matchSelect.value=active.matchId;
+        app.selectedMatch=active.matchId;
       }
+      app.renderOfficial();
+      app.renderLiveScore();
     };
 
     const updateUi=()=>{
