@@ -1,0 +1,190 @@
+/* H140 — TOPKEY cross-sport accessible contrast.
+ * Pure presentation: do not alter match, auth, scoring, Firebase or scheduler state.
+ * Loaded AFTER legacy sport CSS. Respect existing light overview cards and score overlays.
+ */
+:root {
+  --tk140-dark:#0b2036;
+  --tk140-dark-2:#12334e;
+  --tk140-input:#102a43;
+  --tk140-ink:#f4faff;
+  --tk140-muted:#c8dcec;
+  --tk140-line:#537594;
+  --tk140-ring:#8ceaff;
+  --tk140-paper:#ffffff;
+  --tk140-paper-ink:#142e3d;
+  --tk140-paper-muted:#456173;
+}
+
+/* The Hub landing screen is dark, so native form controls must not remain white
+   with inherited white text. Native option menus need an explicit background too. */
+body.tk-bi-hub :is(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+  select,textarea) {
+  background-color:var(--tk140-input);
+  color:var(--tk140-ink);
+  border:1px solid var(--tk140-line);
+  color-scheme:dark;
+  opacity:1;
+}
+body.tk-bi-hub :is(select option,select optgroup) {
+  background:var(--tk140-dark);
+  color:var(--tk140-ink);
+}
+body.tk-bi-hub :is(input,textarea)::placeholder {
+  color:#c3d5e5;
+  opacity:1;
+}
+body.tk-bi-hub :is(label,.form-label,.field label) {
+  color:var(--tk140-muted);
+}
+body.tk-bi-hub :is(button,.btn) {
+  text-shadow:none;
+}
+body.tk-bi-hub :is(button,.btn):disabled {
+  background:#2d465e;
+  border-color:#6b8194;
+  color:#e3ebf2;
+  opacity:1;
+  cursor:not-allowed;
+}
+
+/* Authenticated sports apps use light overview panels and dark operating panels.
+   Apply the dark palette ONLY inside their dark operational cards and dialogs. */
+html[data-tk-sport] #app-shell .page:not(#page-overview)
+    :is(.card,.subcard,.modal-box) {
+  --tk140-card-text:var(--tk140-ink);
+  --tk140-card-muted:var(--tk140-muted);
+}
+:is(html[data-tk-sport] body,body.tk-smooth-admin) #app-shell .page:not(#page-overview)
+    :is(.card,.subcard) :is(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+    select,textarea),
+:is(html[data-tk-sport] body,body.tk-smooth-admin) #app-shell
+    :is(.modal-box,.schedule-delete-box) :is(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),select,textarea) {
+  color:var(--tk140-ink)!important;
+  background-color:var(--tk140-input)!important;
+  border:1px solid var(--tk140-line)!important;
+  border-radius:9px;
+  color-scheme:dark;
+  -webkit-text-fill-color:var(--tk140-ink);
+  opacity:1!important;
+}
+:is(html[data-tk-sport] body,body.tk-smooth-admin) #app-shell .page:not(#page-overview)
+    :is(.card,.subcard) :is(select option,select optgroup),
+:is(html[data-tk-sport] body,body.tk-smooth-admin) #app-shell :is(.modal-box,.schedule-delete-box)
+    :is(select option,select optgroup) {
+  color:var(--tk140-ink);
+  background:var(--tk140-dark);
+}
+:is(html[data-tk-sport] body,body.tk-smooth-admin) #app-shell .page:not(#page-overview)
+    :is(.card,.subcard) :is(input,textarea)::placeholder {
+  color:#c1d6e7!important;
+  opacity:1;
+}
+:is(html[data-tk-sport] body,body.tk-smooth-admin) #app-shell .page:not(#page-overview)
+    :is(.card,.subcard) :is(label,.field label,small,.note,.muted) {
+  color:var(--tk140-muted)!important;
+  opacity:1;
+}
+:is(html[data-tk-sport] body,body.tk-smooth-admin) #app-shell .page:not(#page-overview)
+    :is(.card,.subcard) :is(h2,h3,h4,strong) {
+  color:var(--tk140-ink);
+}
+
+/* H139: explicit stable background on the dark wizard, regardless of sport skin.
+   This fixes white-on-white dropdowns in the provided screenshot. */
+#tk139-format {
+  background:var(--tk140-dark)!important;
+  border-color:var(--tk140-line)!important;
+  color:var(--tk140-ink)!important;
+  color-scheme:dark;
+}
+#tk139-format :is(h3, label, p, .muted) {
+  color:var(--tk140-ink)!important;
+  opacity:1!important;
+}
+#tk139-format label {
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  font-weight:650;
+}
+#tk139-format :is(select,input) {
+  min-height:42px;
+  min-width:0;
+  max-width:100%;
+  background:var(--tk140-input)!important;
+  color:var(--tk140-ink)!important;
+  border:1px solid var(--tk140-line)!important;
+  border-radius:9px;
+  padding:9px 34px 9px 12px;
+  color-scheme:dark;
+  -webkit-text-fill-color:var(--tk140-ink);
+  opacity:1!important;
+}
+#tk139-format option {
+  color:var(--tk140-ink)!important;
+  background:var(--tk140-dark)!important;
+}
+#tk139-format :is(select,input):disabled {
+  background:#30475c!important;
+  color:#e0e9f3!important;
+  -webkit-text-fill-color:#e0e9f3;
+  border-color:#71879a!important;
+  opacity:1!important;
+}
+#tk139-format :is(button,.btn):disabled {
+  background:#2b465f!important;
+  border-color:#68849a!important;
+  color:#d9e6f0!important;
+  opacity:1!important;
+  cursor:not-allowed;
+}
+#tk139-format :is(button,.btn):not(:disabled) {
+  color:#fff!important;
+  background:#1758aa;
+  border-color:#4694ef;
+}
+#tk139-format :is(button,.btn):not(:disabled):hover {
+  background:#246cc6;
+}
+
+/* Visible focus across forms, selectors, navigation, and action buttons. */
+body.tk-bi-hub :is(a,button,input,select,textarea):focus-visible,
+#app-shell :is(a,button,input,select,textarea):focus-visible,
+#tk139-format :is(button,input,select):focus-visible {
+  outline:3px solid var(--tk140-ring)!important;
+  outline-offset:2px;
+}
+#app-shell .page:not(#page-overview) :is(input,select,textarea):disabled {
+  opacity:1!important;
+  cursor:not-allowed;
+}
+#app-shell .page:not(#page-overview) :is(input[type="checkbox"],input[type="radio"]) {
+  accent-color:#38cbb7;
+}
+/* Light overview and white header surfaces must keep DARK text. */
+html[data-tk-sport] #page-overview :is(input,select,textarea),
+body.tk-smooth-admin #page-overview :is(input,select,textarea) {
+  background:var(--tk140-paper)!important;
+  color:var(--tk140-paper-ink)!important;
+  -webkit-text-fill-color:var(--tk140-paper-ink);
+  border:1px solid #839ba9!important;
+  color-scheme:light;
+}
+html[data-tk-sport] #page-overview select option,
+body.tk-smooth-admin #page-overview select option {
+  background:var(--tk140-paper);
+  color:var(--tk140-paper-ink);
+}
+html[data-tk-sport] #app-shell>.topbar .brand,
+body.tk-smooth-admin #app-shell>.topbar .brand {
+  color:var(--tk140-paper-ink);
+}
+
+/* Small screens: labels and selectors must remain readable and not overflow. */
+@media(max-width:700px) {
+  #tk139-format {padding:14px!important}
+  #tk139-format .form-grid {grid-template-columns:1fr!important;gap:12px}
+  #tk139-format :is(input,select,button) {max-width:100%}
+  #tk139-format .action-bar {display:flex;flex-wrap:wrap;gap:8px}
+  #tk139-format .action-bar button {min-height:42px}
+}
