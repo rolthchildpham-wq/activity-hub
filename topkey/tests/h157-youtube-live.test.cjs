@@ -54,3 +54,17 @@ test('OAuth client is disabled until provisioned by channel owner',()=>{
  const config=JSON.parse(fs.readFileSync('topkey/sports/vnext/youtube-oauth-h157.json','utf8'));
  assert.equal(config.clientId,'');
 });
+
+test('account switching requests Google account chooser and revokes stale token',()=>{
+ assert.match(source,/id="tk158-switch-account"/);
+ assert.match(source,/google\.accounts\.oauth2\.revoke\(previousToken/);
+ assert.match(source,/prompt:switchAccount\?'select_account consent':'select_account'/);
+ assert.match(source,/readonlyToken=null/);
+ assert.match(source,/channelName=''/);
+ assert.match(source,/connectReadOnly\(\{switchAccount:true\}\)/);
+});
+test('Live Now integration links to the official app and overlay instructions, not an unknown SDK',()=>{
+ assert.match(source,/https:\/\/livenow\.one\//);
+ assert.match(source,/add-a-url-overlay-to-a-live-stream/);
+ assert.doesNotMatch(source,/iframe[^;]*livenow\.one/);
+});

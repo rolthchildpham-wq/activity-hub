@@ -53,10 +53,22 @@
       document.head.appendChild(s);
     });
   }
-  async function connectReadOnly(){
+  async function connectReadOnly({switchAccount=false}={}){
     if(!oauthClientId){setStatus(STATUS.noId);return}
     try{
       await loadGoogle();
+      if(switchAccount){
+        // Never keep an old channel identity while selecting a new Google account.
+        const previousToken=readonlyToken;
+        readonlyToken=null;
+        channelName='';
+        const newLink=$('tk157-youtube-url');
+        if(newLink)newLink.value=''; // New channel requires an explicit new public Live link.
+        if(previousToken){
+          try{window.google.accounts.oauth2.revoke(previousToken,()=>{})}catch{}
+        }
+        setStatus('Chọn tài khoản Google khác. Live đang phát trên sân không thay đổi cho đến khi bạn dán và xác nhận URL mới.');
+      }
       if(!tokenClient)tokenClient=window.google.accounts.oauth2.initTokenClient({
         client_id:oauthClientId,scope:'https://www.googleapis.com/auth/youtube.readonly',
         callback:async(response)=>{
@@ -76,7 +88,7 @@
           }catch(e){setStatus('Không kiểm tra được kênh: '+e.message)}
         }
       });
-      tokenClient.requestAccessToken({prompt:'consent'});
+      tokenClient.requestAccessToken({prompt:switchAccount?'select_account consent':'select_account'});
     }catch(e){setStatus(e.message)}
   }
   function install(){
@@ -88,10 +100,16 @@
     wrapper.className='tk157-panel';
     wrapper.innerHTML=`
       <h3>▶ YouTube Live → TOPKEY Viewer</h3>
+      <p class="tk157-hint">Dùng Live Now trên điện thoại để quay trận, gắn logo/bảng tỷ số và phát lên YouTube. TOPKEY chỉ nhúng video YouTube; không nhúng nguyên ứng dụng Live Now.</p>
+      <div class="tk157-buttons">
+        <a href="https://livenow.one/" target="_blank" rel="noopener noreferrer">Mở Live Now (website chính thức)</a>
+        <a href="https://livenow.one/docs/how-to/live-sports/add-a-url-overlay-to-a-live-stream/" target="_blank" rel="noopener noreferrer">Hướng dẫn đưa TOPKEY lên hình Live Now</a>
+      </div>
       <p class="tk157-hint">Phát trên kênh YouTube chính thức, sau đó dán liên kết xem công khai. Không nhập mật khẩu, stream key hoặc token vào TOPKEY.</p>
       <div class="tk157-buttons">
         <a href="https://studio.youtube.com/" target="_blank" rel="noopener noreferrer">Mở YouTube Studio</a>
         <button type="button" id="tk157-connect">Kết nối Google (chỉ quyền đọc)</button>
+        <button type="button" id="tk158-switch-account">⇄ Đổi tài khoản YouTube</button>
       </div>
       <label for="tk157-youtube-url">Liên kết YouTube Live (youtube.com/live/…, watch?v=…, youtu.be/…)</label>
       <input id="tk157-youtube-url" type="url" inputmode="url" placeholder="https://www.youtube.com/live/VIDEO_ID">
@@ -105,7 +123,8 @@
     const input=$('tk157-youtube-url');
     const status=$('tk157-status');
     status.textContent=STATUS.start;
-    $('tk157-connect').onclick=connectReadOnly;
+    $('tk157-connect').onclick=()=>connectReadOnly();
+    $('tk158-switch-account').onclick=()=>connectReadOnly({switchAccount:true});
     void readConfig().then(id=>{oauthClientId=id;if(!id)setStatus(STATUS.noId)});
     $('tk157-preview').onclick=()=>{
       const url=canonical(input.value);
@@ -122,7 +141,7 @@
       // and the public Viewer H143 safe YouTube embed renderer.
       source.value='EMBED';urlInput.value=url;
       source.dispatchEvent(new Event('change',{bubbles:true}));
-      setStatus('Đang lưu nguồn YouTube vào sân...');
+      setStatus('Đang lưu nguồn YouTube vào sân; khi đổi kênh cần dán lại URL Live của kênh mới...');
       try{
         await app.applyStream();
         setStatus('Đã gửi yêu cầu lưu nguồn YouTube. Mở Viewer ẩn danh để xác minh video và âm thanh thực tế.');
@@ -137,5 +156,5 @@
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});
   else boot();
-  window.TopkeyYouTubeH157={parseVideoId,canonical,install};
+  window.TopkeyYouTubeH157={parseVideoId,canonical,install,connectReadOnly};
 })();
