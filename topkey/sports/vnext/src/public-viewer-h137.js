@@ -57,6 +57,14 @@
      return "https://www.youtube-nocookie.com/embed/"+id;
     }
     if(host==="player.vimeo.com" && /^\/video\/[0-9]+/.test(url.pathname))return url.href;
+    if(host==="player.twitch.tv" && url.pathname==="/"){
+      const channel=String(url.searchParams.get("channel")||"").toLowerCase();
+      if(!/^[a-z0-9_]{4,25}$/.test(channel))return null;
+      // Twitch requires parent=the *actual* embedded host, not a saved
+      // previous production/preview domain. Never trust stored parent params.
+      return "https://player.twitch.tv/?channel="+encodeURIComponent(channel)+
+        "&parent="+encodeURIComponent(location.hostname)+"&autoplay=false";
+    }
    }
   }catch{}
   return null;
