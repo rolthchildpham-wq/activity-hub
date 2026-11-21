@@ -20,3 +20,9 @@ html.tk-public-boot #public-spectator .tk143-media :is(video,iframe){display:blo
 html.tk-public-boot #public-spectator .tk143-stream-note{font-size:14px;line-height:1.55;color:#ffebbd;background:#1f3145;border:1px solid #7a7480;padding:12px;border-radius:9px}
 /* H137 result summaries: compact, readable match scores on public schedule cards. */
 html.tk-public-boot #public-spectator .tk137-result{display:block;margin-top:3px;font-size:clamp(16px,4vw,22px);font-weight:800;letter-spacing:.02em;color:#b5fbda;line-height:1.4;overflow-wrap:anywhere}
+/* H170 public viewer standings */
+html.tk-public-boot #public-spectator .tk137-standings{margin-top:18px;padding:14px;border:1px solid #335575;border-radius:14px;background:#102a44;color:#f3faff}
+html.tk-public-boot #public-spectator .tk137-standings h2{margin:0 0 10px;font-size:clamp(20px,5vw,28px)}
+html.tk-public-boot #public-spectator .tk137-rank-row{display:grid;grid-template-columns:30px minmax(0,1fr);gap:8px;padding:11px 8px;border-bottom:1px solid #31516d}
+html.tk-public-boot #public-spectator .tk137-rank-name{font-weight:750;overflow-wrap:anywhere}
+html.tk-public-boot #public-spectator .tk137-rank-row small{grid-column:2;color:#b9cfe2;font-size:12px;line-height:1.5}
