@@ -48,15 +48,15 @@
   try{
    const url=new URL(String(raw||""),location.href);
    if(url.protocol!=="https:")return null;
-   if(type==="HLS")return /\\.m3u8(?:$|[?#])/i.test(url.pathname+url.search)?url.href:null;
+   if(type==="HLS")return /\.m3u8(?:$|[?#])/i.test(url.pathname+url.search)?url.href:null;
    if(type==="EMBED"){
     const host=url.hostname.toLowerCase();
-    if(/(^|\\.)youtube(-nocookie)?\\.com$/.test(host)||host==="youtu.be"){
-     let id=host==="youtu.be"?url.pathname.split("/")[1]:url.searchParams.get("v")||url.pathname.match(/\\/(?:embed|live)\\/([^/?]+)/)?.[1];
+    if(/(^|\.)youtube(-nocookie)?\.com$/.test(host)||host==="youtu.be"){
+     let id=host==="youtu.be"?url.pathname.split("/")[1]:url.searchParams.get("v")||url.pathname.match(/\/(?:embed|live)\/([^/?]+)/)?.[1];
      if(!id||!/^[-_a-zA-Z0-9]{11}$/.test(id))return null;
      return "https://www.youtube-nocookie.com/embed/"+id;
     }
-    if(host==="player.vimeo.com" && /^\\/video\\/[0-9]+/.test(url.pathname))return url.href;
+    if(host==="player.vimeo.com" && /^\/video\/[0-9]+/.test(url.pathname))return url.href;
    }
   }catch{}
   return null;
