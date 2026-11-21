@@ -6,6 +6,16 @@
   const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[c]));
   const ordered = teams => [...teams].sort((a,b) => String(a.code||a.name||'').localeCompare(String(b.code||b.name||''),'vi'));
   const sig = (a,b,category) => [a,b].sort().join('|') + '|' + category;
+  const planPairs = (teams, entries, grouped) => {
+    const mapped=new Map(entries.map(e=>[e.id,e.group]));
+    const pairs=[];
+    for(let i=0;i<teams.length;i++)for(let j=i+1;j<teams.length;j++){
+      if(grouped&&mapped.get(teams[i].id)!==mapped.get(teams[j].id))continue;
+      pairs.push({a:teams[i],b:teams[j],group:grouped?mapped.get(teams[i].id):''});
+    }
+    return pairs;
+  };
+  window.__TOPKEY_SCHEDULE_FORMAT_PLAN_PAIRS = planPairs;
   function boot() {
     const T = window.Topkey, app = T?.App;
     if (!T?.Data || !T?.U || !app?.state || !validSport.has(T.SPORT?.key)) return false;
@@ -52,16 +62,7 @@
     };
     const groupLabels = () => [...Array(Number(count.value))].map((_,i)=>String.fromCharCode(65+i));
     const rowsFromUI = () => [...box.querySelectorAll('[data-tk139-team]')].map(e=>({id:e.dataset.tk139Team,group:e.value}));
-    const previewPairs = entries => {
-      const teams=activeTeams(),mapped=new Map(entries.map(e=>[e.id,e.group]));
-      const pairs=[];
-      for(let i=0;i<teams.length;i++)for(let j=i+1;j<teams.length;j++){
-        const a=teams[i],b=teams[j];
-        if(mode.value==='groups' && mapped.get(a.id)!==mapped.get(b.id))continue;
-        pairs.push({a,b,group:mode.value==='groups'?mapped.get(a.id):''});
-      }
-      return pairs;
-    };
+    const previewPairs = entries => planPairs(activeTeams(), entries, mode.value==='groups');
     const summary = entries => {
       const pairs=previewPairs(entries);
       const existing=new Set(Object.values(app.state.matches||{}).filter(m=>m.teamAId&&m.teamBId)
@@ -98,6 +99,7 @@
       setStatus('Đã phân '+teams.length+' đội vào '+labels.length+' bảng. Có thể chỉnh từng đội trước khi lưu.');
     };
     $('tk139-save').onclick=async()=>{
+      if(!T.Data.connected){setStatus('Firebase chưa kết nối, chưa thể lưu phân bảng.');return}
       if(!isAdmin()){setStatus('Chỉ ADMIN được lưu phân bảng.');return}
       const entries=rowsFromUI(),labels=groupLabels();
       if(entries.length!==activeTeams().length||new Set(entries.map(e=>e.id)).size!==entries.length ||
