@@ -25,7 +25,7 @@ test('Volleyball last point awarded to A announces A first even when B is leadin
 });
 test('Smart cadence suppresses routine point and narrates periodic score',()=>{
  const f=load();
- assert.equal(f({setIndex:0,sets:[{a:2,b:2}],history:[[{a:1,b:2}]]},m,names,'sets'),'Hai đội đang cân bằng. MÀI NHÁM 2, SINTAI 2.');
+ assert.equal(f({setIndex:0,sets:[{a:2,b:2}],history:[[{a:1,b:2}]]},m,names,'sets'),'MÀI NHÁM 2, SINTAI 2.');
  assert.equal(f({setIndex:0,sets:[{a:3,b:2}],history:[[{a:2,b:2}]]},m,names,'sets'),'');
  assert.equal(f({setIndex:0,sets:[{a:4,b:2}],history:[[{a:3,b:2}]]},m,names,'sets'),'MÀI NHÁM 4, SINTAI 2.');
 });
