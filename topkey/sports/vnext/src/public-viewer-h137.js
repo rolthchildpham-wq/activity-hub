@@ -121,6 +121,12 @@
   schedule.replaceChildren();
   const events=Object.values(store.matches||{}).filter(x=>x&&typeof x==="object").sort((a,b)=>((a.date||"")+" "+(a.time||"")).localeCompare((b.date||"")+" "+(b.time||"")));
   const active=Object.entries(store.activeMatches||{}).filter(([,a])=>a && (a.started || store.matches?.[a.matchId]?.status==="LIVE"));
+  const activeMatchIds=new Set(active.map(([,a])=>a.matchId));
+  // Legacy matches may be LIVE without an activeMatches record; show the match
+  // and recorded score rather than an empty Viewer. Do not synthesize scores.
+  for(const m of events.filter(x=>x.status==="LIVE" && !activeMatchIds.has(x.id))){
+   active.push([m.courtId||"match_"+m.id,{matchId:m.id,scoreA:m.scoreA,scoreB:m.scoreB,sets:m.sets,setIndex:m.setIndex,started:true}]);
+  }
   const activeIds=new Set(active.map(([id])=>id));
   for(const [id,node] of liveNodes){
    if(!activeIds.has(id)){clearMedia(node);node.article.remove();liveNodes.delete(id)}
