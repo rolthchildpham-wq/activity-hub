@@ -6,7 +6,7 @@
 const http=require('node:http');
 const {URL}=require('node:url');
 const admin=require('firebase-admin');
-if(!admin.apps.length)admin.initializeApp({databaseURL:process.env.FIREBASE_DATABASE_URL});
+if(!admin.apps.length)admin.initializeApp({credential:admin.credential.applicationDefault(),databaseURL:process.env.FIREBASE_DATABASE_URL});
 const db=admin.database();
 const PORT=Number(process.env.PORT||3000);
 const origins=(process.env.ALLOWED_ORIGINS||'').split(',').map(x=>x.trim()).filter(Boolean);
@@ -26,7 +26,8 @@ function send(res,status,data,origin){
 }
 async function body(req,max=50000){
  let chunks=[],size=0;for await(const part of req){size+=part.length;if(size>max)throw Object.assign(new Error('Request too large'),{status:413});chunks.push(part)}
- return JSON.parse(Buffer.concat(chunks).toString('utf8'));
+ try{return JSON.parse(Buffer.concat(chunks).toString('utf8'))}
+ catch{throw Object.assign(new Error('Invalid JSON'),{status:400})}
 }
 async function auth(req){
  const token=/^Bearer (.+)$/i.exec(req.headers.authorization||'')?.[1];
