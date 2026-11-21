@@ -45,7 +45,7 @@
        <button type="button" id="tk161-open" class="btn">Kiểm tra kênh</button>
        <button type="button" id="tk161-apply" class="btn ok">Gắn Twitch Live vào sân</button>
      </div>
-     <small id="tk161-status" role="status" aria-live="polite">Phát trên ứng dụng Twitch trước. Chỉ gắn kênh vào TOPKEY sau khi video đang LIVE.</small>
+     <small id="tk161-status" role="status" aria-live="polite">Có thể gắn kênh trước khi phát. Sau đó mở ứng dụng Twitch, bấm Go Live; Viewer sẽ nhận hình khi kênh phát.</small>
      <small>Viewer xem video/âm thanh từ Twitch; bảng tỷ số Firebase vẫn độc lập. Giọng BLV TOPKEY không tự truyền vào Twitch.</small>`;
    const target=url.closest('.field');
    if(target)target.after(container);else return false;
@@ -54,7 +54,7 @@
      const name=channelFrom(channel.value);
      if(!name){status.textContent='Tên hoặc URL kênh Twitch không hợp lệ.';return}
      window.open('https://www.twitch.tv/'+encodeURIComponent(name),'_blank','noopener,noreferrer');
-     status.textContent='Kiểm tra kênh Twitch có nhãn LIVE và âm thanh trước khi lưu.';
+     status.textContent='Bạn có thể lưu kênh ngay cả khi chưa LIVE. Khi phát, hãy dùng thiết bị khác để kiểm tra Viewer.';
    };
    $('tk161-apply').onclick=async()=>{
      const address=embedFor(channel.value,location.hostname);
