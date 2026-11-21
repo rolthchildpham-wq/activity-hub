@@ -1,0 +1,11 @@
+/* H157 YouTube Live integration: display-only styles, respects existing dark panels. */
+#tk157-youtube-panel{grid-column:1/-1;background:#10283f;border:1px solid #6292b8;color:#eaf6ff;border-radius:12px;padding:14px;margin:8px 0;display:grid;gap:10px}
+#tk157-youtube-panel h3{margin:0;color:#fff;font-size:18px}
+#tk157-youtube-panel .tk157-hint{margin:0;color:#d4e8fa;line-height:1.45;font-size:14px}
+#tk157-youtube-panel label{color:#eaf6ff;font-weight:650}
+#tk157-youtube-panel input{width:100%;min-width:0;padding:11px;border:1px solid #85b5d5;border-radius:9px;background:#0c2238;color:#fff;font:inherit;color-scheme:dark}
+#tk157-youtube-panel .tk157-buttons{display:flex;flex-wrap:wrap;gap:8px}
+#tk157-youtube-panel .tk157-buttons :is(button,a){cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex:1 1 150px;min-height:44px;padding:9px 12px;color:#fff;background:#175b8d;border:1px solid #80bcdf;border-radius:9px;font:650 14px/1.4 system-ui;text-decoration:none;text-align:center}
+#tk157-youtube-panel .tk157-buttons :is(button,a):hover{background:#2073ad}
+#tk157-youtube-panel :is(input,button,a):focus-visible{outline:3px solid #8ceaff;outline-offset:2px}
+#tk157-youtube-panel #tk157-status{color:#dcf0ff;line-height:1.5}
