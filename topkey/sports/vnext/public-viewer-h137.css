@@ -18,3 +18,5 @@ html.tk-public-boot #public-spectator .tk143-score{font-size:clamp(22px,5vw,34px
 html.tk-public-boot #public-spectator .tk143-media{width:100%;min-width:0}
 html.tk-public-boot #public-spectator .tk143-media :is(video,iframe){display:block;width:100%;aspect-ratio:16/9;background:#061528;border:0;border-radius:10px}
 html.tk-public-boot #public-spectator .tk143-stream-note{font-size:14px;line-height:1.55;color:#ffebbd;background:#1f3145;border:1px solid #7a7480;padding:12px;border-radius:9px}
+/* H137 result summaries: compact, readable match scores on public schedule cards. */
+html.tk-public-boot #public-spectator .tk137-result{display:block;margin-top:3px;font-size:clamp(16px,4vw,22px);font-weight:800;letter-spacing:.02em;color:#b5fbda;line-height:1.4;overflow-wrap:anywhere}
