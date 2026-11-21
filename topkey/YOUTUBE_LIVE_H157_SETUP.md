@@ -31,11 +31,13 @@ To connect and view the YouTube channel name from TOPKEY:
 - No Google account is connected until the user uses the official Google consent dialog; no OAuth client exists in this PR. Public link embedding works without OAuth credentials.
 - Do not merge or deploy production until regression tests, EdgeOne preview SHA, anonymous Viewer on desktop/mobile, role validation, Firebase gate and performance checks PASS.
 
-## H158 — Live Now mobile production and switching YouTube accounts
+## H159 — Direct camera to YouTube, without third-party streaming apps
 
-- Live Now is a third-party **mobile app**, not an embeddable web SDK. Use https://livenow.one/ to install it, select a supported YouTube destination, start the eligible YouTube Live, then copy its public watch link into TOPKEY. TOPKEY Viewer plays YouTube (not the Live Now UI).
-- Live Now officially supports a **URL Overlay** inside its video production: https://livenow.one/docs/how-to/live-sports/add-a-url-overlay-to-a-live-stream/. You can configure a public TOPKEY URL there as an overlay, but displaying the full Viewer screen may be too busy; a dedicated scoreboard-only URL requires separate design/test and is not claimed implemented by H158.
-- The H158 TOPKEY button **Đổi tài khoản YouTube** opens the Google identity account chooser through `youtube.readonly`, revoking the previous in-memory access token when present. It clears the draft link, **not** the already published court stream; updating the public Viewer source requires pasting and saving the new channel's actual video URL.
-- Switching Google accounts inside TOPKEY is separate from switching the YouTube destination inside Live Now. To change the broadcasting account in Live Now, use its supported YouTube account logout/reconnect workflow. Google credentials are never exchanged between Live Now and TOPKEY.
-- OAuth connection in TOPKEY requires an organization-owned Google Cloud OAuth Web Client ID in `youtube-oauth-h157.json`. If the ID is blank, public YouTube links still work without account authorization, but the TOPKEY account switch option cannot execute.
-- Free and paid features differ in Live Now. Multistream and advanced sports overlays may require a paid tier; verify on the user's app before promising those features.
+1. In TOPKEY Live & BLV choose **Kiểm tra camera** to test the local phone/computer camera (no network upload). Stop preview to release the camera.
+2. Choose **Phát camera bằng YouTube Studio**. On desktop Chrome/Edge open **Create → Go Live → Webcam**, grant YouTube Studio camera and microphone access, select the camera, then go Live. Only the YouTube browser tab streams camera to YouTube. TOPKEY does **not** capture and forward video via RTMP.
+3. On mobile, use YouTube's official app to go live from the device camera, subject to YouTube's current mobile live eligibility. Desktop webcam mode and mobile app mode are separate official paths.
+4. After starting, copy the YouTube watch URL (not the ingest URL or stream key), paste into TOPKEY and click **Gắn Live vào sân đang chọn**. Public TOPKEY Viewer will embed the YouTube player for the selected court, separate from Firebase scoreboard.
+5. Switching Google accounts uses the official OAuth chooser only if a read-only OAuth Client ID is configured; switching the broadcast account in YouTube Studio/YouTube app is separate. Update the TOPKEY Viewer link explicitly after changing channels.
+
+## Important technical limit
+YouTube's official supported ingest methods include RTMP(S), HLS and DASH, not browser WebRTC/WHIP. Thus TOPKEY cannot send an already-captured browser MediaStream straight to YouTube with a simple JavaScript call, even if Google OAuth is connected. YouTube Studio Webcam avoids a VPS/encoder but originates the live stream **inside YouTube's own browser tab**. On-screen TOPKEY score overlays and synthesized BLV are **not** included in this YouTube Webcam stream unless an external compositor/encoder is used. No stream key is requested or stored in TOPKEY.
