@@ -52,6 +52,7 @@
   background:var(--tk144-panel);
   padding:clamp(10px,1.7vw,17px);
 }
+#page-live:has(#tk144-live-studio) > .grid.g2 {grid-template-columns:minmax(0,1fr)}
 #tk144-live-studio .tk144-pane-label {
   margin:0 0 7px;padding:8px 10px;background:#14314f;
   border:1px solid #345f80;border-radius:10px;
