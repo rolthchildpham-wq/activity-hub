@@ -60,7 +60,7 @@
     // Results/live sessions are always protected; never offer a destructive override.
     const protectedToggle = document.getElementById('delete-protected');
     if (protectedToggle) { protectedToggle.checked = false; protectedToggle.disabled = true; }
-    const protectedHelp = protectedToggle?.closest('.danger-check')?.querySelector('small');
+    const protectedHelp = protectedToggle?.closest?.('.danger-check')?.querySelector?.('small');
     if (protectedHelp) protectedHelp.textContent = 'Trận đã thi đấu hoặc có kết quả luôn được bảo vệ. Chỉ xóa trận chưa bắt đầu.';
     const render = app.renderMatches.bind(app);
     app.renderMatches = function(...args) {
