@@ -43,7 +43,23 @@
   if(m?.scoreA!=null||m?.scoreB!=null)return Number(m.scoreA||0)+" – "+Number(m.scoreB||0);
   return "Đang cập nhật tỷ số";
  }
- function card(parent,primary,secondary){const el=document.createElement("article");el.className="tk137-item";const heading=document.createElement("strong");heading.textContent=primary;el.appendChild(heading);const note=document.createElement("small");note.textContent=secondary;el.appendChild(note);parent.appendChild(el)}
+ function matchScoreSummary(m){
+  if(!m)return "";
+  const sets=Array.isArray(m.sets)?m.sets:[];
+  const played=sets.filter(s=>s&&((s.a!=null&&s.b!=null)||(s.scoreA!=null&&s.scoreB!=null)));
+  if(played.length){
+   const parts=played.map(s=>Number(s.a??s.scoreA??0)+"–"+Number(s.b??s.scoreB??0));
+   const winsA=played.filter(s=>Number(s.a??s.scoreA??0)>Number(s.b??s.scoreB??0)).length;
+   const winsB=played.filter(s=>Number(s.b??s.scoreB??0)>Number(s.a??s.scoreA??0)).length;
+   return (winsA||winsB?winsA+" – "+winsB+"  ·  ":"")+parts.join("  ·  ");
+  }
+  if(m.scoreA!=null||m.scoreB!=null)return Number(m.scoreA||0)+" – "+Number(m.scoreB||0);
+  if(m.resultMs!=null)return "Thời gian: "+String(m.resultMs)+" ms";
+  if(m.judgeScore!=null)return "Điểm: "+String(m.judgeScore);
+  if(m.result!=null && typeof m.result==="string")return String(m.result);
+  return "";
+ }
+ function card(parent,primary,secondary,scoreText=""){const el=document.createElement("article");el.className="tk137-item";const heading=document.createElement("strong");heading.textContent=primary;el.appendChild(heading);const note=document.createElement("small");note.textContent=secondary;el.appendChild(note);if(scoreText){const scoreNode=document.createElement("span");scoreNode.className="tk137-result";scoreNode.textContent=scoreText;el.appendChild(scoreNode)}parent.appendChild(el)}
  function safeMediaUrl(raw,type){
   try{
    const url=new URL(String(raw||""),location.href);
@@ -201,7 +217,7 @@
   if(active.length && liveNodes.has("_empty")){const n=liveNodes.get("_empty");n.article.remove();liveNodes.delete("_empty")}
   for(const m of events.slice(0,150)){
    const court=store.courts?.[m.courtId]?.name||"";
-   card(schedule,matchName(m),[safeDate(m.date),String(m.time||""),String(m.code||""),court,prettyStatus(m.status)].filter(Boolean).join(" · "));
+   card(schedule,matchName(m),[safeDate(m.date),String(m.time||""),String(m.code||""),court,prettyStatus(m.status)].filter(Boolean).join(" · "),matchScoreSummary(m));
   }
   if(!events.length)card(schedule,"Chưa có lịch thi đấu","Lịch sẽ xuất hiện khi ban tổ chức công bố.");
   if(loaded.has("matches"))tell("Đã kết nối lịch thi đấu · "+events.length+" trận · "+active.length+" trận đang diễn ra");
