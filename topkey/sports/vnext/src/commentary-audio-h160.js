@@ -78,7 +78,11 @@
    app.speakCommentary=function(row){
      if(row?.lang && !/^vi(?:-|$)/i.test(row.lang))return native(row);
      if(!deviceMode())return native(row);
-     return playLocal(row);
+     // A user pressing "Đọc tỷ số hiện tại" explicitly authorizes one read,
+     // even when automatic BLV is switched off.
+     const manual=/^tk153_manual_/.test(String(row?.id||''));
+     if(manual)app.audioUnlocked=true;
+     return playLocal(row,{force:manual});
    };
    // Button clicks are a user gesture: ensure the browser permits playback.
    const enable=()=>{
