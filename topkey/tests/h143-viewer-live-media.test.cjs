@@ -5,6 +5,8 @@ const fs=require('node:fs');
 const vm=require('node:vm');
 const src=fs.readFileSync('topkey/sports/vnext/src/public-viewer-h137.js','utf8');
 const app=fs.readFileSync('topkey/sports/vnext/src/app.js','utf8');
+const runtime=fs.readFileSync('topkey/sports/vnext/src/live-state-h143.js','utf8');
+const html=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
 
 function createHarness(stream={type:'EMBED',status:'LIVE',url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'}){
  const nodes={},callbacks={},created=[];
@@ -75,4 +77,13 @@ test('Admin opens local camera before state change and does not mark it public L
  assert.match(live,/status:'LOCAL_ONLY'/);
  assert.match(live,/STREAM_LOCAL_PREVIEW/);
  assert.match(live,/if\(!isHttps/);
+});
+
+test('Production prebuilt runtime loads H143 guard and anonymous spectator player',()=>{
+ assert.match(html,/live-state-h143\\.js\\?v=h143-20261121/);
+ assert.match(html,/public-viewer-h137\\.js\\?v=h143-20261121/);
+ assert.match(html,/public-viewer-h137\\.css\\?v=h143-20261121/);
+ assert.match(runtime,/app\\.applyStream=async function/);
+ assert.match(runtime,/status:'LOCAL_ONLY'/);
+ assert.doesNotMatch(runtime,/\.ref\\([^)]*webrtc/);
 });
