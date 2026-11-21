@@ -1,0 +1,117 @@
+/* H156 — deterministic one-icon navigation and accessible fullscreen referee actions.
+ * Cosmetic only; no scoring handlers, auth, tournament data or RTDB changes.
+ */
+html[data-tk-sport] #app-shell .topbar>.nav [data-tab]::after {
+  content:none!important;
+  display:none!important;
+}
+/* H132 ::before is the single canonical sport icon; H156 removes JS duplicates. */
+html[data-tk-sport] #app-shell .topbar>.nav [data-tab] > :is(.tk141-nav-icon,.tk-h130-icon,.tk-nav-icon,.nav-icon,.icon) {
+  display:none!important;
+}
+#tk144-live-studio .tk144-workspace {
+  min-height:0!important;
+  overflow:visible!important;
+}
+#tk144-live-studio .tk144-official-pane {
+  position:relative;
+  min-height:0!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  padding-bottom:calc(28px + env(safe-area-inset-bottom,0px))!important;
+}
+#tk144-live-studio .tk144-official-pane > .card {
+  min-height:0!important;
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+}
+#tk144-live-studio .tk144-official-pane #umpire-board {
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+  min-height:0!important;
+}
+#tk144-live-studio .tk144-official-pane #set-actions,
+#tk144-live-studio .tk144-official-pane #single-actions {
+  position:relative;
+  z-index:1;
+}
+/* Sticky shortcuts reveal existing buttons in the original referee DOM.
+   They NEVER execute a score/penalty by themselves. */
+#tk144-live-studio .tk156-referee-shortcuts {
+  position:sticky;
+  top:0;
+  z-index:35;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex-wrap:wrap;
+  padding:9px;
+  margin:0 0 8px;
+  border:1px solid #6996b6;
+  border-radius:10px;
+  background:#0b2945;
+  box-shadow:0 4px 14px rgba(0,0,0,.4);
+}
+#tk144-live-studio .tk156-referee-shortcuts button {
+  flex:1 1 112px;
+  min-width:0;
+  min-height:44px;
+  padding:8px 9px;
+  border:1px solid #81b3d5;
+  border-radius:9px;
+  background:#214b6c;
+  color:#fff;
+  font:700 13px/1.3 system-ui,sans-serif;
+  cursor:pointer;
+}
+#tk144-live-studio .tk156-referee-shortcuts button:disabled {
+  opacity:.75;
+  cursor:not-allowed;
+}
+#tk144-live-studio .tk156-referee-shortcuts button:focus-visible {
+  outline:3px solid #9af3ff;
+  outline-offset:2px;
+}
+#tk144-live-studio .tk156-referee-help {
+  width:100%;
+  font-size:12px;
+  color:#d7edff;
+  line-height:1.4;
+}
+#tk144-live-studio .tk156-highlight {
+  outline:3px solid #ffd166!important;
+  outline-offset:4px;
+  scroll-margin-top:95px;
+}
+#tk144-live-studio .tk144-official-pane :is(button,select,input) {
+  scroll-margin-top:110px;
+}
+#tk144-live-studio:fullscreen .tk144-workspace,
+#tk144-live-studio.tk144-pseudo-fullscreen .tk144-workspace {
+  min-height:0!important;
+  overflow:hidden!important;
+}
+#tk144-live-studio:fullscreen .tk144-official-pane,
+#tk144-live-studio.tk144-pseudo-fullscreen .tk144-official-pane {
+  height:100%!important;
+  max-height:100%!important;
+  overflow-y:auto!important;
+}
+@media(max-width:900px) {
+  #tk144-live-studio .tk156-referee-shortcuts {
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    scrollbar-width:thin;
+  }
+  #tk144-live-studio .tk156-referee-shortcuts button {
+    flex:0 0 auto;
+    white-space:nowrap;
+  }
+  #tk144-live-studio .tk156-referee-help {
+    display:none;
+  }
+}
