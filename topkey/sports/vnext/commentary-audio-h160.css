@@ -1,0 +1,6 @@
+/* H160 audio recovery controls do not alter Live/Viewer layout or scoring. */
+#tk160-audio-panel{background:#112b43;border:1px solid #6da1c4;border-radius:10px;padding:10px;margin:10px 0;color:#e9f7ff;display:grid;gap:8px}
+#tk160-audio-panel .tk160-audio-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#tk160-audio-panel .tk160-audio-row button{flex:1 1 155px;min-height:44px}
+#tk160-audio-panel small{line-height:1.5;color:#d7ecff}
+#tk160-audio-panel button:focus-visible{outline:3px solid #86eafb;outline-offset:2px}
