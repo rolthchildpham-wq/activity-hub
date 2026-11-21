@@ -91,7 +91,14 @@
       const set=T.SPORT.mode==='sets'?active.sets?.[active.setIndex||0]:null;
       const a=Number(T.SPORT.mode==='sets'?set?.a:active.scoreA)||0;
       const b=Number(T.SPORT.mode==='sets'?set?.b:active.scoreB)||0;
-      const text=`${app.teamName(match.teamAId)} ${a}, ${app.teamName(match.teamBId)} ${b}.`;
+      const history=active.history?.[active.history.length-1];
+      const prev=T.SPORT.mode==='sets'?(Array.isArray(history)?history[active.setIndex||0]:history?.sets?.[active.setIndex||0]):history;
+      const beforeA=Number(T.SPORT.mode==='sets'?prev?.a:prev?.scoreA);
+      const beforeB=Number(T.SPORT.mode==='sets'?prev?.b:prev?.scoreB);
+      const scorer=Number.isFinite(beforeB)&&b>beforeB&&!(a>beforeA)?'B':'A';
+      const text=scorer==='B'
+        ?`${app.teamName(match.teamBId)} ${b}, ${app.teamName(match.teamAId)} ${a}.`
+        :`${app.teamName(match.teamAId)} ${a}, ${app.teamName(match.teamBId)} ${b}.`;
       app.speakCommentary?.({id:'tk153_manual_'+Date.now(),text,lang:'vi-VN'});
     };
     const testButton=$('commentary-test');
