@@ -157,6 +157,7 @@
     // Avoid duplicate dashboards by moving the original umpire card, not cloning it.
     const originalShowTab=app.showTab.bind(app);
     app.showTab=function(tab){
+      if(tab!=='live' && state.fullscreen)void exitFullscreen();
       if(tab==='umpire')restoreUmpire();
       const result=originalShowTab(tab);
       if(tab==='live' && isLive(T)){attachUmpire();syncCourt()}
