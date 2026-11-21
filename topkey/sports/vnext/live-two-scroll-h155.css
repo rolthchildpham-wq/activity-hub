@@ -1,0 +1,139 @@
+/* H155 — Independent scrolling for Live camera and referee board.
+ * Scoped to H144 Studio only; preserves existing DOM and event handlers.
+ */
+#tk144-live-studio {
+  --tk155-pane-height:clamp(420px,calc(100dvh - 215px),940px);
+}
+#tk144-live-studio .tk144-workspace{
+  align-items:stretch;
+  min-height:0;
+}
+#tk144-live-studio .tk144-video-pane,
+#tk144-live-studio .tk144-official-pane{
+  box-sizing:border-box;
+  height:var(--tk155-pane-height);
+  max-height:var(--tk155-pane-height);
+  min-height:0;
+  overflow-x:hidden;
+  overflow-y:auto;
+  overscroll-behavior-y:contain;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;
+  scrollbar-color:#78a9c8 #10253d;
+  border:1px solid #456c91;
+  border-radius:13px;
+  padding:5px;
+}
+#tk144-live-studio .tk144-video-pane:focus-visible,
+#tk144-live-studio .tk144-official-pane:focus-visible{
+  outline:3px solid #8ceaff;
+  outline-offset:2px;
+}
+#tk144-live-studio .tk144-video-pane::-webkit-scrollbar,
+#tk144-live-studio .tk144-official-pane::-webkit-scrollbar{width:10px}
+#tk144-live-studio .tk144-video-pane::-webkit-scrollbar-thumb,
+#tk144-live-studio .tk144-official-pane::-webkit-scrollbar-thumb{
+  border-radius:10px;
+  border:2px solid #10253d;
+  background:#78a9c8;
+}
+#tk144-live-studio #tk144-official-pane>.tk144-pane-label{
+  position:sticky;
+  top:0;
+  z-index:5;
+}
+#tk144-live-studio .tk144-video-pane>.card,
+#tk144-live-studio .tk144-official-pane>.card{
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+}
+#tk144-live-studio:fullscreen,
+#tk144-live-studio.tk144-pseudo-fullscreen{
+  display:flex!important;
+  flex-direction:column!important;
+  overflow:hidden!important;
+}
+#tk144-live-studio:fullscreen .tk144-workspace,
+#tk144-live-studio.tk144-pseudo-fullscreen .tk144-workspace{
+  flex:1 1 auto;
+  height:0;
+  min-height:0;
+}
+#tk144-live-studio:fullscreen :is(.tk144-video-pane,.tk144-official-pane),
+#tk144-live-studio.tk144-pseudo-fullscreen :is(.tk144-video-pane,.tk144-official-pane){
+  height:100%;
+  max-height:100%;
+  min-height:0;
+}
+#tk144-live-studio .tk144-pane-scroll-label{
+  display:inline-block;
+  margin:0 0 6px;
+  padding:4px 8px;
+  background:#153650;
+  color:#e5f4ff;
+  border-radius:7px;
+  font-size:12px;
+}
+@media(max-width:900px){
+  /* Stacked panes should each retain independent touch scrolling. */
+  #tk144-live-studio .tk144-video-pane,
+  #tk144-live-studio .tk144-official-pane{
+    height:clamp(280px,47dvh,650px);
+    max-height:clamp(280px,47dvh,650px);
+  }
+  #tk144-live-studio:fullscreen .tk144-workspace,
+  #tk144-live-studio.tk144-pseudo-fullscreen .tk144-workspace{
+    display:grid;
+    grid-template-columns:minmax(0,1fr);
+    grid-template-rows:minmax(0,1fr) minmax(0,1fr);
+  }
+  #tk144-live-studio:fullscreen :is(.tk144-video-pane,.tk144-official-pane),
+  #tk144-live-studio.tk144-pseudo-fullscreen :is(.tk144-video-pane,.tk144-official-pane){
+    height:100%;
+    max-height:100%;
+  }
+}
+@media(orientation:landscape) and (max-height:650px){
+  #tk144-live-studio:fullscreen .tk144-workspace,
+  #tk144-live-studio.tk144-pseudo-fullscreen .tk144-workspace{
+    grid-template-columns:minmax(0,1.2fr) minmax(280px,1fr)!important;
+    grid-template-rows:minmax(0,1fr)!important;
+  }
+}
+#tk144-live-studio[data-orientation="landscape"]:fullscreen .tk144-workspace,
+#tk144-live-studio[data-orientation="landscape"].tk144-pseudo-fullscreen .tk144-workspace{
+  grid-template-columns:minmax(0,1.2fr) minmax(280px,1fr)!important;
+  grid-template-rows:minmax(0,1fr)!important;
+}
+#tk144-live-studio[data-orientation="portrait"]:fullscreen .tk144-workspace,
+#tk144-live-studio[data-orientation="portrait"].tk144-pseudo-fullscreen .tk144-workspace{
+  grid-template-columns:minmax(0,1fr)!important;
+  grid-template-rows:minmax(0,1fr) minmax(0,1fr)!important;
+}
+#tk144-live-studio .tk155-camera-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:8px 0;
+}
+#tk144-live-studio #tk155-camera-direct{
+  min-height:44px;
+  color:#fff!important;
+  background:#087b61!important;
+  border:1px solid #52c5a6!important;
+  border-radius:9px;
+  font-weight:700;
+  cursor:pointer;
+  padding:9px 13px;
+}
+#tk144-live-studio #tk155-camera-direct:disabled{
+  background:#30475c!important;
+  cursor:not-allowed;
+}
+#tk144-live-studio .tk155-camera-state{
+  color:#dcecff;
+  font-size:13px;
+  line-height:1.4;
+}
