@@ -1,0 +1,5 @@
+{
+  "enabled": false,
+  "apiBase": "",
+  "note": "Enable only after HTTPS SRS/Kokoro gateway and Firebase role tests pass. This is a public configuration, never put secrets here."
+}
