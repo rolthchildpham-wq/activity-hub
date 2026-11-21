@@ -18,7 +18,8 @@
   window.__TOPKEY_SCHEDULE_FORMAT_PLAN_PAIRS = planPairs;
   function boot() {
     const T = window.Topkey, app = T?.App;
-    if (!T?.Data || !T?.U || !app?.state || !validSport.has(T.SPORT?.key)) return false;
+    if (!T?.Data || !T?.U || !app?.state || !validSport.has(T.SPORT?.key) ||
+      (typeof app.generateSchedule!=='function' && typeof app.generateRoundRobin!=='function')) return false;
     if (app.__tk139Installed) return true;
     const host = document.getElementById('round-robin-gen');
     if (!host) return false;
@@ -39,8 +40,8 @@
       '<button type="button" id="tk139-save" class="btn" hidden>2. Lưu phân bảng</button> ' +
       '<button type="button" id="tk139-generate" class="btn primary" disabled>3. Xác nhận tạo lịch</button></div>';
     host.closest('.action-bar')?.parentElement?.after(box);
-    host.hidden = true;
     if(!isAdmin()){box.hidden=true;return true}
+    host.hidden = true;
     const $ = id => box.querySelector('#'+id);
     const mode=$('tk139-mode'),category=$('tk139-category'),count=$('tk139-count');
     let prepared = null, savedSignature = '';
