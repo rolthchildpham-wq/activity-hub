@@ -85,3 +85,15 @@ body.tk-smooth-admin #app-shell .tk141-nav-toggle{background:#155a78!important;c
 @media(prefers-reduced-motion:reduce){
   .tk141-nav-toggle,.tk141-panel-toggle{transition:none!important}
 }
+
+/* H145: one navigation glyph per tab.
+   VNext uses H132 pseudo-icon; badminton uses H130 inline icon. */
+html[data-tk-sport] #app-shell .nav [data-tab] > .tk141-nav-icon,
+body.tk-smooth-admin #app-shell .nav [data-tab] > .tk141-nav-icon {
+  display:none!important;
+}
+html[data-tk-sport] #app-shell .nav [data-tab]:has(> .tk-h130-icon)::before,
+body.tk-smooth-admin #app-shell .nav [data-tab]:has(> .tk-h130-icon)::before {
+  display:none!important;
+  content:none!important;
+}

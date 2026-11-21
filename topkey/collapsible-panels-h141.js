@@ -7,8 +7,6 @@
     get(key) { try { return localStorage.getItem(key); } catch { return null; } },
     set(key, value) { try { localStorage.setItem(key, value); } catch {} }
   };
-  const icons = {overview:'▦',control:'▤',teams:'♟',schedule:'▦',umpire:'◈',live:'●',
-    finance:'₫',announcements:'◉',audit:'≡',health:'◷',settings:'⚙'};
   const state = {started:false,sidebar:null,folded:new Set()};
   const scope = () => 'topkey_h141_' + location.pathname.replace(/[^a-z0-9]/gi,'_');
   const mobile = () => !!window.matchMedia?.('(max-width:700px)')?.matches;
@@ -39,14 +37,12 @@
     };
     toggle.addEventListener('click',()=>setCollapsed(!document.body.classList.contains('tk141-nav-collapsed')));
     brand.appendChild(toggle);
+    // H132 renders VNext icons with ::before; badminton H130 renders its own
+    // .tk-h130-icon. Do not inject a third icon from H141.
     nav.querySelectorAll('[data-tab]').forEach(btn=>{
-      btn.setAttribute('title',btn.textContent.trim());
-      if (!btn.querySelector('.tk-h130-icon')) {
-        const mark=document.createElement('span');
-        mark.className='tk141-nav-icon';mark.setAttribute('aria-hidden','true');
-        mark.textContent=icons[btn.dataset.tab]||'•';
-        btn.prepend(mark);
-      }
+      btn.querySelectorAll('.tk141-nav-icon').forEach(icon=>icon.remove());
+      const label=btn.querySelector('.tk-h130-label')?.textContent || btn.textContent;
+      btn.title=String(label||'').trim();
     });
     nav.addEventListener('click',event=>{
       if(event.target.closest('[data-tab]')&&mobile())setCollapsed(true);
