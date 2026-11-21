@@ -30,3 +30,12 @@ To connect and view the YouTube channel name from TOPKEY:
 - On-device speechSynthesis BLV from TOPKEY is not automatically part of a separate YouTube camera stream. To broadcast commentary and overlay live score on YouTube, use an encoder that captures/composites those sources.
 - No Google account is connected until the user uses the official Google consent dialog; no OAuth client exists in this PR. Public link embedding works without OAuth credentials.
 - Do not merge or deploy production until regression tests, EdgeOne preview SHA, anonymous Viewer on desktop/mobile, role validation, Firebase gate and performance checks PASS.
+
+## H158 — Live Now mobile production and switching YouTube accounts
+
+- Live Now is a third-party **mobile app**, not an embeddable web SDK. Use https://livenow.one/ to install it, select a supported YouTube destination, start the eligible YouTube Live, then copy its public watch link into TOPKEY. TOPKEY Viewer plays YouTube (not the Live Now UI).
+- Live Now officially supports a **URL Overlay** inside its video production: https://livenow.one/docs/how-to/live-sports/add-a-url-overlay-to-a-live-stream/. You can configure a public TOPKEY URL there as an overlay, but displaying the full Viewer screen may be too busy; a dedicated scoreboard-only URL requires separate design/test and is not claimed implemented by H158.
+- The H158 TOPKEY button **Đổi tài khoản YouTube** opens the Google identity account chooser through `youtube.readonly`, revoking the previous in-memory access token when present. It clears the draft link, **not** the already published court stream; updating the public Viewer source requires pasting and saving the new channel's actual video URL.
+- Switching Google accounts inside TOPKEY is separate from switching the YouTube destination inside Live Now. To change the broadcasting account in Live Now, use its supported YouTube account logout/reconnect workflow. Google credentials are never exchanged between Live Now and TOPKEY.
+- OAuth connection in TOPKEY requires an organization-owned Google Cloud OAuth Web Client ID in `youtube-oauth-h157.json`. If the ID is blank, public YouTube links still work without account authorization, but the TOPKEY account switch option cannot execute.
+- Free and paid features differ in Live Now. Multistream and advanced sports overlays may require a paid tier; verify on the user's app before promising those features.
