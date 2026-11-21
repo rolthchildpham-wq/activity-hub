@@ -81,6 +81,22 @@
       mode=select.value;
       try{localStorage.setItem(key,mode)}catch{}
     };
+    const manual=document.createElement('button');
+    manual.type='button';manual.id='tk153-speak-score';manual.className='btn';
+    manual.textContent='🎙 Đọc tỷ số hiện tại';
+    manual.onclick=()=>{
+      const active=app.state?.activeMatches?.[app.currentCourt];
+      const match=app.state?.matches?.[active?.matchId];
+      if(!active||!match)return T.U?.toast?.('Chưa có trận đang chấm','info');
+      const set=T.SPORT.mode==='sets'?active.sets?.[active.setIndex||0]:null;
+      const a=Number(T.SPORT.mode==='sets'?set?.a:active.scoreA)||0;
+      const b=Number(T.SPORT.mode==='sets'?set?.b:active.scoreB)||0;
+      const text=`${app.teamName(match.teamAId)} ${a}, ${app.teamName(match.teamBId)} ${b}.`;
+      app.speakCommentary?.({id:'tk153_manual_'+Date.now(),text,lang:'vi-VN'});
+    };
+    const testButton=$('commentary-test');
+    if(testButton)testButton.after(manual);
+
     const original=app.commentaryForScore.bind(app);
     app.commentaryForScore=function(s) {
       if(!s)return '';
