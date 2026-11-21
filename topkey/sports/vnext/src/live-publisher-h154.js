@@ -61,6 +61,8 @@
      if(select.value!=='WEBRTC')return originalApply();
      const T=window.Topkey,cid=court.value,room=this.state.courts?.[cid];
      if(!room)return T.U.toast('Chọn sân trước khi phát Live','err');
+     if(state.rtc)return T.U.toast('Đang phát rồi. Hãy Tắt Live trước khi mở phiên mới.','info');
+     if(!T.Data.connected)return T.U.toast('Firebase đang offline, không thể công bố Live.','err');
      const user=T.Data?.auth?.currentUser;
      if(!user)return T.U.toast('Đăng nhập trước khi phát WebRTC','err');
      status('Đang kiểm tra máy chủ Live…');
@@ -87,7 +89,7 @@
          stream:{type:'WEBRTC',url:'',status:'LIVE',publisherUid:user.uid,startedAt:Date.now()},
          updatedAt:Date.now()},{type:'STREAM_WEBRTC'});
        this.localMedia=media;this.setLiveState('LIVE');
-       status('WebRTC đã kết nối. Viewer có thể xem hình và nghe micro/BLV.');
+       status('WebRTC đã kết nối, đã yêu cầu đồng bộ trạng thái Live lên Firebase.');
      }catch(e){
        rtc?.close?.();closeSession();
        this.setLiveState('OFFLINE');
