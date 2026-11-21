@@ -12,7 +12,7 @@ assert.ok(!publicJs.includes("ref.set("));
 assert.ok(!publicJs.includes("ref.update("));
 assert.ok(styles.includes("@media(max-width:760px)"));
 new vm.Script(publicJs);
-function element(){return {classList:{add(){},remove(){},toggle(){}},textContent:"",children:[],replaceChildren(){this.children=[]},appendChild(x){this.children.push(x)},after(){},querySelector(){return null},setAttribute(){}}}
+function element(){return {classList:{add(){},remove(){},toggle(){}},textContent:"",children:[],replaceChildren(){this.children=[]},appendChild(x){this.children.push(x)},append(...xs){this.children.push(...xs)},remove(){},after(){},querySelector(){return null},setAttribute(){}}}
 const nodes={"public-spectator":element(),"spectator-schedule":element(),"spectator-live":element(),"spectator-title":element(),"login-screen":element(),"app-shell":element()};
 nodes["public-spectator"].querySelector=()=>({after(){}});
 const callbacks={};
