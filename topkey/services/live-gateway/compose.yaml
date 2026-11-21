@@ -1,0 +1,61 @@
+services:
+  caddy:
+    image: caddy:2
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      LIVE_DOMAIN: ${LIVE_DOMAIN}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - api
+    restart: unless-stopped
+  api:
+    build: .
+    environment:
+      PORT: "3000"
+      FIREBASE_DATABASE_URL: ${FIREBASE_DATABASE_URL}
+      GOOGLE_APPLICATION_CREDENTIALS: /run/secrets/firebase-service-account.json
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS}
+      SRS_PRIVATE_URL: http://srs:1985
+      SRS_API_TOKEN: ${SRS_API_TOKEN}
+      TTS_PRIVATE_URL: http://tts:7860
+      KOKOROTTS_API_KEY: ${KOKOROTTS_API_KEY}
+      NEURAL_VOICE_VI: ${NEURAL_VOICE_VI}
+      NEURAL_VOICE_EN: ${NEURAL_VOICE_EN}
+      NEURAL_VOICE_ZH: ${NEURAL_VOICE_ZH}
+    volumes:
+      - ./secrets/firebase-service-account.json:/run/secrets/firebase-service-account.json:ro
+    depends_on:
+      - srs
+      - tts
+    restart: unless-stopped
+  srs:
+    image: ossrs/srs:8
+    command: ["./objs/srs","-e"]
+    environment:
+      SRS_HTTP_API_ENABLED: "on"
+      SRS_RTC_SERVER_ENABLED: "on"
+      SRS_RTC_SERVER_CANDIDATE: ${SERVER_PUBLIC_IP}
+      SRS_VHOST_RTC_ENABLED: "on"
+      SRS_HTTP_API_AUTH_ENABLED: "on"
+      SRS_HTTP_API_AUTH_TYPE: bearer
+      SRS_HTTP_API_AUTH_TOKEN: ${SRS_API_TOKEN}
+      SRS_HTTP_API_AUTH_RTC_BEARER_ENABLED: "on"
+    ports:
+      - "8000:8000/udp"
+    restart: unless-stopped
+  tts:
+    image: hangrylabs/kokorotts:v1.0
+    environment:
+      KOKOROTTS_API_KEY: ${KOKOROTTS_API_KEY}
+    volumes:
+      - kokoro_data:/app/persistent
+    restart: unless-stopped
+volumes:
+  caddy_data:
+  caddy_config:
+  kokoro_data:

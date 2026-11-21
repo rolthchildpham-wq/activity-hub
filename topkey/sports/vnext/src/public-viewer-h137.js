@@ -73,7 +73,8 @@
  }
  function clearMedia(node){
   try{node.hls?.destroy?.()}catch{}
-  node.hls=null;node.player=null;node.media.replaceChildren();
+  try{node.rtc?.close?.()}catch{}
+  node.hls=null;node.rtc=null;node.player=null;node.media.replaceChildren();
  }
  function loadHls(){
   if(window.Hls)return Promise.resolve(window.Hls);
@@ -97,6 +98,40 @@
   node.sourceKey=key;clearMedia(node);
   if(state!=="LIVE"){message(node,type==="CAMERA"?"Camera đang mở cục bộ; chưa có đường truyền video đến Viewer.": "Chưa có luồng video công khai đang phát.");return}
   if(type==="CAMERA"){message(node,"Camera trên máy phát không tự truyền hình qua Firebase. BTC cần phát qua HLS/Embed hoặc thiết lập WebRTC.");return}
+  if(type==="WEBRTC"){
+   const player=document.createElement("video");
+   player.controls=true;player.playsInline=true;player.autoplay=true;player.muted=false;
+   player.setAttribute("aria-label","Truyền hình và âm thanh Live WebRTC");
+   node.media.appendChild(player);node.player=player;
+   const connect=async()=>{
+     try{
+       const client=window.TopkeyWebRTCH154;
+       if(!client)throw new Error("Thư viện WebRTC không được tải");
+       const rtc=await client.play({sport,tid,court:node.courtId,
+         ontrack:evt=>{
+           if(node.sourceKey!==key)return;
+           if(evt.streams?.[0])player.srcObject=evt.streams[0];
+           else{
+             const media=player.srcObject||new MediaStream();
+             media.addTrack(evt.track);player.srcObject=media;
+           }
+           player.play().catch(()=>{message(node,"Chạm nút Play để nghe âm thanh Live.")});
+         }});
+       if(node.sourceKey!==key){rtc.close();return}
+       node.rtc=rtc;
+     }catch(e){
+       if(node.sourceKey!==key)return;
+       message(node,"WebRTC chưa kết nối: "+e.message);
+       const retry=document.createElement("button");
+       retry.type="button";retry.className="btn";
+       retry.textContent="↻ Thử kết nối lại";
+       retry.onclick=()=>{node.media.replaceChildren(player);void connect()};
+       node.media.appendChild(retry);
+     }
+   };
+   void connect();return;
+  }
+
   if(!url){message(node,"Nguồn phát chưa có URL hợp lệ. Cần HLS (.m3u8) hoặc YouTube/Vimeo Embed HTTPS.");return}
   if(type==="EMBED"){
    const frame=document.createElement("iframe");
@@ -134,6 +169,7 @@
   for(const [id,a] of active){
    const m=store.matches?.[a.matchId],court=store.courts?.[id]||{};
    const node=liveNodes.get(id)||createLiveNode(id);
+   node.courtId=id;
    node.title.textContent=matchName(m);
    node.detail.textContent=[court.name||id,String(m?.code||""),prettyStatus(m?.status||"LIVE")].filter(Boolean).join(" · ");
    const value=score(a,m);if(node.points.textContent!==value)node.points.textContent=value;
