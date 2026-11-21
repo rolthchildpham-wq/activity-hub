@@ -82,7 +82,7 @@
     <label for="tk152-original">Từ gốc (chữ Hán khi nhập Pinyin, từ tiếng Anh khi nhập IPA)</label>
     <input id="tk152-original" placeholder="你好 hoặc hello">
     <div class="tk152-buttons"><button id="tk152-play" type="button" class="btn ok">🔊 Nghe thử</button><button id="tk152-stop" type="button" class="btn">■ Dừng</button></div>
-    <small id="tk152-status" role="status" aria-live="polite">Giọng đọc phụ thuộc vào giọng đã cài trên thiết bị; không truyền âm thanh đến Viewer.</small>`;
+    <small id="tk152-status" role="status" aria-live="polite">Dùng để luyện phát âm/thử giọng; bình luận tự động giữ tiếng Việt. Âm thanh TTS không tự truyền tới Viewer.</small>`;
   anchor.closest('.action-bar')?.after(container);
   if(!$('tk152-panel'))return false;
   const play=$('tk152-play'),status=$('tk152-status');
@@ -99,11 +99,13 @@
   $('tk152-stop').onclick=()=>{cancel();status.textContent='Đã dừng giọng đọc.'};
   const old=app.speakCommentary.bind(app);
   app.speakCommentary=function(row){
-    if($('tk152-language')?.value==='vi')return old(row);
-    if(!row?.id||row.id===this.lastSpokenCommentId||!this.audioUnlocked||$('auto-commentary')?.checked===false)return;
+    // Score-generated match commentary is Vietnamese. Changing the manual
+    // voice selector never translates it or causes English to read Vietnamese.
+    if(!row?.lang || /^vi(?:-|$)/i.test(row.lang))return old(row);
+    if(!row.id||row.id===this.lastSpokenCommentId||!this.audioUnlocked||$('auto-commentary')?.checked===false)return;
     this.lastSpokenCommentId=row.id;
-    const value=$('tk152-language').value,lang=value==='mix'?'mix':localeFor(value);
-    speak(row.text,{lang,rate:Number($('blv-rate')?.value||1)})
+    speak(row.text,{lang:row.lang,original:row.original||'',
+       rate:Number($('blv-rate')?.value||1)})
       .catch(e=>{status.textContent=e.message});
   };
   return true;
