@@ -1,0 +1,4 @@
+{
+  "clientId": "",
+  "setup": "Create Google Cloud OAuth Web client, enable YouTube Data API v3, add actual TOPKEY EdgeOne domain to Authorized JavaScript origins. OAuth uses youtube.readonly only; no client secret in this file."
+}
