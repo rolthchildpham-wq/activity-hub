@@ -13,6 +13,7 @@
     const host = document.getElementById('round-robin-gen');
     if (!host) return false;
     app.__tk139Installed = true;
+    const isAdmin = () => String(T.Auth?.role?.()||'').toUpperCase()==='ADMIN';
     const box = document.createElement('section');
     box.id = 'tk139-format';
     box.className = 'subcard';
@@ -29,6 +30,7 @@
       '<button type="button" id="tk139-generate" class="btn primary" disabled>3. Xác nhận tạo lịch</button></div>';
     host.closest('.action-bar')?.parentElement?.after(box);
     host.hidden = true;
+    if(!isAdmin()){box.hidden=true;return true}
     const $ = id => box.querySelector('#'+id);
     const mode=$('tk139-mode'),category=$('tk139-category'),count=$('tk139-count');
     let prepared = null, savedSignature = '';
@@ -96,6 +98,7 @@
       setStatus('Đã phân '+teams.length+' đội vào '+labels.length+' bảng. Có thể chỉnh từng đội trước khi lưu.');
     };
     $('tk139-save').onclick=async()=>{
+      if(!isAdmin()){setStatus('Chỉ ADMIN được lưu phân bảng.');return}
       const entries=rowsFromUI(),labels=groupLabels();
       if(entries.length!==activeTeams().length||new Set(entries.map(e=>e.id)).size!==entries.length ||
         labels.some(g=>entries.filter(e=>e.group===g).length<2) ||
@@ -115,6 +118,7 @@
       finally{$('tk139-save').disabled=false}
     };
     $('tk139-generate').onclick=async()=>{
+      if(!isAdmin()){setStatus('Chỉ ADMIN được tạo lịch.');return}
       const teams=activeTeams();
       if(!prepared||!teams.length)return;
       if(mode.value==='groups'){
