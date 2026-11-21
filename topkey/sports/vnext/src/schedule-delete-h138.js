@@ -57,6 +57,11 @@
     if (!app || !T.Data || !T.SPORT) return false;
     if (T.SPORT.key !== 'volleyball' || app.__tk138Delete) return true;
     app.__tk138Delete = true;
+    // Results/live sessions are always protected; never offer a destructive override.
+    const protectedToggle = document.getElementById('delete-protected');
+    if (protectedToggle) { protectedToggle.checked = false; protectedToggle.disabled = true; }
+    const protectedHelp = protectedToggle?.closest('.danger-check')?.querySelector('small');
+    if (protectedHelp) protectedHelp.textContent = 'Trận đã thi đấu hoặc có kết quả luôn được bảo vệ. Chỉ xóa trận chưa bắt đầu.';
     const render = app.renderMatches.bind(app);
     app.renderMatches = function(...args) {
       const result = render(...args);
