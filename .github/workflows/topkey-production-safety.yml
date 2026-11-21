@@ -53,3 +53,5 @@ jobs:
           node --check topkey/topkey-shared-auth.js
           node --check topkey/sports/badminton/production-loader.js
           node topkey/tests/hub-bi-visual-regression.test.cjs
+          node --check topkey/sports/vnext/src/schedule-delete-h138.js
+          node --test topkey/sports/vnext/tests/volleyball-match-delete-h138.test.cjs
