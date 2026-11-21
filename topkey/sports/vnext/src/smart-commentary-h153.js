@@ -46,8 +46,9 @@
     const pair=`${winnerName} ${own}, ${otherName} ${opponent}.`;
     if(finishNow)return `Kết thúc set ${i+1}. ${pair}`;
     if(first)return `Bắt đầu set ${i+1}. ${pair}`;
-    if(deuce)return `Hai đội đang cân bằng. ${pair}`;
-    if(leadChange)return `Đổi bên dẫn điểm. ${pair}`;
+    // Keep routine commentary concise: scoring team + own points first.
+    // Deuce / lead change affect WHEN we speak, not a verbose prefix.
+    if(deuce||leadChange)return pair;
     return pair;
   }
   function install(){
