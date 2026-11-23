@@ -31,3 +31,12 @@ test('test lab never mistaken for main production',()=>{
 test('no data remains empty rather than simulated',()=>{
  assert.deepEqual(summarize({teams:{},matches:{},activeMatches:{},config:{}}),{teams:0,checkedIn:0,scheduled:0,live:0,completed:0});
 });
+
+test('null/invalid Firebase records are ignored safely',()=>{
+ const incomplete={teams:{ok:{checkedIn:true},missing:null},matches:{m1:null,m2:{status:'FINISHED',stage:'GROUP',group:'A'}},activeMatches:{x:null},config:{}};
+ assert.deepEqual(summarize(incomplete),{teams:1,checkedIn:1,scheduled:1,live:0,completed:1});
+ assert.equal(groupPhases(incomplete.matches).length,1);
+});
+test('LIVE match missing internal id is counted by Firebase key',()=>{
+ assert.equal(summarize({teams:{},matches:{abc:{status:'LIVE'}},activeMatches:{},config:{}}).live,1);
+});
