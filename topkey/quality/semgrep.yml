@@ -1,0 +1,22 @@
+rules:
+  - id: topkey-no-eval
+    patterns:
+      - pattern-either:
+          - pattern: eval(...)
+          - pattern: new Function(...)
+    message: "Avoid dynamic code execution in TOPKEY frontend."
+    severity: ERROR
+    languages: [javascript, typescript]
+  - id: topkey-no-dom-injection
+    pattern: $EL.innerHTML = $VALUE
+    message: "Inspect HTML injection carefully; prefer textContent or DOM construction."
+    severity: WARNING
+    languages: [javascript, typescript]
+  - id: topkey-no-secret-logging
+    patterns:
+      - pattern-either:
+          - pattern: console.log($PASSWORD)
+          - pattern: console.debug($TOKEN)
+    message: "Do not log passwords or tokens."
+    severity: WARNING
+    languages: [javascript, typescript]
