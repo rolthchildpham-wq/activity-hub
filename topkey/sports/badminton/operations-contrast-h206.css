@@ -1,0 +1,169 @@
+/*
+ * H206: Badminton authenticated operations contrast and readability repair.
+ * Scoped to the existing production app. Presentation only: no event handlers,
+ * auth, score, QR, table visibility or Firebase data are changed.
+ * Appended after H140/H203 to defeat stale dark-field overrides on white cards.
+ */
+body.tk-smooth-admin #app-shell:not(.hidden){
+  --tk206-paper:#fff;
+  --tk206-ink:#173943;
+  --tk206-secondary:#405b66;
+  --tk206-input:#f7fbfa;
+  --tk206-border:#829fa7;
+  --tk206-dark:#0e2940;
+  --tk206-dark-ink:#f0f8ff;
+  --tk206-dark-muted:#d0e3f0;
+}
+body.tk-smooth-admin #app-shell .shell .page>.grid>.card,
+body.tk-smooth-admin #app-shell .shell .page>.card{
+  background:var(--tk206-paper);
+  color:var(--tk206-ink);
+  border:1px solid #d2e2df;
+  border-radius:16px;
+  box-shadow:0 6px 22px rgba(16,58,54,.07);
+}
+body.tk-smooth-admin #app-shell #page-teams>.grid>.card,
+body.tk-smooth-admin #app-shell #page-teams>.card{
+  background:var(--tk206-paper)!important;
+  color:var(--tk206-ink)!important;
+}
+body.tk-smooth-admin #app-shell #page-teams>.grid>.card :is(h2,h3,h4),
+body.tk-smooth-admin #app-shell #page-teams>.card :is(h2,h3,h4){
+  color:#153f48!important;
+  font-weight:800;
+  letter-spacing:-.2px;
+}
+body.tk-smooth-admin #app-shell #page-teams>.grid>.card :is(label,.field>label,.muted,.note,small,p),
+body.tk-smooth-admin #app-shell #page-teams>.card :is(label,.field>label,.muted,.note,small,p){
+  color:var(--tk206-secondary)!important;
+  -webkit-text-fill-color:var(--tk206-secondary)!important;
+  opacity:1!important;
+}
+body.tk-smooth-admin #app-shell #page-teams>.grid>.card
+  :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),select,textarea),
+body.tk-smooth-admin #app-shell #page-teams>.card
+  :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),select,textarea){
+  background:var(--tk206-input)!important;
+  background-image:none;
+  color:var(--tk206-ink)!important;
+  -webkit-text-fill-color:var(--tk206-ink)!important;
+  border:1px solid var(--tk206-border)!important;
+  border-radius:10px;
+  box-shadow:none!important;
+  color-scheme:light!important;
+  opacity:1!important;
+  min-height:44px;
+}
+body.tk-smooth-admin #app-shell #page-teams>.grid>.card
+  :is(input,textarea)::placeholder,
+body.tk-smooth-admin #app-shell #page-teams>.card
+  :is(input,textarea)::placeholder{
+  color:#526b74!important;
+  -webkit-text-fill-color:#526b74!important;
+  opacity:1!important;
+}
+body.tk-smooth-admin #app-shell #page-teams
+  :is(select option,select optgroup){
+  color:#183d47!important;
+  background:#fff!important;
+}
+body.tk-smooth-admin #app-shell #page-teams
+  :is(input,select,textarea,button,a):focus-visible{
+  outline:3px solid #087d71!important;
+  outline-offset:2px;
+}
+body.tk-smooth-admin #app-shell #page-teams>.grid>.card
+  :is(input,select,textarea):disabled,
+body.tk-smooth-admin #app-shell #page-teams>.card
+  :is(input,select,textarea):disabled{
+  background:#edf4f3!important;
+  color:#445d67!important;
+  -webkit-text-fill-color:#445d67!important;
+  opacity:1!important;
+}
+body.tk-smooth-admin #app-shell #page-teams .grid,
+body.tk-smooth-admin #app-shell #page-teams :is(.card,.field,.form-grid,.split){
+  min-width:0;
+}
+body.tk-smooth-admin #app-shell #page-teams .card :is(input,select,textarea){
+  max-width:100%;
+}
+body.tk-smooth-admin #app-shell #page-teams .card .table-wrap{
+  max-width:100%;
+  overflow-x:auto;
+}
+body.tk-smooth-admin #app-shell #page-teams .card :is(button,.btn){
+  min-height:44px;
+  font-weight:750;
+  text-shadow:none;
+}
+body.tk-smooth-admin #app-shell #page-teams .card :is(button.ok,.btn.ok){
+  background:#087c60!important;
+  border-color:#087c60!important;
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+}
+body.tk-smooth-admin #app-shell #page-teams .card :is(button.primary,.btn.primary){
+  background:#165ca8!important;
+  border-color:#165ca8!important;
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+}
+body.tk-smooth-admin #app-shell #page-teams .card :is(.list-card,.subcard,.team-picker,.team-pick,.control-card,.court-card,.mode-note,.single-result){
+  background:var(--tk206-dark)!important;
+  color:var(--tk206-dark-ink)!important;
+  border-color:#4d7287!important;
+}
+body.tk-smooth-admin #app-shell #page-teams .card
+  :is(.list-card,.subcard,.team-picker,.team-pick,.control-card,.court-card,.mode-note,.single-result)
+  :is(p,span,small,label,strong,b,.muted,.note){
+  color:var(--tk206-dark-ink)!important;
+  -webkit-text-fill-color:var(--tk206-dark-ink)!important;
+  opacity:1!important;
+}
+body.tk-smooth-admin #app-shell #page-teams .card
+  :is(.list-card,.subcard,.team-picker,.team-pick,.control-card,.court-card,.mode-note,.single-result)
+  :is(input:not([type="checkbox"]):not([type="radio"]),select,textarea){
+  background:#f5fbfa!important;
+  color:#173943!important;
+  -webkit-text-fill-color:#173943!important;
+  border-color:#9fc2bd!important;
+  color-scheme:light!important;
+}
+body.tk-smooth-admin #app-shell #page-teams .card
+  :is(.list-card,.subcard,.team-picker,.team-pick,.control-card,.court-card,.mode-note,.single-result)
+  :is(input,textarea)::placeholder{
+  color:#526b74!important;
+  -webkit-text-fill-color:#526b74!important;
+}
+body.tk-smooth-admin #app-shell #page-teams .card :is(.pill,.badge){
+  background:#dff6ed;
+  border-color:#81bbae;
+  color:#075847;
+}
+body.tk-smooth-admin #app-shell #page-teams :is(#registration-qr,.qr){
+  max-width:100%;
+}
+body.tk-smooth-admin #app-shell #page-teams :is(#registration-qr,.qr) :is(canvas,img,svg){
+  max-width:100%;
+  height:auto;
+}
+@media(max-width:900px){
+  body.tk-smooth-admin #app-shell #page-teams>.grid{
+    grid-template-columns:repeat(auto-fit,minmax(min(100%,310px),1fr));
+    gap:14px;
+  }
+}
+@media(max-width:600px){
+  body.tk-smooth-admin #app-shell #page-teams>.grid{
+    grid-template-columns:minmax(0,1fr);
+  }
+  body.tk-smooth-admin #app-shell #page-teams>.grid>.card,
+  body.tk-smooth-admin #app-shell #page-teams>.card{
+    padding:15px!important;
+  }
+  body.tk-smooth-admin #app-shell #page-teams .form-grid{
+    grid-template-columns:repeat(auto-fit,minmax(min(100%,155px),1fr));
+    gap:10px;
+  }
+}
