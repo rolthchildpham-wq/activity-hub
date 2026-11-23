@@ -1,7 +1,33 @@
-import test from 'node:test';import assert from 'node:assert/strict';
-// Source-level domain contract tests: online Firebase/browser checks are separate.
-const fs=await import('node:fs');
-const src=fs.readFileSync(new URL('../src/lib/domain.ts',import.meta.url),'utf8');
-test('all eight sport routes are retained',()=>{for(const key of ['football','badminton','volleyball','running','handmade','vlog','shuttle','cooking'])assert.match(src,new RegExp("key:'"+key+"'"))});
-test('score completion does not count scheduled matches',()=>{assert.match(src,/completed\.has\(m\.status\|\|''\)/);assert.match(src,/a\.started&&!a\.finished/)});
-test('testlab is distinguishable',()=>assert.match(src,/tid\.startsWith\('__testlab_'\)/));
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { sports, summarize, groupPhases, isTestLab, legacyHref } from '../src/lib/domain.ts';
+
+const fixture={
+ teams:{a:{name:'A',checkedIn:true},b:{name:'B'},c:{name:'C',checkedIn:true}},
+ matches:{
+  m1:{id:'m1',status:'FINISHED',stage:'GROUP',group:'A',category:'NAM_6V6'},
+  m2:{id:'m2',status:'LIVE',stage:'GROUP',group:'A',category:'NAM_6V6'},
+  m3:{id:'m3',status:'SCHEDULED',stage:'GROUP',group:'B',category:'NAM_6V6'}
+ },
+ activeMatches:{court1:{matchId:'m2',started:true,finished:false}},
+ config:{title:'Test tournament'}
+};
+
+test('all eight sport entrypoints have existing operational links',()=>{
+ assert.equal(sports.length,8);
+ for(const sport of sports)assert.ok(legacyHref(sport.key).startsWith('/sports/'));
+});
+test('score and active sessions agree without double counting live matches',()=>{
+ assert.deepEqual(summarize(fixture),{teams:3,checkedIn:2,scheduled:3,live:1,completed:1});
+});
+test('stage progress groups by actual category and table',()=>{
+ const groups=groupPhases(fixture.matches);
+ assert.deepEqual(groups,[{name:'NAM_6V6 / A',done:1,total:2},{name:'NAM_6V6 / B',done:0,total:1}]);
+});
+test('test lab never mistaken for main production',()=>{
+ assert.equal(isTestLab('__testlab_u122_20261031_volleyball_demo'),true);
+ assert.equal(isTestLab('main_2026'),false);
+});
+test('no data remains empty rather than simulated',()=>{
+ assert.deepEqual(summarize({teams:{},matches:{},activeMatches:{},config:{}}),{teams:0,checkedIn:0,scheduled:0,live:0,completed:0});
+});
