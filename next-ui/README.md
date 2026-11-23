@@ -41,3 +41,30 @@ Do not merge or deploy to production without evidence from `npm run check`, `npm
 ### Why we did not copy the sample snippets verbatim
 
 The attached examples use `auth.onAuthStateChanged` and a simplified login form. This repo uses Firebase modular Auth and has a working login/logout form; replacing it with those sample snippets would regress functionality. Also, partial Firebase snapshots must not be represented as a complete tournament scorecard.
+
+## 2026-11-23: expanded operational navigation
+
+This branch extends the existing `next-ui` (SvelteKit 5, TypeScript, Tailwind 4) with:
+- Dynamic routes for 8 sports (Vlog delegates to its live legacy module), tournament switcher, shared authenticated workspace, responsive desktop/tablet/mobile navigation.
+- Read-only overview, schedule, group/pool breakdown, bracket, live score, team/check-in status, finance branch display, history and referee hand-off.
+- Single shared tournament store with listener cleanup and stale-response protection; domain grouping/scheduling/finance unit tests.
+- Playwright public/read-only authenticated test suite for preview; `.github/workflows/next-ui-validation.yml` validates pull requests **only**, with no deployment or Firebase writes.
+
+### Important production exclusions
+
+**Do not merge into main or deploy based on the existence of routes.** Write transactions, official standings, sport-specific scoring, account administration, QR, live streaming/video, complete finance, and app permissions still run through the existing `topkey/` application. New read-only screens may be partially populated because production RTDB uses legacy schemas/role scopes. We did not replace production Firebase Rules or change them to simplified `auth.token.role` claims: that would break existing ADMIN/BTC detailed permissions and public viewer routes.
+
+The `next-ui` SvelteKit SPA is configured under `/next/` with a `200.html` fallback. The EdgeOne preview rewrite handling for deep links is unverified. EdgeOne preview URL and deployed SHA must be checked separately.
+
+### Validation
+
+```sh
+cd next-ui
+npm install
+npm run check
+npm test
+npm run build
+npm run test:e2e -- --project=desktop --project=mobile-chromium
+```
+
+Authenticated Test Lab screenshot runs require `TOPKEY_STORAGE_STATE`, `TOPKEY_TEST_TID`, and optionally `TOPKEY_TEST_SPORT`; no credentials belong in Git. Run the real browser, Firebase Rules emulator role matrix and performance checks before any production release.

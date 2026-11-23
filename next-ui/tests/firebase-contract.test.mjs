@@ -23,7 +23,7 @@ test('listeners are disposed after branch switch or permission failure',()=>{
  assert.match(source,/const fail=\(error:Error\)=>/);
 });
 test('operational links leave /next without inventing routes',()=>{
- assert.match(domain,/return '\.\.\/'\+sport\.legacy/);
+ assert.match(domain,/return '\/'\+sport\.legacy/);
 });
 test('all seven RTDB sport roots retain their schema paths',()=>{
  for(const sport of ['badminton','football','volleyball','running','handmade','shuttle','cooking'])

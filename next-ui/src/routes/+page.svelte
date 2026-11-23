@@ -1,5 +1,6 @@
 <script lang="ts">
  import {onMount} from 'svelte';
+ import {base} from '$app/paths';
  import {sports,isTestLab,legacyHref,emptyTournament,type SportKey,type TournamentSnapshot} from '$lib/domain';
  import DashboardStats from '$lib/widgets/DashboardStats.svelte';
  import ScheduleTable from '$lib/widgets/ScheduleTable.svelte';
@@ -72,7 +73,8 @@
    </header>
    <main class="dashboard">
     <section class="heading-row"><div><div class="overline">GIẢI ĐẤU · {sport.name.toUpperCase()}</div><h2>{typeof data.config?.title==='string'?data.config.title:'Tổng quan giải đấu'}</h2><p class="subtle">Dữ liệu chỉ đọc, trực tiếp từ giải đã chọn. Không có số liệu mô phỏng.</p></div>
-     <a class="button primary" href={legacyHref(selected)}>Mở chức năng đầy đủ ↗</a>
+     <div class="heading-links"><a class="button outline" href={base+'/sports/'+selected+'/'+encodeURIComponent(tid)}>Mở các module mới →</a>
+     <a class="button primary" href={legacyHref(selected)}>Mở chức năng đầy đủ ↗</a></div>
     </section>
     <section class="source-row">
      <form on:submit|preventDefault={changeTid} class="tid-form"><label for="tid">Mã giải đấu</label><input id="tid" bind:value={tid} autocomplete="off" spellcheck="false"/><Button variant="neutral" type="submit" loading={loading}>Tải dữ liệu</Button></form>

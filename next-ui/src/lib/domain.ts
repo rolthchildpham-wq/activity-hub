@@ -59,6 +59,6 @@ export function groupPhases(matches:Record<string,Match>|null|undefined) {
 export function legacyHref(s:SportKey):string {
  const sport=sports.find(x=>x.key===s);
  if(!sport)throw new Error('Unknown sport: '+s);
- return '../'+sport.legacy;
+ return '/'+sport.legacy;
 }
 export const isTestLab=(tid:string)=>tid.startsWith('__testlab_');

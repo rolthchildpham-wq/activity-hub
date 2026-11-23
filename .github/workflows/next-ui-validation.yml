@@ -1,0 +1,41 @@
+name: TOPKEY Next UI validation (no deployment)
+on:
+  pull_request:
+    paths:
+      - 'next-ui/**'
+      - '.github/workflows/next-ui-validation.yml'
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: next-ui
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install frontend packages
+        run: npm install --no-audit --no-fund
+      - name: Type check
+        run: npm run check
+      - name: Unit tests
+        run: npm test
+      - name: Build static preview artifacts
+        run: npm run build
+      - name: Install Chromium for read-only smoke
+        run: npx playwright install --with-deps chromium
+      - name: Run read-only desktop/mobile browser tests
+        run: npm run test:e2e -- --project=desktop --project=mobile-chromium
+      - name: Save browser evidence on failures
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: next-ui-browser-evidence
+          path: |
+            next-ui/test-results/
+            next-ui/playwright-report/
+          retention-days: 7
+# CI only. No GitHub-driven EdgeOne deploy, Firebase write, or release merge.

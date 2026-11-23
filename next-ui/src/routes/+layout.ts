@@ -1,2 +1,4 @@
-export const prerender = true;
-export const ssr = false; // Firebase auth and tournament listeners are browser-scoped.
+export const ssr=false;
+// With adapter-static fallback 200.html, non-prerendered dynamic routes
+// are resolved client-side. Do not prerender unknown tournament IDs.
+export const prerender=false;
