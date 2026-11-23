@@ -9,10 +9,15 @@
  import {tournament,loadTournament,resetTournament} from '$lib/features/tournament/store';
  import StateView from '$lib/shared/ui/StateView.svelte';
  let {children}=$props();
- let user:User|null=null,booting=true,error='',email='',password='',loggingIn=false;
+ let user=$state<User|null>(null);
+ let booting=$state(true);
+ let error=$state('');
+ let email=$state('');
+ let password=$state('');
+ let loggingIn=$state(false);
  let current='';
- $: sport=sports.find(x=>x.key===$page.params.slug);
- $: tid=String($page.params.tid||'');
+ let sport=$derived(sports.find(x=>x.key===$page.params.slug));
+ let tid=$derived(String($page.params.tid||''));
  const modules=[
   {key:'',label:'Tổng quan',icon:'▦'},{key:'schedule',label:'Lịch thi đấu',icon:'▤'},
   {key:'bracket',label:'Bảng đấu',icon:'🏆'},{key:'live',label:'Trực tiếp',icon:'●'},
@@ -43,7 +48,7 @@
   finally{loggingIn=false}
  }
  async function logout(){await signOut(client().auth);current='';resetTournament()}
- $: baseRoute=base+'/sports/'+$page.params.slug+'/'+tid;
+ let baseRoute=$derived(base+'/sports/'+$page.params.slug+'/'+tid);
 </script>
 {#if booting}
  <StateView state="loading" message="Đang xác minh tài khoản…"/>
