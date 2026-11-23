@@ -1,0 +1,24 @@
+/* TOPKEY H200: light glass login inspired by supplied reference video.
+   Only presentation; original Firebase form IDs, roles, viewer links remain. */
+body:has(#login-screen:not(.hidden)){background:radial-gradient(circle at 15% 20%,#c8f4ed 0,transparent 32%),radial-gradient(circle at 90% 82%,#d9e9ff 0,transparent 38%),#f2f8fa!important}
+#login-screen.login:not(.hidden){min-height:100dvh;display:flex;justify-content:center;align-items:center;padding:clamp(18px,5vh,56px) 15px!important;overflow:auto}
+#login-screen.login:not(.hidden)>.card{position:relative;width:min(100%,490px)!important;max-width:490px!important;margin:auto!important;background:rgba(255,255,255,.88)!important;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.95)!important;border-radius:30px!important;box-shadow:0 26px 70px #23546926,0 0 0 1px #b7dedb65!important;padding:clamp(23px,4vw,38px)!important;color:#13384c!important;isolation:isolate}
+#login-screen.login:not(.hidden)>.card:before{content:"";display:block;width:76px;height:76px;margin:0 auto 16px;background:radial-gradient(circle at 32% 28%,#39d4c4,#078a97 76%);border-radius:28px;box-shadow:0 10px 26px #078a9744;transform:rotate(-9deg)}
+#login-screen.login:not(.hidden)>.card:after{content:"TK";position:absolute;top:calc(clamp(23px,4vw,38px) + 17px);left:50%;transform:translateX(-50%);font-weight:900;font-size:24px;color:white;letter-spacing:.02em;pointer-events:none}
+#login-screen.login:not(.hidden) .home-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center}
+#login-screen.login:not(.hidden) .home-row #tk-release-badge,#login-screen.login:not(.hidden) #tk-release-badge{display:none!important}
+#login-screen.login:not(.hidden) h1{color:#16384e!important;text-align:center;font-size:clamp(1.35rem,4vw,1.8rem)!important;line-height:1.24;margin:14px 0 8px}
+#login-screen.login:not(.hidden) .muted{color:#557184!important;text-align:center;line-height:1.5;font-size:.88rem}
+#login-screen.login:not(.hidden) .security-banner{background:#e8f7f3!important;color:#315e67!important;border:1px solid #c6ebe5!important;border-radius:12px!important;padding:12px!important;font-size:.78rem;line-height:1.5}
+#login-screen.login:not(.hidden) form.login-tabs{display:grid;gap:13px;margin-top:20px!important}
+#login-screen.login:not(.hidden) form.login-tabs .field{display:grid;gap:6px}
+#login-screen.login:not(.hidden) form.login-tabs label{color:#25495c!important;font-weight:700;font-size:.88rem}
+#login-screen.login:not(.hidden) form.login-tabs input{width:100%;min-height:52px;border-radius:13px!important;border:1px solid #b8d4dc!important;background:#fff!important;color:#15384b!important;padding:12px 14px!important;font:inherit;box-sizing:border-box}
+#login-screen.login:not(.hidden) form.login-tabs input:focus{outline:3px solid #55caba55!important;border-color:#099a8c!important}
+#login-screen.login:not(.hidden) form.login-tabs button[type=submit]{min-height:52px;border-radius:13px!important;background:linear-gradient(105deg,#086c7a,#0fac96)!important;color:#fff!important;font-weight:800;font-size:1rem;border:0;box-shadow:0 9px 20px #068e8b35}
+#login-screen.login:not(.hidden) form.login-tabs a.btn{min-height:46px;display:flex;align-items:center;justify-content:center;border:1px solid #b6dcd9!important;border-radius:12px!important;background:#effaf7!important;color:#086f75!important;font-weight:700}
+#login-screen.login:not(.hidden) a.hub-link,#login-screen.login:not(.hidden) a.hub-back{min-height:44px;display:inline-flex;align-items:center;color:#086f75!important;text-decoration:none}
+#login-screen.login:not(.hidden) details{color:#234459!important}
+#login-screen.login:not(.hidden) :is(button,a,summary):focus-visible{outline:3px solid #0c9588!important;outline-offset:3px}
+@media(max-width:520px){#login-screen.login:not(.hidden){align-items:flex-start;padding:20px 12px!important}#login-screen.login:not(.hidden)>.card{padding:23px 19px!important;border-radius:24px!important}#login-screen.login:not(.hidden)>.card:after{top:40px}}
+@media(prefers-reduced-transparency:reduce){#login-screen.login:not(.hidden)>.card{backdrop-filter:none;-webkit-backdrop-filter:none;background:#fff!important}}

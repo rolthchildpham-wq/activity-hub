@@ -1,0 +1,28 @@
+/* TOPKEY H200: dashboard visual refresh inspired by the supplied reference video.
+   Presentation-only: preserve existing Hub DOM, links, scripts and auth. */
+:root{--tk200-ink:#16334b;--tk200-teal:#099c91;--tk200-bg:#f1f8f7}
+body.tk-bi-hub{background:linear-gradient(130deg,#e8f7f3 0%,#f6fbfd 48%,#eaf3f7 100%)!important;color:var(--tk200-ink)!important;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+.tk-bi-hub .top{background:linear-gradient(115deg,#072d42,#075a62 70%,#089b8e)!important;border-bottom:3px solid #17bea8;box-shadow:0 12px 35px #103f4e1a}
+.tk-bi-hub .top .brand{max-width:1440px;margin:auto}
+.tk-bi-hub .brand-title h1{font-size:clamp(1.05rem,2.2vw,1.75rem);line-height:1.28;letter-spacing:.01em}
+.tk-bi-hub .wrap{max-width:1440px;margin:auto}
+.tk-bi-hub .tk-bi-hero{border:1px solid #bfebe5!important;background:linear-gradient(115deg,#ffffff 10%,#dbf5ef 75%,#d4edf5)!important;color:#12364b!important;box-shadow:0 18px 42px #0e5b6730;border-radius:23px!important}
+.tk-bi-hub .tk-bi-hero h2,.tk-bi-hub .tk-bi-section-heading h2{color:#123a4d!important}
+.tk-bi-hub .tk-bi-hero p,.tk-bi-hub .tk-bi-section-heading small{color:#47687a!important}
+.tk-bi-hub .tk-bi-hero-kicker{color:#007e78!important;font-weight:800}
+.tk-bi-hub .tk-bi-hero-cta .primary{background:linear-gradient(135deg,#078c80,#18b7a4)!important;color:#fff!important}
+.tk-bi-hub #topkey-sports.cards{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:16px!important}
+.tk-bi-hub #topkey-sports .sport{min-width:0!important;display:flex!important;flex-direction:column;gap:8px;border-radius:19px!important;background:linear-gradient(160deg,#fff,#f8fcfd)!important;color:#173b4e!important;border:1px solid #cfe8e8!important;box-shadow:0 9px 24px #11465e15!important;padding:20px!important;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.tk-bi-hub #topkey-sports .sport:hover,.tk-bi-hub #topkey-sports .sport:focus-visible{transform:translateY(-3px);box-shadow:0 18px 32px #11465e25!important;border-color:#1cae9e!important}
+.tk-bi-hub #topkey-sports .sport .emoji{font-size:2.35rem;line-height:1.2}
+.tk-bi-hub #topkey-sports .sport h3{font-size:1.16rem;color:#0f4656!important;margin:0}
+.tk-bi-hub #topkey-sports .sport p{font-size:.84rem;line-height:1.55;color:#567080!important;flex:1;margin:0}
+.tk-bi-hub #topkey-sports .sport .badge{align-self:flex-start;border:0!important;border-radius:99px!important;background:#ddf5ec!important;color:#07786f!important;font-size:.65rem!important;max-width:100%;overflow-wrap:anywhere}
+.tk-bi-hub #topkey-sports .sport .open{display:inline-flex;align-items:center;justify-content:center;min-height:44px;border-radius:11px!important;background:#0c837f!important;color:#fff!important;margin-top:8px;font-weight:750}
+.tk-bi-hub .panel{border-radius:18px!important}
+.tk-bi-hub .footer{color:#587789!important}
+.tk-bi-hub :is(a,button,input,select):focus-visible{outline:3px solid #08a99c!important;outline-offset:3px}
+@media(max-width:1100px){.tk-bi-hub #topkey-sports.cards{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:760px){.tk-bi-hub #topkey-sports.cards{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:11px!important}.tk-bi-hub #topkey-sports .sport{padding:14px!important}.tk-bi-hub .tk-bi-hero{border-radius:17px!important}.tk-bi-hub .brand-title h1{font-size:1rem}}
+@media(max-width:430px){.tk-bi-hub #topkey-sports .sport p{font-size:.77rem}.tk-bi-hub #topkey-sports .sport h3{font-size:1rem}.tk-bi-hub #topkey-sports .sport .emoji{font-size:2rem}}
+@media(prefers-reduced-motion:reduce){.tk-bi-hub #topkey-sports .sport{transition:none}}
