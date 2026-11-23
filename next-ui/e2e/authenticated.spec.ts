@@ -9,7 +9,7 @@ test.use({storageState:session});
 test.skip(!session||!tid,'Authenticated TEST LAB profile and tournament ID are required');
 
 for(const module of ['','schedule','bracket','live','leaderboard','check-in','finance','history','referee']){
- test('read-only '+(module||'overview')+' at '+test.info().project.name,async({page})=>{
+ test('read-only '+(module||'overview')+' testlab',async({page})=>{
   const pathname='./sports/'+encodeURIComponent(sport)+'/'+encodeURIComponent(tid!)+(module?'/'+module:'');
   const jsErrors:string[]=[];
   page.on('pageerror',err=>jsErrors.push(err.message));
