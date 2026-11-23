@@ -22,12 +22,23 @@
       return {fill,value};
     });
     const kpis=ids.map(id=>document.getElementById(id));
-    const read=el=>{const txt=(el?.textContent||'').trim().replace(/[^0-9]/g,'');return txt?Number(txt):0};
+    const read=el=>{const txt=(el?.textContent||'').trim();return /^\d+$/.test(txt)?Number(txt):null};
     let pending=false;
     function update() {
       pending=false;
       if (window.__TOPKEY_DASHBOARD_H202_OWNS_CHARTS) return;
       const values=kpis.map(read);
+      // A placeholder ('…'), unavailable counter or missing node is not zero.
+      // Never display invented statistics before all source KPIs are available.
+      if(values.some(value=>value===null)){
+        rows.forEach(row=>{row.fill.style.width='0%';row.value.textContent='—'});
+        const donut=outer.querySelector('.h201-donut');
+        donut.style.background='#e8f2ef';
+        donut.querySelector('strong').textContent='—';
+        donut.setAttribute('aria-label','Tỷ lệ điểm danh đang tải');
+        outer.querySelector('.h201-explain').textContent='Đang tải dữ liệu giải đấu';
+        return;
+      }
       const max=Math.max(1,...values);
       values.forEach((n,i)=>{rows[i].fill.style.width=(Math.max(0,n)/max*100)+'%';rows[i].value.textContent=String(n)});
       const total=values[0],checked=values[1];

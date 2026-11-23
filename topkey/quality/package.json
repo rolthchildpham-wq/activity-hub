@@ -1,0 +1,14 @@
+{
+  "name": "topkey-quality-tools",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "eslint --config eslint.config.mjs ../sport-dashboard-h201.js ../sports/vnext/src/dashboard-truth-h202.js",
+    "biome": "biome check --config-path=biome.json ../sport-dashboard-h201.js ../sports/vnext/src/dashboard-truth-h202.js",
+    "regression": "node --test ../tests/dashboard-h204-regression.test.mjs"
+  },
+  "devDependencies": {
+    "eslint": "^9.0.0",
+    "@biomejs/biome": "^2.0.0"
+  }
+}
