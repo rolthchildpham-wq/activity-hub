@@ -10,7 +10,7 @@
 <section class="panel" role="note">
  <h2>Cần áp dụng đúng luật từng bộ môn</h2>
  <p class="subtle">Bóng chuyền, bóng đá và cầu lông không dùng chung công thức tính điểm, set và tiêu chí xếp hạng. Bảng chính thức vẫn được tính bằng bộ máy đã xác minh của hệ thống hiện tại, không dùng công thức thắng 3 điểm chung cho tất cả môn.</p>
- {#if sport}<a class="button primary" href={legacyHref(sport.key)}>Xem bảng xếp hạng chính thức ↗</a>{/if}
+ {#if sport}<a class="button primary" href={legacyHref(sport.key,String($page.params.tid||''))}>Xem bảng xếp hạng chính thức ↗</a>{/if}
 </section>
 <section class="panel section-panel"><h2>Đội / VĐV trong giải ({rows.length})</h2>
  {#if !rows.length}<p class="subtle">Chưa có đội/VĐV.</p>
