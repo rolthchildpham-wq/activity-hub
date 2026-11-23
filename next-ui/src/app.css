@@ -11,3 +11,13 @@
 .dashboard{container-type:inline-size}
 @container (max-width:650px){.analysis-grid{grid-template-columns:1fr}.match-grid{grid-template-columns:1fr}}
 @media(max-width:767px){.table-scroll{max-width:calc(100vw - 60px);overflow:auto}.section-tabs{overflow-x:auto}}
+
+/* Tablet: icon rail, desktop: expanded sidebar, mobile: drawer. */
+@media(min-width:768px) and (max-width:1279px){
+ .app-layout{grid-template-columns:78px minmax(0,1fr)}
+ .sidebar{padding:20px 7px}
+ .side-logo{justify-content:center;padding:0}
+ .side-logo>div,.side-section,.sidebar-foot{display:none}
+ .sport-list button{justify-content:center;padding:10px 5px;font-size:22px}
+ .sport-list button span:nth-child(2){display:none}
+}
