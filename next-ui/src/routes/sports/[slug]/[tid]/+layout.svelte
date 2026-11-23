@@ -5,7 +5,7 @@
  import {base} from '$app/paths';
  import {onAuthStateChanged,signInWithEmailAndPassword,signOut,type User} from 'firebase/auth';
  import {client} from '$lib/firebase';
- import {sports,type SportKey,isTestLab} from '$lib/domain';
+ import {sports,legacyHref,type SportKey,isTestLab} from '$lib/domain';
  import {tournament,loadTournament,resetTournament} from '$lib/features/tournament/store';
  import StateView from '$lib/shared/ui/StateView.svelte';
  let {children}=$props();
@@ -34,11 +34,13 @@
  afterNavigate(loadIfAuthorized);
  onMount(()=>{
   let alive=true;
-  const unsub=onAuthStateChanged(client().auth,u=>{
+  let unsub=()=>{};
+  try{unsub=onAuthStateChanged(client().auth,u=>{
    if(!alive)return;
    user=u;booting=false;
    if(u)loadIfAuthorized();else{current='';resetTournament()}
-  },e=>{error=e.message;booting=false});
+  },e=>{error=e.message;booting=false});}
+  catch(e){error=e instanceof Error?e.message:String(e);booting=false}
   return()=>{alive=false;unsub();resetTournament()};
  });
  async function login(){
@@ -64,7 +66,8 @@
    <button type="submit" class="button primary" disabled={loggingIn}>{loggingIn?'Đang đăng nhập…':'Đăng nhập'}</button>
   </form>
   {#if error}<p class="alert" role="alert">{error}</p>{/if}
-  <a href={base+'/sports'} class="viewer-link">← Quay lại các bộ môn</a>
+  <a href={legacyHref(sport.key)} class="viewer-link">Xem lịch / kết quả công khai trên hệ thống hiện tại ↗</a>
+  <p><a href={base+'/sports'} class="viewer-link">← Quay lại các bộ môn</a></p>
  </section></main>
 {:else}
  <div class="workspace">
