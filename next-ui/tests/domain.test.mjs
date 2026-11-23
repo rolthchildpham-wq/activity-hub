@@ -15,7 +15,7 @@ const fixture={
 
 test('all eight sport entrypoints have existing operational links',()=>{
  assert.equal(sports.length,8);
- for(const sport of sports)assert.ok(legacyHref(sport.key).startsWith('../sports/'));
+ for(const sport of sports)assert.ok(legacyHref(sport.key).startsWith('/sports/'));
 });
 test('score and active sessions agree without double counting live matches',()=>{
  assert.deepEqual(summarize(fixture),{teams:3,checkedIn:2,scheduled:3,live:1,completed:1});
