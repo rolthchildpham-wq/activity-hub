@@ -37,9 +37,8 @@ const nextRoutes=[
 ];
 const rewrites=(original.rewrites||[]).filter(rule=>!nextRoutes.some(r=>r.source===rule.source));
 original.rewrites=[...nextRoutes,...rewrites];
-const existingHeaders=original.headers||[];
-const nextCache={source:'/next/*',headers:[{key:'Cache-Control',value:'no-cache'}]};
-original.headers=[...existingHeaders.filter(rule=>rule.source!==nextCache.source),nextCache];
+// Preserve the original headers byte-for-byte in meaning: legacy configuration
+// already has many entries, and EdgeOne documents a strict header-rule limit.
 writeFileSync(configPath,JSON.stringify(original,null,2)+'\n','utf8');
 console.log(JSON.stringify({
  status:'staged',
