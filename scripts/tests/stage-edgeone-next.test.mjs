@@ -31,6 +31,11 @@ test('deep links rewrite only next workspace paths; old sports routes unaffected
  const legacy=readFileSync(join(staged,'sports/badminton/index.html'),'utf8');
  assert.ok(legacy.includes('TOPKEY BADMINTON'));
 });
+test('stage keeps existing EdgeOne headers unchanged',()=>{
+ const original=JSON.parse(readFileSync(join(root,'topkey/edgeone.json'),'utf8'));
+ const staged=JSON.parse(readFileSync(configFile,'utf8'));
+ assert.deepEqual(staged.headers,original.headers);
+});
 test('no runtime write permissions or Firebase rule content changes',()=>{
  const a=readFileSync(join(root,'topkey/firebase.database.rules.json'),'utf8');
  const b=readFileSync(join(staged,'firebase.database.rules.json'),'utf8');
