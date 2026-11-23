@@ -12,7 +12,7 @@
   <h1>{sport.icon} {sport.name}</h1><p class="subtle">Mở giải đấu theo mã đã được cấp quyền.</p>
   {#if sport.key==='vlog'}<p class="subtle">Vlog hiện dùng phân hệ riêng.</p><a class="button primary" href={legacyHref('vlog')}>Mở Vlog hiện tại ↗</a>{:else}<form class="panel tournament-picker" on:submit|preventDefault={()=>{if(valid)location.href=base+'/sports/'+sport.key+'/'+encodeURIComponent(tid)}}>
    <label for="tid-selector">Mã giải đấu</label>
-   <input id="tid-selector" bind:value={tid} required pattern="[A-Za-z0-9_-]{1,100}" autocomplete="off"/>
+   <input id="tid-selector" bind:value={tid} required pattern={'[A-Za-z0-9_-]{1,100}'} autocomplete="off"/>
    <button type="submit" class="button primary" disabled={!valid}>Mở giải</button>
   </form>{/if}
  {:else}<section class="panel empty-panel"><h2>Không tìm thấy bộ môn</h2></section>{/if}
