@@ -28,5 +28,5 @@ export function groupPhases(matches:Record<string,Match>) {
  }
  return [...groups.values()];
 }
-export function legacyHref(s:SportKey){return '/'+sports.find(x=>x.key===s)!.legacy;}
+export function legacyHref(s:SportKey){return '../'+sports.find(x=>x.key===s)!.legacy;}
 export const isTestLab=(tid:string)=>tid.startsWith('__testlab_');
