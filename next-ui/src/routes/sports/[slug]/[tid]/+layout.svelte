@@ -60,7 +60,7 @@
  <main class="auth-screen"><section class="login-card">
   <div class="logo-mark">TK</div><h1>Đăng nhập TOPKEY</h1>
   <p class="subtle">Vui lòng đăng nhập bằng tài khoản được cấp quyền để xem dữ liệu giải.</p>
-  <form on:submit|preventDefault={login} class="login-form">
+  <form onsubmit={(event)=>{event.preventDefault();login()}} class="login-form">
    <label for="workspace-email">Email</label><input id="workspace-email" type="email" autocomplete="username" bind:value={email} required/>
    <label for="workspace-password">Mật khẩu</label><input id="workspace-password" type="password" autocomplete="current-password" bind:value={password} required/>
    <button type="submit" class="button primary" disabled={loggingIn}>{loggingIn?'Đang đăng nhập…':'Đăng nhập'}</button>
@@ -80,7 +80,7 @@
     <a aria-current={$page.url.pathname===(m.key?baseRoute+'/'+m.key:baseRoute)?'page':undefined}
      href={m.key?baseRoute+'/'+m.key:baseRoute}>{m.icon} {m.label}</a>
    {/each}</nav>
-   <button type="button" class="button outline" on:click={logout}>Đăng xuất</button>
+   <button type="button" class="button outline" onclick={logout}>Đăng xuất</button>
   </aside>
   <div class="workspace-main">
    <header class="workspace-header">
