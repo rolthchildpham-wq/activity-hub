@@ -1,4 +1,4 @@
-import {ref,onValue,query,orderByKey,limitToLast,type Database} from 'firebase/database';
+import {ref,onValue,type Database} from 'firebase/database';
 import type {SportKey} from '$lib/domain';
 const roots:Record<Exclude<SportKey,'vlog'>,string>={
  badminton:'topkey_badminton_vnext_2026',football:'topkey_football_vnext_2026',
@@ -15,9 +15,10 @@ export function listenLimitedBranch<T>(
  }
  const location=roots[sport]+'/tournaments/'+tid+'/'+branch;
  const node=ref(db,location);
- // Finance totals must include EVERY entry. The audit trail is a bounded view.
- const target=branch==='audit'?query(node,orderByKey(),limitToLast(200)):node;
- return onValue(target,snap=>{
+ // Both branches use the same snapshot semantics as the live TOPKEY client.
+ // Audit is sorted by clientAt and bounded in the UI; ordering random keys
+ // before limiting can omit the latest events.
+ return onValue(node,snap=>{
   const raw=snap.val();
   onData(raw&&typeof raw==='object'&&!Array.isArray(raw)?raw:{});
  },err=>onError(err.message));
