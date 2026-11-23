@@ -66,7 +66,7 @@
    <button type="submit" class="button primary" disabled={loggingIn}>{loggingIn?'Đang đăng nhập…':'Đăng nhập'}</button>
   </form>
   {#if error}<p class="alert" role="alert">{error}</p>{/if}
-  <a href={legacyHref(sport.key)} class="viewer-link">Xem lịch / kết quả công khai trên hệ thống hiện tại ↗</a>
+  <a href={legacyHref(sport.key,String($page.params.tid||''))} class="viewer-link">Xem lịch / kết quả công khai trên hệ thống hiện tại ↗</a>
   <p><a href={base+'/sports'} class="viewer-link">← Quay lại các bộ môn</a></p>
  </section></main>
 {:else}
