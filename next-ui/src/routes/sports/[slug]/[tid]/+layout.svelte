@@ -47,8 +47,8 @@
 </script>
 {#if booting}
  <StateView state="loading" message="Đang xác minh tài khoản…"/>
-{:else if !sport}
- <StateView state="error" message="Bộ môn không hợp lệ."/>
+{:else if !sport||sport.key==='vlog'||!/^[A-Za-z0-9_-]{1,100}$/.test(tid)}
+ <StateView state="error" message="Mã giải hoặc bộ môn không hợp lệ. Vlog có phân hệ riêng."/>
 {:else if !user}
  <main class="auth-screen"><section class="login-card">
   <div class="logo-mark">TK</div><h1>Đăng nhập TOPKEY</h1>
