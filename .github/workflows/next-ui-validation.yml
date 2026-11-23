@@ -2,6 +2,8 @@ name: TOPKEY Next UI validation (no deployment)
 on:
   pull_request:
     paths:
+      - 'scripts/stage-edgeone-next.mjs'
+      - 'scripts/tests/stage-edgeone-next.test.mjs'
       - 'next-ui/**'
       - '.github/workflows/next-ui-validation.yml'
 permissions:
@@ -38,6 +40,17 @@ jobs:
         run: npm test
       - name: Build static SPA
         run: npm run build
+      - name: Stage legacy and Next in a single EdgeOne artifact
+        run: node ../scripts/stage-edgeone-next.mjs
+      - name: Validate staged /next/ routes and unchanged legacy modules
+        run: node --test ../scripts/tests/stage-edgeone-next.test.mjs
+      - name: Save test-only EdgeOne site bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: topkey-edgeone-composed-site
+          path: dist-edgeone/
+          retention-days: 7
+
 
   e2e:
     name: e2e
