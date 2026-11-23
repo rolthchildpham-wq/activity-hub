@@ -26,6 +26,7 @@
     let pending=false;
     function update() {
       pending=false;
+      if (window.__TOPKEY_DASHBOARD_H202_OWNS_CHARTS) return;
       const values=kpis.map(read);
       const max=Math.max(1,...values);
       values.forEach((n,i)=>{rows[i].fill.style.width=(Math.max(0,n)/max*100)+'%';rows[i].value.textContent=String(n)});
