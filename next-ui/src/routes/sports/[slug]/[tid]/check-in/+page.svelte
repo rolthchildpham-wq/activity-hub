@@ -14,4 +14,4 @@
   <strong>{t.name||id}</strong><span class="tag">{t.checkedIn?'✓ Đã điểm danh':'Chưa điểm danh'}</span>
  </div>{/each}{/if}
 </section>
-{#if sport}<p class="subtle">Để cập nhật điểm danh, mở phân hệ đã được cấp quyền của TOPKEY.</p><a class="button primary" href={legacyHref(sport.key)}>Mở quản lý điểm danh ↗</a>{/if}
+{#if sport}<p class="subtle">Để cập nhật điểm danh, mở phân hệ đã được cấp quyền của TOPKEY.</p><a class="button primary" href={legacyHref(sport.key,String($page.params.tid||''))}>Mở quản lý điểm danh ↗</a>{/if}
