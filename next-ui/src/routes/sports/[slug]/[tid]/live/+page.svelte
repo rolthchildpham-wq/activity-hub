@@ -1,7 +1,7 @@
 <script lang="ts">
  import {tournament} from '$lib/features/tournament/store';
- import {type Match} from '$lib/domain';
- $: active=Object.entries($tournament.data.matches??{}).filter((v):v is [string,Match]=>!!v[1]&&['LIVE','IN_PROGRESS'].includes(v[1].status||''));
+ import {activeLiveMatches} from '$lib/domain';
+ $: active=activeLiveMatches($tournament.data);
 </script>
 <svelte:head><title>TOPKEY · Trực tiếp tỷ số</title></svelte:head>
 <div class="row-between"><h1>Trực tiếp tỷ số</h1><span class="tag">● Firebase realtime</span></div>
