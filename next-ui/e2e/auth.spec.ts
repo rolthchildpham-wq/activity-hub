@@ -52,4 +52,5 @@ test('capture public layout evidence and measure 360/390/768/1280 viewport overf
   join(output,test.info().project.name+'-measurements.json'),
   JSON.stringify({source:'Playwright local SvelteKit preview, not EdgeOne production',samples:summary},null,2)
  );
+ console.log('PUBLIC_LAYOUT_MEASUREMENTS='+JSON.stringify(summary));
 });
