@@ -20,7 +20,7 @@
  let tid=$derived(String($page.params.tid||''));
  const modules=[
   {key:'',label:'Tổng quan',icon:'▦'},{key:'schedule',label:'Lịch thi đấu',icon:'▤'},
-  {key:'bracket',label:'Bảng đấu',icon:'🏆'},{key:'live',label:'Trực tiếp',icon:'●'},
+  {key:'bracket',label:'Bảng đấu',icon:'🏆'},{key:'live',label:'Trực tiếp',icon:'●'},{key:'referee',label:'Trọng tài',icon:'⚖'},
   {key:'leaderboard',label:'Xếp hạng',icon:'≡'},{key:'check-in',label:'Điểm danh',icon:'✓'},
   {key:'finance',label:'Tài chính',icon:'₫'},{key:'history',label:'Nhật ký',icon:'◷'}
  ];
