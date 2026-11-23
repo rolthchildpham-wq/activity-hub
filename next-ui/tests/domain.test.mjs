@@ -56,3 +56,9 @@ test('operational handoff retains the tournament id without changing production'
 test('handoff ignores untrusted tournament IDs',()=>{
  assert.equal(legacyHref('football','bad/../evil'),'/sports/vnext/index.html?sport=football');
 });
+
+test('KPI LIVE and live list count are identical when internal match id differs from Firebase key',()=>{
+ const data={teams:{},matches:{firebaseKey:{id:'internal42',status:'LIVE'}},activeMatches:{court1:{matchId:'firebaseKey',started:true,finished:false}},config:{}};
+ assert.equal(activeLiveMatches(data).length,1);
+ assert.equal(summarize(data).live,1);
+});
