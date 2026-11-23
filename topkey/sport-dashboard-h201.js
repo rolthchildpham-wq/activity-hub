@@ -22,7 +22,7 @@
       return {fill,value};
     });
     const kpis=ids.map(id=>document.getElementById(id));
-    const read=el=>{const txt=(el?.textContent||'').trim();return /^\\d+$/.test(txt)?Number(txt):null};
+    const read=el=>{const txt=(el?.textContent||'').trim();return /^\d+$/.test(txt)?Number(txt):null};
     let pending=false;
     function update() {
       pending=false;
