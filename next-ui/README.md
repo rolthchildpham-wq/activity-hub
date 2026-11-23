@@ -24,3 +24,20 @@ Scoring, scheduling, admin permissions, full standings, public registration, Liv
 
 ## Release gate
 Real Android/iOS and desktop screenshots, role matrix ADMIN/BTC/umpire/viewer, Firebase emulator, live score, test lab, all sports, performance and rollback evidence required before a production swap.
+
+## 2026-11-23 refactor (source documents 1 and 2)
+
+The following work was implemented in the existing `next-ui`, preserving the legacy operational system:
+
+- UI components: `src/lib/shared/ui/Button.svelte`, `Card.svelte`, `StateView.svelte`.
+- Widgets: `src/lib/widgets/DashboardStats.svelte`, `ScheduleTable.svelte`.
+- Stronger null-safe domain entities, reliable Firebase branch subscriptions and cleanup.
+- Timeout/error state: **never treat missing/unreadable branches as real zero values**. Empty RTDB branches emit initial `null`; a missing initial callback times out with a visible error.
+- Responsive dashboard and mobile navigation retained; no new dead /live or /sports routes.
+- Existing production Firebase keys/project unchanged (client API keys are public identifiers, not credentials).
+
+Do not merge or deploy to production without evidence from `npm run check`, `npm test`, `npm run build`, EdgeOne Preview, desktop/mobile screenshots and Firebase role-emulator testing. The new frontend still lacks parity for full scoring, bracket editing, live publisher, finance and permissions.
+
+### Why we did not copy the sample snippets verbatim
+
+The attached examples use `auth.onAuthStateChanged` and a simplified login form. This repo uses Firebase modular Auth and has a working login/logout form; replacing it with those sample snippets would regress functionality. Also, partial Firebase snapshots must not be represented as a complete tournament scorecard.
