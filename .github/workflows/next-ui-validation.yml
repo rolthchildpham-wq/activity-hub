@@ -6,8 +6,13 @@ on:
       - '.github/workflows/next-ui-validation.yml'
 permissions:
   contents: read
+concurrency:
+  group: next-ui-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   validate:
+    name: validate
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -17,25 +22,75 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Install frontend packages
+      - name: Cache npm downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: next-ui-npm-${{ runner.os }}-${{ hashFiles('next-ui/package.json') }}
+          restore-keys: next-ui-npm-${{ runner.os }}-
+      - name: Install packages
         run: npm install --no-audit --no-fund
-      - name: Type check
+      - name: Synchronize SvelteKit types
+        run: npx svelte-kit sync
+      - name: Svelte and TypeScript check
         run: npm run check
-      - name: Unit tests
+      - name: Domain and security contract tests
         run: npm test
-      - name: Build static preview artifacts
+      - name: Build static SPA
         run: npm run build
-      - name: Install Chromium for read-only smoke
+
+  e2e:
+    name: e2e
+    needs: validate
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: next-ui
+    env:
+      TOPKEY_TEST_TID: ${{ secrets.TOPKEY_TEST_TID }}
+      TOPKEY_TEST_SPORT: ${{ vars.TOPKEY_TEST_SPORT }}
+      TOPKEY_ADMIN_STORAGE_B64: ${{ secrets.TOPKEY_ADMIN_STORAGE_B64 }}
+      TOPKEY_REFEREE_STORAGE_B64: ${{ secrets.TOPKEY_REFEREE_STORAGE_B64 }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Restore npm cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: next-ui-npm-${{ runner.os }}-${{ hashFiles('next-ui/package.json') }}
+          restore-keys: next-ui-npm-${{ runner.os }}-
+      - name: Install packages
+        run: npm install --no-audit --no-fund
+      - name: Cache Playwright Chromium
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: next-ui-playwright-${{ runner.os }}-${{ hashFiles('next-ui/package.json') }}
+      - name: Install Playwright browser dependencies
         run: npx playwright install --with-deps chromium
-      - name: Run read-only desktop/mobile browser tests
+      - name: Prepare optional TEST LAB profiles
+        shell: bash
+        run: |
+          if [ -n "$TOPKEY_ADMIN_STORAGE_B64" ]; then
+            printf '%s' "$TOPKEY_ADMIN_STORAGE_B64" | base64 -d > "$RUNNER_TEMP/topkey-admin-state.json"
+            echo "TOPKEY_ADMIN_STORAGE_STATE=$RUNNER_TEMP/topkey-admin-state.json" >> "$GITHUB_ENV"
+          fi
+          if [ -n "$TOPKEY_REFEREE_STORAGE_B64" ]; then
+            printf '%s' "$TOPKEY_REFEREE_STORAGE_B64" | base64 -d > "$RUNNER_TEMP/topkey-referee-state.json"
+            echo "TOPKEY_REFEREE_STORAGE_STATE=$RUNNER_TEMP/topkey-referee-state.json" >> "$GITHUB_ENV"
+          fi
+      - name: Run desktop and mobile read-only E2E
         run: npm run test:e2e -- --project=desktop --project=mobile-chromium
-      - name: Save browser evidence on failures
+      - name: Upload visual evidence when tests fail
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: next-ui-browser-evidence
+          name: next-ui-visual-evidence
           path: |
             next-ui/test-results/
             next-ui/playwright-report/
           retention-days: 7
-# CI only. No GitHub-driven EdgeOne deploy, Firebase write, or release merge.
+# This workflow never deploys EdgeOne or changes Firebase production rules/data.
