@@ -9,7 +9,7 @@
  let entries:Array<Entry&{id:string}>=[],loading=true,error='';
  $: sport=sports.find(s=>s.key===$page.params.slug);
  onMount(()=>{
-  const off=listenLimitedBranch<Entry>(client().db,$page.params.slug as any,$page.params.tid,'logs',records=>{
+  const off=listenLimitedBranch<Entry>(client().db,$page.params.slug as any,String($page.params.tid||''),'logs',records=>{
    entries=Object.entries(records).filter(([id,v])=>!!v&&typeof v==='object')
     .map(([id,v])=>({...v,id})).sort((a,b)=>(b.at||0)-(a.at||0));
    loading=false;error='';
