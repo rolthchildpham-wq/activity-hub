@@ -37,4 +37,4 @@
  </div>
  <p class="subtle">Khoản đang yêu cầu duyệt: {totals.requested}. Xác minh trạng thái đã thu/chi trên hệ thống chính thức.</p>
 {/if}
-{#if sport}<a class="button primary" href={legacyHref(sport.key)}>Mở tài chính chính thức ↗</a>{/if}
+{#if sport}<a class="button primary" href={legacyHref(sport.key,String($page.params.tid||''))}>Mở tài chính chính thức ↗</a>{/if}

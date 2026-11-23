@@ -34,4 +34,4 @@
  <article class="match-line"><div class="row-between"><strong>{entry.action||'Thao tác'}</strong><small class="subtle">{format(entry.clientAt)}</small></div>
  <p class="subtle">{entry.entityType||'—'} / {entry.entityId||'—'} {entry.actor?'· bởi '+entry.actor:''}</p>
  </article>{/each}</section>{/if}
-{#if sport}<a class="button outline" href={legacyHref(sport.key)}>Mở nhật ký hệ thống hiện tại ↗</a>{/if}
+{#if sport}<a class="button outline" href={legacyHref(sport.key,String($page.params.tid||''))}>Mở nhật ký hệ thống hiện tại ↗</a>{/if}

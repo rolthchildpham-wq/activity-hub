@@ -31,18 +31,29 @@ const validValues = <T>(records:Record<string,T>|null|undefined):T[] =>
  Object.values(records ?? {}).filter((value):value is T=>value!==null&&typeof value==='object');
 
 export function summarize(s:TournamentSnapshot) {
- const teams=validValues(s.teams),matches=validValues(s.matches),active=validValues(s.activeMatches);
- const live=new Set<string>();
- for(const [key,m] of Object.entries(s.matches ?? {})){
-  if(m && (m.status==='LIVE'||m.status==='IN_PROGRESS')) live.add(m.id||key);
- }
- for(const a of active)if(a.started&&!a.finished&&a.matchId)live.add(a.matchId);
+ const teams=validValues(s.teams),matches=validValues(s.matches);
+ const liveCount=activeLiveMatches(s).length;
  return {
   teams:teams.length,checkedIn:teams.filter(t=>t.checkedIn===true).length,
-  scheduled:matches.length,live:live.size,
+  scheduled:matches.length,live:liveCount,
   completed:matches.filter(m=>completed.has(m.status??'')).length
  };
 }
+export function activeLiveMatches(s:TournamentSnapshot):Array<[string,Match]> {
+ const keys=new Set<string>();
+ for(const [id,m] of Object.entries(s.matches??{})){
+  if(m&&['LIVE','IN_PROGRESS'].includes(m.status??''))keys.add(id);
+ }
+ for(const activity of validValues(s.activeMatches)){
+  if(!activity.started||activity.finished||!activity.matchId)continue;
+  const id=activity.matchId in (s.matches??{})
+    ?activity.matchId
+    :Object.keys(s.matches??{}).find(k=>s.matches[k]?.id===activity.matchId);
+  if(id&&s.matches[id])keys.add(id);
+ }
+ return [...keys].map(id=>[id,s.matches[id]] as [string,Match]).filter(([,m])=>!!m);
+}
+
 export function groupPhases(matches:Record<string,Match>|null|undefined) {
  const groups=new Map<string,{name:string;done:number;total:number}>();
  for(const m of validValues(matches)){
@@ -56,9 +67,16 @@ export function groupPhases(matches:Record<string,Match>|null|undefined) {
  return [...groups.values()];
 }
 // SvelteKit is mounted at /next/ in the same TOPKEY host.
-export function legacyHref(s:SportKey):string {
+export function legacyHref(s:SportKey,tid?:string):string {
  const sport=sports.find(x=>x.key===s);
  if(!sport)throw new Error('Unknown sport: '+s);
- return '/'+sport.legacy;
+ const [pathname,search='']=sport.legacy.split('?');
+ const params=new URLSearchParams(search);
+ if(tid&&/^[A-Za-z0-9_-]{1,100}$/.test(tid)) {
+  params.set('tid',tid);
+  if(isTestLab(tid))params.set('testlab','1');
+ }
+ const query=params.toString();
+ return '/'+pathname+(query?'?'+query:'');
 }
 export const isTestLab=(tid:string)=>tid.startsWith('__testlab_');
