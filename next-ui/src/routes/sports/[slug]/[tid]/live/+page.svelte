@@ -1,6 +1,6 @@
 <script lang="ts">
  import {tournament} from '$lib/features/tournament/store';
- import {completed,type Match} from '$lib/domain';
+ import {type Match} from '$lib/domain';
  $: active=Object.entries($tournament.data.matches??{}).filter((v):v is [string,Match]=>!!v[1]&&['LIVE','IN_PROGRESS'].includes(v[1].status||''));
 </script>
 <svelte:head><title>TOPKEY · Trực tiếp tỷ số</title></svelte:head>
