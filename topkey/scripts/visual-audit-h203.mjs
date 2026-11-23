@@ -46,7 +46,6 @@ try {
         const screens = tabs.length ? tabs : ['login'];
         for (const tab of screens) {
           if (tab !== 'hub' && tab !== 'login') {
-            const control = page.locator('#app-shell:not(.hidden) [data-tab]').filter({ has: page.locator(':scope') });
             // Click only the existing navigation element; never submit forms or change scores.
             await page.locator('#app-shell:not(.hidden) [data-tab="'+tab+'"]').first().click().catch(() => {});
             await page.waitForTimeout(200);
