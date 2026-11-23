@@ -66,3 +66,6 @@
  .workspace-bottom a span{font-size:10px;font-weight:750}
  .row-between{gap:9px}.match-line strong{font-size:13px}
 }
+
+.heading-links{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+@media(max-width:767px){.heading-links{width:100%}.heading-links .button{width:100%}}
