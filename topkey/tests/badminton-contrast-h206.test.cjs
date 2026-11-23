@@ -51,6 +51,15 @@ test('white card ink/labels, dark card ink and buttons reach WCAG AA contrast',(
   assert.ok(contrast(fg,bg)>=4.5,name+' '+contrast(fg,bg).toFixed(2)+':1 below 4.5');
  }
 });
+test('H206 covers the real renderCheckin DOM class, not just generic dark cards',()=>{
+ const script=fs.readFileSync(path.join(root,'sports/badminton/src/app.js'),'utf8');
+ assert.ok(script.includes("d.className='checkin-row'"));
+ assert.ok(script.includes("d.className='list-card'"));
+ assert.ok(css.includes('#checkin-list>.checkin-row'));
+ assert.ok(css.includes('#registration-list>.list-card'));
+ assert.ok(css.includes('background:#f3f9f7!important'));
+ assert.ok(css.includes('color:#143d42!important'));
+});
 test('H206 leaves existing modules, QR links, scoring and auth scripts intact',()=>{
  for(const id of ['id="page-teams"','id="team-form"','id="registration-qr"','id="checkin-list"','id="registration-list"']){
   assert.ok(html.includes(id),'Missing '+id);
