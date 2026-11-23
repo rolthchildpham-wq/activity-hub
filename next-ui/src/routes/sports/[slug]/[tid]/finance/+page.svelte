@@ -10,7 +10,7 @@
  $: sport=sports.find(s=>s.key===$page.params.slug);
  $: totals=summarizeFinance(records);
  onMount(()=>{
-  const unsubscribe=listenLimitedBranch<Transaction>(client().db,$page.params.slug as any,$page.params.tid,'transactions',value=>{
+  const unsubscribe=listenLimitedBranch<Transaction>(client().db,$page.params.slug as any,String($page.params.tid||''),'transactions',value=>{
    records=value;loading=false;error='';
   },e=>{error=e;loading=false});
   return unsubscribe;
