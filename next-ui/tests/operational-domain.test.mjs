@@ -1,0 +1,19 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {bracketRounds} from '../src/lib/entities/bracket.ts';
+import {byDate} from '../src/lib/entities/schedule.ts';
+import {summarizeFinance} from '../src/lib/entities/finance.ts';
+
+test('bracket rounds honor progression even with unknown phases',()=>{
+ const result=bracketRounds({a:{stage:'F'},b:{stage:'QF'},c:null,d:{stage:'SF'}});
+ assert.deepEqual(result.map(x=>x.name),['QF','SF','F']);
+});
+test('schedule handles missing date and keeps stable ascending order',()=>{
+ const groups=byDate({x:{date:'2026-11-23',time:'13:00'},y:{date:'2026-11-23',time:'09:00'},z:{},bad:null});
+ assert.equal(groups[0].date,'2026-11-23');
+ assert.deepEqual(groups[0].matches.map(x=>x.id),['y','x']);
+ assert.equal(groups[1].date,'Chưa xếp ngày');
+});
+test('finance excludes malformed values and distinguishes income/expense',()=>{
+ assert.deepEqual(summarizeFinance({a:{type:'income',amount:100},b:{type:'expense',amount:40},c:{type:'expense',amount:-9},d:null}),{income:100,expense:40,balance:60});
+});
