@@ -1,0 +1,67 @@
+/* H201 - Sport Dashboard after user video: restrained emerald/navy dashboard.
+ * Shared badminton + VNext. Scope to authenticated app only.
+ * Never hide controls, test-lab diagnostics, auth banners or data tables.
+ */
+#app-shell:not(.hidden){--h201-bg:#eff7f6;--h201-ink:#103d43;--h201-line:#d4e6e3;--h201-accent:#009f89;color:var(--h201-ink);background:var(--h201-bg);min-height:100dvh}
+#app-shell:not(.hidden)>.topbar{background:#fff!important;color:#123c42!important;border-bottom:1px solid #d5e8e5!important;box-shadow:0 3px 16px #0f554211!important}
+#app-shell:not(.hidden)>.topbar .brand{background:transparent!important;color:#123c42!important}
+#app-shell:not(.hidden)>.topbar h1{color:#0c4146!important;font-size:clamp(16px,1.4vw,21px)!important}
+#app-shell:not(.hidden)>.topbar small{color:#51797a!important}
+#app-shell:not(.hidden) .shell{max-width:none!important;background:#eff7f6!important;min-width:0;padding:clamp(14px,2vw,26px)!important}
+#app-shell:not(.hidden) .nav{background:#083a34!important;border:0!important}
+#app-shell:not(.hidden) .nav [data-tab]{color:#dffaf2!important;border:0!important;min-height:44px!important;white-space:normal!important;text-align:left;font-size:13px}
+#app-shell:not(.hidden) .nav [data-tab].active{color:#074138!important;background:#dff8ed!important;border-radius:11px!important}
+#app-shell:not(.hidden) .nav [data-tab]:hover{background:#13554a!important;color:#fff!important}
+#app-shell:not(.hidden) .nav [data-tab].active:hover{background:#dff8ed!important;color:#074138!important}
+#app-shell:not(.hidden) .page>.grid{min-width:0}
+#app-shell:not(.hidden) .page .card{min-width:0;border-radius:17px!important;border:1px solid #d5e7e3!important;background:#fff!important;color:#123c43!important;box-shadow:0 8px 22px #1253440b!important}
+#app-shell:not(.hidden) .page .card :is(h2,h3){color:#103d43!important}
+#app-shell:not(.hidden) .page .muted,#app-shell:not(.hidden) .page .note{color:#52757c!important}
+#app-shell:not(.hidden) .page .card .kpi{color:#103d43}
+#app-shell:not(.hidden) .page .table-wrap{max-width:100%;overflow:auto;border:1px solid #dceae7!important;border-radius:12px}
+#app-shell:not(.hidden) .page .table-wrap table{color:#173e48!important}
+#app-shell:not(.hidden) .page .table-wrap th{background:#e8f4ef!important;color:#164b45!important}
+#app-shell:not(.hidden) .page .table-wrap td{color:#254d56!important;border-color:#e4efec!important}
+#app-shell:not(.hidden) .page .card .field label{color:#365d63!important}
+#app-shell:not(.hidden) .page .card :is(input,select,textarea){color:#113c46;background:#f9fdfc;border:1px solid #b8d8d2}
+#app-shell:not(.hidden) .page .card :is(button,a,input,select,textarea):focus-visible,#app-shell:not(.hidden) .nav button:focus-visible{outline:3px solid #0ea995!important;outline-offset:2px}
+#app-shell:not(.hidden) #page-overview{display:grid;gap:18px;align-content:start}
+#app-shell:not(.hidden) #page-overview>.grid.g4:first-child{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:14px;margin:0!important}
+#app-shell:not(.hidden) #page-overview>.grid.g4:first-child>.card.kpi{min-height:122px;padding:18px 20px!important;position:relative;overflow:hidden;border-top:4px solid #0ead93!important}
+#app-shell:not(.hidden) #page-overview>.grid.g4:first-child>.card.kpi:nth-child(2){border-top-color:#2badd7!important}
+#app-shell:not(.hidden) #page-overview>.grid.g4:first-child>.card.kpi:nth-child(3){border-top-color:#f0a13d!important}
+#app-shell:not(.hidden) #page-overview>.grid.g4:first-child>.card.kpi:nth-child(4){border-top-color:#8066d8!important}
+#app-shell:not(.hidden) #page-overview>.grid.g4:first-child>.card.kpi:after{content:"";position:absolute;right:-25px;top:-30px;width:88px;height:88px;border-radius:50%;background:#06b59c12}
+#app-shell:not(.hidden) #page-overview>.grid.g4:first-child>.card.kpi span{display:block;color:#4d7275!important;font-size:13px;font-weight:700}
+#app-shell:not(.hidden) #page-overview>.grid.g4:first-child>.card.kpi strong{font-size:clamp(29px,3vw,42px)!important;line-height:1.2;color:#0b4b42!important}
+#app-shell:not(.hidden) #page-overview>.grid.g2{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr)!important;gap:16px;margin-top:0!important}
+#app-shell:not(.hidden) #page-overview>.grid.g2>.card{min-width:0}
+#app-shell:not(.hidden) #h201-analytics{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(260px,1fr);gap:16px}
+#app-shell:not(.hidden) #h201-analytics .h201-panel{background:#fff;border:1px solid #d4e6e3;border-radius:17px;padding:21px 22px;box-shadow:0 8px 22px #1253440b;min-width:0}
+#app-shell:not(.hidden) #h201-analytics h2{font-size:16px;font-weight:800;color:#154844;margin:0 0 5px}
+#app-shell:not(.hidden) #h201-analytics .h201-sub{font-size:12px;color:#5a7d7e;margin:0 0 18px}
+#app-shell:not(.hidden) #h201-analytics .h201-bars{display:grid;gap:13px;margin-top:15px}
+#app-shell:not(.hidden) #h201-analytics .h201-bar-row{display:grid;grid-template-columns:minmax(112px,1fr) minmax(60px,3fr) 40px;align-items:center;gap:12px;font-size:12px;color:#42676a}
+#app-shell:not(.hidden) #h201-analytics .h201-track{height:13px;background:#e8f2ee;border-radius:12px;overflow:hidden}
+#app-shell:not(.hidden) #h201-analytics .h201-fill{height:100%;width:0;background:linear-gradient(90deg,#0e756b,#20bca0);border-radius:12px;transition:width .22s ease}
+#app-shell:not(.hidden) #h201-analytics .h201-bar-row:nth-child(2) .h201-fill{background:linear-gradient(90deg,#1280a3,#36bcda)}
+#app-shell:not(.hidden) #h201-analytics .h201-bar-row:nth-child(3) .h201-fill{background:linear-gradient(90deg,#d58a26,#f7c46b)}
+#app-shell:not(.hidden) #h201-analytics .h201-bar-row:nth-child(4) .h201-fill{background:linear-gradient(90deg,#6c54b7,#b69af1)}
+#app-shell:not(.hidden) #h201-analytics .h201-donut{width:160px;height:160px;margin:10px auto 15px;display:grid;place-items:center;border-radius:50%;background:conic-gradient(#12a58d 0%,#e8f2ef 0%)}
+#app-shell:not(.hidden) #h201-analytics .h201-donut-inner{background:white;border-radius:50%;width:120px;height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+#app-shell:not(.hidden) #h201-analytics .h201-donut-inner strong{font-size:28px;color:#087e70}
+#app-shell:not(.hidden) #h201-analytics .h201-donut-inner small{font-size:12px;color:#56797b}
+#app-shell:not(.hidden) #h201-analytics .h201-explain{text-align:center;font-size:12px;color:#597b7c}
+@media(min-width:1050px){
+ #app-shell:not(.hidden){display:grid!important;grid-template-columns:206px minmax(0,1fr);grid-template-rows:auto 1fr}
+ #app-shell:not(.hidden)>.topbar{display:contents!important}
+ #app-shell:not(.hidden)>.topbar .brand{grid-column:1/-1;grid-row:1;background:#fff!important;min-height:70px;border-bottom:1px solid #d6e8e4;padding:12px 24px!important}
+ #app-shell:not(.hidden)>.topbar .nav{grid-column:1;grid-row:2;display:flex!important;flex-direction:column!important;align-items:stretch;gap:5px;min-height:calc(100dvh - 70px);padding:24px 10px!important;overflow:auto}
+ #app-shell:not(.hidden)>.topbar .nav>[data-tab]{width:100%;flex:0 0 auto!important}
+ #app-shell:not(.hidden)>.shell{grid-column:2;grid-row:2;width:100%;padding:26px 28px!important;min-width:0}
+}
+@media(max-width:1049px){#app-shell:not(.hidden) .nav{display:flex!important;gap:6px;overflow-x:auto;padding:10px!important}#app-shell:not(.hidden) .nav>[data-tab]{flex:0 0 auto!important;white-space:nowrap!important}}
+@media(max-width:850px){#app-shell:not(.hidden) #h201-analytics{grid-template-columns:1fr}#app-shell:not(.hidden) #page-overview>.grid.g2{grid-template-columns:1fr!important}}
+@media(max-width:640px){#app-shell:not(.hidden) #page-overview>.grid.g4:first-child{grid-template-columns:repeat(2,minmax(0,1fr))!important}#app-shell:not(.hidden) #page-overview>.grid.g4:first-child>.card.kpi{min-height:104px;padding:13px!important}#app-shell:not(.hidden) #h201-analytics .h201-panel{padding:15px}#app-shell:not(.hidden) #h201-analytics .h201-bar-row{grid-template-columns:93px 1fr 31px;gap:7px}#app-shell:not(.hidden) .shell{padding:12px!important}}
+@media(max-width:350px){#app-shell:not(.hidden) #page-overview>.grid.g4:first-child{grid-template-columns:1fr!important}}
+@media(prefers-reduced-motion:reduce){#app-shell:not(.hidden) #h201-analytics .h201-fill{transition:none}}
