@@ -1,0 +1,89 @@
+/* H203 - Unified contrast repair for TOPKEY light dashboard and legacy dark modules.
+ * Load last. Presentation only; no auth, data, events or visibility changes.
+ * WCAG AA color targets: primary text #183b46 on white, secondary #45636d on white.
+ */
+:root { --tk203-ink:#183b46;--tk203-muted:#45636d;--tk203-paper:#fff;--tk203-line:#c5dcd9;--tk203-field:#f8fcfc;--tk203-dark:#102a42;--tk203-dark-text:#eef8ff;--tk203-dark-muted:#c3dbe9;--tk203-focus:#007f74 }
+#app-shell:not(.hidden){font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px;line-height:1.5}
+#app-shell:not(.hidden) .page{min-width:0}
+#app-shell:not(.hidden) .page>.card,
+#app-shell:not(.hidden) .page>.grid>.card,
+#app-shell:not(.hidden) .page>.grid>.grid-item>.card {color:var(--tk203-ink)!important}
+#app-shell:not(.hidden) .page .card :is(p,li,dt,dd,label,.field label,.muted,.note,small,.description,.help-text,.form-label,.tk9-help,.tk122-label),
+#app-shell:not(.hidden) .page .card .field>label {color:var(--tk203-muted)!important;opacity:1!important}
+#app-shell:not(.hidden) .page .card :is(h1,h2,h3,h4,h5,h6,strong,b,summary,th) {color:var(--tk203-ink)}
+#app-shell:not(.hidden) .page .card :is(.security-banner,.alert,.warning):not(.tk203-dark){color:var(--tk203-ink)}
+#app-shell:not(.hidden) .page .card .table-wrap :is(th,td){opacity:1!important}
+#app-shell:not(.hidden) .page .card .table-wrap th{color:#174b46!important;background:#e8f4ef!important}
+#app-shell:not(.hidden) .page .card .table-wrap td{color:#274954!important;background:#fff}
+#app-shell:not(.hidden) .page .card .table-wrap tr:nth-child(even) td{background:#f6fbfa}
+#app-shell:not(.hidden) .page .card .table-wrap tbody tr:hover td{background:#eaf7f4}
+#app-shell:not(.hidden) .page .card :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"]),select,textarea),
+#app-shell:not(.hidden) .page .card :is(.scheduler-rules,.rule-toolbar) :is(input,select,textarea) {
+ background:var(--tk203-field)!important;color:#123847!important;
+ -webkit-text-fill-color:#123847!important;color-scheme:light!important;
+ border:1px solid #829fa7!important;border-radius:10px;min-height:44px;
+ opacity:1!important;box-shadow:none
+}
+#app-shell:not(.hidden) .page .card :is(input,textarea)::placeholder{color:#536d79!important;opacity:1!important}
+#app-shell:not(.hidden) .page .card :is(select option,select optgroup){background:#fff!important;color:#123847!important}
+#app-shell:not(.hidden) .page .card :is(input[type="file"],input[type="range"],input[type="checkbox"],input[type="radio"]){color-scheme:light;accent-color:#087e71}
+#app-shell:not(.hidden) .page .card input[type="file"]{color:#214c5a}
+#app-shell:not(.hidden) .page .card input[type="file"]::file-selector-button{border:1px solid #a8cac3;border-radius:8px;background:#eaf5f2;color:#15483f;padding:9px 12px;cursor:pointer}
+#app-shell:not(.hidden) .page .card a:not(.btn):not(.open){color:#096d79;text-decoration-thickness:1px}
+#app-shell:not(.hidden) .page .card a:not(.btn):not(.open):hover{text-decoration:underline}
+#app-shell:not(.hidden) .page .card .btn,
+#app-shell:not(.hidden) .page .card button.btn {color:#fff!important;-webkit-text-fill-color:#fff!important;min-height:44px}
+#app-shell:not(.hidden) .page .card :is(.btn.ok,button.ok){background:#087e60!important;border-color:#087e60!important;color:#fff!important}
+#app-shell:not(.hidden) .page .card :is(.btn.primary,button.primary){background:#175bb3!important;border-color:#175bb3!important;color:#fff!important}
+#app-shell:not(.hidden) .page .card :is(.btn.warn,button.warn){background:#965500!important;border-color:#965500!important;color:#fff!important}
+#app-shell:not(.hidden) .page .card :is(.btn.danger,button.danger){background:#a62a45!important;border-color:#a62a45!important;color:#fff!important}
+#app-shell:not(.hidden) .page .card :is(button,.btn):disabled{opacity:.7!important;cursor:not-allowed}
+#app-shell:not(.hidden) .page .card :is(.pill,.badge){color:#075f63;border-color:#5faeab;background:#edf9f5;opacity:1}
+#app-shell:not(.hidden) .page .card :is(.list-card,.subcard,.rule-chip,.control-card,.court-card,.schedule-preview,.team-picker,.team-pick,.mode-note,.single-result,.official-score .side),
+#app-shell:not(.hidden) .page .card #commentary-list > *,
+#app-shell:not(.hidden) .page .card :is(#tk152-panel,#tk154-neural,#tk160-audio-panel,#tk144-live-studio) {
+ background:var(--tk203-dark)!important;border-color:#597990!important;color:var(--tk203-dark-text)!important
+}
+#app-shell:not(.hidden) .page .card :is(.list-card,.subcard,.rule-chip,.control-card,.court-card,.schedule-preview,.team-picker,.team-pick,.mode-note,.single-result,.official-score .side) :is(p,span,small,b,strong,em,label,.muted,.note),
+#app-shell:not(.hidden) .page .card #commentary-list > * :is(p,span,small,b,strong),
+#app-shell:not(.hidden) .page .card :is(#tk152-panel,#tk154-neural,#tk160-audio-panel) :is(p,span,small,b,strong,label,.muted,.note) {
+ color:var(--tk203-dark-text)!important;opacity:1!important
+}
+#app-shell:not(.hidden) .page .card :is(#tk160-audio-status,#tk154-voice-status,#commentary-list,.tk144-status){color:var(--tk203-dark-muted)!important}
+#app-shell:not(.hidden) .page #commentary-list{display:grid;gap:8px}
+#app-shell:not(.hidden) .page #commentary-list > *{padding:12px 14px;border-radius:11px;line-height:1.55;overflow-wrap:anywhere;color:var(--tk203-dark-text)!important}
+#app-shell:not(.hidden) .page #tk152-panel :is(input,select,textarea),
+#app-shell:not(.hidden) .page #tk144-live-studio :is(input,select,textarea),
+#app-shell:not(.hidden) .page #tk154-neural :is(input,select,textarea) {
+ color:#eef8ff!important;-webkit-text-fill-color:#eef8ff!important;
+ background:#15354e!important;border-color:#88a9c1!important;color-scheme:dark!important
+}
+#app-shell:not(.hidden) .page :is(#tk144-live-studio,#tk152-panel,#tk154-neural) :is(select option,select optgroup){background:#15354e!important;color:#eef8ff!important}
+#app-shell:not(.hidden) .page #tk144-live-studio :is(h2,h3,p,.tk144-pane-label,.tk144-status){color:#eef8ff!important}
+#app-shell:not(.hidden) .page #tk144-live-studio .tk144-video-pane>.card,
+#app-shell:not(.hidden) .page #tk144-live-studio .tk144-official-pane>.card {background:#102a42!important;color:#eef8ff!important}
+#app-shell:not(.hidden) .page #tk144-live-studio .field>label{color:#d3e6f1!important}
+#app-shell:not(.hidden) .page #tk144-live-studio :is(.official-score strong,.score-head strong){color:#85f5e9!important}
+#app-shell:not(.hidden) .page .score-actions button{min-height:48px}
+#app-shell:not(.hidden) .page .card :is(input,select,textarea,button,a,summary):focus-visible,
+#app-shell:not(.hidden) .nav [data-tab]:focus-visible{outline:3px solid var(--tk203-focus)!important;outline-offset:3px}
+#app-shell:not(.hidden) .page .card input:disabled{background:#e8f1f0!important;color:#47616d!important;-webkit-text-fill-color:#47616d!important}
+#app-shell:not(.hidden) .page .card .tk61-readonly{opacity:1}
+#app-shell:not(.hidden) .page .card :is(.field,.form-grid,.action-bar,.split,.table-wrap){min-width:0}
+#app-shell:not(.hidden) .page .card :is(input,select,textarea){max-width:100%}
+#app-shell:not(.hidden) .page .card .table-wrap{overflow-x:auto;overscroll-behavior-x:contain}
+#app-shell:not(.hidden) .page .card .table-wrap table{white-space:normal}
+#app-shell:not(.hidden) .page .card .table-wrap td{overflow-wrap:anywhere}
+body.tk-bi-hub .wrap :is(.panel,.feature,.sport) :is(.muted,.note,small,label){color:#45636d!important;opacity:1}
+body.tk-bi-hub .wrap .panel :is(input,select,textarea){min-height:44px}
+body.tk-bi-hub .wrap .panel :is(input,select,textarea):focus-visible{outline:3px solid #007f74!important;outline-offset:2px}
+#login-screen:not(.hidden) .card :is(label,p,.muted,small){color:#45636d!important;opacity:1}
+#login-screen:not(.hidden) .card :is(input,select,textarea){color:#193d4c!important;-webkit-text-fill-color:#193d4c!important;color-scheme:light}
+@media(max-width:700px){
+ #app-shell:not(.hidden){font-size:14px}
+ #app-shell:not(.hidden) .page .card{padding:14px!important}
+ #app-shell:not(.hidden) .page .card .form-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr))}
+ #app-shell:not(.hidden) .page .card :is(button,.btn){min-height:44px}
+ #app-shell:not(.hidden) .page .card .action-bar{gap:8px}
+}
+@media(prefers-reduced-motion:reduce){#app-shell:not(.hidden) *{scroll-behavior:auto!important}}
