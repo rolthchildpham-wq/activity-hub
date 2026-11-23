@@ -20,5 +20,5 @@
  {/each}
 </div>
 {#if sport}
- <a href={legacyHref(sport.key)} class="button primary">Mở chức năng vận hành hiện tại ↗</a>
+ <a href={legacyHref(sport.key,String($page.params.tid||''))} class="button primary">Mở chức năng vận hành hiện tại ↗</a>
 {/if}
