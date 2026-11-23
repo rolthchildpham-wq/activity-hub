@@ -20,18 +20,22 @@ function install(){
    const t=String(T.Data?.tid||''),test=t.startsWith('__testlab_');
    $('tk202-environment').textContent=(test?'TEST LAB':'PRODUCTION')+' · '+(t||'Chưa xác định mã giải');
    const finished=matches.filter(done).length;
-   const liveIds=new Set(matches.filter(live).map(m=>m.id));
-   active.filter(x=>x.started&&!x.finished).forEach(x=>liveIds.add(x.matchId));
+   const liveIds=new Set(matches.filter(live).map(m=>m.id).filter(Boolean));
+   active.filter(x=>x.started&&!x.finished&&x.matchId).forEach(x=>liveIds.add(x.matchId));
    const metrics=[teams.length,teams.filter(x=>x.checkedIn===true).length,liveIds.size,finished];
    const max=Math.max(1,...metrics);
-   const ready=loaded.has('teams')&&loaded.has('matches');
+   // Listeners can complete before this enhancement installs. Populated state is
+   // proof that the corresponding snapshot arrived; avoid perpetual false loading.
+   const teamsReady=loaded.has('teams')||teams.length>0;
+   const matchesReady=loaded.has('matches')||matches.length>0;
+   const ready=teamsReady&&matchesReady;
    const chart=$('h201-analytics');
    chart?.querySelectorAll('.h201-bar-row').forEach((row,i)=>{row.querySelector('.h201-fill').style.width=100*metrics[i]/max+'%';row.querySelector('strong').textContent=ready?String(metrics[i]):'—'});
    const donut=chart?.querySelector('.h201-donut');
    if(donut){const pct=teams.length?Math.min(100,Math.round(metrics[1]*100/teams.length)):0;
      donut.style.background='conic-gradient(#12a58d 0 '+pct+'%, #e8f2ef '+pct+'% 100%)';
-     donut.querySelector('strong').textContent=loaded.has('teams')&&teams.length?pct+'%':'—';
-     const text=chart.querySelector('.h201-explain');if(text)text.textContent=loaded.has('teams')?(teams.length?metrics[1]+' / '+teams.length+' đã điểm danh':'Chưa có đội/VĐV'):'Đang xác nhận dữ liệu';
+     donut.querySelector('strong').textContent=teamsReady&&teams.length?pct+'%':'—';
+     const text=chart.querySelector('.h201-explain');if(text)text.textContent=teamsReady?(teams.length?metrics[1]+' / '+teams.length+' đã điểm danh':'Chưa có đội/VĐV'):'Đang xác nhận dữ liệu';
    }
    const cfg=s.config||{},format=String(cfg.appearance?.format||cfg.format||cfg.rules?.format||'').toUpperCase();
    $('tk202-source').textContent='Thể thức: '+(formatNames[format]||format||'Chưa được cấu hình')+' · '+matches.length+' trận · '+finished+' hoàn tất · '+liveIds.size+' LIVE';
@@ -45,7 +49,7 @@ function install(){
      g.n++;if(done(m))g.done++;groups.set(gKey,g);
    }
    const stages=$('tk202-stages');stages.replaceChildren();
-   if(!matches.length)stages.textContent=loaded.has('matches')?'Chưa có trận đấu trong giải này.':'Đang tải lịch thi đấu…';
+   if(!matches.length)stages.textContent=matchesReady?'Chưa có trận đấu trong giải này.':'Đang tải lịch thi đấu…';
    for(const [key,d] of phase){
      const box=document.createElement('div');box.className='tk202-phase';
      const label=document.createElement('strong');label.textContent=names[key]||key;
