@@ -60,7 +60,7 @@
    <div class="side-logo"><span class="logo-mark small-logo">TK</span><div><strong>TOPKEY</strong><small>SPORTS HUB · VNEXT</small></div></div>
    <p class="side-section">BỘ MÔN</p>
    <nav class="sport-list" aria-label="Chọn bộ môn">
-    {#each sports as s}<button class:current={selected===s.key} on:click={()=>choose(s.key)}><span aria-hidden="true">{s.icon}</span><span>{s.name}</span></button>{/each}
+    {#each sports as s}<button class:current={selected===s.key} aria-label={s.name} on:click={()=>choose(s.key)}><span aria-hidden="true">{s.icon}</span><span>{s.name}</span></button>{/each}
    </nav>
    <div class="sidebar-foot"><p>Hệ thống mới · Đang chuyển đổi</p><a href="/index.html">Mở Hub hiện tại ↗</a></div>
   </aside>
