@@ -74,7 +74,7 @@
    <main class="dashboard">
     <section class="heading-row"><div><div class="overline">GIẢI ĐẤU · {sport.name.toUpperCase()}</div><h2>{typeof data.config?.title==='string'?data.config.title:'Tổng quan giải đấu'}</h2><p class="subtle">Dữ liệu chỉ đọc, trực tiếp từ giải đã chọn. Không có số liệu mô phỏng.</p></div>
      <div class="heading-links"><a class="button outline" href={base+'/sports/'+selected+'/'+encodeURIComponent(tid)}>Mở các module mới →</a>
-     <a class="button primary" href={legacyHref(selected)}>Mở chức năng đầy đủ ↗</a></div>
+     <a class="button primary" href={legacyHref(selected,tid)}>Mở chức năng đầy đủ ↗</a></div>
     </section>
     <section class="source-row">
      <form on:submit|preventDefault={changeTid} class="tid-form"><label for="tid">Mã giải đấu</label><input id="tid" bind:value={tid} autocomplete="off" spellcheck="false"/><Button variant="neutral" type="submit" loading={loading}>Tải dữ liệu</Button></form>
@@ -100,5 +100,5 @@
    </main>
   </div>
  </div>
- <nav class="mobile-bottom" aria-label="Tác vụ nhanh"><button class:active={tab==='overview'} on:click={()=>tab='overview'}>⌂<span>Trang chủ</span></button><button class:active={tab==='schedule'} on:click={()=>tab='schedule'}>▤<span>Lịch</span></button><a href={legacyHref(selected)}>●<span>Trực tiếp</span></a><button on:click={()=>sidebar=true}>☰<span>Bộ môn</span></button></nav>
+ <nav class="mobile-bottom" aria-label="Tác vụ nhanh"><button class:active={tab==='overview'} on:click={()=>tab='overview'}>⌂<span>Trang chủ</span></button><button class:active={tab==='schedule'} on:click={()=>tab='schedule'}>▤<span>Lịch</span></button><a href={legacyHref(selected,tid)}>●<span>Trực tiếp</span></a><button on:click={()=>sidebar=true}>☰<span>Bộ môn</span></button></nav>
 {/if}
