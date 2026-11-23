@@ -1,0 +1,8 @@
+# Generated EdgeOne staging output
+/dist-edgeone/
+# Node dependencies and SvelteKit build output
+/next-ui/node_modules/
+/next-ui/.svelte-kit/
+/next-ui/build/
+/next-ui/test-results/
+/next-ui/playwright-report/
