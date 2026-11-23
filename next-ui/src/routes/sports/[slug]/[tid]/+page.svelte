@@ -13,7 +13,7 @@
 <div class="module-cards">
  {#each [
   ['schedule','Lịch thi đấu','📅'],['bracket','Vòng bảng / Nhánh đấu','🏆'],
-  ['live','Live Score','🔴'],['leaderboard','Bảng xếp hạng','📊'],
+  ['live','Live Score','🔴'],['referee','Trọng tài','⚖'],['leaderboard','Bảng xếp hạng','📊'],
   ['check-in','Điểm danh','✓'],['finance','Tài chính','₫'],['history','Nhật ký','◷']
  ] as item}
   <a href={root+'/'+item[0]} class="panel module-card"><strong>{item[2]} {item[1]}</strong><span>Xem dữ liệu →</span></a>
