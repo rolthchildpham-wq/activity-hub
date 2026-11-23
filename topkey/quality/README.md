@@ -11,11 +11,15 @@ These are upstream source repositories. They do not become installed executables
 ## Audit commands (on a checked-out repo with dependencies installed)
 
 ```sh
-cd topkey
+cd topkey/quality
+npm install
+npm run lint
+npm run biome
+npm run regression
+semgrep scan --config semgrep.yml ../sport-dashboard-h201.js ../sports/vnext/src/dashboard-truth-h202.js
+cd ..
 node --check sport-dashboard-h201.js
 node --check sports/vnext/src/dashboard-truth-h202.js
-npx --no-install @biomejs/biome check --config-path=quality/biome.json sport-dashboard-h201.js sports/vnext/src/dashboard-truth-h202.js
-semgrep scan --config quality/semgrep.yml sport-dashboard-h201.js sports/vnext/src/dashboard-truth-h202.js
 ```
 
 Run the root project's JavaScript static checks and all existing regression tests before considering release. A warning or tool not installed is **NOT TESTED**, not PASS.
