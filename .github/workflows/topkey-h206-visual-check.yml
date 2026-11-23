@@ -1,0 +1,27 @@
+name: TOPKEY H206 production CSS regression (test only)
+on:
+  pull_request:
+    paths:
+      - 'topkey/sports/badminton/index.html'
+      - 'topkey/sports/badminton/operations-contrast-h206.css'
+      - 'topkey/tests/badminton-contrast-h206.test.cjs'
+      - '.github/workflows/topkey-h206-visual-check.yml'
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate light/dark card contrast, cascade and safety
+        run: node --test topkey/tests/badminton-contrast-h206.test.cjs
+      - name: Check existing production regression suites
+        run: |
+          node topkey/tests/badminton-dashboard-smooth-h129.test.cjs
+          node topkey/tests/h140-unified-contrast.test.cjs
+          node topkey/tests/badminton-auth-overlay.test.cjs
+          node topkey/tests/hub-bi-visual-regression.test.cjs
+# No production/preview deploy. Never runs against a real competition account.
