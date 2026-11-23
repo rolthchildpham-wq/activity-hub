@@ -6,10 +6,10 @@ const session=process.env.TOPKEY_STORAGE_STATE;
 const sport=process.env.TOPKEY_TEST_SPORT||'volleyball';
 const tid=process.env.TOPKEY_TEST_TID;
 test.use({storageState:session});
-test.skip(!session||!tid,'Authenticated TEST LAB profile and tournament ID are required');
 
 for(const module of ['','schedule','bracket','live','leaderboard','check-in','finance','history','referee']){
  test('read-only '+(module||'overview')+' testlab',async({page})=>{
+  test.skip(!session||!tid,'Authenticated TEST LAB profile and tournament ID are required');
   const pathname='./sports/'+encodeURIComponent(sport)+'/'+encodeURIComponent(tid!)+(module?'/'+module:'');
   const jsErrors:string[]=[];
   page.on('pageerror',err=>jsErrors.push(err.message));
