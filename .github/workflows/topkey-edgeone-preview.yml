@@ -9,6 +9,7 @@ on:
       - 'topkey/index.html'
       - 'topkey/release.json'
       - 'topkey/build.json'
+      - 'topkey/edgeone.json'
       - 'topkey/build.json'
       - 'topkey/release-runtime.js'
       - 'topkey/sports/vnext/workspace-redesign-h218.css'
