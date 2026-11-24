@@ -12,5 +12,5 @@ assert.ok(h55.includes("event.target?.closest?.('#tk51-ranking-explain-btn')"),'
 assert.ok(h55.includes('hookButton(); // bind before native button click fires'),'first click must work');
 assert.ok(loader.includes('upgrade122-hotfix55.js?v=h135-event-reports-20261113'));
 assert.ok(loader.includes('upgrade122-hotfix76.js?v=h135-event-reports-20261113'));
-assert.ok(html.includes('production-loader.js?v=h135-poll-free-reports-20261113'));
+assert.ok(html.includes('production-loader.js?v=tourney-lifecycle-20261117-r1'),'entry must load the current tournament-lifecycle runtime');
 console.log('H135 report polling removed, report hooks preserved and new assets wired.');
