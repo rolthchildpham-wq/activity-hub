@@ -1,0 +1,120 @@
+name: TOPKEY Chrome DevTools MCP full UI smoke test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/topkey-chrome-devtools-mcp.yml'
+      - 'topkey/index.html'
+      - 'topkey/sports/vnext/**'
+      - 'topkey/sports/badminton/**'
+      - 'topkey/hub-*.css'
+      - 'topkey/tests/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: topkey-chrome-devtools-mcp
+  cancel-in-progress: false
+
+jobs:
+  chrome-devtools-full-ui:
+    name: Chrome DevTools MCP – production UI smoke matrix
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install official Chrome DevTools MCP CLI
+        run: |
+          npm install --global chrome-devtools-mcp@latest
+          chrome-devtools --help
+
+      - name: Start isolated headless Chrome through Chrome DevTools MCP
+        run: |
+          set -euo pipefail
+          chrome-devtools start --headless --isolated --no-usage-statistics
+          chrome-devtools status
+          mkdir -p artifacts/chrome-devtools
+
+      - name: Inspect production Hub and every sport workspace
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://topkey-activity-management.edgeone.dev"
+          routes=(
+            "/"
+            "/sports/vnext/index.html?sport=football"
+            "/sports/vnext/index.html?sport=volleyball"
+            "/sports/vnext/index.html?sport=running"
+            "/sports/vnext/index.html?sport=handmade"
+            "/sports/vnext/index.html?sport=shuttle"
+            "/sports/vnext/index.html?sport=cooking"
+            "/sports/badminton/index.html"
+          )
+          chrome-devtools new_page "$base/"
+          sleep 3
+          for i in "${!routes[@]}"; do
+            route="${routes[$i]}"
+            url="$base$route"
+            echo "===== ROUTE $route =====" | tee -a artifacts/chrome-devtools/route-audit.txt
+            chrome-devtools navigate_page 1 --url "$url" | tee "artifacts/chrome-devtools/route-$i-navigation.txt"
+            sleep 3
+            chrome-devtools evaluate_script '() => JSON.stringify({url:location.href,title:document.title,readyState:document.readyState,viewport:{width:innerWidth,height:innerHeight},documentWidth:document.documentElement.scrollWidth,bodyWidth:document.body.scrollWidth,horizontalOverflow:document.documentElement.scrollWidth>innerWidth+2,visibleText:(document.body.innerText||"").slice(0,500),cards:document.querySelectorAll("[class*=card], [class*=tile], [role=button]").length,buttons:document.querySelectorAll("button").length,inputs:document.querySelectorAll("input,select,textarea").length,brokenImages:[...document.images].filter(x=>!x.complete||x.naturalWidth===0).map(x=>x.src),stylesheets:[...document.styleSheets].map(x=>x.href).filter(Boolean)})' --pageId 1 --output-format=json | tee "artifacts/chrome-devtools/route-$i-dom.json"
+            chrome-devtools list_console_messages 1 --output-format=json | tee "artifacts/chrome-devtools/route-$i-console.json" || true
+            chrome-devtools list_network_requests 1 --output-format=json | tee "artifacts/chrome-devtools/route-$i-network.json" || true
+            chrome-devtools take_screenshot 1 --filePath "artifacts/chrome-devtools/route-$i.png" --fullPage | tee "artifacts/chrome-devtools/route-$i-screenshot.txt"
+          done
+
+      - name: Verify all production route HTTP statuses and required static assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://topkey-activity-management.edgeone.dev"
+          paths=(
+            "/"
+            "/sports/vnext/index.html?sport=football"
+            "/sports/vnext/index.html?sport=volleyball"
+            "/sports/vnext/index.html?sport=running"
+            "/sports/vnext/index.html?sport=handmade"
+            "/sports/vnext/index.html?sport=shuttle"
+            "/sports/vnext/index.html?sport=cooking"
+            "/sports/badminton/index.html"
+          )
+          failed=0
+          for path in "${paths[@]}"; do
+            code="$(curl --silent --show-error --location --max-time 25 -o /dev/null -w '%{http_code}' "$base$path" || true)"
+            printf '%s %s\n' "$code" "$path" | tee -a artifacts/chrome-devtools/http-status.txt
+            if [ "$code" != "200" ]; then failed=1; fi
+          done
+          test "$failed" = "0"
+
+      - name: Run TOPKEY source regression suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          node topkey/tests/sport-workspaces-ux-h214.test.cjs
+          node topkey/tests/sport-themes-h132.test.cjs
+          node topkey/tests/badminton-dashboard-smooth-h129.test.cjs
+          node topkey/tests/hub-sidebar-full-patch-h130.test.cjs
+          node topkey/tests/short-public-links-h136.test.cjs
+
+      - name: Upload Chrome DevTools screenshots and diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: topkey-chrome-devtools-mcp-ui-audit
+          path: artifacts/chrome-devtools/
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Stop Chrome DevTools MCP daemon
+        if: always()
+        run: chrome-devtools stop || true
