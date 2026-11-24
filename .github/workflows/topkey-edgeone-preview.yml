@@ -32,6 +32,7 @@ on:
       - 'topkey/tests/badminton-rapid-tabs-h133.test.cjs'
       - 'topkey/tests/badminton-dashboard-smooth-h129.test.cjs'
       - 'topkey/hub-compact-h130.css'
+      - 'topkey/hub-layout-h209.css'
       - 'topkey/hub-compact-h130.js'
       - 'topkey/sports/badminton/sidebar-collapse-h130.css'
       - 'topkey/sports/badminton/sidebar-collapse-h130.js'
@@ -236,23 +237,31 @@ jobs:
           set -euo pipefail
           base="https://topkey-activity-management.edgeone.dev"
           found=""
-          for path in "/" "/index.html" "/topkey/" "/topkey/index.html"; do
-            code="$(curl --silent --show-error --max-time 20 --location --output "/tmp/h210-$(echo "$path" | tr '/.' '__').html" --write-out '%{http_code}' "$base$path?__h210_probe=1" || true)"
-            echo "H210 route probe $path -> HTTP $code"
-            if [ "$code" = "200" ] && grep -Eqi '<title>TOPKEY Sports Hub|tk-bi-hub' "/tmp/h210-$(echo "$path" | tr '/.' '__').html"; then
-              found="$path"
-              cp "/tmp/h210-$(echo "$path" | tr '/.' '__').html" /tmp/topkey-h210-live.html
+          html_file=/tmp/topkey-h210-live.html
+          for attempt in $(seq 1 18); do
+            code="$(curl --silent --show-error --max-time 20 --location --output "$html_file" --write-out '%{http_code}' "$base/?__h210_probe=$attempt" || true)"
+            title="$(grep -Eo '<title>[^<]+' "$html_file" 2>/dev/null | head -1 || true)"
+            has_nav=0; has_art=0; has_css=0
+            grep -Fq 'tk210-nav' "$html_file" 2>/dev/null && has_nav=1 || true
+            grep -Fq 'tk210-hero-art' "$html_file" 2>/dev/null && has_art=1 || true
+            grep -Fq 'hub-layout-h209.css?v=h210-reference-layout-20261124' "$html_file" 2>/dev/null && has_css=1 || true
+            echo "H210 live attempt=$attempt HTTP=$code title=${title:-unknown} nav=$has_nav hero=$has_art css=$has_css"
+            if [ "$code" = "200" ] && [ "$has_nav" = "1" ] && [ "$has_art" = "1" ] && [ "$has_css" = "1" ]; then
+              found=1
               break
             fi
+            sleep 10
           done
-          if [ -z "$found" ]; then
-            echo "::error::EdgeOne host returned no valid TOPKEY Hub document at /, /index.html, /topkey/, or /topkey/index.html."
+          if [ "$found" != "1" ]; then
+            echo "::error::EdgeOne root is reachable but has not served H210 markup after 180 seconds. Check EdgeOne Production deployment source/root directory and deployment history."
             exit 1
           fi
-          echo "Live TOPKEY Hub document found at $found"
-          grep -Fq "tk210-nav" /tmp/topkey-h210-live.html
-          grep -Fq "tk210-hero-art" /tmp/topkey-h210-live.html
-          echo "### Live H210 navigation and hero markup verified at $found." >> "$GITHUB_STEP_SUMMARY"
+          css_code="$(curl --silent --show-error --max-time 20 --location --output /tmp/topkey-h210-live.css --write-out '%{http_code}' "$base/hub-layout-h209.css?__h210_probe=1" || true)"
+          echo "H210 stylesheet HTTP=$css_code"
+          test "$css_code" = "200"
+          grep -Fq '.tk210-nav' /tmp/topkey-h210-live.css
+          grep -Fq '.tk210-hero-art' /tmp/topkey-h210-live.css
+          echo "### Live H210 Hub HTML and stylesheet verified." >> "$GITHUB_STEP_SUMMARY"
       - name: Document EdgeOne release settings
         shell: bash
         env:
