@@ -1,0 +1,37 @@
+/* Animal-Island-UI-inspired interaction polish, adapted to TOPKEY's dark navy/teal brand.
+   Static-site implementation: no React runtime, dependencies, or app logic changes. */
+.tk-bi-hub{--tk-motion:cubic-bezier(.4,0,.2,1);--tk-card-radius:18px}
+.tk-bi-hub .tk-bi-hero,.tk-bi-hub .panel,.tk-bi-hub .feature{
+ border-radius:var(--tk-card-radius)!important;
+ transition:border-color .22s var(--tk-motion),background-color .22s var(--tk-motion),transform .22s var(--tk-motion)!important
+}
+.tk-bi-hub #topkey-sports .sport{
+ border-radius:20px!important;
+ transition:transform .22s var(--tk-motion),border-color .22s var(--tk-motion),background-color .22s var(--tk-motion)!important
+}
+@media(hover:hover) and (pointer:fine){
+ .tk-bi-hub #topkey-sports .sport:hover{transform:translateY(-2px)!important}
+}
+.tk-bi-hub .tk-bi-hero-cta .primary,.tk-bi-hub #topkey-sports .sport .open,.tk-bi-hub .open,.tk-bi-hub button{
+ min-height:44px;border-radius:50px!important;
+ transition:transform .2s var(--tk-motion),background-color .2s var(--tk-motion),border-color .2s var(--tk-motion)!important
+}
+.tk-bi-hub .tk-bi-hero-cta .primary{box-shadow:0 4px 0 #176f61!important}
+.tk-bi-hub .tk-bi-hero-cta .primary:active,.tk-bi-hub #topkey-sports .sport .open:active,.tk-bi-hub .open:active,.tk-bi-hub button:active{transform:translateY(2px)!important}
+.tk-bi-hub #topkey-sports .sport .open{border:1px solid #347f70!important;background:#245b51!important}
+.tk-bi-hub :is(a,button,input,select){touch-action:manipulation}
+.tk-bi-hub :is(a,button,input,select):focus-visible{outline:3px solid #69d9c0!important;outline-offset:3px!important}
+@media(max-width:560px){
+ .tk-bi-hub .wrap{padding-left:14px!important;padding-right:14px!important}
+ .tk-bi-hub #topkey-sports.cards{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+ .tk-bi-hub #topkey-sports .sport{min-height:176px!important;padding:13px!important;gap:8px!important}
+ .tk-bi-hub #topkey-sports .sport .emoji{font-size:26px!important}
+ .tk-bi-hub #topkey-sports .sport h3{font-size:15px!important;line-height:1.3!important}
+ .tk-bi-hub #topkey-sports .sport p{font-size:12px!important;line-height:1.45!important}
+ .tk-bi-hub #topkey-sports .sport .open{min-height:40px!important;padding:7px 9px!important;font-size:12px!important}
+ .tk-bi-hub .tk-bi-hero{padding:18px!important}
+}
+@media(max-width:360px){.tk-bi-hub #topkey-sports.cards{grid-template-columns:minmax(0,1fr)!important}}
+@media(prefers-reduced-motion:reduce){
+ .tk-bi-hub *, .tk-bi-hub *::before, .tk-bi-hub *::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+}
