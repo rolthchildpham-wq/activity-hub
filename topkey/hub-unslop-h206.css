@@ -1,0 +1,172 @@
+/*
+ * TOPKEY Sports Hub landing-page refinement guided by unslop.
+ * Keeps the established dark sports-operations world, corporate logo and teal brand accent.
+ * Removes decorative hue gradients, glow shadows and excessive card emphasis.
+ * Adapted from https://github.com/heydamir/unslop (CC BY 4.0).
+ */
+.tk-bi-hub{
+ --tk-hub-bg:#101923;
+ --tk-hub-header:#141f2a;
+ --tk-hub-surface:#1a2733;
+ --tk-hub-raised:#202f3b;
+ --tk-hub-line:#344653;
+ --tk-hub-text:#edf3f5;
+ --tk-hub-muted:#b1bec6;
+ --tk-hub-accent:#28b39a;
+ background:var(--tk-hub-bg)!important;
+ color:var(--tk-hub-text)!important;
+}
+.tk-bi-hub .top{
+ background:var(--tk-hub-header)!important;
+ border-bottom:1px solid var(--tk-hub-line)!important;
+ box-shadow:none!important;
+ backdrop-filter:none!important;
+}
+.tk-bi-hub .brand-title h1{
+ color:var(--tk-hub-text)!important;
+ font-weight:600!important;
+ letter-spacing:0!important;
+}
+.tk-bi-hub .eyebrow,
+.tk-bi-hub .tk-bi-hero-kicker{
+ color:#77cdbb!important;
+ font-size:12px!important;
+ font-weight:600!important;
+ letter-spacing:.02em!important;
+}
+.tk-bi-hub .wrap{padding-top:24px}
+.tk-bi-hub .tk-bi-hero{
+ background:var(--tk-hub-surface)!important;
+ border:1px solid var(--tk-hub-line)!important;
+ border-left:3px solid var(--tk-hub-accent)!important;
+ border-radius:14px!important;
+ box-shadow:none!important;
+ color:var(--tk-hub-text)!important;
+}
+.tk-bi-hub .tk-bi-hero h2,
+.tk-bi-hub .tk-bi-section-heading h2{color:var(--tk-hub-text)!important}
+.tk-bi-hub .tk-bi-hero p,
+.tk-bi-hub .tk-bi-section-heading small{color:var(--tk-hub-muted)!important}
+.tk-bi-hub .tk-bi-hero-cta .primary{
+ background:var(--tk-hub-accent)!important;
+ color:#08231f!important;
+ border:1px solid var(--tk-hub-accent)!important;
+ box-shadow:none!important;
+}
+.tk-bi-hub .tk-bi-hero-cta .tk-bi-link{
+ border-radius:8px!important;
+}
+.tk-bi-hub #topkey-sports.cards{
+ grid-template-columns:repeat(4,minmax(0,1fr))!important;
+ gap:12px!important;
+}
+.tk-bi-hub #topkey-sports .sport{
+ min-width:0!important;
+ min-height:205px!important;
+ padding:18px!important;
+ gap:9px!important;
+ background:var(--tk-hub-surface)!important;
+ color:var(--tk-hub-text)!important;
+ border:1px solid var(--tk-hub-line)!important;
+ border-radius:12px!important;
+ box-shadow:none!important;
+ transform:none!important;
+ transition:border-color .16s ease,background-color .16s ease!important;
+}
+.tk-bi-hub #topkey-sports .sport:hover,
+.tk-bi-hub #topkey-sports .sport:focus-visible{
+ background:var(--tk-hub-raised)!important;
+ border-color:var(--tk-hub-accent)!important;
+ box-shadow:none!important;
+ transform:none!important;
+}
+.tk-bi-hub #topkey-sports .sport.badminton{
+ border-color:#278b75!important;
+}
+.tk-bi-hub #topkey-sports .sport .emoji{
+ font-size:30px!important;
+ line-height:1.15!important;
+ filter:none!important;
+}
+.tk-bi-hub #topkey-sports .sport h3{
+ color:var(--tk-hub-text)!important;
+ font-size:17px!important;
+ font-weight:600!important;
+ margin:2px 0!important;
+}
+.tk-bi-hub #topkey-sports .sport p{
+ color:var(--tk-hub-muted)!important;
+ font-size:13px!important;
+ line-height:1.55!important;
+ margin:0!important;
+}
+.tk-bi-hub #topkey-sports .sport .badge{
+ position:static!important;
+ align-self:flex-start!important;
+ max-width:100%!important;
+ overflow-wrap:anywhere!important;
+ padding:4px 7px!important;
+ border:1px solid #435563!important;
+ border-radius:6px!important;
+ background:#253541!important;
+ color:#c6d4da!important;
+ font-size:10px!important;
+ font-weight:600!important;
+}
+.tk-bi-hub #topkey-sports .sport.badminton .badge{
+ border-color:#367b69!important;
+ color:#a6e1ce!important;
+ background:#1e3a35!important;
+}
+.tk-bi-hub #topkey-sports .sport .open{
+ display:inline-flex!important;
+ align-items:center!important;
+ justify-content:center!important;
+ min-height:40px!important;
+ margin-top:auto!important;
+ padding:8px 11px!important;
+ border-radius:8px!important;
+ background:#245b51!important;
+ color:#e8f8f3!important;
+ font-size:13px!important;
+ font-weight:600!important;
+}
+.tk-bi-hub .panel,
+.tk-bi-hub .feature{
+ background:var(--tk-hub-surface)!important;
+ color:var(--tk-hub-text)!important;
+ border:1px solid var(--tk-hub-line)!important;
+ border-radius:12px!important;
+ box-shadow:none!important;
+}
+.tk-bi-hub .panel h2,
+.tk-bi-hub .feature b{color:var(--tk-hub-text)!important}
+.tk-bi-hub .muted,
+.tk-bi-hub .footer{color:var(--tk-hub-muted)!important}
+.tk-bi-hub .pill{
+ background:#253541!important;
+ border:1px solid #435563!important;
+ border-radius:6px!important;
+ color:#d2dde2!important;
+ font-weight:600!important;
+}
+.tk-bi-hub :is(a,button,input,select):focus-visible{
+ outline:3px solid #69d9c0!important;
+ outline-offset:3px!important;
+}
+@media(max-width:1100px){
+ .tk-bi-hub #topkey-sports.cards{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media(max-width:760px){
+ .tk-bi-hub #topkey-sports.cards{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+ .tk-bi-hub #topkey-sports .sport{padding:14px!important;min-height:195px!important}
+ .tk-bi-hub .tk-bi-hero{border-radius:12px!important}
+}
+@media(max-width:430px){
+ .tk-bi-hub #topkey-sports .sport p{font-size:12px!important}
+ .tk-bi-hub #topkey-sports .sport h3{font-size:16px!important}
+ .tk-bi-hub #topkey-sports .sport .emoji{font-size:27px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .tk-bi-hub #topkey-sports .sport{transition:none!important}
+}

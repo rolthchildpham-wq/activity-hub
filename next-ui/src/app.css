@@ -69,3 +69,85 @@
 
 .heading-links{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
 @media(max-width:767px){.heading-links{width:100%}.heading-links .button{width:100%}}
+
+
+/*
+ * TOPKEY Hub visual refinement, guided by unslop.
+ * Keeps the existing TOPKEY teal identity and all component/data behavior.
+ * Adapted from https://github.com/heydamir/unslop (CC BY 4.0).
+ */
+:root{
+ --navy:#173f3b;
+ --teal:#087e73;
+ --muted:#526b6b;
+ --line:#dce7e3;
+ --shadow:0 1px 3px rgba(18,48,43,.06);
+ color:#173f3b;
+ background:#f5f7f6;
+}
+.auth-screen{
+ background:#f5f7f6;
+}
+.login-card{
+ border:1px solid #dce7e3;
+ border-radius:18px;
+ box-shadow:0 8px 28px rgba(18,48,43,.07);
+}
+.logo-mark{
+ background:#087e73;
+ border-radius:12px;
+ box-shadow:none;
+}
+.login-eyebrow,.overline{
+ letter-spacing:.02em;
+ font-weight:650;
+ color:#42615d;
+}
+.button{
+ border-radius:9px;
+ font-weight:600;
+ transition:background-color .16s ease,border-color .16s ease,color .16s ease,transform .16s ease;
+}
+.button:active{transform:scale(.98)}
+.primary{background:#087e73}
+.primary:hover{background:#06695f}
+.outline{border-color:#cbdad5;color:#214d47}
+.panel{
+ border-color:#dce7e3;
+ border-radius:14px;
+ box-shadow:0 1px 3px rgba(18,48,43,.05);
+}
+.kpi{
+ border-top:2px solid #dce7e3;
+ border-radius:12px;
+ box-shadow:none;
+}
+.kpi.accent-blue,.kpi.accent-orange,.kpi.accent-purple{border-top-color:#dce7e3}
+.kpi strong{
+ color:#173f3b;
+ font-variant-numeric:tabular-nums;
+ font-weight:600;
+}
+.kpi span{font-weight:600}
+.fill{background:#087e73}
+.tag,.environment,.status{
+ border-radius:6px;
+ font-weight:600;
+}
+.match-card{
+ border-color:#dce7e3;
+ border-radius:12px;
+}
+.match-card:hover{
+ border-color:#b8cec7;
+ box-shadow:0 3px 10px rgba(18,48,43,.06);
+}
+.topbar{
+ box-shadow:none;
+}
+.sidebar{box-shadow:none}
+.sport-list button{font-weight:600;border-radius:9px}
+.sport-list button.current{background:#e4f2ed;color:#07594f}
+@media(prefers-reduced-motion:reduce){
+ .button,.match-card{transition:none}
+}
