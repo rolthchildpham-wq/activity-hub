@@ -23,7 +23,7 @@ jobs:
   chrome-devtools-full-ui:
     name: Chrome DevTools MCP – production UI smoke matrix
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
 
@@ -40,7 +40,7 @@ jobs:
       - name: Start isolated headless Chrome through Chrome DevTools MCP
         run: |
           set -euo pipefail
-          chrome-devtools start --headless --isolated --no-usage-statistics
+          chrome-devtools start --headless --isolated --no-usage-statistics --viewport=390x844 --screenshotFormat=jpeg --screenshotQuality=65 --screenshotMaxWidth=1000 --screenshotMaxHeight=1000
           chrome-devtools status
           mkdir -p artifacts/chrome-devtools
 
@@ -70,7 +70,7 @@ jobs:
             chrome-devtools evaluate_script '() => JSON.stringify({url:location.href,title:document.title,readyState:document.readyState,viewport:{width:innerWidth,height:innerHeight},documentWidth:document.documentElement.scrollWidth,bodyWidth:document.body.scrollWidth,horizontalOverflow:document.documentElement.scrollWidth>innerWidth+2,visibleText:(document.body.innerText||"").slice(0,500),cards:document.querySelectorAll("[class*=card], [class*=tile], [role=button]").length,buttons:document.querySelectorAll("button").length,inputs:document.querySelectorAll("input,select,textarea").length,brokenImages:[...document.images].filter(x=>!x.complete||x.naturalWidth===0).map(x=>x.src),stylesheets:[...document.styleSheets].map(x=>x.href).filter(Boolean)})' --pageId 1 --output-format=json | tee "artifacts/chrome-devtools/route-$i-dom.json"
             chrome-devtools list_console_messages 1 --output-format=json | tee "artifacts/chrome-devtools/route-$i-console.json" || true
             chrome-devtools list_network_requests 1 --output-format=json | tee "artifacts/chrome-devtools/route-$i-network.json" || true
-            chrome-devtools take_screenshot 1 --filePath "artifacts/chrome-devtools/route-$i.png" --fullPage | tee "artifacts/chrome-devtools/route-$i-screenshot.txt"
+            chrome-devtools take_screenshot 1 --filePath "artifacts/chrome-devtools/route-$i.png" | tee "artifacts/chrome-devtools/route-$i-screenshot.txt"
           done
 
       - name: Verify all production route HTTP statuses and required static assets
