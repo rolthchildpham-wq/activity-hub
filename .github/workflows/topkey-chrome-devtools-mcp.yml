@@ -70,7 +70,7 @@ jobs:
             chrome-devtools evaluate_script '() => JSON.stringify({url:location.href,title:document.title,readyState:document.readyState,viewport:{width:innerWidth,height:innerHeight},documentWidth:document.documentElement.scrollWidth,bodyWidth:document.body.scrollWidth,horizontalOverflow:document.documentElement.scrollWidth>innerWidth+2,visibleText:(document.body.innerText||"").slice(0,500),cards:document.querySelectorAll("[class*=card], [class*=tile], [role=button]").length,buttons:document.querySelectorAll("button").length,inputs:document.querySelectorAll("input,select,textarea").length,brokenImages:[...document.images].filter(x=>!x.complete||x.naturalWidth===0).map(x=>x.src),stylesheets:[...document.styleSheets].map(x=>x.href).filter(Boolean)})' --pageId 1 --output-format=json | tee "artifacts/chrome-devtools/route-$i-dom.json"
             chrome-devtools list_console_messages 1 --output-format=json | tee "artifacts/chrome-devtools/route-$i-console.json" || true
             chrome-devtools list_network_requests 1 --output-format=json | tee "artifacts/chrome-devtools/route-$i-network.json" || true
-            chrome-devtools take_screenshot 1 --filePath "artifacts/chrome-devtools/route-$i.png" | tee "artifacts/chrome-devtools/route-$i-screenshot.txt"
+            if [ "$i" = "0" ]; then timeout 20s chrome-devtools take_screenshot 1 --filePath "artifacts/chrome-devtools/hub-mobile-viewport.jpg" | tee "artifacts/chrome-devtools/hub-screenshot.txt" || echo "Screenshot timed out; DOM/console/network evidence retained."; fi
           done
 
       - name: Verify all production route HTTP statuses and required static assets
