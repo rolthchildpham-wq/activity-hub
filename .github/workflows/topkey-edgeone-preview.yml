@@ -280,47 +280,44 @@ jobs:
           grep -Fq '.tk210-nav' /tmp/topkey-h210-live.css
           grep -Fq '.tk210-hero-art' /tmp/topkey-h210-live.css
           echo "### Live H210 Hub HTML and stylesheet verified." >> "$GITHUB_STEP_SUMMARY"
-      - name: Audit live H218 sport workspace redesign release and assets
+      - name: Wait for the complete H218 production bundle
         shell: bash
         run: |
           set -euo pipefail
           base="https://topkey-activity-management.edgeone.dev"
           ok=0
-          for attempt in $(seq 1 12); do
-            release_code="$(curl --silent --show-error --max-time 18 --location --output /tmp/tk-h218-release.json --write-out '%{http_code}' "$base/release.json?__h218_probe=$attempt" || true)"
-            runtime_code="$(curl --silent --show-error --max-time 18 --location --output /tmp/tk-h218-runtime.js --write-out '%{http_code}' "$base/release-runtime.js?__h218_probe=$attempt" || true)"
-            release_id="$(grep -Eo '"releaseId"[[:space:]]*:[[:space:]]*"[^"]+"' /tmp/tk-h218-release.json 2>/dev/null | head -1 || true)"
-            runtime_tag="$(grep -Eo 'h218-sports-redesign-20261124|h217-unified-20261124' /tmp/tk-h218-runtime.js 2>/dev/null | head -1 || true)"
-            echo "H218 attempt=$attempt release_http=$release_code runtime_http=$runtime_code release=$release_id runtime_tag=$runtime_tag"
-            if [ "$release_code" = "200" ] && [ "$runtime_code" = "200" ] &&
+          for attempt in $(seq 1 18); do
+            stamp="__h218_bundle=${attempt}_${GITHUB_RUN_ID}"
+            release_code="$(curl --silent --show-error --max-time 12 --location --output /tmp/tk-h218-release.json --write-out '%{http_code}' "$base/release.json?$stamp" || true)"
+            root_code="$(curl --silent --show-error --max-time 12 --location --output /tmp/tk-h218-root-build.json --write-out '%{http_code}' "$base/build.json?$stamp" || true)"
+            vnext_code="$(curl --silent --show-error --max-time 12 --location --output /tmp/tk-h218-vnext-build.json --write-out '%{http_code}' "$base/sports/vnext/build.json?$stamp" || true)"
+            badminton_code="$(curl --silent --show-error --max-time 12 --location --output /tmp/tk-h218-badminton-build.json --write-out '%{http_code}' "$base/sports/badminton/build.json?$stamp" || true)"
+            runtime_code="$(curl --silent --show-error --max-time 12 --location --output /tmp/tk-h218-runtime.js --write-out '%{http_code}' "$base/release-runtime.js?$stamp" || true)"
+            hub_code="$(curl --silent --show-error --max-time 12 --location --output /tmp/tk-h218-hub.html --write-out '%{http_code}' "$base/?$stamp" || true)"
+            vnext_html_code="$(curl --silent --show-error --max-time 12 --location --output /tmp/tk-h218-vnext.html --write-out '%{http_code}' "$base/sports/vnext/index.html?$stamp" || true)"
+            badminton_html_code="$(curl --silent --show-error --max-time 12 --location --output /tmp/tk-h218-badminton.html --write-out '%{http_code}' "$base/sports/badminton/index.html?$stamp" || true)"
+            vnext_css_code="$(curl --silent --show-error --max-time 12 --location --output /dev/null --write-out '%{http_code}' "$base/sports/vnext/workspace-redesign-h218.css?$stamp" || true)"
+            badminton_css_code="$(curl --silent --show-error --max-time 12 --location --output /dev/null --write-out '%{http_code}' "$base/sports/badminton/workspace-redesign-h218.css?$stamp" || true)"
+            echo "H218 bundle attempt=$attempt release=$release_code root=$root_code vnext=$vnext_code badminton=$badminton_code runtime=$runtime_code hub=$hub_code vnext_html=$vnext_html_code badminton_html=$badminton_html_code vnext_css=$vnext_css_code badminton_css=$badminton_css_code"
+            if [ "$release_code" = "200" ] && [ "$root_code" = "200" ] && [ "$vnext_code" = "200" ] && [ "$badminton_code" = "200" ] && [ "$runtime_code" = "200" ] && [ "$hub_code" = "200" ] && [ "$vnext_html_code" = "200" ] && [ "$badminton_html_code" = "200" ] && [ "$vnext_css_code" = "200" ] && [ "$badminton_css_code" = "200" ] &&
                grep -Fq '"releaseId": "H218"' /tmp/tk-h218-release.json &&
-               grep -Fq 'h218-sports-redesign-20261124' /tmp/tk-h218-runtime.js; then
+               grep -Fq '"cacheTag": "h218-sports-redesign-20261124"' /tmp/tk-h218-root-build.json &&
+               grep -Fq '"cacheTag": "h218-sports-redesign-20261124"' /tmp/tk-h218-vnext-build.json &&
+               grep -Fq '"cacheTag": "h218-sports-redesign-20261124"' /tmp/tk-h218-badminton-build.json &&
+               grep -Fq 'h218-sports-redesign-20261124' /tmp/tk-h218-runtime.js &&
+               grep -Fq 'workspace-redesign-h218.css?v=h218-sports-redesign-20261124' /tmp/tk-h218-vnext.html &&
+               grep -Fq 'workspace-redesign-h218.css?v=h218-sports-redesign-20261124' /tmp/tk-h218-badminton.html &&
+               grep -Fq 'release-runtime.js?v=h218-sports-redesign-20261124' /tmp/tk-h218-hub.html; then
               ok=1
               break
             fi
             sleep 8
           done
           if [ "$ok" != "1" ]; then
-            echo "::error::H218 source was committed and deploy hook submitted, but EdgeOne did not serve H218 release.json/runtime within the verification window."
+            echo "::error::The complete H218 release bundle did not propagate to EdgeOne. Check project root directory (topkey), deployment history and CDN propagation; do not run visual acceptance against a mixed release."
             exit 1
           fi
-          for asset in sports/vnext/workspace-redesign-h218.css sports/badminton/workspace-redesign-h218.css; do
-            code="$(curl --silent --show-error --max-time 18 --location --output /dev/null --write-out '%{http_code}' "$base/$asset?__h218_probe=1" || true)"
-            echo "H218 asset HTTP=$code $asset"
-            test "$code" = "200"
-          done
-          curl --fail --silent --show-error --max-time 18 --location "$base/?__h218_probe=hub" -o /tmp/tk-h218-hub.html
-          curl --fail --silent --show-error --max-time 18 --location "$base/build.json?__h218_probe=hub" -o /tmp/tk-h218-root-build.json
-          grep -Fq '"cacheTag": "h218-sports-redesign-20261124"' /tmp/tk-h218-root-build.json
-          grep -Fq 'release-runtime.js?v=h218-sports-redesign-20261124' /tmp/tk-h218-hub.html
-          grep -Fq 'sport=football&amp;v=h218-sports-redesign-20261124' /tmp/tk-h218-hub.html
-          grep -Fq 'sports/badminton/index.html?v=h218-sports-redesign-20261124' /tmp/tk-h218-hub.html
-          for entry in sports/vnext/index.html sports/badminton/index.html; do
-            curl --fail --silent --show-error --max-time 18 --location "$base/$entry?__h218_probe=1" -o /tmp/tk-h218-entry.html
-            grep -Fq 'release-runtime.js?v=h218-sports-redesign-20261124' /tmp/tk-h218-entry.html
-            grep -Fq 'workspace-redesign-h218.css?v=h218-sports-redesign-20261124' /tmp/tk-h218-entry.html
-          done
-          echo "### Live H218 Hub tickets, root/runtime manifests, both sport workspaces and redesign stylesheets verified." >> "$GITHUB_STEP_SUMMARY"
+          echo "### Complete H218 production bundle verified: Hub, all three manifests, runtime, both workspace HTML files and both CSS assets." >> "$GITHUB_STEP_SUMMARY"
       - name: Document EdgeOne release settings
         shell: bash
         env:

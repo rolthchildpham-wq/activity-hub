@@ -2,19 +2,10 @@ name: TOPKEY Chrome DevTools MCP full UI smoke test
 
 on:
   workflow_dispatch:
-  push:
+  workflow_run:
+    workflows: ["TOPKEY EdgeOne Git-provider readiness"]
+    types: [completed]
     branches: [main]
-    paths:
-      - '.github/workflows/topkey-chrome-devtools-mcp.yml'
-      - 'topkey/index.html'
-      - 'topkey/release.json'
-      - 'topkey/release-runtime.js'
-      - 'topkey/sports/vnext/**'
-      - 'topkey/sports/vnext/workspace-redesign-h218.css'
-      - 'topkey/sports/badminton/**'
-      - 'topkey/sports/badminton/workspace-redesign-h218.css'
-      - 'topkey/hub-*.css'
-      - 'topkey/tests/**'
 
 permissions:
   contents: read
@@ -25,11 +16,14 @@ concurrency:
 
 jobs:
   chrome-devtools-full-ui:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     name: Chrome DevTools MCP – production UI smoke matrix
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - name: Install Node.js
         uses: actions/setup-node@v4
