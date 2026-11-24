@@ -7,6 +7,12 @@ on:
     paths:
       - '.github/workflows/topkey-edgeone-preview.yml'
       - 'topkey/index.html'
+      - 'topkey/release.json'
+      - 'topkey/build.json'
+      - 'topkey/release-runtime.js'
+      - 'topkey/hub-contrast-readable-h216.css'
+      - 'topkey/sports/vnext/contrast-global-h217.css'
+      - 'topkey/sports/badminton/contrast-global-h217.css'
       - 'topkey/sports-hub-bi.css'
       - 'topkey/executive-dashboard.css'
       - 'topkey/executive-dashboard.js'
@@ -268,6 +274,35 @@ jobs:
           grep -Fq '.tk210-nav' /tmp/topkey-h210-live.css
           grep -Fq '.tk210-hero-art' /tmp/topkey-h210-live.css
           echo "### Live H210 Hub HTML and stylesheet verified." >> "$GITHUB_STEP_SUMMARY"
+      - name: Audit live H217 unified release and contrast assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://topkey-activity-management.edgeone.dev"
+          ok=0
+          for attempt in $(seq 1 12); do
+            curl --fail --silent --show-error --max-time 18 --location "$base/?__h217_probe=$attempt" -o /tmp/tk-h217-hub.html || { sleep 8; continue; }
+            curl --fail --silent --show-error --max-time 18 --location "$base/release.json?__h217_probe=$attempt" -o /tmp/tk-h217-release.json || { sleep 8; continue; }
+            curl --fail --silent --show-error --max-time 18 --location "$base/release-runtime.js?__h217_probe=$attempt" -o /tmp/tk-h217-runtime.js || { sleep 8; continue; }
+            if grep -Fq '"releaseId": "H217"' /tmp/tk-h217-release.json &&
+               grep -Fq 'h217-unified-20261124' /tmp/tk-h217-runtime.js &&
+               grep -Fq 'hub-contrast-readable-h216.css?v=h216-readable-20261124' /tmp/tk-h217-hub.html; then
+              ok=1
+              break
+            fi
+            sleep 8
+          done
+          test "$ok" = "1"
+          for asset in hub-contrast-readable-h216.css sports/vnext/contrast-global-h217.css sports/badminton/contrast-global-h217.css; do
+            code="$(curl --silent --show-error --max-time 18 --location --output /dev/null --write-out '%{http_code}' "$base/$asset?__h217_probe=1" || true)"
+            echo "H217 asset HTTP=$code $asset"
+            test "$code" = "200"
+          done
+          for entry in sports/vnext/index.html sports/badminton/index.html; do
+            curl --fail --silent --show-error --max-time 18 --location "$base/$entry?__h217_probe=1" -o /tmp/tk-h217-entry.html
+            grep -Fq 'contrast-global-h217.css?v=h217-20261124' /tmp/tk-h217-entry.html
+          done
+          echo "### Live H217 release manifests, runtime, Hub H216 and sport H217 contrast assets verified." >> "$GITHUB_STEP_SUMMARY"
       - name: Document EdgeOne release settings
         shell: bash
         env:
