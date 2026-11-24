@@ -1,0 +1,48 @@
+/* H214 — responsive control/card polish for Badminton VNext. Presentation only. */
+body.tk-smooth-admin #app-shell,
+body.tk-smooth-admin #app-shell .shell,
+body.tk-smooth-admin #app-shell .page,
+body.tk-smooth-admin #app-shell .card,
+body.tk-smooth-admin #app-shell .grid,
+body.tk-smooth-admin #app-shell .field,
+body.tk-smooth-admin #app-shell .form-grid{min-width:0;max-width:100%}
+body.tk-smooth-admin #app-shell .page{width:100%;overflow:clip}
+body.tk-smooth-admin #app-shell .page>.grid,
+body.tk-smooth-admin #app-shell .page>.card>.grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));align-items:stretch}
+body.tk-smooth-admin #app-shell .page .form-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));align-items:end}
+body.tk-smooth-admin #app-shell .page .card{min-width:0;overflow-wrap:anywhere}
+body.tk-smooth-admin #app-shell .page :is(.split,.checkin-row,.list-card,.score-head){min-width:0;flex-wrap:wrap}
+body.tk-smooth-admin #app-shell .page :is(button,.btn){min-height:44px;max-width:100%;white-space:normal;line-height:1.3;touch-action:manipulation}
+body.tk-smooth-admin #app-shell .page .table-wrap{width:100%;max-width:100%;overflow:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+body.tk-smooth-admin #app-shell .page .table-wrap table{width:100%;max-width:none}
+body.tk-smooth-admin #app-shell .page :is(input,select,textarea){min-width:0;max-width:100%;font-size:16px}
+body.tk-smooth-admin #app-shell .page .field{min-width:0}
+body.tk-smooth-admin #app-shell .page :is(.action-bar,.score-actions,.tk152-buttons){display:flex;flex-wrap:wrap;gap:8px}
+body.tk-smooth-admin #app-shell .page .score-actions>*{flex:1 1 110px}
+body.tk-smooth-admin #app-shell .page .video-box{width:100%;max-width:100%}
+body.tk-smooth-admin #app-shell .page :is(img,canvas,svg,video,iframe){max-width:100%}
+body.tk-smooth-admin #app-shell .nav [data-tab]{min-height:46px}
+@media(max-width:700px){
+ body.tk-smooth-admin #app-shell .topbar>.brand{gap:8px}
+ body.tk-smooth-admin #app-shell .topbar>.nav{max-width:100%;overscroll-behavior-x:contain;scrollbar-width:thin}
+ body.tk-smooth-admin #app-shell .nav [data-tab]{min-height:44px;padding:9px 11px}
+ body.tk-smooth-admin #app-shell>.shell{overflow:clip}
+ body.tk-smooth-admin #app-shell .page>.grid,
+ body.tk-smooth-admin #app-shell .page>.card>.grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ body.tk-smooth-admin #app-shell .page .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ body.tk-smooth-admin #app-shell .page .card{padding:14px}
+ body.tk-smooth-admin #app-shell .page .table-wrap table{min-width:680px}
+ body.tk-smooth-admin #app-shell .page .score-head{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:6px}
+ body.tk-smooth-admin #app-shell .page .score-head strong{font-size:clamp(26px,8vw,38px)}
+}
+@media(max-width:420px){
+ body.tk-smooth-admin #app-shell .page>.grid,
+ body.tk-smooth-admin #app-shell .page>.card>.grid,
+ body.tk-smooth-admin #app-shell .page .form-grid{grid-template-columns:minmax(0,1fr)}
+ body.tk-smooth-admin #app-shell .page .score-head{grid-template-columns:1fr}
+ body.tk-smooth-admin #app-shell .page .score-actions>*{flex:1 1 calc(50% - 8px)}
+ body.tk-smooth-admin #app-shell .page .card{padding:12px}
+}
+@media(prefers-reduced-motion:reduce){
+ body.tk-smooth-admin #app-shell *{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
