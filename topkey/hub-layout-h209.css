@@ -1,0 +1,87 @@
+/* TOPKEY H209 — restore the intended dark Sports Hub composition.
+   Overrides legacy H200 light palette, H130 hero suppression and H133 horizontal sport strip.
+   Presentation only: existing links, auth, Firebase and dashboard behavior remain untouched. */
+body.tk-bi-hub{
+  --tk209-bg:#0b1724;--tk209-header:#101e2c;--tk209-panel:#172838;
+  --tk209-raised:#203548;--tk209-line:#30495d;--tk209-text:#edf5fa;
+  --tk209-muted:#b4c4cf;--tk209-teal:#18b79c;
+  background:var(--tk209-bg)!important;color:var(--tk209-text)!important;
+}
+body.tk-bi-hub .top{
+  padding:12px clamp(14px,2.2vw,34px)!important;
+  background:var(--tk209-header)!important;border-bottom:1px solid var(--tk209-line)!important;
+  box-shadow:none!important;
+}
+body.tk-bi-hub .top .brand{max-width:1440px!important;min-height:64px;align-items:center!important}
+body.tk-bi-hub .brand-logo-wrap{width:116px!important;min-width:116px!important;height:48px!important}
+body.tk-bi-hub .brand-title h1{color:var(--tk209-text)!important;font-size:clamp(15px,1.45vw,21px)!important;line-height:1.22!important}
+body.tk-bi-hub .brand-title .eyebrow{color:#79d9c8!important}
+body.tk-bi-hub .status .pill{background:#123a3b!important;border:1px solid #247c72!important;color:#c5f5e9!important}
+body.tk-bi-hub .wrap{max-width:1440px!important;padding:22px clamp(14px,2.2vw,34px) 52px!important}
+body.tk-bi-hub .tk-bi-hero{
+  display:grid!important;grid-template-columns:minmax(0,1.2fr) minmax(220px,.8fr)!important;
+  align-items:end!important;gap:20px!important;min-height:150px!important;
+  padding:24px!important;background:linear-gradient(112deg,#12283a 0%,#123c4a 58%,#145b5b 100%)!important;
+  color:var(--tk209-text)!important;border:1px solid #2d5965!important;border-radius:14px!important;
+  box-shadow:none!important;
+}
+body.tk-bi-hub .tk-bi-hero h2,body.tk-bi-hub .tk-bi-section-heading h2{color:#f3f8fb!important}
+body.tk-bi-hub .tk-bi-hero p,body.tk-bi-hub .tk-bi-section-heading small{color:var(--tk209-muted)!important}
+body.tk-bi-hub .tk-bi-hero-kicker{color:#79d9c8!important}
+body.tk-bi-hub .tk-bi-hero-cta{display:flex!important;gap:8px!important;flex-wrap:wrap}
+body.tk-bi-hub .tk-bi-hero-cta .tk-bi-link{border:1px solid #557183!important;border-radius:8px!important;background:#172e40!important;color:#edf7fb!important}
+body.tk-bi-hub .tk-bi-hero-cta .primary{background:#10a995!important;border-color:#10a995!important;color:#062a2a!important}
+body.tk-bi-hub .tk-bi-section-heading{display:flex!important;justify-content:space-between!important;align-items:center!important;margin:22px 0 12px!important}
+body.tk-bi-hub .tk-bi-section-heading h2{font-size:16px!important}
+body.tk-bi-hub #topkey-sports.cards,
+body.tk-bi-hub #topkey-sports.cards.compact-sports{
+  display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  grid-auto-flow:row!important;gap:12px!important;overflow:visible!important;
+  width:100%!important;max-width:100%!important;margin:0!important;padding:0!important;
+  scroll-snap-type:none!important;
+}
+body.tk-bi-hub #topkey-sports.cards .sport,
+body.tk-bi-hub #topkey-sports.cards.compact-sports .sport{
+  display:flex!important;flex-direction:column!important;align-items:stretch!important;
+  flex:initial!important;width:auto!important;min-width:0!important;min-height:184px!important;height:auto!important;
+  gap:8px!important;padding:15px!important;overflow:hidden!important;
+  background:var(--tk209-panel)!important;color:var(--tk209-text)!important;
+  border:1px solid var(--tk209-line)!important;border-radius:12px!important;box-shadow:none!important;
+  scroll-snap-align:none!important;transform:none!important;
+}
+body.tk-bi-hub #topkey-sports .sport:hover{background:var(--tk209-raised)!important;border-color:#398c80!important}
+body.tk-bi-hub #topkey-sports .sport .emoji{font-size:28px!important;line-height:1.1!important}
+body.tk-bi-hub #topkey-sports .sport h3{font-size:16px!important;line-height:1.25!important;color:var(--tk209-text)!important;margin:0!important}
+body.tk-bi-hub #topkey-sports .sport p{display:block!important;color:var(--tk209-muted)!important;font-size:12px!important;line-height:1.45!important;margin:0!important;flex:1!important}
+body.tk-bi-hub #topkey-sports .sport .badge{display:none!important}
+body.tk-bi-hub #topkey-sports .sport .open{display:flex!important;align-items:center!important;justify-content:center!important;
+  min-height:34px!important;margin-top:auto!important;padding:7px 10px!important;border:1px solid #496679!important;
+  border-radius:7px!important;background:#1b3040!important;color:#dcecf3!important;font-size:12px!important}
+body.tk-bi-hub .panel,body.tk-bi-hub .feature,body.tk-bi-hub .exec-card{
+  background:var(--tk209-panel)!important;color:var(--tk209-text)!important;border:1px solid var(--tk209-line)!important;
+  border-radius:12px!important;box-shadow:none!important;
+}
+body.tk-bi-hub .panel h2,body.tk-bi-hub .panel h3,body.tk-bi-hub .exec-head h2{color:var(--tk209-text)!important}
+body.tk-bi-hub .muted,body.tk-bi-hub .panel p,body.tk-bi-hub .footer{color:var(--tk209-muted)!important}
+body.tk-bi-hub :is(a,button,input,select):focus-visible{outline:3px solid #79d9c8!important;outline-offset:3px!important}
+@media(max-width:1050px){
+ body.tk-bi-hub #topkey-sports.cards,body.tk-bi-hub #topkey-sports.cards.compact-sports{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media(max-width:720px){
+ body.tk-bi-hub .top{padding:10px 12px!important}
+ body.tk-bi-hub .top .brand{flex-wrap:wrap!important;gap:8px!important}
+ body.tk-bi-hub .top .brand-main{width:100%!important}
+ body.tk-bi-hub .top .status{width:100%!important;justify-content:flex-start!important;flex-wrap:wrap!important}
+ body.tk-bi-hub .wrap{padding:14px 12px 34px!important}
+ body.tk-bi-hub .tk-bi-hero{grid-template-columns:1fr!important;min-height:0!important;padding:18px!important;gap:12px!important}
+ body.tk-bi-hub .tk-bi-hero h2{font-size:21px!important}
+ body.tk-bi-hub #topkey-sports.cards,body.tk-bi-hub #topkey-sports.cards.compact-sports{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
+ body.tk-bi-hub #topkey-sports.cards .sport,body.tk-bi-hub #topkey-sports.cards.compact-sports .sport{min-height:164px!important;padding:12px!important}
+ body.tk-bi-hub #topkey-sports .sport p{font-size:11px!important}
+ body.tk-bi-hub #topkey-sports .sport h3{font-size:14px!important}
+ body.tk-bi-hub #topkey-sports .sport .open{font-size:11px!important;min-height:32px!important}
+}
+@media(max-width:380px){
+ body.tk-bi-hub #topkey-sports.cards,body.tk-bi-hub #topkey-sports.cards.compact-sports{grid-template-columns:minmax(0,1fr)!important}
+}
+@media(prefers-reduced-motion:reduce){body.tk-bi-hub *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
