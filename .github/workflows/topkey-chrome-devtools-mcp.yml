@@ -16,7 +16,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: topkey-chrome-devtools-mcp
+  group: topkey-chrome-devtools-mcp-v2
   cancel-in-progress: false
 
 jobs:
