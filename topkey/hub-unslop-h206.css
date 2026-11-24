@@ -1,6 +1,7 @@
 /*
  * TOPKEY Sports Hub landing-page refinement guided by unslop.
  * Keeps the established dark sports-operations world, corporate logo and teal brand accent.
+ * Refined after responsive/a11y review: no one-sided border treatment; single-column narrow-phone cards.
  * Removes decorative hue gradients, glow shadows and excessive card emphasis.
  * Adapted from https://github.com/heydamir/unslop (CC BY 4.0).
  */
@@ -38,7 +39,7 @@
 .tk-bi-hub .tk-bi-hero{
  background:var(--tk-hub-surface)!important;
  border:1px solid var(--tk-hub-line)!important;
- border-left:3px solid var(--tk-hub-accent)!important;
+
  border-radius:14px!important;
  box-shadow:none!important;
  color:var(--tk-hub-text)!important;
@@ -162,10 +163,13 @@
  .tk-bi-hub #topkey-sports .sport{padding:14px!important;min-height:195px!important}
  .tk-bi-hub .tk-bi-hero{border-radius:12px!important}
 }
-@media(max-width:430px){
- .tk-bi-hub #topkey-sports .sport p{font-size:12px!important}
- .tk-bi-hub #topkey-sports .sport h3{font-size:16px!important}
- .tk-bi-hub #topkey-sports .sport .emoji{font-size:27px!important}
+@media(max-width:560px){
+ .tk-bi-hub #topkey-sports.cards{grid-template-columns:minmax(0,1fr)!important}
+ .tk-bi-hub #topkey-sports .sport{min-height:0!important;padding:16px!important}
+ .tk-bi-hub #topkey-sports .sport p{font-size:13px!important}
+ .tk-bi-hub #topkey-sports .sport h3{font-size:17px!important}
+ .tk-bi-hub #topkey-sports .sport .emoji{font-size:28px!important}
+ .tk-bi-hub .status{justify-content:flex-start}
 }
 @media(prefers-reduced-motion:reduce){
  .tk-bi-hub #topkey-sports .sport{transition:none!important}
