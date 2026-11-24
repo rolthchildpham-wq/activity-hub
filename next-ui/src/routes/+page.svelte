@@ -43,7 +43,7 @@
  <main class="auth-screen">
   <section class="login-card">
    <div class="logo-mark">TK</div>
-   <div class="login-eyebrow">TOPKEY · SPORTS MANAGEMENT</div>
+   <div class="login-eyebrow">TOPKEY · Sports management</div>
    <h1>Chào mừng trở lại</h1><p class="subtle">Đăng nhập để xem dữ liệu giải đấu và quản trị theo quyền tài khoản.</p>
    <form on:submit|preventDefault={login} class="login-form">
     <label for="login-email">Email</label><input id="login-email" type="email" autocomplete="username" bind:value={email} required placeholder="Email được cấp quyền"/>
@@ -58,8 +58,8 @@
 {:else}
  <div class="app-layout">
   <aside class:mobile-open={sidebar} class="sidebar">
-   <div class="side-logo"><span class="logo-mark small-logo">TK</span><div><strong>TOPKEY</strong><small>SPORTS HUB · VNEXT</small></div></div>
-   <p class="side-section">BỘ MÔN</p>
+   <div class="side-logo"><span class="logo-mark small-logo">TK</span><div><strong>TOPKEY</strong><small>Sports Hub · VNext</small></div></div>
+   <p class="side-section">Bộ môn</p>
    <nav class="sport-list" aria-label="Chọn bộ môn">
     {#each sports as s}<button class:current={selected===s.key} aria-label={s.name} on:click={()=>choose(s.key)}><span aria-hidden="true">{s.icon}</span><span>{s.name}</span></button>{/each}
    </nav>
@@ -72,7 +72,7 @@
     <div class="top-actions"><span class="environment" class:testlab={isTestLab(tid)}>{isTestLab(tid)?'TEST LAB':'PRODUCTION'}</span><span class="user-email" title={user.email||''}>{user.email}</span><button class="button outline" on:click={logout}>Đăng xuất</button></div>
    </header>
    <main class="dashboard">
-    <section class="heading-row"><div><div class="overline">GIẢI ĐẤU · {sport.name.toUpperCase()}</div><h2>{typeof data.config?.title==='string'?data.config.title:'Tổng quan giải đấu'}</h2><p class="subtle">Dữ liệu chỉ đọc, trực tiếp từ giải đã chọn. Không có số liệu mô phỏng.</p></div>
+    <section class="heading-row"><div><div class="overline">Giải đấu · {sport.name}</div><h2>{typeof data.config?.title==='string'?data.config.title:'Tổng quan giải đấu'}</h2><p class="subtle">Dữ liệu chỉ đọc, trực tiếp từ giải đã chọn. Không có số liệu mô phỏng.</p></div>
      <div class="heading-links"><a class="button outline" href={base+'/sports/'+selected+'/'+encodeURIComponent(tid)}>Mở các module mới →</a>
      <a class="button primary" href={legacyHref(selected,tid)}>Mở chức năng đầy đủ ↗</a></div>
     </section>
