@@ -85,3 +85,41 @@ body.tk-bi-hub :is(a,button,input,select):focus-visible{outline:3px solid #79d9c
  body.tk-bi-hub #topkey-sports.cards,body.tk-bi-hub #topkey-sports.cards.compact-sports{grid-template-columns:minmax(0,1fr)!important}
 }
 @media(prefers-reduced-motion:reduce){body.tk-bi-hub *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+
+/* H210 — reference composition: desktop navigation, compact topbar and sports hero art */
+body.tk-bi-hub .top .brand{display:grid!important;grid-template-columns:minmax(320px,1fr) auto auto!important;gap:22px!important;max-width:1440px!important}
+body.tk-bi-hub .tk210-nav{display:flex!important;align-items:center!important;gap:clamp(12px,2vw,30px)!important;white-space:nowrap!important}
+body.tk-bi-hub .tk210-nav a{display:flex!important;align-items:center!important;gap:7px!important;padding:12px 0!important;color:#b8c9d5!important;text-decoration:none!important;font-size:13px!important;font-weight:700!important;border-bottom:2px solid transparent!important}
+body.tk-bi-hub .tk210-nav a.active,body.tk-bi-hub .tk210-nav a:hover{color:#2dd4bf!important;border-color:#18b79c!important}
+body.tk-bi-hub .tk210-avatar{display:grid!important;place-items:center!important;width:38px!important;height:38px!important;border-radius:50%!important;background:#22516a!important;color:#e8f7fb!important;text-decoration:none!important;font-weight:800!important}
+body.tk-bi-hub .top .brand .status{display:none!important}
+body.tk-bi-hub .tk-bi-hero{position:relative!important;grid-template-columns:minmax(0,1.1fr) minmax(240px,.9fr) auto!important;min-height:168px!important;overflow:hidden!important;background:linear-gradient(110deg,#10283b 0%,#123b4a 55%,#075e60 100%)!important}
+body.tk-bi-hub .tk210-hero-art{position:relative!important;display:flex!important;align-items:center!important;justify-content:space-around!important;min-width:220px!important;height:126px!important;overflow:hidden!important;isolation:isolate!important}
+body.tk-bi-hub .tk210-hero-art:before{content:"";position:absolute;inset:12% 0 0;border-radius:50% 50% 0 0;background:radial-gradient(ellipse at 50% 100%,rgba(45,212,191,.34),transparent 70%);z-index:-1}
+body.tk-bi-hub .tk210-athlete{display:block!important;font-style:normal!important;font-size:clamp(28px,4vw,52px)!important;filter:drop-shadow(0 5px 8px rgba(0,0,0,.25));transform:translateY(0) rotate(-8deg)}
+body.tk-bi-hub .tk210-athlete.a2{transform:translateY(-14px) rotate(9deg)}
+body.tk-bi-hub .tk210-athlete.a3{transform:translateY(10px) rotate(-12deg)}
+body.tk-bi-hub .tk210-athlete.a4{transform:translateY(-5px) rotate(7deg)}
+body.tk-bi-hub .tk210-hero-art i{position:absolute;left:8%;right:8%;bottom:12px;height:2px;background:linear-gradient(90deg,transparent,#5eead4,transparent);opacity:.65}
+body.tk-bi-hub .tk-bi-hero-cta{align-self:end!important}
+@media(max-width:1050px){
+ body.tk-bi-hub .top .brand{grid-template-columns:1fr auto!important}
+ body.tk-bi-hub .tk210-nav{grid-column:1/-1;grid-row:2;justify-content:center;border-top:1px solid #294052;padding-top:8px}
+ body.tk-bi-hub .tk210-avatar{grid-column:2;grid-row:1}
+ body.tk-bi-hub .tk-bi-hero{grid-template-columns:1fr minmax(190px,.7fr)!important}
+ body.tk-bi-hub .tk-bi-hero-cta{grid-column:1/-1}
+}
+@media(max-width:720px){
+ body.tk-bi-hub .top .brand{display:flex!important;flex-wrap:wrap!important;gap:8px!important;min-height:0!important}
+ body.tk-bi-hub .top .brand-main{width:calc(100% - 48px)!important}
+ body.tk-bi-hub .top .brand-logo-wrap{width:84px!important;min-width:84px!important;height:42px!important}
+ body.tk-bi-hub .brand-title h1{font-size:14px!important}
+ body.tk-bi-hub .tk210-avatar{margin-left:auto!important;width:34px!important;height:34px!important}
+ body.tk-bi-hub .tk210-nav{width:100%!important;justify-content:space-around!important;gap:8px!important;padding-top:7px!important}
+ body.tk-bi-hub .tk210-nav a{font-size:11px!important;padding:5px 0!important}
+ body.tk-bi-hub .tk-bi-hero{grid-template-columns:1fr!important;padding:16px!important;gap:8px!important}
+ body.tk-bi-hub .tk210-hero-art{height:66px!important;min-width:0!important;justify-content:space-evenly!important}
+ body.tk-bi-hub .tk210-athlete{font-size:28px!important}
+ body.tk-bi-hub .tk-bi-hero-cta{grid-column:auto!important}
+}
