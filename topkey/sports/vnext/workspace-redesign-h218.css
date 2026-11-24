@@ -10,90 +10,90 @@ html[data-tk-sport] #app-shell>.shell{background:#edf2f6!important;padding:28px 
 html[data-tk-sport] #app-shell .topbar>.brand{box-shadow:0 3px 16px rgba(18,42,60,.06)!important;border-bottom:1px solid #dce5ec!important}
 html[data-tk-sport] #app-shell .brand #tournament-title{font-weight:850!important;letter-spacing:-.45px}
 html[data-tk-sport] #app-shell .brand small{font-weight:600!important;color:#617789!important}
-html[data-tk-sport] #app-shell .page{color:var(--ui-ink)!important}
-html[data-tk-sport] #app-shell .page:not(#page-overview)>.split{
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never){color:var(--ui-ink)!important}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never):not(#page-overview)>.split{
   margin:0 0 18px!important;padding:0 0 13px!important;border-bottom:1px solid #d5e0e8;
 }
-html[data-tk-sport] #app-shell .page:not(#page-overview)>.split h2{
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never):not(#page-overview)>.split h2{
   margin:0!important;color:#142c40!important;font-size:clamp(20px,2vw,26px)!important;
   font-weight:850!important;letter-spacing:-.55px;line-height:1.2!important;
 }
-html[data-tk-sport] #app-shell .page:not(#page-overview)>.split p{margin:6px 0 0!important;color:#607487!important}
-html[data-tk-sport] #app-shell .page .card{
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never):not(#page-overview)>.split p{margin:6px 0 0!important;color:#607487!important}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .card{
   background:var(--ui-surface)!important;border:1px solid var(--ui-line)!important;
   border-radius:16px!important;box-shadow:var(--ui-shadow)!important;
   color:var(--ui-ink)!important;padding:19px!important;
 }
-html[data-tk-sport] #app-shell .page .card h2,
-html[data-tk-sport] #app-shell .page .card h3,
-html[data-tk-sport] #app-shell .page .card h4{color:#19364b!important;font-weight:820!important;letter-spacing:-.2px}
-html[data-tk-sport] #app-shell .page .card p,
-html[data-tk-sport] #app-shell .page .card .muted,
-html[data-tk-sport] #app-shell .page .card .note,
-html[data-tk-sport] #app-shell .page .card small{color:var(--ui-muted)!important;opacity:1!important}
-html[data-tk-sport] #app-shell .page .subcard,
-html[data-tk-sport] #app-shell .page .control-card,
-html[data-tk-sport] #app-shell .page .court-card,
-html[data-tk-sport] #app-shell .page .list-card,
-html[data-tk-sport] #app-shell .page .checkin-row{
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .card h2,
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .card h3,
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .card h4{color:#19364b!important;font-weight:820!important;letter-spacing:-.2px}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .card p,
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .card .muted,
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .card .note,
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .card small{color:var(--ui-muted)!important;opacity:1!important}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .subcard,
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .control-card,
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .court-card,
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .list-card,
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .checkin-row{
   background:#f7fafc!important;border:1px solid #dce6ed!important;border-radius:13px!important;
   color:#20394d!important;box-shadow:none!important;
 }
-html[data-tk-sport] #app-shell .page .control-card strong{color:var(--ui-accent-strong)!important}
-html[data-tk-sport] #app-shell .page .field label{color:#334f63!important;font-size:12px!important;font-weight:800!important}
-html[data-tk-sport] #app-shell .page :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),select,textarea){
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .control-card strong{color:var(--ui-accent-strong)!important}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .field label{color:#334f63!important;font-size:12px!important;font-weight:800!important}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),select,textarea){
   background:#fff!important;color:#172f43!important;-webkit-text-fill-color:#172f43!important;
   border:1px solid #b8c9d6!important;border-radius:10px!important;min-height:44px!important;
   box-shadow:0 1px 2px rgba(20,40,60,.04)!important;
 }
-html[data-tk-sport] #app-shell .page :is(input,textarea)::placeholder{color:#75899a!important;-webkit-text-fill-color:#75899a!important}
-html[data-tk-sport] #app-shell .page :is(input,select,textarea):focus{
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) :is(input,textarea)::placeholder{color:#75899a!important;-webkit-text-fill-color:#75899a!important}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) :is(input,select,textarea):focus{
   border-color:var(--ui-accent)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--ui-accent) 18%,transparent)!important;outline:0!important;
 }
-html[data-tk-sport] #app-shell .page :is(button,.btn){
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) :is(button,.btn){
   min-height:40px;border-radius:10px!important;font-weight:750!important;letter-spacing:.05px;
   box-shadow:none!important;transition:transform .16s ease,filter .16s ease,box-shadow .16s ease;
 }
-html[data-tk-sport] #app-shell .page .btn:not(.ok):not(.danger):not(.warn):not(.primary),
-html[data-tk-sport] #app-shell .page button:not(.btn){
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .btn:not(.ok):not(.danger):not(.warn):not(.primary),
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) button:not(.btn){
   background:#edf3f7!important;border:1px solid #c9d7e1!important;color:#29465b!important;
 }
-html[data-tk-sport] #app-shell .page .btn.primary{background:var(--ui-accent-strong)!important;border-color:var(--ui-accent-strong)!important;color:#fff!important}
-html[data-tk-sport] #app-shell .page .btn.ok{background:#087b58!important;border-color:#087b58!important;color:#fff!important}
-html[data-tk-sport] #app-shell .page .btn.warn{background:#a65a0b!important;border-color:#a65a0b!important;color:#fff!important}
-html[data-tk-sport] #app-shell .page .btn.danger{background:#b52f46!important;border-color:#b52f46!important;color:#fff!important}
-html[data-tk-sport] #app-shell .page :is(button,.btn):hover{filter:brightness(.97);transform:translateY(-1px);box-shadow:0 4px 12px rgba(25,50,70,.10)!important}
-html[data-tk-sport] #app-shell .page :is(button,.btn):disabled{opacity:.55!important;transform:none}
-html[data-tk-sport] #app-shell .page .table-wrap{background:#fff!important;border:1px solid #d5e0e8!important;border-radius:13px!important;box-shadow:none!important}
-html[data-tk-sport] #app-shell .page table{border-collapse:separate!important;border-spacing:0!important}
-html[data-tk-sport] #app-shell .page table th{
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .btn.primary{background:var(--ui-accent-strong)!important;border-color:var(--ui-accent-strong)!important;color:#fff!important}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .btn.ok{background:#087b58!important;border-color:#087b58!important;color:#fff!important}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .btn.warn{background:#a65a0b!important;border-color:#a65a0b!important;color:#fff!important}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .btn.danger{background:#b52f46!important;border-color:#b52f46!important;color:#fff!important}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) :is(button,.btn):hover{filter:brightness(.97);transform:translateY(-1px);box-shadow:0 4px 12px rgba(25,50,70,.10)!important}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) :is(button,.btn):disabled{opacity:.55!important;transform:none}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .table-wrap{background:#fff!important;border:1px solid #d5e0e8!important;border-radius:13px!important;box-shadow:none!important}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) table{border-collapse:separate!important;border-spacing:0!important}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) table th{
   background:#eaf1f6!important;color:#28465b!important;font-size:11px!important;
   font-weight:850!important;text-transform:uppercase;letter-spacing:.35px;
   border-bottom:1px solid #d3dfe7!important;
 }
-html[data-tk-sport] #app-shell .page table td{background:#fff!important;color:#243e52!important;border-bottom:1px solid #e5ecf1!important}
-html[data-tk-sport] #app-shell .page table tr:hover td{background:#f5f9fc!important}
-html[data-tk-sport] #app-shell .page .pill{background:#edf5f2!important;color:var(--ui-accent-strong)!important;border:1px solid color-mix(in srgb,var(--ui-accent) 30%,white)!important;font-weight:800}
-html[data-tk-sport] #app-shell .page .empty{background:#f4f8fb!important;color:#63798a!important;border:1px dashed #c5d4df!important}
-html[data-tk-sport] #app-shell .page .scheduler-grid .check-option,
-html[data-tk-sport] #app-shell .page .team-picker,
-html[data-tk-sport] #app-shell .page .team-pick,
-html[data-tk-sport] #app-shell .page .rule-chip,
-html[data-tk-sport] #app-shell .page .schedule-preview{
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) table td{background:#fff!important;color:#243e52!important;border-bottom:1px solid #e5ecf1!important}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) table tr:hover td{background:#f5f9fc!important}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .pill{background:#edf5f2!important;color:var(--ui-accent-strong)!important;border:1px solid color-mix(in srgb,var(--ui-accent) 30%,white)!important;font-weight:800}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .empty{background:#f4f8fb!important;color:#63798a!important;border:1px dashed #c5d4df!important}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .scheduler-grid .check-option,
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .team-picker,
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .team-pick,
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .rule-chip,
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .schedule-preview{
   background:#f5f8fb!important;color:#29465a!important;border-color:#d4e0e8!important;
 }
-html[data-tk-sport] #app-shell .page .score-head>div{background:#f1f6f9!important;border:1px solid #d6e1e9!important;color:#18374c!important}
-html[data-tk-sport] #app-shell .page .score-head strong{color:var(--ui-accent-strong)!important}
-html[data-tk-sport] #app-shell .page .modal-box{background:#fff!important;color:#20394d!important;border-color:#cbd9e3!important;box-shadow:0 20px 70px rgba(5,24,40,.25)!important}
-html[data-tk-sport] #app-shell .page :is(a,button,input,select,textarea):focus-visible{outline:3px solid var(--sport-highlight)!important;outline-offset:3px!important}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .score-head>div{background:#f1f6f9!important;border:1px solid #d6e1e9!important;color:#18374c!important}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .score-head strong{color:var(--ui-accent-strong)!important}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .modal-box{background:#fff!important;color:#20394d!important;border-color:#cbd9e3!important;box-shadow:0 20px 70px rgba(5,24,40,.25)!important}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) :is(a,button,input,select,textarea):focus-visible{outline:3px solid var(--sport-highlight)!important;outline-offset:3px!important}
 @media(max-width:690px){
  html[data-tk-sport] #app-shell>.shell{padding:12px 10px 32px!important}
- html[data-tk-sport] #app-shell .page .card{padding:14px!important;border-radius:13px!important}
- html[data-tk-sport] #app-shell .page:not(#page-overview)>.split{align-items:flex-start!important}
- html[data-tk-sport] #app-shell .page:not(#page-overview)>.split h2{font-size:20px!important}
- html[data-tk-sport] #app-shell .page .action-bar{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}
- html[data-tk-sport] #app-shell .page .action-bar>*{min-width:0;width:100%;text-align:center}
- html[data-tk-sport] #app-shell .page .table-wrap{border-radius:10px!important}
- html[data-tk-sport] #app-shell .page .form-grid{gap:11px!important}
+ html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .card{padding:14px!important;border-radius:13px!important}
+ html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never):not(#page-overview)>.split{align-items:flex-start!important}
+ html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never):not(#page-overview)>.split h2{font-size:20px!important}
+ html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .action-bar{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}
+ html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .action-bar>*{min-width:0;width:100%;text-align:center}
+ html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .table-wrap{border-radius:10px!important}
+ html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .form-grid{gap:11px!important}
 }
 @media(prefers-reduced-motion:reduce){html[data-tk-sport] #app-shell *{transition:none!important;animation:none!important}}
