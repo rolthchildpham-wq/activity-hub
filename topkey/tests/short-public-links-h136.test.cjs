@@ -4,7 +4,7 @@ const vm=require('node:vm');
 const html=fs.readFileSync('topkey/l/index.html','utf8');
 const bundle=fs.readFileSync('topkey/sports/vnext/h97-vnext.bundle.js','utf8');
 const entry=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
-assert.ok(entry.includes('h97-vnext.bundle.js?v=h136-short-share-20261114'));
+assert.ok(entry.includes('h97-vnext.bundle.js?v=roster-csv-recovery-20261117-r1'));
 assert.ok(bundle.includes("const LINK_FORMAT_KEY='topkey_share_url_format_h136'"));
 assert.ok(bundle.includes('tk14-link-format'));
 const start=bundle.indexOf("const LINK_FORMAT_KEY='topkey_share_url_format_h136'");
