@@ -1,6 +1,6 @@
 {
-  "build": "upgrade122-hotfix123-scale-security",
-  "cacheTag": "u122h123-20261111",
-  "version": "2026.11.11-vnext-upgrade122-hotfix123-scale-security",
-  "release": "H123 Archive Pagination and Runtime Ordering"
+  "build": "h217-unified-ui-contrast",
+  "cacheTag": "h217-unified-20261124",
+  "version": "2026.11.24-h217-unified-ui-contrast",
+  "release": "H217 Unified Hub and Sport Contrast Release"
 }
