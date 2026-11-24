@@ -284,16 +284,23 @@ jobs:
           base="https://topkey-activity-management.edgeone.dev"
           ok=0
           for attempt in $(seq 1 12); do
-            curl --fail --silent --show-error --max-time 18 --location "$base/release.json?__h218_probe=$attempt" -o /tmp/tk-h218-release.json || { sleep 8; continue; }
-            curl --fail --silent --show-error --max-time 18 --location "$base/release-runtime.js?__h218_probe=$attempt" -o /tmp/tk-h218-runtime.js || { sleep 8; continue; }
-            if grep -Fq '"releaseId": "H218"' /tmp/tk-h218-release.json &&
+            release_code="$(curl --silent --show-error --max-time 18 --location --output /tmp/tk-h218-release.json --write-out '%{http_code}' "$base/release.json?__h218_probe=$attempt" || true)"
+            runtime_code="$(curl --silent --show-error --max-time 18 --location --output /tmp/tk-h218-runtime.js --write-out '%{http_code}' "$base/release-runtime.js?__h218_probe=$attempt" || true)"
+            release_id="$(grep -Eo '"releaseId"[[:space:]]*:[[:space:]]*"[^"]+"' /tmp/tk-h218-release.json 2>/dev/null | head -1 || true)"
+            runtime_tag="$(grep -Eo 'h218-sports-redesign-20261124|h217-unified-20261124' /tmp/tk-h218-runtime.js 2>/dev/null | head -1 || true)"
+            echo "H218 attempt=$attempt release_http=$release_code runtime_http=$runtime_code release=$release_id runtime_tag=$runtime_tag"
+            if [ "$release_code" = "200" ] && [ "$runtime_code" = "200" ] &&
+               grep -Fq '"releaseId": "H218"' /tmp/tk-h218-release.json &&
                grep -Fq 'h218-sports-redesign-20261124' /tmp/tk-h218-runtime.js; then
               ok=1
               break
             fi
             sleep 8
           done
-          test "$ok" = "1"
+          if [ "$ok" != "1" ]; then
+            echo "::error::H218 source was committed and deploy hook submitted, but EdgeOne did not serve H218 release.json/runtime within the verification window."
+            exit 1
+          fi
           for asset in sports/vnext/workspace-redesign-h218.css sports/badminton/workspace-redesign-h218.css; do
             code="$(curl --silent --show-error --max-time 18 --location --output /dev/null --write-out '%{http_code}' "$base/$asset?__h218_probe=1" || true)"
             echo "H218 asset HTTP=$code $asset"
