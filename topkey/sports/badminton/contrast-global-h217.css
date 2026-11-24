@@ -1,0 +1,16 @@
+/* H217 — global legibility layer for every Badminton tab. */
+body.tk-smooth-admin #app-shell:not(.hidden) .page{color:#f4f8fc}
+body.tk-smooth-admin #app-shell:not(.hidden) .page :is(h1,h2,h3,h4,strong,b,legend){color:#f8fbff!important;opacity:1!important}
+body.tk-smooth-admin #app-shell:not(.hidden) .page :is(p,.muted,.note,small,.hint,.description,.subtle){color:#d2e0ec!important;opacity:1!important}
+body.tk-smooth-admin #app-shell:not(.hidden) .page :is(label,.field label,th){color:#e8f2fa!important;opacity:1!important;font-weight:650}
+body.tk-smooth-admin #app-shell:not(.hidden) .page :is(td,li,.list-item,.stat-label){color:#edf4fa!important}
+body.tk-smooth-admin #app-shell:not(.hidden) .page .card{background-color:#12283b!important;border-color:#46647c!important;color:#f4f8fc!important}
+body.tk-smooth-admin #app-shell:not(.hidden) .page :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),select,textarea){min-height:44px;color:#f7fbff!important;-webkit-text-fill-color:#f7fbff!important;background:#102a43!important;border:1px solid #7897b0!important;opacity:1!important}
+body.tk-smooth-admin #app-shell:not(.hidden) .page :is(input,textarea)::placeholder{color:#c5d8e8!important;-webkit-text-fill-color:#c5d8e8!important;opacity:1!important}
+body.tk-smooth-admin #app-shell:not(.hidden) .page :is(button,.btn){color:#f7fbff;opacity:1!important;font-weight:650;text-shadow:none!important}
+body.tk-smooth-admin #app-shell:not(.hidden) .page :is(button:disabled,.btn:disabled,[aria-disabled=true]){color:#d4e0e9!important;opacity:.72!important}
+body.tk-smooth-admin #app-shell:not(.hidden) .page .table-wrap{border:1px solid #46647c;border-radius:10px;background:#10263a}
+body.tk-smooth-admin #app-shell:not(.hidden) .page table :is(th,td){border-color:#49677f!important}
+body.tk-smooth-admin #app-shell:not(.hidden) .page :is(a,button,input,select,textarea):focus-visible{outline:3px solid #9cecff!important;outline-offset:3px!important}
+@media(max-width:690px){body.tk-smooth-admin #app-shell:not(.hidden) .page :is(p,.muted,.note,small,.hint,.description){font-size:13px!important;line-height:1.5!important}body.tk-smooth-admin #app-shell:not(.hidden) .page :is(h2,h3){font-size:16px!important;line-height:1.35!important}}
+@media(prefers-reduced-motion:reduce){body.tk-smooth-admin #app-shell *{transition:none!important;animation:none!important}}
