@@ -97,3 +97,24 @@ html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) :is(a,button,
  html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .form-grid{gap:11px!important}
 }
 @media(prefers-reduced-motion:reduce){html[data-tk-sport] #app-shell *{transition:none!important;animation:none!important}}
+
+/* H218.1 — final cascade guard.
+   Legacy H217 contrast rules were still winning on live VNext pages despite
+   the original H218 card styling. Raise specificity at the actual app shell. */
+html[data-tk-sport] body #app-shell:not(.hidden) .page:not(#page-never) .card{
+  background:#fff!important;background-color:#fff!important;color:#172b3d!important;
+  border-color:#d7e1e9!important;
+}
+html[data-tk-sport] body #app-shell:not(.hidden) .page:not(#page-never) .card :is(h1,h2,h3,h4,strong,b,legend,label,p,small,span,li,td,th,.muted,.note,.hint,.description,.subtle){
+  color:inherit!important;opacity:1!important;text-shadow:none!important;
+}
+html[data-tk-sport] body #app-shell:not(.hidden) .page:not(#page-never) .card :is(h1,h2,h3,h4,strong,b,legend){color:#17364b!important}
+html[data-tk-sport] body #app-shell:not(.hidden) .page:not(#page-never) .card :is(p,small,.muted,.note,.hint,.description,.subtle){color:#52687a!important}
+html[data-tk-sport] body #app-shell:not(.hidden) .page:not(#page-never) .card :is(label,th){color:#29475b!important}
+html[data-tk-sport] body #app-shell:not(.hidden) .page:not(#page-never) .card :is(td,li,span){color:#243e52!important}
+html[data-tk-sport] body #app-shell:not(.hidden) .page:not(#page-never) .card :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),select,textarea){
+  background:#fff!important;background-color:#fff!important;color:#172f43!important;
+  -webkit-text-fill-color:#172f43!important;border-color:#b8c9d6!important;
+}
+html[data-tk-sport] body #app-shell:not(.hidden) .page:not(#page-never) .card table th{background:#eaf1f6!important;color:#28465b!important}
+html[data-tk-sport] body #app-shell:not(.hidden) .page:not(#page-never) .card table td{background:#fff!important;color:#243e52!important}
