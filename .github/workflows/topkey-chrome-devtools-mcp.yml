@@ -7,8 +7,12 @@ on:
     paths:
       - '.github/workflows/topkey-chrome-devtools-mcp.yml'
       - 'topkey/index.html'
+      - 'topkey/release.json'
+      - 'topkey/release-runtime.js'
       - 'topkey/sports/vnext/**'
+      - 'topkey/sports/vnext/workspace-redesign-h218.css'
       - 'topkey/sports/badminton/**'
+      - 'topkey/sports/badminton/workspace-redesign-h218.css'
       - 'topkey/hub-*.css'
       - 'topkey/tests/**'
 
