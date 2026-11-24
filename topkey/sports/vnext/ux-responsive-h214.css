@@ -1,0 +1,57 @@
+/* H214 — shared responsive UX layer for Football, Volleyball, Running, Handmade, Shuttlecock and Cooking.
+   Presentation only: no routing, role, score, Firebase or persistence changes. */
+html[data-tk-sport] #app-shell,
+html[data-tk-sport] #app-shell .shell,
+html[data-tk-sport] #app-shell .page,
+html[data-tk-sport] #app-shell .card,
+html[data-tk-sport] #app-shell .grid,
+html[data-tk-sport] #app-shell .field,
+html[data-tk-sport] #app-shell .form-grid {min-width:0;max-width:100%}
+html[data-tk-sport] #app-shell .page {width:100%;overflow:clip}
+html[data-tk-sport] #app-shell .page>.grid,
+html[data-tk-sport] #app-shell .page>.card>.grid {grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));align-items:stretch}
+html[data-tk-sport] #app-shell .page .form-grid {grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));align-items:end}
+html[data-tk-sport] #app-shell .page .card {min-width:0;overflow-wrap:anywhere}
+html[data-tk-sport] #app-shell .page .card :is(h2,h3){line-height:1.35;overflow-wrap:anywhere}
+html[data-tk-sport] #app-shell .page :is(.split,.checkin-row,.list-card,.score-head,.exec-head){min-width:0;flex-wrap:wrap}
+html[data-tk-sport] #app-shell .page :is(button,.btn){min-height:44px;max-width:100%;white-space:normal;line-height:1.3;touch-action:manipulation}
+html[data-tk-sport] #app-shell .page .table-wrap{width:100%;max-width:100%;overflow:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+html[data-tk-sport] #app-shell .page .table-wrap table{width:100%;max-width:none}
+html[data-tk-sport] #app-shell .page :is(input,select,textarea){min-width:0;max-width:100%;font-size:16px}
+html[data-tk-sport] #app-shell .page .field{min-width:0}
+html[data-tk-sport] #app-shell .page :is(.action-bar,.score-actions,.tk152-buttons){display:flex;flex-wrap:wrap;gap:8px}
+html[data-tk-sport] #app-shell .page .score-actions>*{flex:1 1 110px}
+html[data-tk-sport] #app-shell .page .video-box{width:100%;max-width:100%}
+html[data-tk-sport] #app-shell .page :is(img,canvas,svg,video,iframe){max-width:100%}
+html[data-tk-sport] #app-shell .page :is(.card,.control-card,.court-card,.list-card){scroll-margin-top:90px}
+html[data-tk-sport] #app-shell .nav [data-tab]{min-height:46px}
+html[data-tk-sport] #app-shell .nav [data-tab]:focus-visible,
+html[data-tk-sport] #app-shell .page :is(button,a,input,select,textarea):focus-visible{outline:3px solid var(--sport-highlight);outline-offset:3px}
+@media(max-width:690px){
+ html[data-tk-sport] #app-shell .topbar>.brand{gap:8px}
+ html[data-tk-sport] #app-shell .topbar>.brand .home-row{min-width:0;flex-wrap:wrap;gap:8px}
+ html[data-tk-sport] #app-shell #tournament-title{font-size:clamp(14px,4vw,17px);overflow-wrap:anywhere}
+ html[data-tk-sport] #app-shell .topbar>.brand>div:last-child{display:flex;align-items:center;gap:6px;max-width:100%}
+ html[data-tk-sport] #app-shell #user-label{max-width:42vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ html[data-tk-sport] #app-shell .topbar>.nav{max-width:100%;overscroll-behavior-x:contain;scrollbar-width:thin}
+ html[data-tk-sport] #app-shell .nav [data-tab]{min-height:44px;padding:9px 11px;font-size:12px}
+ html[data-tk-sport] #app-shell>.shell{overflow:clip}
+ html[data-tk-sport] #app-shell .page>.grid,
+ html[data-tk-sport] #app-shell .page>.card>.grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ html[data-tk-sport] #app-shell .page .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ html[data-tk-sport] #app-shell .page .card{padding:14px}
+ html[data-tk-sport] #app-shell .page .table-wrap table{min-width:680px}
+ html[data-tk-sport] #app-shell .page .score-head{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:6px}
+ html[data-tk-sport] #app-shell .page .score-head strong{font-size:clamp(26px,8vw,38px)}
+}
+@media(max-width:420px){
+ html[data-tk-sport] #app-shell .page>.grid,
+ html[data-tk-sport] #app-shell .page>.card>.grid,
+ html[data-tk-sport] #app-shell .page .form-grid{grid-template-columns:minmax(0,1fr)}
+ html[data-tk-sport] #app-shell .page .score-head{grid-template-columns:1fr}
+ html[data-tk-sport] #app-shell .page .score-actions>*{flex:1 1 calc(50% - 8px)}
+ html[data-tk-sport] #app-shell .page .card{padding:12px}
+}
+@media(prefers-reduced-motion:reduce){
+ html[data-tk-sport] #app-shell *{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
