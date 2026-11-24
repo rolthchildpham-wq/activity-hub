@@ -37,6 +37,8 @@ for(const tab of ['overview','control','teams','schedule','umpire','live','finan
  assert.ok(vhtml.includes('data-tab="'+tab+'"'),'VNext missing tab '+tab);
  assert.ok(bhtml.includes('data-tab="'+tab+'"'),'Badminton missing tab '+tab);
 }
+assert.ok(vcss.includes('#app-shell:not(.hidden) .page:not(#page-never) .card'),'VNext H218 card selector must outrank legacy H217 cascade');
+assert.ok(bcss.includes('#app-shell:not(.hidden) .page:not(#page-never) .card'),'Badminton H218 card selector must outrank legacy H217 cascade');
 assert.ok(vcss.includes('var(--sport-strong)'),'VNext must preserve distinct per-sport identity accents');
 assert.ok(bcss.includes('#075c75'),'Badminton must have its own teal identity');
 console.log('H218 workspace redesign contracts passed: 6 VNext sports + Badminton, 11 tabs, card/form/table/modal/mobile styling and synchronized release manifests.');
