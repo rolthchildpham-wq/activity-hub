@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "releaseId": "H217",
-  "cacheTag": "h217-unified-20261124",
-  "version": "2026.11.24-h217-unified-ui-contrast",
+  "releaseId": "H218",
+  "cacheTag": "h218-sports-redesign-20261124",
+  "version": "2026.11.24-h218-sports-workspace-redesign",
   "hub": "h217-unified-ui-contrast",
-  "badminton": "h217-unified-ui-contrast",
-  "vnext": "h217-unified-ui-contrast",
-  "generatedAt": "2026-11-24T20:30:00+07:00",
-  "build": "h217-unified-ui-contrast",
-  "release": "H217 Unified Hub and Sport Contrast Release"
+  "badminton": "h218-sports-workspace-redesign",
+  "vnext": "h218-sports-workspace-redesign",
+  "generatedAt": "2026-11-24T22:00:00+07:00",
+  "build": "h218-sports-workspace-redesign",
+  "release": "H218 Individual Sport Workspace Redesign"
 }
