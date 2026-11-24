@@ -2,7 +2,8 @@
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const rootEntry=fs.readFileSync('index.html','utf8');
-assert.match(rootEntry,/location\.replace\(['\"]\/topkey\//,'repository-root entry must forward to the actual static-site root');
+assert.match(rootEntry,/var target = ['\"]\/topkey\//,'repository-root entry must build the actual static-site target');
+assert.match(rootEntry,/window\.location\.replace\(target\)/,'repository-root entry must navigate to the static-site target');
 assert.match(rootEntry,/href=['\"]\/topkey\//,'repository-root entry must provide a no-JavaScript fallback');
 for(const path of ['topkey/index.html','topkey/sports/badminton/index.html','topkey/sports/vnext/index.html']){
  const s=fs.readFileSync(path,'utf8');
