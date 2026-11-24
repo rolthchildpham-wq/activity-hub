@@ -1,5 +1,6 @@
 /* H214 — shared responsive UX layer for Football, Volleyball, Running, Handmade, Shuttlecock and Cooking.
    Presentation only: no routing, role, score, Firebase or persistence changes. */
+html[data-tk-sport] body{overflow-x:hidden}
 html[data-tk-sport] #app-shell,
 html[data-tk-sport] #app-shell .shell,
 html[data-tk-sport] #app-shell .page,
@@ -7,7 +8,7 @@ html[data-tk-sport] #app-shell .card,
 html[data-tk-sport] #app-shell .grid,
 html[data-tk-sport] #app-shell .field,
 html[data-tk-sport] #app-shell .form-grid {min-width:0;max-width:100%}
-html[data-tk-sport] #app-shell .page {width:100%;overflow:clip}
+html[data-tk-sport] #app-shell .page {width:100%}
 html[data-tk-sport] #app-shell .page>.grid,
 html[data-tk-sport] #app-shell .page>.card>.grid {grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));align-items:stretch}
 html[data-tk-sport] #app-shell .page .form-grid {grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));align-items:end}
@@ -35,7 +36,6 @@ html[data-tk-sport] #app-shell .page :is(button,a,input,select,textarea):focus-v
  html[data-tk-sport] #app-shell #user-label{max-width:42vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
  html[data-tk-sport] #app-shell .topbar>.nav{max-width:100%;overscroll-behavior-x:contain;scrollbar-width:thin}
  html[data-tk-sport] #app-shell .nav [data-tab]{min-height:44px;padding:9px 11px;font-size:12px}
- html[data-tk-sport] #app-shell>.shell{overflow:clip}
  html[data-tk-sport] #app-shell .page>.grid,
  html[data-tk-sport] #app-shell .page>.card>.grid{grid-template-columns:repeat(2,minmax(0,1fr))}
  html[data-tk-sport] #app-shell .page .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
