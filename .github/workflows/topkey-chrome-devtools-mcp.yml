@@ -55,13 +55,13 @@ jobs:
           base="https://topkey-activity-management.edgeone.dev"
           routes=(
             "/"
-            "/sports/vnext/index.html?sport=football"
-            "/sports/vnext/index.html?sport=volleyball"
-            "/sports/vnext/index.html?sport=running"
-            "/sports/vnext/index.html?sport=handmade"
-            "/sports/vnext/index.html?sport=shuttle"
-            "/sports/vnext/index.html?sport=cooking"
-            "/sports/badminton/index.html"
+            "/sports/vnext/index.html?sport=football&testlab=1"
+            "/sports/vnext/index.html?sport=volleyball&testlab=1"
+            "/sports/vnext/index.html?sport=running&testlab=1"
+            "/sports/vnext/index.html?sport=handmade&testlab=1"
+            "/sports/vnext/index.html?sport=shuttle&testlab=1"
+            "/sports/vnext/index.html?sport=cooking&testlab=1"
+            "/sports/badminton/index.html?testlab=1"
           )
           mkdir -p artifacts/chrome-devtools
           chrome-devtools list_pages --output-format=json | tee artifacts/chrome-devtools/pages-start.json
