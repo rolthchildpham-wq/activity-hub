@@ -1,4 +1,5 @@
 /* H214 — responsive control/card polish for Badminton VNext. Presentation only. */
+body.tk-smooth-admin{overflow-x:hidden}
 body.tk-smooth-admin #app-shell,
 body.tk-smooth-admin #app-shell .shell,
 body.tk-smooth-admin #app-shell .page,
@@ -26,7 +27,6 @@ body.tk-smooth-admin #app-shell .nav [data-tab]{min-height:46px}
  body.tk-smooth-admin #app-shell .topbar>.brand{gap:8px}
  body.tk-smooth-admin #app-shell .topbar>.nav{max-width:100%;overscroll-behavior-x:contain;scrollbar-width:thin}
  body.tk-smooth-admin #app-shell .nav [data-tab]{min-height:44px;padding:9px 11px}
- body.tk-smooth-admin #app-shell>.shell{overflow:clip}
  body.tk-smooth-admin #app-shell .page>.grid,
  body.tk-smooth-admin #app-shell .page>.card>.grid{grid-template-columns:repeat(2,minmax(0,1fr))}
  body.tk-smooth-admin #app-shell .page .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
