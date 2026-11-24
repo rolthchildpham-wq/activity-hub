@@ -9,6 +9,7 @@ on:
       - 'topkey/index.html'
       - 'topkey/release.json'
       - 'topkey/build.json'
+      - 'topkey/build.json'
       - 'topkey/release-runtime.js'
       - 'topkey/sports/vnext/workspace-redesign-h218.css'
       - 'topkey/sports/badminton/workspace-redesign-h218.css'
@@ -99,6 +100,7 @@ jobs:
           node --check topkey/sports/vnext/sport-identities-h132.js
           node topkey/tests/sport-themes-h132.test.cjs
           node topkey/tests/sport-workspaces-ux-h214.test.cjs
+          node topkey/tests/sport-workspace-redesign-h218.test.cjs
           node topkey/tests/edgeone-host-redirect.test.cjs
           python3 - <<'PY'
           import json
@@ -306,11 +308,18 @@ jobs:
             echo "H218 asset HTTP=$code $asset"
             test "$code" = "200"
           done
+          curl --fail --silent --show-error --max-time 18 --location "$base/?__h218_probe=hub" -o /tmp/tk-h218-hub.html
+          curl --fail --silent --show-error --max-time 18 --location "$base/build.json?__h218_probe=hub" -o /tmp/tk-h218-root-build.json
+          grep -Fq '"cacheTag": "h218-sports-redesign-20261124"' /tmp/tk-h218-root-build.json
+          grep -Fq 'release-runtime.js?v=h218-sports-redesign-20261124' /tmp/tk-h218-hub.html
+          grep -Fq 'sport=football&amp;v=h218-sports-redesign-20261124' /tmp/tk-h218-hub.html
+          grep -Fq 'sports/badminton/index.html?v=h218-sports-redesign-20261124' /tmp/tk-h218-hub.html
           for entry in sports/vnext/index.html sports/badminton/index.html; do
             curl --fail --silent --show-error --max-time 18 --location "$base/$entry?__h218_probe=1" -o /tmp/tk-h218-entry.html
+            grep -Fq 'release-runtime.js?v=h218-sports-redesign-20261124' /tmp/tk-h218-entry.html
             grep -Fq 'workspace-redesign-h218.css?v=h218-sports-redesign-20261124' /tmp/tk-h218-entry.html
           done
-          echo "### Live H218 release runtime, both sport workspaces and redesign stylesheets verified." >> "$GITHUB_STEP_SUMMARY"
+          echo "### Live H218 Hub tickets, root/runtime manifests, both sport workspaces and redesign stylesheets verified." >> "$GITHUB_STEP_SUMMARY"
       - name: Document EdgeOne release settings
         shell: bash
         env:
