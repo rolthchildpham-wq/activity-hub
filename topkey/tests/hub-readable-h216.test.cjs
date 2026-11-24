@@ -10,4 +10,15 @@ assert.ok(css.includes('#topkey-sports .sport p'),'sport descriptions must have 
 assert.ok(css.includes('#topkey-sports .sport h3'),'sport titles must have explicit readable color');
 assert.ok(css.includes('#topkey-sports .sport .open'),'sport actions must have explicit readable color');
 assert.ok(!css.includes('display:none!important'),'H216 must not hide content');
+
+function luminance(hex){
+ const c=hex.match(/[0-9a-f]{2}/gi).map(v=>parseInt(v,16)/255).map(v=>v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4));
+ return .2126*c[0]+.7152*c[1]+.0722*c[2];
+}
+function contrast(a,b){const [hi,lo]=[luminance(a),luminance(b)].sort((x,y)=>y-x);return (hi+.05)/(lo+.05)}
+for(const [fg,bg] of [['#f7fbff','#14283a'],['#d8e5ef','#14283a'],['#ffffff','#087e70'],['#f7fbff','#102a43'],['#d1dfeb','#091522']]){
+ assert.ok(contrast(fg,bg)>=4.5,'WCAG AA contrast failed '+fg+' on '+bg+': '+contrast(fg,bg).toFixed(2));
+}
+console.log('H216 WCAG AA color pairs passed.');
+
 console.log('H216 Hub readability contract passed: explicit foregrounds, controls, sport-card typography, 2-column mobile and narrow-phone fallback.');
