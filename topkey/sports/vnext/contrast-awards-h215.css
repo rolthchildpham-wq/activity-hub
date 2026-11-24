@@ -1,0 +1,63 @@
+/* H215 — high-contrast controls + mobile-safe award editor across all VNext sports.
+   Presentation only. Does not touch tournament values, permissions or save handlers. */
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-overview) .card :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),select,textarea){
+  color:#f7fbff!important;-webkit-text-fill-color:#f7fbff!important;
+  background:#102a43!important;border:1px solid #7897b0!important;
+  opacity:1!important;box-shadow:inset 0 1px 2px #06152655;
+}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-overview) .card :is(input,textarea)::placeholder{
+  color:#c5d8e8!important;-webkit-text-fill-color:#c5d8e8!important;opacity:1!important;
+}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-overview) .card :is(.field>label,label,.muted,.note,small){
+  color:#d3e3ef!important;opacity:1!important;
+}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-overview) .card :is(h2,h3,h4,strong,b){color:#f5faff!important;opacity:1!important}
+html[data-tk-sport] #tk79-prize-editor{
+  display:block!important;width:100%;max-width:100%;min-width:0;
+  box-sizing:border-box;grid-column:1/-1!important;
+  overflow:hidden;border:1px solid #64869f!important;border-radius:16px!important;
+  padding:14px!important;background:#102a42!important;color:#f5faff!important;
+}
+html[data-tk-sport] #tk79-prize-editor :is(b,strong){color:#fff!important}
+html[data-tk-sport] #tk79-prize-editor .muted{color:#d5e5f1!important;opacity:1!important}
+html[data-tk-sport] #tk79-prize-list{width:100%;max-width:100%;min-width:0}
+html[data-tk-sport] #tk79-prize-list .tk79-prize-row{
+  display:grid!important;width:100%;max-width:100%;min-width:0;
+  grid-template-columns:minmax(0,1fr) 86px minmax(0,1.2fr) minmax(0,1fr) auto!important;
+  gap:10px!important;align-items:end;
+  border:1px solid #54758f!important;border-radius:12px!important;
+  padding:12px!important;background:#183750!important;box-sizing:border-box;
+}
+html[data-tk-sport] #tk79-prize-list .tk79-prize-row .field{min-width:0;max-width:100%;gap:6px}
+html[data-tk-sport] #tk79-prize-list .tk79-prize-row .field label{
+  color:#f0f7fc!important;font-size:12px;font-weight:750;line-height:1.35;
+}
+html[data-tk-sport] #tk79-prize-list .tk79-prize-row .field input{
+  width:100%;min-width:0;max-width:100%;min-height:46px;
+  color:#17384a!important;-webkit-text-fill-color:#17384a!important;
+  background:#f7fbfd!important;border:1px solid #9db8c8!important;
+  border-radius:10px!important;padding:10px 12px!important;
+  color-scheme:light!important;opacity:1!important;
+}
+html[data-tk-sport] #tk79-prize-list .tk79-prize-row .field input::placeholder{
+  color:#536d7c!important;-webkit-text-fill-color:#536d7c!important;opacity:1!important;
+}
+html[data-tk-sport] #tk79-prize-list .tk79-prize-row .tk79-p-del{min-height:44px;white-space:nowrap}
+html[data-tk-sport] #tk79-prize-editor :is(button,.btn){min-height:44px;opacity:1!important}
+html[data-tk-sport] #tk79-prize-editor .btn.ok{background:#087e60!important;color:#fff!important;border-color:#35b995!important}
+html[data-tk-sport] #tk79-prize-editor .btn.danger{background:#a62a45!important;color:#fff!important;border-color:#e17c91!important}
+html[data-tk-sport] #tk79-prize-list :is(input,button):focus-visible{outline:3px solid #9cecff!important;outline-offset:2px}
+@media(max-width:760px){
+ html[data-tk-sport] #tk79-prize-list .tk79-prize-row{
+   grid-template-columns:minmax(0,1fr) 88px!important;gap:9px!important;padding:10px!important;
+ }
+ html[data-tk-sport] #tk79-prize-list .tk79-prize-row .field:nth-child(3),
+ html[data-tk-sport] #tk79-prize-list .tk79-prize-row .field:nth-child(4),
+ html[data-tk-sport] #tk79-prize-list .tk79-prize-row .tk79-p-del{grid-column:1/-1}
+ html[data-tk-sport] #tk79-prize-list .tk79-prize-row .tk79-p-del{justify-self:end;min-width:96px}
+}
+@media(max-width:380px){
+ html[data-tk-sport] #tk79-prize-editor{padding:10px!important}
+ html[data-tk-sport] #tk79-prize-editor>div:first-child{align-items:stretch!important}
+ html[data-tk-sport] #tk79-prize-editor>div:first-child button{width:100%}
+}
