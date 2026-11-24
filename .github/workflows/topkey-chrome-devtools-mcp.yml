@@ -40,7 +40,7 @@ jobs:
       - name: Start isolated headless Chrome through Chrome DevTools MCP
         run: |
           set -euo pipefail
-          chrome-devtools start --headless --isolated --no-usage-statistics --viewport=390x844 --screenshotFormat=jpeg --screenshotQuality=65 --screenshotMaxWidth=1000 --screenshotMaxHeight=1000
+          chrome-devtools start --headless --isolated --no-usage-statistics
           chrome-devtools status
           mkdir -p artifacts/chrome-devtools
 
@@ -100,6 +100,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          node topkey/tests/hub-readable-h216.test.cjs
           node topkey/tests/hub-readable-h216.test.cjs
           node topkey/tests/sport-workspaces-ux-h214.test.cjs
           node topkey/tests/sport-themes-h132.test.cjs
