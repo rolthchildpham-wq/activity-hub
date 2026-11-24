@@ -106,6 +106,7 @@ jobs:
           set -euo pipefail
           node topkey/tests/hub-readable-h216.test.cjs
           node topkey/tests/sport-contrast-h217.test.cjs
+          node topkey/tests/sport-workspace-redesign-h218.test.cjs
           node topkey/tests/hub-readable-h216.test.cjs
           node topkey/tests/sport-workspaces-ux-h214.test.cjs
           node topkey/tests/sport-themes-h132.test.cjs
