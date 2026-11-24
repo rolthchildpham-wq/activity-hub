@@ -25,7 +25,7 @@ assert.equal(release.hub,'h218-sports-workspace-redesign');
 assert.equal(vb.cacheTag,release.cacheTag);
 assert.equal(bb.cacheTag,release.cacheTag);
 for(const [name,css] of [['VNext six-sport engine',vcss],['Badminton',bcss]]){
- for(const token of ['.page .card','table th','table td','input','textarea','.modal-box','@media(max-width:690px)','prefers-reduced-motion:reduce']){
+ for(const token of ['.page:not(#page-never) .card','table th','table td','input','textarea','.modal-box','@media(max-width:690px)','prefers-reduced-motion:reduce']){
   assert.ok(css.includes(token),name+' missing workspace redesign contract '+token);
  }
  assert.ok(css.includes('!important'),name+' must override legacy stylesheet cascade');
