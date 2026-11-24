@@ -1,0 +1,40 @@
+/* H218 — badminton workspace visual redesign; no tournament logic or persisted data changes. */
+body.tk-smooth-admin{background:#edf3f7!important;color:#1a3044!important}
+body.tk-smooth-admin #app-shell{background:#edf3f7!important}
+body.tk-smooth-admin #app-shell>.topbar{background:#fff!important;border-bottom:1px solid #d7e2e9!important;box-shadow:0 3px 16px rgba(15,38,58,.06)!important}
+body.tk-smooth-admin #app-shell .brand{background:#fff!important;padding:15px clamp(14px,2.4vw,30px)!important}
+body.tk-smooth-admin #app-shell .brand h1{color:#12364b!important;font-weight:900!important;letter-spacing:-.5px}
+body.tk-smooth-admin #app-shell .brand small{color:#60798a!important}
+body.tk-smooth-admin #app-shell .shell{background:#edf3f7!important;padding:25px clamp(14px,2.4vw,38px) 48px!important;max-width:1600px!important}
+body.tk-smooth-admin #app-shell .page{color:#1d3549!important}
+body.tk-smooth-admin #app-shell .page:not(#page-overview)>.split{padding-bottom:13px!important;margin-bottom:18px!important;border-bottom:1px solid #d5e1e9}
+body.tk-smooth-admin #app-shell .page:not(#page-overview)>.split h2{color:#15394f!important;font-size:clamp(20px,2vw,26px)!important;font-weight:900!important;letter-spacing:-.5px}
+body.tk-smooth-admin #app-shell .page:not(#page-overview)>.split p{color:#607789!important}
+body.tk-smooth-admin #app-shell .page .card{background:#fff!important;color:#1d3549!important;border:1px solid #d7e2e9!important;border-radius:16px!important;box-shadow:0 8px 24px rgba(20,42,61,.07)!important;padding:19px!important}
+body.tk-smooth-admin #app-shell .page .card :is(h2,h3,h4){color:#173b52!important;font-weight:850!important}
+body.tk-smooth-admin #app-shell .page .card :is(p,.muted,.note,small){color:#5a7183!important;opacity:1!important}
+body.tk-smooth-admin #app-shell .page :is(.subcard,.control-card,.court-card,.list-card,.checkin-row){background:#f5f9fb!important;color:#234156!important;border:1px solid #d9e5ec!important;border-radius:13px!important;box-shadow:none!important}
+body.tk-smooth-admin #app-shell .page .field label{color:#355368!important;font-weight:800!important}
+body.tk-smooth-admin #app-shell .page :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),select,textarea){background:#fff!important;color:#19364b!important;-webkit-text-fill-color:#19364b!important;border:1px solid #b9cbd7!important;border-radius:10px!important;min-height:44px!important}
+body.tk-smooth-admin #app-shell .page :is(input,textarea)::placeholder{color:#758b9b!important;-webkit-text-fill-color:#758b9b!important}
+body.tk-smooth-admin #app-shell .page :is(button,.btn){border-radius:10px!important;font-weight:800!important;min-height:40px;box-shadow:none!important}
+body.tk-smooth-admin #app-shell .page .btn:not(.ok):not(.danger):not(.warn):not(.primary),body.tk-smooth-admin #app-shell .page button:not(.btn){background:#edf4f8!important;color:#29485d!important;border:1px solid #cbd9e2!important}
+body.tk-smooth-admin #app-shell .page .btn.primary{background:#075c75!important;border-color:#075c75!important;color:#fff!important}
+body.tk-smooth-admin #app-shell .page .btn.ok{background:#087b58!important;border-color:#087b58!important;color:#fff!important}
+body.tk-smooth-admin #app-shell .page .btn.warn{background:#a65a0b!important;border-color:#a65a0b!important;color:#fff!important}
+body.tk-smooth-admin #app-shell .page .btn.danger{background:#b52f46!important;border-color:#b52f46!important;color:#fff!important}
+body.tk-smooth-admin #app-shell .page .table-wrap{background:#fff!important;border:1px solid #d5e0e8!important;border-radius:13px!important}
+body.tk-smooth-admin #app-shell .page table th{background:#e8f1f6!important;color:#24475d!important;font-weight:850!important;text-transform:uppercase;font-size:11px!important}
+body.tk-smooth-admin #app-shell .page table td{background:#fff!important;color:#243e52!important;border-color:#e4ecf1!important}
+body.tk-smooth-admin #app-shell .page .score-head>div{background:#eff6f9!important;border:1px solid #d5e2e9!important;color:#18394e!important}
+body.tk-smooth-admin #app-shell .page .score-head strong{color:#087b82!important}
+body.tk-smooth-admin #app-shell .page .modal-box{background:#fff!important;color:#1d3549!important;border-color:#cbd9e3!important}
+body.tk-smooth-admin #app-shell .nav{background:#092f45!important}
+body.tk-smooth-admin #app-shell .nav button{color:#eaf7fc!important}
+body.tk-smooth-admin #app-shell .nav button.active{background:#d9f1f3!important;color:#07566c!important}
+@media(max-width:690px){
+ body.tk-smooth-admin #app-shell .shell{padding:12px 10px 30px!important}
+ body.tk-smooth-admin #app-shell .page .card{padding:14px!important;border-radius:13px!important}
+ body.tk-smooth-admin #app-shell .page .action-bar{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}
+ body.tk-smooth-admin #app-shell .page .action-bar>*{min-width:0;width:100%;text-align:center}
+}
