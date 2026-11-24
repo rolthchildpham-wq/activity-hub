@@ -5,7 +5,7 @@ const code=fs.readFileSync('topkey/sports/badminton/tab-perf-h133.js','utf8');
 const html=fs.readFileSync('topkey/sports/badminton/index.html','utf8');
 const loader=fs.readFileSync('topkey/sports/badminton/production-loader.js','utf8');
 assert.ok(html.includes("await loadScript('./tab-perf-h133.js?v=h133-20261113',7000)"));
-assert.ok(html.includes('production-loader.js?v=h135-poll-free-reports-20261113'));
+assert.ok(html.includes('production-loader.js?v=tourney-lifecycle-20261117-r1'),'entry must load the current tournament-lifecycle runtime');
 assert.ok(loader.includes('await yieldToBrowser(4000)'));
 const frames=[],calls=[];
 let tab='overview';
