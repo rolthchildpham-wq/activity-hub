@@ -40,14 +40,14 @@ html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .checkin-row{
   color:#20394d!important;box-shadow:none!important;
 }
 html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .control-card strong{color:var(--ui-accent-strong)!important}
-html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .field label{color:#334f63!important;font-size:12px!important;font-weight:800!important}
-html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),select,textarea){
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .card .field label{color:#334f63!important;font-size:12px!important;font-weight:800!important}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .card :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),select,textarea){
   background:#fff!important;color:#172f43!important;-webkit-text-fill-color:#172f43!important;
   border:1px solid #b8c9d6!important;border-radius:10px!important;min-height:44px!important;
   box-shadow:0 1px 2px rgba(20,40,60,.04)!important;
 }
-html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) :is(input,textarea)::placeholder{color:#75899a!important;-webkit-text-fill-color:#75899a!important}
-html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) :is(input,select,textarea):focus{
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .card :is(input,textarea)::placeholder{color:#75899a!important;-webkit-text-fill-color:#75899a!important}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .card :is(input,select,textarea):focus{
   border-color:var(--ui-accent)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--ui-accent) 18%,transparent)!important;outline:0!important;
 }
 html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) :is(button,.btn){
