@@ -16,7 +16,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: topkey-chrome-devtools-mcp-v2
+  group: topkey-chrome-devtools-mcp-v3
   cancel-in-progress: false
 
 jobs:
@@ -59,18 +59,22 @@ jobs:
             "/sports/vnext/index.html?sport=cooking"
             "/sports/badminton/index.html"
           )
-          chrome-devtools new_page "$base/"
-          sleep 3
+          mkdir -p artifacts/chrome-devtools
+          chrome-devtools list_pages --output-format=json | tee artifacts/chrome-devtools/pages-start.json
           for i in "${!routes[@]}"; do
             route="${routes[$i]}"
             url="$base$route"
             echo "===== ROUTE $route =====" | tee -a artifacts/chrome-devtools/route-audit.txt
-            chrome-devtools navigate_page 1 --url "$url" | tee "artifacts/chrome-devtools/route-$i-navigation.txt"
-            sleep 3
-            chrome-devtools evaluate_script '() => JSON.stringify({url:location.href,title:document.title,readyState:document.readyState,viewport:{width:innerWidth,height:innerHeight},documentWidth:document.documentElement.scrollWidth,bodyWidth:document.body.scrollWidth,horizontalOverflow:document.documentElement.scrollWidth>innerWidth+2,visibleText:(document.body.innerText||"").slice(0,500),cards:document.querySelectorAll("[class*=card], [class*=tile], [role=button]").length,buttons:document.querySelectorAll("button").length,inputs:document.querySelectorAll("input,select,textarea").length,brokenImages:[...document.images].filter(x=>!x.complete||x.naturalWidth===0).map(x=>x.src),stylesheets:[...document.styleSheets].map(x=>x.href).filter(Boolean)})' --pageId 1 --output-format=json | tee "artifacts/chrome-devtools/route-$i-dom.json"
-            chrome-devtools list_console_messages 1 --output-format=json | tee "artifacts/chrome-devtools/route-$i-console.json" || true
-            chrome-devtools list_network_requests 1 --output-format=json | tee "artifacts/chrome-devtools/route-$i-network.json" || true
-            if [ "$i" = "0" ]; then timeout 20s chrome-devtools take_screenshot 1 --filePath "artifacts/chrome-devtools/hub-mobile-viewport.jpg" | tee "artifacts/chrome-devtools/hub-screenshot.txt" || echo "Screenshot timed out; DOM/console/network evidence retained."; fi
+            timeout 25s chrome-devtools navigate_page 1 --url "$url" | tee "artifacts/chrome-devtools/route-$i-navigation.txt"
+            sleep 1
+            timeout 20s chrome-devtools evaluate_script '() => JSON.stringify({url:location.href,title:document.title,readyState:document.readyState,viewport:{width:innerWidth,height:innerHeight},documentWidth:document.documentElement.scrollWidth,bodyWidth:document.body.scrollWidth,horizontalOverflow:document.documentElement.scrollWidth>innerWidth+2,visibleText:(document.body.innerText||"").slice(0,700),cards:document.querySelectorAll("[class*=card], [class*=tile], [role=button], .sport").length,buttons:document.querySelectorAll("button").length,inputs:document.querySelectorAll("input,select,textarea").length,brokenImages:[...document.images].filter(x=>!x.complete||x.naturalWidth===0).map(x=>x.src),stylesheets:[...document.styleSheets].map(x=>x.href).filter(Boolean),missingLabels:[...document.querySelectorAll("button,input,select,textarea")].filter(x=>!((x.innerText||x.getAttribute("aria-label")||x.labels?.[0]?.innerText||x.getAttribute("placeholder")||"").trim())).length})' --pageId 1 --output-format=json | tee "artifacts/chrome-devtools/route-$i-dom.json"
+            if [ "$i" = "0" ] || [ "$i" = "7" ]; then
+              timeout 15s chrome-devtools list_console_messages 1 --output-format=json | tee "artifacts/chrome-devtools/route-$i-console.json" || echo "Console capture timed out" >> artifacts/chrome-devtools/diagnostics-warnings.txt
+              timeout 15s chrome-devtools list_network_requests 1 --output-format=json | tee "artifacts/chrome-devtools/route-$i-network.json" || echo "Network capture timed out" >> artifacts/chrome-devtools/diagnostics-warnings.txt
+            fi
+            if [ "$i" = "0" ]; then
+              timeout 15s chrome-devtools take_screenshot 1 --filePath "artifacts/chrome-devtools/hub-mobile-viewport.png" | tee "artifacts/chrome-devtools/hub-screenshot.txt" || echo "Screenshot capture timed out" >> artifacts/chrome-devtools/diagnostics-warnings.txt
+            fi
           done
 
       - name: Verify all production route HTTP statuses and required static assets
