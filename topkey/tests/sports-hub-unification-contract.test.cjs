@@ -21,7 +21,7 @@ for (const name of ['Cầu lông', 'Bóng đá', 'Bóng chuyền', 'Chạy bộ'
 }
 const badmintonCard = sportLinks.find(item => item.name === 'Cầu lông');
 assert.match(badmintonCard.href, /^\.\/sports\/vnext\//, 'Badminton must launch through the common sports route');
-assert.match(launcher, /sports\/badminton\/index\.html/, 'Badminton adapter must preserve the original engine');
+assert.match(launcher, /\.\.\/badminton\/index\.html/, 'Badminton adapter must preserve the original engine');
 
 assert.equal(badminton.match(/T\.ROOT = '([^']+)'/)?.[1], 'topkey_badminton_vnext_2026');
 assert.match(badminton, /T\.SCHEMA_VERSION = 3/);
