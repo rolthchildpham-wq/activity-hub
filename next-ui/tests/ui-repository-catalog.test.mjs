@@ -41,7 +41,7 @@ test('admin UI preferences are shared through the existing protected TOPKEY syst
  assert.match(branch['.write'],/role/);
 });
 
-test('UI preferences do not use public or unprotected Firebase roots',()=>{
+test('UI preferences use only the protected system settings branch and read the existing admin profile',()=>{
  assert.ok(!settingsPage.includes("topkey_multisport_app/uiSettings"));
- assert.ok(!settingsPage.includes("topkey_badminton_vnext_2026/users/"));
+ assert.ok(settingsPage.includes("topkey_badminton_vnext_2026/users/"));
 });
