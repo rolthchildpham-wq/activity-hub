@@ -166,6 +166,8 @@ jobs:
             return JSON.stringify(result);
           }' --pageId 1 --output-format=json | tee artifacts/chrome-devtools/hub-mobile.json
           chrome-devtools take_screenshot 1 --filePath artifacts/chrome-devtools/hub-mobile.png
+          chrome-devtools evaluate_script '() => {document.querySelector(".exec-calendar-card")?.scrollIntoView({block:"center"});return "calendar-mobile-scrolled"}' --pageId 1
+          chrome-devtools take_screenshot 1 --filePath artifacts/chrome-devtools/hub-calendar-mobile.png
           chrome-devtools resize_page 1 1440 1000
 
       - name: Full UI fixture and interaction matrix – all 7 sports
