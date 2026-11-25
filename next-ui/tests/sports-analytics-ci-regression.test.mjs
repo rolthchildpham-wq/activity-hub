@@ -1,0 +1,2 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {buildSportsAnalytics} from '../src/lib/entities/sports-analytics.ts';
+test('sports analytics regression: only completed scored matches affect win rate',()=>{const r=buildSportsAnalytics({m:{teamAId:'a',teamBId:'b',status:'FINISHED',scoreA:3,scoreB:1},l:{teamAId:'a',teamBId:'b',status:'LIVE',scoreA:1,scoreB:0}},{a:{name:'A'},b:{name:'B'}});assert.equal(r.scoredCompleted,1);assert.equal(r.teamRecords.find(x=>x.id==='a').winRate,100)});

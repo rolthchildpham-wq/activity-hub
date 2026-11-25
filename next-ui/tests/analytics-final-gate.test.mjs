@@ -1,0 +1,1 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {buildSportsAnalytics} from '../src/lib/entities/sports-analytics.ts';test('final analytics gate: empty input is stable',()=>assert.equal(buildSportsAnalytics({},{}).matches,0));
