@@ -68,7 +68,7 @@ jobs:
               overflow:document.documentElement.scrollWidth>innerWidth+2,
               h219:[...document.styleSheets].some(sheet=>sheet.href?.includes("hub-dashboard-reference-h219.css")),
               eccDesign:[...document.styleSheets].some(sheet=>sheet.href?.includes("hub-ecc-design-system.css"))};
-            const rgb=value=>value.match(/[\\d.]+/g).slice(0,3).map(Number);
+            const rgb=value=>value.match(/[\d.]+/g).slice(0,3).map(Number);
             const lum=value=>{const channels=rgb(value).map(v=>{v/=255;return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*channels[0]+.7152*channels[1]+.0722*channels[2]};
             const cardStyle=getComputedStyle(cards[0]),paragraphStyle=getComputedStyle(cards[0].querySelector("p"));
             const contrast=(Math.max(lum(cardStyle.backgroundColor),lum(paragraphStyle.color))+.05)/(Math.min(lum(cardStyle.backgroundColor),lum(paragraphStyle.color))+.05);
@@ -175,7 +175,7 @@ jobs:
               const sport=new URLSearchParams(location.search).get("sport")||(location.pathname.includes("/sports/badminton/")?"badminton":"");
               const panel=document.querySelector("#h201-analytics .h201-panel");
               const heading=panel?.querySelector("h2"),sub=panel?.querySelector(".h201-sub");
-              const rgb=value=>value.match(/[\\d.]+/g).slice(0,3).map(Number);
+              const rgb=value=>value.match(/[\d.]+/g).slice(0,3).map(Number);
               const lum=value=>{const channels=rgb(value).map(v=>{v/=255;return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*channels[0]+.7152*channels[1]+.0722*channels[2]};
               const contrast=(a,b)=>(Math.max(lum(a),lum(b))+.05)/(Math.min(lum(a),lum(b))+.05);
               const panelBg=panel?getComputedStyle(panel).backgroundColor:"";
