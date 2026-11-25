@@ -2,6 +2,8 @@ name: TOPKEY Chrome DevTools MCP full UI verification
 
 on:
   workflow_dispatch:
+  push:
+    branches: [rebuild/sports-hub-ecc-unified]
   workflow_run:
     workflows: ["TOPKEY EdgeOne Git-provider readiness"]
     types: [completed]
@@ -41,11 +43,21 @@ jobs:
           chrome-devtools status
           mkdir -p artifacts/chrome-devtools
 
+      - name: Serve checked-out branch locally for real browser verification
+        run: |
+          set -euo pipefail
+          python3 -m http.server 4173 --directory topkey > /tmp/topkey-http.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl --silent --fail http://127.0.0.1:4173/ >/dev/null; then break; fi
+            sleep 1
+          done
+          curl --silent --show-error --fail http://127.0.0.1:4173/ >/dev/null
+
       - name: Verify Hub desktop and mobile layout
         shell: bash
         run: |
           set -euo pipefail
-          base="https://topkey-activity-management.edgeone.dev"
+          base="http://127.0.0.1:4173"
           chrome-devtools navigate_page 1 --url "$base/" | tee artifacts/chrome-devtools/hub-navigation.txt
           sleep 2
           chrome-devtools evaluate_script '() => {
