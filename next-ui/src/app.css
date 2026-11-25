@@ -176,3 +176,6 @@
 @media(prefers-reduced-motion:reduce){
  .sidebar,.sidebar-backdrop,.mobile-bottom,.workspace-bottom{scroll-behavior:auto;transition:none!important}
 }
+
+/* Dashboard score preview: make real results visible without competing with team names. */
+.match-score{display:inline-flex;align-items:center;justify-content:center;justify-self:start;margin-top:7px;padding:4px 9px;border-radius:7px;background:#e8f3ef;color:#07594f;font-size:13px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:.02em}

@@ -143,3 +143,10 @@ export function legacyHref(s:SportKey,tid?:string):string {
  return '/'+pathname+(query?'?'+query:'');
 }
 export const isTestLab=(tid:string)=>tid.startsWith('__testlab_');
+
+export function formatMatchScore(match:Match):string|null {
+ const hasA=typeof match.scoreA==='number'&&Number.isFinite(match.scoreA);
+ const hasB=typeof match.scoreB==='number'&&Number.isFinite(match.scoreB);
+ if(!hasA&&!hasB)return null;
+ return `${hasA?match.scoreA:'—'} – ${hasB?match.scoreB:'—'}`;
+}

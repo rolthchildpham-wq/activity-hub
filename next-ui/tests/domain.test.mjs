@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { sports, summarize, groupPhases, activeLiveMatches, isTestLab, legacyHref, normalizeScheduleDate, filterScheduleMatches, sortDashboardMatches } from '../src/lib/domain.ts';
+import { sports, summarize, groupPhases, activeLiveMatches, isTestLab, legacyHref, normalizeScheduleDate, filterScheduleMatches, sortDashboardMatches, formatMatchScore } from '../src/lib/domain.ts';
 
 const fixture={
  teams:{a:{name:'A',checkedIn:true},b:{name:'B'},c:{name:'C',checkedIn:true}},
@@ -99,4 +99,12 @@ test('dashboard preview prioritizes live, upcoming, then most recently completed
 });
 test('dashboard preview safely ignores null Firebase match records',()=>{
  assert.deepEqual(sortDashboardMatches({a:null,b:{status:'LIVE'}}).map(([id])=>id),['b']);
+});
+
+test('dashboard score formatting preserves zero and handles partial scores',()=>{
+ assert.equal(formatMatchScore({scoreA:0,scoreB:21}),'0 – 21');
+ assert.equal(formatMatchScore({scoreA:15}),'15 – —');
+ assert.equal(formatMatchScore({scoreB:7}),'— – 7');
+ assert.equal(formatMatchScore({} ),null);
+ assert.equal(formatMatchScore({scoreA:NaN,scoreB:Infinity}),null);
 });
