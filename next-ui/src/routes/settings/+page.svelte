@@ -3,6 +3,7 @@
  import {base} from '$app/paths';
  import {onAuthStateChanged,getIdTokenResult,type User} from 'firebase/auth';
  import {client} from '$lib/firebase';
+ import {get,ref,set} from 'firebase/database';
  import {uiRepositories,uiRepositoryGroups} from '$lib/features/ui-settings/catalog';
  type Theme='ivory'|'slate'|'midnight'; type Density='comfortable'|'compact';
  let user:User|null=$state(null),booting=$state(true),isAdmin=$state(false),error=$state(''),saved=$state(false);
@@ -18,17 +19,42 @@
    if(!alive)return;user=current;
    if(!current){isAdmin=false;booting=false;return}
    try{
-    const token=await getIdTokenResult(current);const claims=token.claims as Record<string,unknown>;
-    const roles=Array.isArray(claims.roles)?claims.roles:[];
-    const permissions=(claims.permissions&&typeof claims.permissions==='object'?claims.permissions:{}) as Record<string,unknown>;
-    isAdmin=claims.admin===true||claims.superAdmin===true||claims.role==='admin'||claims.role==='superadmin'||roles.some(role=>role==='admin'||role==='superadmin')||permissions.systemAdmin===true;
-    if(isAdmin){try{const raw=localStorage.getItem('topkey-uiux-admin-preferences-v1');if(raw){const value=JSON.parse(raw);if(['ivory','slate','midnight'].includes(value.theme))theme=value.theme;if(['comfortable','compact'].includes(value.density))density=value.density;if(typeof value.motion==='boolean')motion=value.motion;if(value.enabled&&typeof value.enabled==='object')enabled={...enabled,...value.enabled}}}catch{error='Không đọc được tùy chọn đã lưu trên thiết bị này.'}}
-   }catch{isAdmin=false;error='Không xác minh được quyền quản trị. Vui lòng đăng nhập lại.'}
-   booting=false;
+    const db=client().db;
+    const profileSnap=await get(ref(db,'topkey_badminton_vnext_2026/users/'+current.uid));
+    const profile=(profileSnap.val()&&typeof profileSnap.val()==='object'?profileSnap.val():{}) as Record<string,unknown>;
+    const permissions=(profile.permissions&&typeof profile.permissions==='object'?profile.permissions:{}) as Record<string,unknown>;
+    const modules=(permissions.modules&&typeof permissions.modules==='object'?permissions.modules:{}) as Record<string,unknown>;
+    const details=(permissions.details&&typeof permissions.details==='object'?permissions.details:{}) as Record<string,unknown>;
+    const active=profile.active!==false&&profile.disabled!==true&&profile.locked!==true&&profile.enabled!==false&&profile.isActive!==false&&!['disabled','blocked','suspended','inactive'].includes(String(profile.status??'').toLowerCase());
+    isAdmin=active&&(profile.role==='ADMIN'||modules.systemAdmin==='edit'||details['systemAdmin:access']==='edit');
+    if(isAdmin){
+     const settingsSnap=await get(ref(db,'topkey_badminton_vnext_2026/uiSettings/uiux'));
+     const value=settingsSnap.val();
+     if(value&&typeof value==='object'){
+      if(['ivory','slate','midnight'].includes(value.theme))theme=value.theme;
+      if(['comfortable','compact'].includes(value.density))density=value.density;
+      if(typeof value.motion==='boolean')motion=value.motion;
+      if(value.enabled&&typeof value.enabled==='object'){
+       const safe:Record<string,boolean>={};
+       for(const item of uiRepositories)if(typeof value.enabled[item.id]==='boolean')safe[item.id]=value.enabled[item.id];
+       enabled={...enabled,...safe};
+      }
+     }
+    }
+   }catch(e){isAdmin=false;error='Không xác minh được quyền quản trị hoặc tải cấu hình. Kiểm tra quyền systemAdmin và đăng nhập lại.'}
+   if(alive)booting=false;
   },e=>{error=e.message;booting=false})}catch(e){error=e instanceof Error?e.message:String(e);booting=false}
   return()=>{alive=false;unsubscribe()};
  });
- function save(){try{localStorage.setItem('topkey-uiux-admin-preferences-v1',JSON.stringify({theme,density,motion,enabled}));saved=true}catch{error='Không thể lưu tùy chọn trên thiết bị này.'}}
+ async function save(){
+  if(!user||!isAdmin){error='Không có quyền lưu cấu hình UI/UX.';return}
+  try{
+   const config={theme,density,motion,enabled,updatedAt:Date.now(),updatedBy:user.uid,version:1};
+   await set(ref(client().db,'topkey_badminton_vnext_2026/uiSettings/uiux'),config);
+   localStorage.setItem('topkey-uiux-admin-preferences-v1',JSON.stringify({theme,density,motion,enabled}));
+   saved=true;error='';
+  }catch{error='Không thể lưu cấu hình dùng chung. Firebase từ chối quyền ghi hoặc kết nối bị gián đoạn.'}
+ }
  function reset(){theme='ivory';density='comfortable';motion=true;enabled=Object.fromEntries(uiRepositories.map(item=>[item.id,item.enabledByDefault]));saved=false}
  function compatibility(fit:string){return ({svelte:'Tương thích Svelte',react:'React only',framework:'Cần đánh giá tích hợp',optional:'Module tùy chọn 3D'})[fit]||fit}
 </script>
@@ -38,7 +64,7 @@
 {:else if !user}
  <main class="settings-state"><section class="settings-panel"><h1>Cần đăng nhập</h1><p>Đăng nhập tài khoản TOPKEY được cấp quyền quản trị để mở cài đặt UI/UX.</p><a href={base+'/'}>← Về trang đăng nhập</a></section></main>
 {:else if !isAdmin}
- <main class="settings-state"><section class="settings-panel"><h1>Không đủ quyền</h1><p>Trang này chỉ dành cho tài khoản có custom claim admin, superAdmin hoặc permissions.systemAdmin.</p><p>Không có thay đổi nào được ghi vào Firebase.</p><a href={base+'/'}>← Quay lại Sports Hub</a></section></main>
+ <main class="settings-state"><section class="settings-panel"><h1>Không đủ quyền</h1><p>Trang này chỉ dành cho tài khoản ADMIN hoặc có quyền systemAdmin:edit trong hồ sơ TOPKEY.</p><p>Không có thay đổi nào được ghi vào Firebase.</p><a href={base+'/'}>← Quay lại Sports Hub</a></section></main>
 {:else}
  <main class="settings-page" style={"--preview-bg:"+selectedTheme.bg+";--preview-surface:"+selectedTheme.surface+";--preview-ink:"+selectedTheme.ink+";--preview-accent:"+selectedTheme.accent+";--preview-nav:"+selectedTheme.nav}>
   <header class="settings-header"><div><a href={base+'/'} class="back-link">← Sports Hub</a><p class="eyebrow">ADMIN CONTROL CENTER</p><h1>Cài đặt giao diện UI/UX</h1><p class="intro">Quản lý nguồn thiết kế, theme và hành vi giao diện tập trung.</p></div><span class="admin-chip">ADMIN · {user.email}</span></header>
@@ -53,7 +79,7 @@
     <div class="preview-nav"><strong>TOPKEY</strong><span>Dashboard</span><span>Lịch thi đấu</span><span>Trọng tài</span></div>
     <div class="preview-content"><div><small>SPORTS MANAGEMENT</small><h3>Trung tâm điều hành</h3><p>Trận đấu gần đây và sắp diễn ra</p></div><div class="preview-cards"><article><small>ĐANG THI ĐẤU</small><strong>08</strong></article><article><small>ĐÃ HOÀN TẤT</small><strong>24</strong></article><article><small>ĐỘI THAM GIA</small><strong>16</strong></article></div><button type="button">Xem trước thay đổi</button></div>
    </div>
-   <p class="helper">Tùy chọn hiện được lưu trên trình duyệt quản trị này. Chưa ghi cấu hình dùng chung lên Firebase và không tự thay đổi giao diện production.</p>
+   <p class="helper">Cấu hình được lưu dùng chung tại vùng quản trị Firebase. Các màn hình sẽ áp dụng theme khi tích hợp bộ đọc cấu hình UI/UX.</p>
   </section>
   <section class="settings-panel"><div class="section-title"><div><p class="eyebrow">02 · REPOSITORY LIBRARY</p><h2>Thư viện GitHub UI/UX</h2><p>Bật/tắt nguồn tham khảo cho quy trình thiết kế. Không tự tải mã nguồn hoặc chèn script bên thứ ba vào website.</p></div><span class="count">{uiRepositories.length} repositories</span></div>
    <div class="filters" aria-label="Lọc nhóm repository"><button class:active={activeGroup==='all'} onclick={()=>activeGroup='all'}>Tất cả</button>{#each uiRepositoryGroups as group}<button class:active={activeGroup===group.id} onclick={()=>activeGroup=group.id}>{group.label}</button>{/each}</div>
@@ -64,7 +90,7 @@
     </article>
    {/each}</div>
   </section>
-  <footer class="settings-footer"><p>Danh mục repository là cấu hình tham khảo; thêm dependency, import component và deploy phải qua PR + kiểm thử tương thích.</p><div><button class="secondary" onclick={reset}>Khôi phục mặc định</button><button class="primary" onclick={save}>Lưu tùy chọn trên thiết bị</button></div>{#if saved}<span role="status">Đã lưu tùy chọn UI/UX trên thiết bị này.</span>{/if}</footer>
+  <footer class="settings-footer"><p>Danh mục repository là cấu hình tham khảo; thêm dependency, import component và deploy phải qua PR + kiểm thử tương thích.</p><div><button class="secondary" onclick={reset}>Khôi phục mặc định</button><button class="primary" onclick={save}>Lưu tùy chọn trên thiết bị</button></div>{#if saved}<span role="status">Đã lưu cấu hình UI/UX dùng chung trên Firebase.</span>{/if}</footer>
  </main>
 {/if}
 <style>
