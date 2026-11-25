@@ -32,6 +32,8 @@ on:
       - 'topkey/sports/diy-vlog/**'
       - 'topkey/tests/vlog-*.test.cjs'
       - 'topkey/sports/vnext/index.html'
+      - 'topkey/sports/vnext/dashboard-live-h227.css'
+      - 'topkey/sports/vnext/src/dashboard-live-h227.js'
       - 'topkey/sports/vnext/ux-responsive-h214.css'
       - 'topkey/sports/vnext/contrast-awards-h215.css'
       - 'topkey/tests/sport-workspaces-ux-h214.test.cjs'
@@ -352,6 +354,33 @@ jobs:
             exit 1
           fi
           echo "### H220 live calendar stylesheet and cache key verified on EdgeOne." >> "$GITHUB_STEP_SUMMARY"
+      - name: Verify H228 dashboard tab isolation on live EdgeOne
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://topkey-activity-management.edgeone.dev"
+          ok=0
+          for attempt in $(seq 1 18); do
+            stamp="__h230_probe=${attempt}_${GITHUB_RUN_ID}"
+            html_code="$(curl --silent --show-error --max-time 15 --location --output /tmp/tk-h230-vnext.html --write-out '%{http_code}' "$base/sports/vnext/index.html?sport=volleyball&$stamp" || true)"
+            css_code="$(curl --silent --show-error --max-time 15 --location --output /tmp/tk-h230-dashboard.css --write-out '%{http_code}' "$base/sports/vnext/dashboard-live-h227.css?v=h228-dashboard-tabs-20261125&$stamp" || true)"
+            js_code="$(curl --silent --show-error --max-time 15 --location --output /tmp/tk-h230-dashboard.js --write-out '%{http_code}' "$base/sports/vnext/src/dashboard-live-h227.js?v=h229-dashboard-retry-20261125&$stamp" || true)"
+            echo "H230 live attempt=$attempt html=$html_code css=$css_code js=$js_code"
+            if [ "$html_code" = "200" ] && [ "$css_code" = "200" ] && [ "$js_code" = "200" ] &&
+              grep -Fq 'dashboard-live-h227.css?v=h228-dashboard-tabs-20261125' /tmp/tk-h230-vnext.html &&
+              grep -Fq 'dashboard-live-h227.js?v=h229-dashboard-retry-20261125' /tmp/tk-h230-vnext.html &&
+              grep -Fq 'H228: the overview layout must never override the app' /tmp/tk-h230-dashboard.css &&
+              grep -Fq '__TOPKEY_H227_INSTALL_ERROR' /tmp/tk-h230-dashboard.js; then
+              ok=1
+              break
+            fi
+            sleep 8
+          done
+          if [ "$ok" != "1" ]; then
+            echo "::error::H228/H229 dashboard tab-isolation assets have not propagated to EdgeOne. Do not claim the workspace-tab fix is live."
+            exit 1
+          fi
+          echo "### H228/H229 dashboard tab-isolation HTML, CSS and runtime verified on live EdgeOne." >> "$GITHUB_STEP_SUMMARY"
       - name: Document EdgeOne release settings
         shell: bash
         env:
