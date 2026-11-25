@@ -141,8 +141,28 @@ jobs:
             const navRect=document.querySelector(".tk210-nav").getBoundingClientRect();
             const heroRect=document.querySelector(".tk-bi-hero").getBoundingClientRect();
             result.navTop=Math.round(navRect.top);result.heroBottom=Math.round(heroRect.bottom);
+            const calendar=document.querySelector(".exec-calendar-card");
+            const calendarGrid=document.querySelector(".exec-calendar-grid");
+            const weekdays=document.querySelector(".exec-calendar-weekdays");
+            if(!calendar||!calendarGrid||!weekdays)
+              throw new Error("Hub dashboard calendar fixture missing on mobile");
+            const calendarRect=calendar.getBoundingClientRect();
+            const gridRect=calendarGrid.getBoundingClientRect();
+            const weekdayRect=weekdays.getBoundingClientRect();
+            result.calendar={cardWidth:Math.round(calendarRect.width),cardClientWidth:calendar.clientWidth,
+              cardScrollWidth:calendar.scrollWidth,gridWidth:Math.round(gridRect.width),
+              gridClientWidth:calendarGrid.clientWidth,gridScrollWidth:calendarGrid.scrollWidth,
+              gridMinWidth:getComputedStyle(calendarGrid).minWidth,
+              weekdaysWidth:Math.round(weekdayRect.width),weekdaysScrollWidth:weekdays.scrollWidth,
+              columns:getComputedStyle(calendarGrid).gridTemplateColumns};
             if(result.overflow||result.navPosition!=="fixed"||navRect.top<heroRect.bottom)
               throw new Error("Hub mobile navigation/layout failed: "+JSON.stringify(result));
+            if(calendar.scrollWidth>calendar.clientWidth+1||
+              calendarGrid.scrollWidth>calendarGrid.clientWidth+1||
+              weekdays.scrollWidth>weekdays.clientWidth+1||
+              calendarRect.width>innerWidth-16||
+              getComputedStyle(calendarGrid).minWidth!=="0px")
+              throw new Error("H220 mobile calendar horizontal overflow: "+JSON.stringify(result));
             return JSON.stringify(result);
           }' --pageId 1 --output-format=json | tee artifacts/chrome-devtools/hub-mobile.json
           chrome-devtools take_screenshot 1 --filePath artifacts/chrome-devtools/hub-mobile.png
