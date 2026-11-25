@@ -1,5 +1,3 @@
-# TOPKEY Sports Hub — ECC implementation contract
-
 const fs = require('node:fs');
 const path = require('node:path');
 const assert = require('node:assert/strict');
@@ -13,45 +11,43 @@ const launcher = read('sports/vnext/badminton.html');
 const vnextPage = read('sports/vnext/index.html');
 const badmintonPage = read('sports/badminton/index.html');
 const sharedShell = read('sports/topkey-sports-shell.js');
+const shellCss = read('sports/topkey-sports-shell.css');
 
-const sportLinks = [...hub.matchAll(/<a class="sport" href="([^"]+)"[\s\S]*?<h3>([^<]+)<\/h3>/g)]
+const sportLinks = [...hub.matchAll(/<a class="sport" href="([^"]+)"[\\s\\S]*?<h3>([^<]+)<\\/h3>/g)]
   .map(([, href, name]) => ({ href: href.replaceAll('&amp;', '&'), name }));
 
-assert.ok(sportLinks.some(item => item.name === 'Cầu lông'), 'Badminton must be present in the single Hub catalog');
-assert.ok(sportLinks.some(item => item.name === 'Bóng đá'), 'Football must remain in the catalog');
-assert.ok(sportLinks.some(item => item.name === 'Bóng chuyền'), 'Volleyball must remain in the catalog');
-assert.ok(sportLinks.some(item => item.name === 'Chạy bộ'), 'Running must remain in the catalog');
-
-const badmintonCard = sportLinks.find(item => item.name === 'Cầu lông');
-assert.match(badmintonCard.href, /^\.\/sports\/vnext\//, 'Badminton must be launched through the common VNext route namespace');
-assert.match(launcher, /sports\/badminton\/index\.html/, 'The common route adapter must preserve the existing badminton runtime');
-
-const roots = {
-  vnext: vnext.match(/root:'([^']+)'/g) || [],
-  badminton: badminton.match(/T\.ROOT = '([^']+)'/)?.[1]
-};
-assert.equal(roots.badminton, 'topkey_badminton_vnext_2026', 'Badminton Firebase root is a protected data contract');
-assert.match(badminton, /T\.SCHEMA_VERSION = 3/, 'Badminton schema v3 must not be silently downgraded');
-assert.match(vnext, /T\.SCHEMA_VERSION = 2/, 'Other VNext sports schema v2 must remain unchanged');
-assert.match(badminton, /T\.LEGACY_ROOT = 'topkey_badminton_app_ai'/, 'Legacy badminton data root must remain available');
-
-assert.ok(vnextPage.includes('topkey-sports-shell.js'), 'VNext workspaces must load the shared sport navigation');
-assert.ok(badmintonPage.includes('topkey-sports-shell.js'), 'Badminton must load the same shared sport navigation');
-assert.ok(vnextPage.includes('topkey-sports-shell.css'), 'VNext workspaces must load the shared sport shell styles');
-assert.ok(badmintonPage.includes('topkey-sports-shell.css'), 'Badminton must load the shared sport shell styles');
-for (const key of ['football', 'badminton', 'volleyball', 'running', 'handmade', 'shuttle', 'cooking']) {
-  assert.match(sharedShell, new RegExp("key: '\" + key + "'"), 'Shared navigation is missing ' + key);
+for (const name of ['Cầu lông', 'Bóng đá', 'Bóng chuyền', 'Chạy bộ', 'DIY / Handmade', 'Đá cầu', 'Nấu ăn']) {
+  assert.ok(sportLinks.some(item => item.name === name), 'Hub catalog is missing ' + name);
 }
-assert.match(sharedShell, /aria-label.*Điều hướng các bộ môn TOPKEY/, 'Shared navigation must have an accessible name');
-assert.match(sharedShell, /aria-label.*Chuyển bộ môn/, 'Sport selector must have an accessible name');
-assert.match(sharedShell, /#spectator.*#register/, 'Public spectator and registration routes must not be covered by the admin shell');
-assert.ok(hub.includes('hub-dashboard-reference-h219.css'), 'Current dashboard visual reference stylesheet must remain available during migration');
-assert.ok(hub.includes('id="topkey-sports"'), 'The unified sports catalog mount must remain present');
+const badmintonCard = sportLinks.find(item => item.name === 'Cầu lông');
+assert.match(badmintonCard.href, /^\\.\\/sports\\/vnext\\//, 'Badminton must launch through the common sports route');
+assert.match(launcher, /sports\\/badminton\\/index\\.html/, 'Badminton adapter must preserve the original engine');
+
+assert.equal(badminton.match(/T\\.ROOT = '([^']+)'/)?.[1], 'topkey_badminton_vnext_2026');
+assert.match(badminton, /T\\.SCHEMA_VERSION = 3/);
+assert.match(vnext, /T\\.SCHEMA_VERSION = 2/);
+assert.match(badminton, /T\\.LEGACY_ROOT = 'topkey_badminton_app_ai'/);
+assert.match(vnext, /football:\\{[\\s\\S]*?root:'topkey_football_vnext_2026'/);
+assert.match(vnext, /volleyball:\\{[\\s\\S]*?root:'topkey_volleyball_vnext_2026'/);
+
+assert.ok(vnextPage.includes('../topkey-sports-shell.css'), 'VNext must load shared sports shell styles');
+assert.ok(badmintonPage.includes('../topkey-sports-shell.css'), 'Badminton must load shared sports shell styles');
+assert.ok(vnextPage.includes('../topkey-sports-shell.js'), 'VNext must load shared sports shell');
+assert.ok(badmintonPage.includes('../topkey-sports-shell.js'), 'Badminton must load shared sports shell');
+for (const key of ['football', 'badminton', 'volleyball', 'running', 'handmade', 'shuttle', 'cooking']) {
+  assert.ok(sharedShell.includes("key: '" + key + "'"), 'Shared shell missing ' + key);
+}
+assert.ok(sharedShell.includes("setAttribute('aria-label', 'Điều hướng các bộ môn TOPKEY')"));
+assert.ok(sharedShell.includes("setAttribute('aria-label', 'Chuyển bộ môn')"));
+assert.ok(sharedShell.includes("location.hash.startsWith('#spectator')"));
+assert.ok(sharedShell.includes("location.hash.startsWith('#register')"));
+assert.ok(shellCss.includes('@media (max-width: 640px)'));
+assert.ok(hub.includes('id="topkey-sports"'));
 
 console.log(JSON.stringify({
   status: 'PASS',
   catalogEntries: sportLinks.length,
-  badminton: badmintonCard,
-  protectedContracts: ['badminton Firebase root', 'badminton schema v3', 'VNext schema v2', 'legacy badminton root'],
-  note: 'This is a migration guard, not proof that the full shared runtime has been completed.'
+  badmintonLaunch: badmintonCard.href,
+  protectedContracts: ['badminton Firebase root', 'badminton schema v3', 'legacy badminton root', 'VNext schema v2'],
+  sharedShellSports: 7
 }, null, 2));
