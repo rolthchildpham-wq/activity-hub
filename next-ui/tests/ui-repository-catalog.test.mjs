@@ -7,7 +7,7 @@ test('UI repository catalog has unique IDs and valid GitHub links',()=>{
  for(const item of uiRepositories){
   assert.match(item.url,/^https:\/\/github\.com\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/);
   assert.ok(item.repo.includes('/'));
-  assert.ok(['components','motion','visual','sports'].includes(item.group));
+  assert.ok(['components','motion','visual'].includes(item.group));
   assert.ok(['svelte','react','framework','optional'].includes(item.fit));
  }
 });
@@ -23,7 +23,7 @@ test('React-only packages are not enabled by default in the Svelte workspace',()
 
 test('repository catalog includes requested design systems, motion and visual sources',()=>{
  const ids=new Set(uiRepositories.map(item=>item.id));
- for(const id of ['shadcn-ui','tailwindcss','daisyui','headlessui','radix','motion','gsap','auto-animate','lucide','lucide-react','threejs','sports-dashboard','openligadb','scoreboard-topic','sports-live-score-topic','fitness-dashboard-topic','strava-dashboard-topic','sports-analytics-topic','brackets-viewer','bracketry'])assert.ok(ids.has(id),id);
+ for(const id of ['shadcn-ui','tailwindcss','daisyui','headlessui','radix','motion','gsap','auto-animate','lucide','lucide-react','threejs'])assert.ok(ids.has(id),id);
 });
 
 import {readFileSync} from 'node:fs';
