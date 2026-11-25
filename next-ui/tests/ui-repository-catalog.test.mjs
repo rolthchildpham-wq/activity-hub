@@ -7,7 +7,7 @@ test('UI repository catalog has unique IDs and valid GitHub links',()=>{
  for(const item of uiRepositories){
   assert.match(item.url,/^https:\/\/github\.com\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/);
   assert.ok(item.repo.includes('/'));
-  assert.ok(['components','motion','visual'].includes(item.group));
+  assert.ok(['components','motion','visual','sports'].includes(item.group));
   assert.ok(['svelte','react','framework','optional'].includes(item.fit));
  }
 });
@@ -23,7 +23,7 @@ test('React-only packages are not enabled by default in the Svelte workspace',()
 
 test('repository catalog includes requested design systems, motion and visual sources',()=>{
  const ids=new Set(uiRepositories.map(item=>item.id));
- for(const id of ['shadcn-ui','tailwindcss','daisyui','headlessui','radix','motion','gsap','auto-animate','lucide','lucide-react','threejs'])assert.ok(ids.has(id),id);
+ for(const id of ['shadcn-ui','tailwindcss','daisyui','headlessui','radix','motion','gsap','auto-animate','lucide','lucide-react','threejs','sports-dashboard','openligadb','scoreboard-topic','sports-live-score-topic','fitness-dashboard-topic','strava-dashboard-topic','sports-analytics-topic','brackets-viewer','bracketry'])assert.ok(ids.has(id),id);
 });
 
 import {readFileSync} from 'node:fs';
@@ -35,10 +35,12 @@ test('admin UI preferences are shared through the existing protected TOPKEY syst
  assert.ok(settingsPage.includes("await set(ref(client().db"));
  assert.ok(settingsPage.includes("modules.systemAdmin==='edit'"));
  assert.ok(settingsPage.includes("details['systemAdmin:access']==='edit'"));
- const branch=firebaseRules.topkey_badminton_vnext_2026;
- assert.match(branch['.read'],/permissions\/modules\/systemAdmin/);
- assert.match(branch['.write'],/permissions\/modules\/systemAdmin/);
- assert.match(branch['.write'],/role/);
+ const settings=firebaseRules.topkey_badminton_vnext_2026.uiSettings;
+ assert.match(settings['.read'],/permissions\/modules\/systemAdmin/);
+ assert.match(settings['.write'],/permissions\/modules\/systemAdmin/);
+ assert.match(settings['.write'],/role/);
+ assert.ok(settings.uiux['.validate'].includes('updatedBy'));
+ assert.ok(settings.uiux['.validate'].includes('updatedAt'));
 });
 
 test('UI preferences use only the protected system settings branch and read the existing admin profile',()=>{
