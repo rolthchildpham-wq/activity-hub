@@ -80,6 +80,36 @@ jobs:
             fi
           done
 
+      - name: Full interaction audit – every sport tab and collapsible function card
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://topkey-activity-management.edgeone.dev"
+          routes=(
+            "/sports/vnext/index.html?sport=football&testlab=1"
+            "/sports/vnext/index.html?sport=volleyball&testlab=1"
+            "/sports/vnext/index.html?sport=running&testlab=1"
+            "/sports/vnext/index.html?sport=handmade&testlab=1"
+            "/sports/vnext/index.html?sport=shuttle&testlab=1"
+            "/sports/vnext/index.html?sport=cooking&testlab=1"
+            "/sports/badminton/index.html?testlab=1"
+          )
+          tabs=(overview control teams schedule umpire live finance announcements audit health settings)
+          for i in "${!routes[@]}"; do
+            route="${routes[$i]}"
+            echo "===== INTERACTION ROUTE $route =====" | tee -a artifacts/chrome-devtools/interaction-audit.txt
+            timeout 25s chrome-devtools navigate_page 1 --url "$base$route" | tee "artifacts/chrome-devtools/interaction-$i-navigation.txt"
+            sleep 2
+            timeout 25s chrome-devtools evaluate_script 'async () => { const wait=ms=>new Promise(r=>setTimeout(r,ms)); const app=document.querySelector("#app-shell"); app?.classList.remove("hidden"); document.querySelector("#login-screen")?.classList.add("hidden"); document.querySelectorAll("#app-shell .page").forEach(p=>p.classList.remove("hidden")); await wait(500); const script=[...document.scripts].find(s=>s.src.includes("collapsible-panels-h141.js")); const cards=[...document.querySelectorAll("#app-shell .page .subcard")]; const candidates=cards.map(card=>({card,button:card.querySelector(":scope > .tk141-panel-toggle")})).filter(x=>x.button); let accordion={scriptLoaded:!!script,scriptUrl:script?.src||null,subcards:cards.length,foldableSubcards:candidates.length,test:"N/A"}; if(candidates.length){const {card,button}=candidates[0]; const before=button.getAttribute("aria-expanded"); button.click(); await wait(80); const collapsed=button.getAttribute("aria-expanded")==="false"&&card.classList.contains("tk141-panel-folded"); const closedText=button.textContent; button.click(); await wait(80); const expanded=button.getAttribute("aria-expanded")==="true"&&!card.classList.contains("tk141-panel-folded"); accordion={...accordion,before,collapsed,expanded,closedText,test:collapsed&&expanded?"PASS":"FAIL",panelId:card.id}; if(!collapsed||!expanded)throw new Error("Accordion interaction failed: "+JSON.stringify(accordion)); } if(!script)throw new Error("Collapsible script missing on route "+location.href); return JSON.stringify(accordion); }' --pageId 1 --output-format=json | tee "artifacts/chrome-devtools/interaction-$i-accordion.json"
+            grep -Fq '"scriptLoaded":true' "artifacts/chrome-devtools/interaction-$i-accordion.json"
+            grep -Fq '"test":"PASS"' "artifacts/chrome-devtools/interaction-$i-accordion.json" || grep -Fq '"test":"N/A"' "artifacts/chrome-devtools/interaction-$i-accordion.json"
+            for tab in "${tabs[@]}"; do
+              timeout 15s chrome-devtools evaluate_script "async () => { const b=document.querySelector('[data-tab=\\\"$tab\\\"]'); if(!b)throw new Error('Missing tab: $tab'); b.click(); await new Promise(r=>setTimeout(r,180)); const active=[...document.querySelectorAll('#app-shell .page')].filter(p=>!p.classList.contains('hidden')); return JSON.stringify({tab:'$tab',activePages:active.map(p=>p.id),activeCount:active.length}); }" --pageId 1 --output-format=json | tee "artifacts/chrome-devtools/interaction-$i-tab-$tab.json"
+              grep -Fq '"activeCount":1' "artifacts/chrome-devtools/interaction-$i-tab-$tab.json"
+              timeout 15s chrome-devtools take_screenshot 1 --filePath "artifacts/chrome-devtools/route-$i-tab-$tab.png" >/dev/null
+            done
+          done
+
       - name: Verify all production route HTTP statuses and required static assets
         shell: bash
         run: |
