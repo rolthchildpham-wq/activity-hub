@@ -18,29 +18,29 @@ body.tk-bi-hub .brand-title .eyebrow {
   color: #526174 !important;
   opacity: 1 !important;
 }
-html body.tk-bi-hub #topkey-sports.cards a.sport {
+html body.tk-bi-hub #topkey-sports.cards.compact-sports a.sport {
   background: #ffffff !important;
   background-color: #ffffff !important;
   color: var(--tk-ecc-ink) !important;
   border: 1px solid var(--tk-ecc-line) !important;
   box-shadow: 0 4px 15px rgb(29 45 77 / 8%) !important;
 }
-html body.tk-bi-hub #topkey-sports.cards a.sport h3 {
+html body.tk-bi-hub #topkey-sports.cards.compact-sports a.sport h3 {
   color: var(--tk-ecc-navy) !important;
   opacity: 1 !important;
   -webkit-text-fill-color: var(--tk-ecc-navy) !important;
 }
-html body.tk-bi-hub #topkey-sports.cards a.sport p {
+html body.tk-bi-hub #topkey-sports.cards.compact-sports a.sport p {
   color: var(--tk-ecc-muted) !important;
   opacity: 1 !important;
   -webkit-text-fill-color: var(--tk-ecc-muted) !important;
 }
-html body.tk-bi-hub #topkey-sports.cards a.sport .badge {
+html body.tk-bi-hub #topkey-sports.cards.compact-sports a.sport .badge {
   background: #faf7f1 !important;
   color: #745334 !important;
   border: 1px solid #e8dfd1 !important;
 }
-html body.tk-bi-hub #topkey-sports.cards a.sport .open {
+html body.tk-bi-hub #topkey-sports.cards.compact-sports a.sport .open {
   background: var(--tk-ecc-terracotta) !important;
   border-color: var(--tk-ecc-terracotta) !important;
   color: #ffffff !important;
