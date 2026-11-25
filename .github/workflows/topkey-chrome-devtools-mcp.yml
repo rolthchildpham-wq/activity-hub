@@ -46,7 +46,7 @@ jobs:
       - name: Serve checked-out branch locally for real browser verification
         run: |
           set -euo pipefail
-          python3 -m http.server 4173 --directory topkey > /tmp/topkey-http.log 2>&1 &
+          python3 topkey/tests/ui-fixture-server.py topkey > /tmp/topkey-http.log 2>&1 &
           for attempt in $(seq 1 30); do
             if curl --silent --fail http://127.0.0.1:4173/ >/dev/null; then break; fi
             sleep 1
@@ -236,7 +236,12 @@ jobs:
           base="https://topkey-activity-management.edgeone.dev"
           paths=("/" "/sports/vnext/index.html?sport=football" "/sports/vnext/badminton.html" "/sports/badminton/index.html" "/hub-dashboard-reference-h219.css" "/executive-dashboard.js?v=h219-calendar-20261125")
           for path in "${paths[@]}"; do
-            code="$(curl --silent --show-error --location --max-time 25 -o /dev/null -w '%{http_code}' "$base$path" || true)"
+            code="000"
+            for attempt in 1 2 3 4; do
+              code="$(curl --silent --show-error --location --connect-timeout 10 --max-time 30 -o /dev/null -w '%{http_code}' "$base$path" || true)"
+              if [ "$code" = "200" ]; then break; fi
+              sleep 2
+            done
             echo "$code $path" | tee -a artifacts/chrome-devtools/http-status.txt
             test "$code" = "200"
           done
