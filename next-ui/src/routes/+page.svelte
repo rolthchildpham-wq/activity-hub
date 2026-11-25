@@ -18,6 +18,7 @@
  let unsubscribeData:(()=>void)|undefined,unsubscribeAuth:(()=>void)|undefined;
  $: matches=sortDashboardMatches(data.matches);
  $: sport=sports.find(s=>s.key===selected)!;
+ function statusText(value?:string){const key=(value||'SCHEDULED').toUpperCase();return ({SCHEDULED:'Chưa đấu',PENDING:'Chờ đấu',LIVE:'Đang thi đấu',IN_PROGRESS:'Đang thi đấu',FINISHED:'Đã kết thúc',WALKOVER:'Bỏ cuộc',RETIRED:'Dừng trận',DISQUALIFIED:'Bị loại'} as Record<string,string>)[key]||key}
  function subscribe(){
    unsubscribeData?.();hasData=false;error='';data=emptyTournament();
    if(!user||!db||selected==='vlog')return;
