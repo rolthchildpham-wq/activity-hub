@@ -1,7 +1,7 @@
 <script lang="ts">
  import {onMount} from 'svelte';
  import {base} from '$app/paths';
- import {sports,isTestLab,legacyHref,emptyTournament,type SportKey,type TournamentSnapshot} from '$lib/domain';
+ import {sports,isTestLab,legacyHref,emptyTournament,sortDashboardMatches,type SportKey,type TournamentSnapshot} from '$lib/domain';
  import DashboardStats from '$lib/widgets/DashboardStats.svelte';
  import ScheduleTable from '$lib/widgets/ScheduleTable.svelte';
  import StateView from '$lib/shared/ui/StateView.svelte';
@@ -16,8 +16,9 @@
  let data:TournamentSnapshot=emptyTournament();
  let hasData=false;
  let unsubscribeData:(()=>void)|undefined,unsubscribeAuth:(()=>void)|undefined;
- $: matches=Object.values(data.matches).sort((a,b)=>((a.date||'')+' '+(a.time||'')).localeCompare((b.date||'')+' '+(b.time||'')));
+ $: matches=sortDashboardMatches(data.matches);
  $: sport=sports.find(s=>s.key===selected)!;
+ function statusText(value?:string){const key=(value||'SCHEDULED').toUpperCase();return ({SCHEDULED:'Chưa đấu',PENDING:'Chờ đấu',LIVE:'Đang thi đấu',IN_PROGRESS:'Đang thi đấu',FINISHED:'Đã kết thúc',WALKOVER:'Bỏ cuộc',RETIRED:'Dừng trận',DISQUALIFIED:'Bị loại'} as Record<string,string>)[key]||key}
  function subscribe(){
    unsubscribeData?.();hasData=false;error='';data=emptyTournament();
    if(!user||!db||selected==='vlog')return;
@@ -87,8 +88,8 @@
     {:else if tab==='overview'}
      <DashboardStats {data}/>
      <section class="panel"><div class="panel-heading"><h3>Trận đấu gần đây và sắp diễn ra</h3><button class="text-button" on:click={()=>tab='schedule'}>Xem toàn bộ →</button></div>
-      {#if matches.length===0}<p class="subtle">Chưa có trận đấu.</p>{:else}<div class="match-grid">{#each matches.slice(0,6) as m}
-       <article class="match-card"><div class="match-meta">{m.date||'Chưa định ngày'} · {m.time||'Chưa có giờ'} <span class:live={m.status==='LIVE'} class="match-status">{m.status||'SCHEDULED'}</span></div>
+      {#if matches.length===0}<p class="subtle">Chưa có trận đấu.</p>{:else}<div class="match-grid">{#each matches.slice(0,6) as [id,m]}
+       <article class="match-card"><div class="match-meta">{m.date||'Chưa định ngày'} · {m.time||'Chưa có giờ'} <span class:live={['LIVE','IN_PROGRESS'].includes((m.status||'').toUpperCase())} class="match-status">{statusText(m.status)}</span></div>
         <strong>{data.teams[m.teamAId||'']?.name||'Đội A'} <span class="versus">vs</span> {data.teams[m.teamBId||'']?.name||'Đội B'}</strong>
         <small>{m.category||'Chung'} · {m.groupName||m.groupId||m.group||m.stage||'Chưa phân bảng'}</small>
        </article>{/each}</div>{/if}
