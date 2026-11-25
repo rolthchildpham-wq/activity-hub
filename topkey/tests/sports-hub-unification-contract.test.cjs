@@ -12,6 +12,7 @@ const badminton = read('sports/badminton/src/config.js');
 const launcher = read('sports/vnext/badminton.html');
 const vnextPage = read('sports/vnext/index.html');
 const badmintonPage = read('sports/badminton/index.html');
+const sharedShell = read('sports/topkey-sports-shell.js');
 
 const sportLinks = [...hub.matchAll(/<a class="sport" href="([^"]+)"[\s\S]*?<h3>([^<]+)<\/h3>/g)]
   .map(([, href, name]) => ({ href: href.replaceAll('&amp;', '&'), name }));
@@ -38,6 +39,12 @@ assert.ok(vnextPage.includes('topkey-sports-shell.js'), 'VNext workspaces must l
 assert.ok(badmintonPage.includes('topkey-sports-shell.js'), 'Badminton must load the same shared sport navigation');
 assert.ok(vnextPage.includes('topkey-sports-shell.css'), 'VNext workspaces must load the shared sport shell styles');
 assert.ok(badmintonPage.includes('topkey-sports-shell.css'), 'Badminton must load the shared sport shell styles');
+for (const key of ['football', 'badminton', 'volleyball', 'running', 'handmade', 'shuttle', 'cooking']) {
+  assert.match(sharedShell, new RegExp("key: '\" + key + "'"), 'Shared navigation is missing ' + key);
+}
+assert.match(sharedShell, /aria-label.*Điều hướng các bộ môn TOPKEY/, 'Shared navigation must have an accessible name');
+assert.match(sharedShell, /aria-label.*Chuyển bộ môn/, 'Sport selector must have an accessible name');
+assert.match(sharedShell, /#spectator.*#register/, 'Public spectator and registration routes must not be covered by the admin shell');
 assert.ok(hub.includes('hub-dashboard-reference-h219.css'), 'Current dashboard visual reference stylesheet must remain available during migration');
 assert.ok(hub.includes('id="topkey-sports"'), 'The unified sports catalog mount must remain present');
 
