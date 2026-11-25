@@ -18,6 +18,7 @@ on:
       - 'topkey/hub-contrast-readable-h216.css'
       - 'topkey/hub-dashboard-reference-h219.css'
       - 'topkey/tests/hub-dashboard-h219.test.cjs'
+      - 'topkey/tests/hub-bi-visual-regression.test.cjs'
       - '.github/workflows/topkey-chrome-devtools-mcp.yml'
       - 'topkey/sports/vnext/contrast-global-h217.css'
       - 'topkey/sports/badminton/contrast-global-h217.css'
@@ -107,6 +108,7 @@ jobs:
           node topkey/tests/sport-workspace-redesign-h218.test.cjs
           node --check topkey/executive-dashboard.js
           node topkey/tests/hub-dashboard-h219.test.cjs
+          node topkey/tests/hub-bi-visual-regression.test.cjs
           node topkey/tests/edgeone-host-redirect.test.cjs
           python3 - <<'PY'
           import json
