@@ -29,6 +29,17 @@ assert.match(vnext, /T\.SCHEMA_VERSION = 2/);
 assert.match(badminton, /T\.LEGACY_ROOT = 'topkey_badminton_app_ai'/);
 assert.match(vnext, /football:\{[\s\S]*?root:'topkey_football_vnext_2026'/);
 assert.match(vnext, /volleyball:\{[\s\S]*?root:'topkey_volleyball_vnext_2026'/);
+for (const [sport, root] of Object.entries({
+  football: 'topkey_football_vnext_2026',
+  volleyball: 'topkey_volleyball_vnext_2026',
+  running: 'topkey_running_vnext_2026',
+  handmade: 'topkey_handmade_vnext_2026',
+  shuttle: 'topkey_shuttle_vnext_2026',
+  cooking: 'topkey_cooking_vnext_2026'
+})) {
+  assert.ok(vnext.includes("key:'" + sport + "'"), 'VNext config missing ' + sport);
+  assert.ok(vnext.includes("root:'" + root + "'"), 'Firebase root changed for ' + sport);
+}
 
 assert.ok(vnextPage.includes('../topkey-sports-shell.css'), 'VNext must load shared sports shell styles');
 assert.ok(badmintonPage.includes('../topkey-sports-shell.css'), 'Badminton must load shared sports shell styles');
