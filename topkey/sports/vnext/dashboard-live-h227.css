@@ -36,6 +36,7 @@ html[data-tk-sport] body #app-shell:not(.hidden) #page-overview:not(.hidden){dis
 
 
 /* H230: page visibility is owned by App.showTab(), never by dashboard layout. */
-html[data-tk-sport] body #app-shell:not(.hidden) .page.hidden,
+html[data-tk-sport] body #app-shell:not(.hidden) .page.hidden{display:none!important;visibility:hidden!important;pointer-events:none!important}
+/* Match the specificity of the overview grid override above; later source order makes hidden win. */
 html[data-tk-sport] body #app-shell:not(.hidden) #page-overview.hidden{display:none!important;visibility:hidden!important;pointer-events:none!important}
 html[data-tk-sport] body #app-shell:not(.hidden) .page:not(.hidden){visibility:visible}
