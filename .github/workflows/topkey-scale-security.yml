@@ -5,6 +5,10 @@ on:
   pull_request:
 permissions:
   contents: read
+
+concurrency:
+  group: topkey-scale-security-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   regression:
     runs-on: ubuntu-latest
