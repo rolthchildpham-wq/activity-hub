@@ -128,7 +128,7 @@ jobs:
             echo "===== $sport =====" | tee -a artifacts/chrome-devtools/sport-matrix.txt
             chrome-devtools navigate_page 1 --url "$base$route" | tee "artifacts/chrome-devtools/$sport-navigation.txt"
             sleep 2
-            chrome-devtools evaluate_script '() => {
+            chrome-devtools evaluate_script 'async () => {
               const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
               const T=window.Topkey;
               if(!window.TopkeyPlatform)throw new Error("Shared platform bootstrap unavailable");
