@@ -204,6 +204,7 @@ jobs:
                 platform:!!window.TopkeyPlatform,topkey:!!window.Topkey,
                 sport:window.Topkey?.SPORT?.key,auth:!!window.Topkey?.Auth,
                 adminReady:window.__TOPKEY_ADMIN_READY,bootError:window.__TOPKEY_BOOT_ERROR,
+                installError:window.__TOPKEY_H227_INSTALL_ERROR||null,
                 scripts:[...document.scripts].filter(s=>s.src).map(s=>({src:s.src,loaded:!!s.dataset.topkeyReady}))
               }));
               await A.__bootPromise?.catch(error=>{throw error});
