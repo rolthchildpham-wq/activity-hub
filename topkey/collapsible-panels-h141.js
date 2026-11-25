@@ -1,4 +1,4 @@
-/* H141: collapsible sports navigation and optional collapsible dashboard panels.
+/* H142: collapsible sports navigation and nested function-group cards.
  * No route reload, no DOM reparenting and no database interaction. */
 (() => {
   'use strict';
@@ -63,14 +63,16 @@
     const candidates=root.querySelectorAll('.page .card:not(.kpi),.page .subcard,.tk-bi-hub .panel,.tk-bi-hub .exec-dashboard');
     candidates.forEach((panel,index)=>{
       if (panel.dataset.tk141Foldable || panel.closest('.modal,.court,.control-card,.login,#public-spectator,#public-register')) return;
-      const heading=[...panel.children].find(child=>/^H[234]$/.test(child.tagName));
+      const heading=[...panel.children].find(child=>/^H[234]$/.test(child.tagName)) || [...panel.children].find(child=>child.classList?.contains('split'))?.querySelector('h2,h3,h4');
       if(!heading) return;
       panel.dataset.tk141Foldable='1';
-      const id=panel.id||panel.closest('.page')?.id+'_'+index||'card_'+index;
+      const id=panel.id||'tk141-panel-'+(panel.closest('.page')?.id||'page')+'-'+index;
+      if(!panel.id) panel.id=id;
       const key=scope()+'_panel_'+id;
       const button=document.createElement('button');
       button.type='button';button.className='tk141-panel-toggle';
       const title=heading.textContent.trim().slice(0,60)||'thẻ';
+      button.setAttribute('aria-controls',id);
       button.setAttribute('aria-label','Thu gọn thẻ '+title);
       button.textContent='▴ Thu gọn';
       const setFold=(folded,persist=true)=>{
@@ -82,7 +84,7 @@
       };
       button.addEventListener('click',()=>setFold(!panel.classList.contains('tk141-panel-folded')));
       panel.prepend(button);
-      setFold(storage.get(key)==='1',false);
+      setFold(storage.get(key)==='1'||(storage.get(key)===null&&panel.classList.contains('subcard')),false);
     });
   }
   function init() {

@@ -295,7 +295,7 @@ if(pub)ensureViewer();else if(reg)ensureRegister();else{sportController=window.T
  const schedule=()=>{const run=()=>start().catch(err=>{console.error('H104 setup fallback',err);window.__TOPKEY_H104_RESOLVE?.()});if(window.requestIdleCallback)window.requestIdleCallback(run,{timeout:900});else setTimeout(run,16)};
  if(window.__TOPKEY_ADMIN_READY)schedule();else window.addEventListener('topkey:admin-ready',schedule,{once:true,passive:true});
 })();
-</script><script src="../schedule-format-h139.js?v=h139-format-20261121"></script><script src="../../topkey-dynamic-i18n.js?v=h217-unified-20261124" defer></script><script src="../../collapsible-panels-h141.js?v=h141-20261121" defer></script><script src="../../sport-dashboard-h201.js?v=h204-20261123" defer></script></body></html>
+</script><script src="../schedule-format-h139.js?v=h139-format-20261121"></script><script src="../../topkey-dynamic-i18n.js?v=h217-unified-20261124" defer></script><script src="../../collapsible-panels-h141.js?v=h142-collapsible-groups-20261125" defer></script><script src="../../sport-dashboard-h201.js?v=h204-20261123" defer></script></body></html>
 
 
 
