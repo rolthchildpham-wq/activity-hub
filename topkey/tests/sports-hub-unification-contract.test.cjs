@@ -51,8 +51,9 @@ for (const key of ['football', 'badminton', 'volleyball', 'running', 'handmade',
 assert.ok(sharedShell.includes("href: '/sports/vnext/badminton.html'"), 'Shared navigation must route badminton through the common namespace');
 assert.ok(sharedShell.includes("setAttribute('aria-label', 'Điều hướng các bộ môn TOPKEY')"));
 assert.ok(sharedShell.includes("setAttribute('aria-label', 'Chuyển bộ môn')"));
-assert.ok(sharedShell.includes("location.hash.startsWith('#spectator')"));
-assert.ok(sharedShell.includes("location.hash.startsWith('#register')"));
+assert.ok(sharedShell.includes("'#spectator'"), 'Shared shell must exclude spectator routes');
+assert.ok(sharedShell.includes("'#register'"), 'Shared shell must exclude registration routes');
+assert.ok(sharedShell.includes("'#judge'"), 'Shared shell must exclude public judge routes');
 assert.ok(shellCss.includes('@media (max-width: 640px)'));
 assert.ok(hub.includes('id="topkey-sports"'));
 
