@@ -145,6 +145,15 @@
       ]
     },
     {
+      "source": "/sports/vnext/badminton.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    },
+    {
       "source": "/sports/vnext/index.html",
       "headers": [
         {
