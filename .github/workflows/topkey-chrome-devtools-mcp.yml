@@ -121,7 +121,7 @@ jobs:
             const result={languageModalClosed:document.querySelector("#tk28-language-modal")?.classList.contains("tk28-hidden")!==false,
               calendar:!!document.querySelector(".exec-calendar-card"),chartBars:document.querySelectorAll(".exec-bar-row").length,
               kpiCards:document.querySelectorAll(".exec-kpi").length,calendarCells:document.querySelectorAll(".exec-calendar-day:not(.is-empty)").length,
-              insightContrast:Number(insightContrast.toFixed(2)),insightBackground:focusBg,insightBackgroundEffective:focusBgEffective,insightText:focusColor};
+              insightContrast:Number(insightContrast.toFixed(2)),insightBackground:focusBg,insightText:focusColor};
             if(!result.calendar||result.chartBars<2||result.kpiCards<4||!focus||insightContrast<4.5)
               throw new Error("Hub dashboard fixture/contrast incomplete: "+JSON.stringify(result));
             return JSON.stringify(result);
