@@ -33,7 +33,9 @@ jobs:
           node topkey/tests/closed-admin-tabs.cjs
           node topkey/tests/h119/policy_rules_parity.cjs
       - name: Sports Hub unification and data-contract guard
-        run: node topkey/tests/sports-hub-unification-contract.test.cjs
+        run: |
+          node topkey/tests/sports-hub-unification-contract.test.cjs
+          node topkey/tests/dashboard-live-h227.test.cjs
       - name: Real Firebase Database emulator authorization tests
         working-directory: topkey
         env:

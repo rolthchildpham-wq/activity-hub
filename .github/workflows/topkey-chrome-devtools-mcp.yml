@@ -231,6 +231,29 @@ jobs:
               const rgb=value=>value.match(/[\d.]+/g).slice(0,3).map(Number);
               const lum=value=>{const channels=rgb(value).map(v=>{v/=255;return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*channels[0]+.7152*channels[1]+.0722*channels[2]};
               const contrast=(a,b)=>(Math.max(lum(a),lum(b))+.05)/(Math.min(lum(a),lum(b))+.05);
+              let dashboardFixture=null;
+              if(sport==="volleyball"){
+                A.state.config={title:"QA Volleyball · NAM_6V6",format:"GROUP_KNOCKOUT",rules:{bestOf:5,points:25,decidingPoints:15,winBy:2,cap:99,minRestMinutes:60,estimatedMatchMinutes:75}};
+                A.state.teams={qaA:{id:"qaA",name:"Đội A"},qaB:{id:"qaB",name:"Đội B"}};
+                A.state.courts={qaCourt:{id:"qaCourt",name:"Sân 1"}};
+                A.state.matches={qaMatch:{id:"qaMatch",code:"QA-01",teamAId:"qaA",teamBId:"qaB",category:"NAM_6V6",stage:"GROUP",groupName:"A",date:"2026-11-25",time:"19:30",courtId:"qaCourt",status:"LIVE",sets:[]}};
+                A.state.activeMatches={qaCourt:{matchId:"qaMatch",started:true,finished:false,sets:[{a:12,b:10}],setIndex:0}};
+                if(!window.TopkeyDashboardH227)throw new Error("H227 dashboard runtime unavailable");
+                window.TopkeyDashboardH227.render();
+                const board=document.querySelector("#tk227-board"),cards=board?.querySelectorAll(".tk227-match")||[];
+                const text=board?.textContent||"",adminCard=document.querySelector("#page-overview>.grid.g2>.card");
+                const adminBg=adminCard?getComputedStyle(adminCard).backgroundColor:"";
+                const adminHeading=adminCard?.querySelector("h2"),adminText=adminHeading?getComputedStyle(adminHeading).color:"";
+                dashboardFixture={board:!!board,matchCards:cards.length,hasTeam:text.includes("Đội A")&&text.includes("Đội B"),
+                  hasLiveScore:text.includes("12 - 10"),hasCategory:text.includes("NAM_6V6"),
+                  hasCourt:text.includes("Sân 1"),hasSetRules:text.includes("Tối đa 5 set")&&text.includes("Set quyết định: 15 điểm"),
+                  adminBackground:adminBg,adminHeadingColor:adminText,
+                  adminContrast:adminHeading?Number(contrast(adminBg,adminText).toFixed(2)):0};
+                if(!dashboardFixture.board||!dashboardFixture.matchCards||!dashboardFixture.hasTeam||
+                  !dashboardFixture.hasLiveScore||!dashboardFixture.hasCategory||!dashboardFixture.hasCourt||
+                  !dashboardFixture.hasSetRules||dashboardFixture.adminContrast<4.5)
+                  throw new Error("H227 volleyball dashboard fixture failed: "+JSON.stringify(dashboardFixture));
+              }
               const panelBg=panel?getComputedStyle(panel).backgroundColor:"";
               const headingColor=heading?getComputedStyle(heading).color:"";
               const subColor=sub?getComputedStyle(sub).color:"";
@@ -245,7 +268,7 @@ jobs:
                 kpiGridTemplate:gridColumns(document.querySelector("#page-overview > .grid.g4")).value,
                 legacyHubLinksVisible:[...document.querySelectorAll("#app-shell .topbar .hub-link,#app-shell .topbar .hub-back")]
                   .filter(el=>getComputedStyle(el).display!=="none").length,
-                writeAttempts:window.__TOPKEY_QA_WRITE_ATTEMPTS,
+                writeAttempts:window.__TOPKEY_QA_WRITE_ATTEMPTS,dashboardFixture,
                 fixture:"UI_ONLY_NO_DATABASE_WRITES"};
               if(result.pageCount<11||result.tabCount<11)throw new Error("Incomplete sport workspace: "+JSON.stringify(result));
               if(innerWidth>=1200&&result.kpiColumns!==4)throw new Error("Desktop KPI grid must have four columns: "+JSON.stringify(result));
