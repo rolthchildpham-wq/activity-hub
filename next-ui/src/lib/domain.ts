@@ -66,6 +66,49 @@ export function groupPhases(matches:Record<string,Match>|null|undefined) {
  }
  return [...groups.values()];
 }
+
+export function normalizeScheduleDate(value:unknown):string {
+ const raw=String(value??'').trim();
+ const iso=raw.match(/^(\d{4}-\d{2}-\d{2})/);
+ if(iso)return iso[1];
+ const dmy=raw.match(/^(\d{1,2})[/. -](\d{1,2})[/. -](\d{4})$/);
+ if(!dmy)return '';
+ const day=Number(dmy[1]),month=Number(dmy[2]),year=Number(dmy[3]);
+ const date=new Date(Date.UTC(year,month-1,day));
+ if(date.getUTCFullYear()!==year||date.getUTCMonth()!==month-1||date.getUTCDate()!==day)return '';
+ return [year,String(month).padStart(2,'0'),String(day).padStart(2,'0')].join('-');
+}
+
+export type ScheduleFilters={query?:string;status?:string;category?:string;from?:string;to?:string};
+export function filterScheduleMatches(
+ matches:Record<string,Match>|null|undefined,
+ teams:Record<string,Team>|null|undefined,
+ filters:ScheduleFilters={}
+):Array<[string,Match]> {
+ const query=(filters.query??'').trim().toLocaleLowerCase('vi');
+ const status=(filters.status??'ALL').toUpperCase();
+ const category=filters.category??'ALL';
+ return Object.entries(matches??{})
+  .filter((entry):entry is [string,Match]=>!!entry[1]&&typeof entry[1]==='object')
+  .filter(([id,m])=>{
+   if(status!=='ALL'&&(m.status??'SCHEDULED').toUpperCase()!==status)return false;
+   if(category!=='ALL'&&(m.category??'Chung')!==category)return false;
+   if(filters.from||filters.to){
+    const date=normalizeScheduleDate(m.date);
+    if(!date||(filters.from&&date<filters.from)||(filters.to&&date>filters.to))return false;
+   }
+   if(query){
+    const haystack=[id,m.id,m.code,m.date,m.time,m.status,m.category,m.groupName,m.groupId,m.group,m.stage,
+     teams?.[m.teamAId??'']?.name,teams?.[m.teamBId??'']?.name]
+     .filter(Boolean).join(' ').toLocaleLowerCase('vi');
+    if(!haystack.includes(query))return false;
+   }
+   return true;
+  })
+  .sort((a,b)=>(normalizeScheduleDate(a[1].date)||'9999-99-99').localeCompare(normalizeScheduleDate(b[1].date)||'9999-99-99')
+   ||(a[1].time??'').localeCompare(b[1].time??''));
+}
+
 // SvelteKit is mounted at /next/ in the same TOPKEY host.
 export function legacyHref(s:SportKey,tid?:string):string {
  const sport=sports.find(x=>x.key===s);
