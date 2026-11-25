@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   chrome-devtools-full-ui:
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.workflow_run.conclusion == 'success'
     name: Chrome DevTools MCP – Hub and 7 sports
     runs-on: ubuntu-latest
     timeout-minutes: 40
