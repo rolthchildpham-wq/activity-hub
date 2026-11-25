@@ -35,10 +35,12 @@ test('admin UI preferences are shared through the existing protected TOPKEY syst
  assert.ok(settingsPage.includes("await set(ref(client().db"));
  assert.ok(settingsPage.includes("modules.systemAdmin==='edit'"));
  assert.ok(settingsPage.includes("details['systemAdmin:access']==='edit'"));
- const branch=firebaseRules.topkey_badminton_vnext_2026;
- assert.match(branch['.read'],/permissions\/modules\/systemAdmin/);
- assert.match(branch['.write'],/permissions\/modules\/systemAdmin/);
- assert.match(branch['.write'],/role/);
+ const settings=firebaseRules.topkey_badminton_vnext_2026.uiSettings;
+ assert.match(settings['.read'],/permissions\/modules\/systemAdmin/);
+ assert.match(settings['.write'],/permissions\/modules\/systemAdmin/);
+ assert.match(settings['.write'],/role/);
+ assert.ok(settings.uiux['.validate'].includes('updatedBy'));
+ assert.ok(settings.uiux['.validate'].includes('updatedAt'));
 });
 
 test('UI preferences use only the protected system settings branch and read the existing admin profile',()=>{
