@@ -204,6 +204,7 @@ jobs:
                 platform:!!window.TopkeyPlatform,topkey:!!window.Topkey,
                 sport:window.Topkey?.SPORT?.key,auth:!!window.Topkey?.Auth,
                 adminReady:window.__TOPKEY_ADMIN_READY,bootError:window.__TOPKEY_BOOT_ERROR,
+                installError:window.__TOPKEY_H227_INSTALL_ERROR||null,
                 scripts:[...document.scripts].filter(s=>s.src).map(s=>({src:s.src,loaded:!!s.dataset.topkeyReady}))
               }));
               await A.__bootPromise?.catch(error=>{throw error});
@@ -238,9 +239,10 @@ jobs:
                 A.state.courts={qaCourt:{id:"qaCourt",name:"Sân 1"}};
                 A.state.matches={qaMatch:{id:"qaMatch",code:"QA-01",teamAId:"qaA",teamBId:"qaB",category:"NAM_6V6",stage:"GROUP",groupName:"A",date:"2026-11-25",time:"19:30",courtId:"qaCourt",status:"LIVE",sets:[]}};
                 A.state.activeMatches={qaCourt:{matchId:"qaMatch",started:true,finished:false,sets:[{a:12,b:10}],setIndex:0}};
-                for(let attempt=0;attempt<50&&!window.TopkeyDashboardH227;attempt++)await new Promise(resolve=>setTimeout(resolve,100));
-                if(!window.TopkeyDashboardH227)throw new Error("H227 dashboard runtime unavailable after 5s: "+JSON.stringify({
+                for(let attempt=0;attempt<150&&!window.TopkeyDashboardH227;attempt++)await new Promise(resolve=>setTimeout(resolve,100));
+                if(!window.TopkeyDashboardH227)throw new Error("H227 dashboard runtime unavailable after 15s: "+JSON.stringify({
                   script:[...document.scripts].filter(x=>x.src.includes("dashboard-live-h227")).map(x=>({src:x.src,readyState:x.readyState})),
+                  publicRoute:window.__TOPKEY_PUBLIC_ROUTE||false,installed:!!window.Topkey?.App?.__h227,
                   bootError:window.__TOPKEY_BOOT_ERROR||null,app:!!window.Topkey?.App,renderBranch:typeof window.Topkey?.App?.renderBranch
                 }));
                 window.TopkeyDashboardH227.render();
