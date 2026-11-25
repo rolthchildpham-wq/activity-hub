@@ -115,11 +115,9 @@ jobs:
             const focus=document.querySelector(".exec-insights-focus"),focusText=focus?.querySelector("p");
             const focusBg=focus?getComputedStyle(focus).backgroundColor:"";
             const focusColor=focusText?getComputedStyle(focusText).color:"";
-            const rgb=value=>{const match=String(value||"").match(/[\\d.]+/g);return match&&match.length>=3?match.slice(0,3).map(Number):null};
-            const lum=value=>{const channels=rgb(value);if(!channels)return null;const linear=channels.map(v=>{v/=255;return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*linear[0]+.7152*linear[1]+.0722*linear[2]};
-            const effectiveBackground=element=>{for(let node=element;node;node=node.parentElement){const color=getComputedStyle(node).backgroundColor;const channels=rgb(color);if(channels){const alpha=Number(color.match(/rgba?\\([^)]*[,\\/]\\s*([\\d.]+)\\s*\\)$/)?.[1]??1);if(alpha>0)return color}}return "rgb(255, 255, 255)"};
-            const focusBgEffective=focus?effectiveBackground(focus):"rgb(255, 255, 255)";
-            const insightContrast=focusText?(Math.max(lum(focusBgEffective),lum(focusColor))+.05)/(Math.min(lum(focusBgEffective),lum(focusColor))+.05):0;
+            const rgb=value=>{const match=String(value||"").match(/[0-9.]+/g);return match&&match.length>=3?match.slice(0,3).map(Number):null};
+            const lum=value=>{const channels=rgb(value);if(!channels)return 0;const linear=channels.map(v=>{v/=255;return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*linear[0]+.7152*linear[1]+.0722*linear[2]};
+            const insightContrast=focusText?(Math.max(lum(focusBg),lum(focusColor))+.05)/(Math.min(lum(focusBg),lum(focusColor))+.05):0;
             const result={languageModalClosed:document.querySelector("#tk28-language-modal")?.classList.contains("tk28-hidden")!==false,
               calendar:!!document.querySelector(".exec-calendar-card"),chartBars:document.querySelectorAll(".exec-bar-row").length,
               kpiCards:document.querySelectorAll(".exec-kpi").length,calendarCells:document.querySelectorAll(".exec-calendar-day:not(.is-empty)").length,
