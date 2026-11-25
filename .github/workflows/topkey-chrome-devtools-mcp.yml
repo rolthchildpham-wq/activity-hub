@@ -3,7 +3,7 @@ name: TOPKEY Chrome DevTools MCP full UI verification
 on:
   workflow_dispatch:
   push:
-    branches: [rebuild/sports-hub-ecc-unified, fix/hub-navigation-semantics]
+    branches: [rebuild/sports-hub-ecc-unified, fix/sports-hub-route-integrity]
   workflow_run:
     workflows: ["TOPKEY EdgeOne Git-provider readiness"]
     types: [completed]
@@ -318,6 +318,7 @@ jobs:
       - name: Run regression tests
         run: |
           set -euo pipefail
+          node topkey/tests/hub-route-integrity.test.cjs
           node topkey/tests/hub-navigation-semantics.test.cjs
           node topkey/tests/hub-dashboard-h219.test.cjs
           node topkey/tests/hub-readable-h216.test.cjs
