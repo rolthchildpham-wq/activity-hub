@@ -18,6 +18,7 @@ on:
       - 'topkey/hub-contrast-readable-h216.css'
       - 'topkey/hub-dashboard-reference-h219.css'
       - 'topkey/tests/hub-dashboard-h219.test.cjs'
+      - 'topkey/tests/hub-calendar-responsive-h220.test.cjs'
       - 'topkey/tests/hub-bi-visual-regression.test.cjs'
       - '.github/workflows/topkey-chrome-devtools-mcp.yml'
       - 'topkey/sports/vnext/contrast-global-h217.css'
@@ -325,6 +326,32 @@ jobs:
             exit 1
           fi
           echo "### Complete H218 production bundle verified: Hub, all three manifests, runtime, both workspace HTML files and both CSS assets." >> "$GITHUB_STEP_SUMMARY"
+      - name: Verify H220 calendar stylesheet and cache key on live EdgeOne
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://topkey-activity-management.edgeone.dev"
+          ok=0
+          for attempt in $(seq 1 18); do
+            stamp="__h220_probe=${attempt}_${GITHUB_RUN_ID}"
+            html_code="$(curl --silent --show-error --max-time 15 --location --output /tmp/tk-h220-hub.html --write-out '%{http_code}' "$base/?$stamp" || true)"
+            css_code="$(curl --silent --show-error --max-time 15 --location --output /tmp/tk-h220-calendar.css --write-out '%{http_code}' "$base/hub-dashboard-reference-h219.css?v=h220-mobile-calendar-20261125&$stamp" || true)"
+            echo "H220 live attempt=$attempt html=$html_code css=$css_code"
+            if [ "$html_code" = "200" ] && [ "$css_code" = "200" ] &&
+              grep -Fq 'hub-dashboard-reference-h219.css?v=h220-mobile-calendar-20261125' /tmp/tk-h220-hub.html &&
+              grep -Fq 'H220 — compact seven-column calendar on phones' /tmp/tk-h220-calendar.css &&
+              grep -Fq 'min-width:0!important' /tmp/tk-h220-calendar.css &&
+              grep -Fq 'overflow-x:visible!important' /tmp/tk-h220-calendar.css; then
+              ok=1
+              break
+            fi
+            sleep 8
+          done
+          if [ "$ok" != "1" ]; then
+            echo "::error::H220 calendar stylesheet/cache key has not propagated to EdgeOne. Do not claim the mobile calendar fix is live."
+            exit 1
+          fi
+          echo "### H220 live calendar stylesheet and cache key verified on EdgeOne." >> "$GITHUB_STEP_SUMMARY"
       - name: Document EdgeOne release settings
         shell: bash
         env:

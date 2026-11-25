@@ -14,4 +14,9 @@ assert.match(mobile[1], /\.exec-calendar-day\s*\{[^}]*min-height:\s*0\s*!importa
 assert.match(mobile[1], /\.exec-calendar-date\s*\{[^}]*font-size:\s*10px\s*!important/s,
   'Mobile calendar date labels must remain legible in compact cells');
 
+
+const html = fs.readFileSync('topkey/index.html', 'utf8');
+assert.match(html, /hub-dashboard-reference-h219\.css\?v=h220-mobile-calendar-20261125/,
+  'Hub entry must use the H220 cache key so browsers/CDN do not keep stale H219 CSS');
+
 console.log('H220 mobile calendar no-horizontal-scroll contract passed.');
