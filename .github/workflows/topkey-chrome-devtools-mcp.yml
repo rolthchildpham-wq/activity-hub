@@ -59,8 +59,37 @@ jobs:
               throw new Error("H219 Hub contract failed: "+JSON.stringify(result));
             return JSON.stringify(result);
           }' --pageId 1 --output-format=json | tee artifacts/chrome-devtools/hub-desktop.json
+          chrome-devtools evaluate_script 'async () => {
+            const wait=ms=>new Promise(resolve=>setTimeout(resolve,120));
+            document.querySelector("#tk28-language-options [data-lang=\"vi\"]")?.click();
+            await wait(180);
+            const dashboard=window.TopkeyExecutiveDashboard,host=document.getElementById("executive-dashboard");
+            if(!dashboard||!host)throw new Error("Executive dashboard runtime unavailable");
+            host.classList.remove("hidden");
+            const clubs=[
+              {icon:"🏸",name:"Cầu lông",sport:"Cầu lông",founded:2022,head:"Ban tổ chức",events:6,people:38,lastYear:2026,income:12000000,expense:8000000,balance:4000000,pending:1,active:true},
+              {icon:"⚽",name:"Bóng đá",sport:"Bóng đá",founded:2023,head:"Ban tổ chức",events:4,people:26,lastYear:2026,income:8500000,expense:6200000,balance:2300000,pending:0,active:true},
+              {icon:"🏐",name:"Bóng chuyền",sport:"Bóng chuyền",founded:2023,head:"Ban tổ chức",events:3,people:22,lastYear:2026,income:6000000,expense:4100000,balance:1900000,pending:0,active:true},
+              {icon:"🏃",name:"Chạy bộ",sport:"Chạy bộ",founded:2024,head:"Ban tổ chức",events:2,people:18,lastYear:2026,income:3000000,expense:2500000,balance:500000,pending:0,active:true}
+            ];
+            const data={kpi:{clubs:7,events:18,uniquePeople:92,entries:180,income:29500000,expense:20800000,balance:8700000,pending:1},
+              clubs,years:{"2025":{events:6,income:9000000,expense:6500000},"2026":{events:15,income:20500000,expense:14300000}},
+              calendarEvents:[{date:"2026-11-25",time:"08:00",sport:"Cầu lông",icon:"🏸",title:"Giải đôi TOPKEY",status:"scheduled"},{date:"2026-11-25",time:"14:00",sport:"Bóng đá",icon:"⚽",title:"Giao hữu nội bộ",status:"scheduled"},{date:"2026-11-28",time:"09:00",sport:"Bóng chuyền",icon:"🏐",title:"Vòng bảng",status:"scheduled"}],
+              champions:[{name:"Đội A",sport:"Cầu lông",category:"Đôi nam",tournament:"Giải đôi TOPKEY",year:2026}],
+              events:[{sport:"Cầu lông",icon:"🏸",title:"Giải đôi TOPKEY",year:2026,income:12000000,expense:8000000,balance:4000000,pending:1}]};
+            dashboard.render(data,{orgName:"TOPKEY · Chrome UI fixture",snapshotAt:Date.now()},"snapshot");
+            const result={languageModalClosed:document.querySelector("#tk28-language-modal")?.classList.contains("tk28-hidden")!==false,
+              calendar:!!document.querySelector(".exec-calendar-card"),chartBars:document.querySelectorAll(".exec-bar-row").length,
+              kpiCards:document.querySelectorAll(".exec-kpi").length,calendarCells:document.querySelectorAll(".exec-calendar-day:not(.is-empty)").length};
+            if(!result.calendar||result.chartBars<2||result.kpiCards<4)throw new Error("Hub dashboard fixture incomplete: "+JSON.stringify(result));
+            return JSON.stringify(result);
+          }' --pageId 1 --output-format=json | tee artifacts/chrome-devtools/hub-dashboard-fixture.json
+          if grep -q 'Error:' artifacts/chrome-devtools/hub-dashboard-fixture.json; then exit 1; fi
           chrome-devtools take_screenshot 1 --filePath artifacts/chrome-devtools/hub-desktop.png
-          chrome-devtools resize_page 1 --width 390 --height 844
+          chrome-devtools evaluate_script '() => {document.querySelector("#executive-dashboard")?.scrollIntoView({block:"start"});return "dashboard-scrolled"}' --pageId 1
+          chrome-devtools take_screenshot 1 --filePath artifacts/chrome-devtools/hub-dashboard-ui-fixture.png
+          chrome-devtools evaluate_script '() => {window.scrollTo(0,0);return "top"}' --pageId 1
+          chrome-devtools resize_page 1 390 844
           chrome-devtools evaluate_script '() => {
             const result={width:innerWidth,scrollWidth:document.documentElement.scrollWidth,
               overflow:document.documentElement.scrollWidth>innerWidth+2,
@@ -69,7 +98,7 @@ jobs:
             return JSON.stringify(result);
           }' --pageId 1 --output-format=json | tee artifacts/chrome-devtools/hub-mobile.json
           chrome-devtools take_screenshot 1 --filePath artifacts/chrome-devtools/hub-mobile.png
-          chrome-devtools resize_page 1 --width 1440 --height 1000
+          chrome-devtools resize_page 1 1440 1000
 
       - name: Full UI fixture and interaction matrix – all 7 sports
         shell: bash
