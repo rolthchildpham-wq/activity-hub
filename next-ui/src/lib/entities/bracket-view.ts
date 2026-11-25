@@ -1,5 +1,6 @@
-import type {Match,Team} from '../domain.ts';
-import {completed} from '../domain.ts';
+type Match= {teamAId?:string;teamBId?:string;status?:string;scoreA?:number;scoreB?:number;code?:string};
+type Team= {name?:string};
+const completed=new Set(['FINISHED','WALKOVER','RETIRED','DISQUALIFIED']);
 export type BracketMatchView={id:string,teamAId:string,teamBId:string,teamAName:string,teamBName:string,scoreA:number|null,scoreB:number|null,winnerId:string|null,status:string,code:string};
 const numberOrNull=(v:unknown):number|null=>typeof v==='number'&&Number.isFinite(v)?v:null;
 export function bracketMatchView(id:string,match:Match,teams:Record<string,Team>|null|undefined):BracketMatchView{

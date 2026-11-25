@@ -15,7 +15,7 @@
   <section class="empty-bracket"><span>🏆</span><h2>Chưa có dữ liệu bảng đấu</h2><p>Hãy tạo lịch và phân vòng trong hệ thống quản lý giải. Sơ đồ sẽ tự cập nhật khi dữ liệu xuất hiện.</p></section>
  {:else}
   <div class="bracket-legend"><span><i class="winner-dot"></i> Đội thắng đã xác định</span><span><i class="live-dot"></i> Trận đang diễn ra</span><span><i class="pending-dot"></i> Chưa có kết quả</span></div>
-  <div class="bracket-scroll" tabindex="0" aria-label="Sơ đồ nhánh đấu, cuộn ngang để xem các vòng">
+  <div class="bracket-scroll" role="region" tabindex="0" aria-label="Sơ đồ nhánh đấu, cuộn ngang để xem các vòng">
    <div class="bracket-rounds">
     {#each rounds as round,i}
      <section class="bracket-round">
