@@ -1,5 +1,5 @@
-import type {Match,Team} from '../domain.ts';
-import {completed} from '../domain.ts';
+import type {Match,Team} from '../domain';
+import {completed} from '../domain';
 export type TeamRecord={played:number;won:number;drawn:number;lost:number;pointsFor:number;pointsAgainst:number};
 const blank=():TeamRecord=>({played:0,won:0,drawn:0,lost:0,pointsFor:0,pointsAgainst:0});
 const score=(value:unknown)=>typeof value==='number'&&Number.isFinite(value)?value:null;
