@@ -1,5 +1,5 @@
-import type {Match,Team} from '$lib/domain';
-import {completed} from '$lib/domain';
+import type {Match,Team} from '../domain';
+import {completed} from '../domain';
 export type BracketMatchView={id:string,teamAId:string,teamBId:string,teamAName:string,teamBName:string,scoreA:number|null,scoreB:number|null,winnerId:string|null,status:string,code:string};
 const numberOrNull=(v:unknown):number|null=>typeof v==='number'&&Number.isFinite(v)?v:null;
 export function bracketMatchView(id:string,match:Match,teams:Record<string,Team>|null|undefined):BracketMatchView{
