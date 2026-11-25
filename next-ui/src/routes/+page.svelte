@@ -70,7 +70,7 @@
   <div class="content-shell">
    <header class="topbar">
     <div class="top-left"><button class="icon-button burger" aria-label="Mở danh mục" on:click={()=>sidebar=!sidebar}>☰</button><div><div class="overline">TOPKEY / {sport.name}</div><h1>Trung tâm điều hành</h1></div></div>
-    <div class="top-actions"><span class="environment" class:testlab={isTestLab(tid)}>{isTestLab(tid)?'TEST LAB':'PRODUCTION'}</span><span class="user-email" title={user.email||''}>{user.email}</span><button class="button outline" on:click={logout}>Đăng xuất</button></div>
+    <div class="top-actions"><a class="button outline" href={base+'/settings'}>Cài đặt UI/UX</a><span class="environment" class:testlab={isTestLab(tid)}>{isTestLab(tid)?'TEST LAB':'PRODUCTION'}</span><span class="user-email" title={user.email||''}>{user.email}</span><button class="button outline" on:click={logout}>Đăng xuất</button></div>
    </header>
    <main class="dashboard">
     <section class="heading-row"><div><div class="overline">Giải đấu · {sport.name}</div><h2>{typeof data.config?.title==='string'?data.config.title:'Tổng quan giải đấu'}</h2><p class="subtle">Dữ liệu chỉ đọc, trực tiếp từ giải đã chọn. Không có số liệu mô phỏng.</p></div>
