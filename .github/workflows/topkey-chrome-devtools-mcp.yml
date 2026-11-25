@@ -195,8 +195,8 @@ jobs:
                 enginePath:location.pathname,
                 analyticsContrast:heading?Number(contrast(panelBg,headingColor).toFixed(2)):0,
                 analyticsSubContrast:sub?Number(contrast(panelBg,subColor).toFixed(2)):0,
-                kpiColumns:document.querySelector("#page-overview > .grid.g4:first-child")?
-                  getComputedStyle(document.querySelector("#page-overview > .grid.g4:first-child")).gridTemplateColumns.split(/\s+/).length:0,
+                kpiColumns:document.querySelector("#page-overview > .grid.g4")?
+                  getComputedStyle(document.querySelector("#page-overview > .grid.g4")).gridTemplateColumns.split(/\s+/).length:0,
                 legacyHubLinksVisible:[...document.querySelectorAll("#app-shell .topbar .hub-link,#app-shell .topbar .hub-back")]
                   .filter(el=>getComputedStyle(el).display!=="none").length,
                 writeAttempts:window.__TOPKEY_QA_WRITE_ATTEMPTS,
@@ -258,7 +258,7 @@ jobs:
             grep -q 'collapseExpand' "artifacts/chrome-devtools/$sport-accordion.json"
             chrome-devtools resize_page 1 390 844
             chrome-devtools evaluate_script '() => {
-              const kpi=document.querySelector("#page-overview > .grid.g4:first-child");
+              const kpi=document.querySelector("#page-overview > .grid.g4");
               const result={width:innerWidth,scrollWidth:document.documentElement.scrollWidth,
                 overflow:document.documentElement.scrollWidth>innerWidth+2,
                 kpiColumns:kpi?getComputedStyle(kpi).gridTemplateColumns.split(/\s+/).length:0};
