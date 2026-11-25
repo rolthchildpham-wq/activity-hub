@@ -1,3 +1,4 @@
+/* ECC shared TOPKEY sport shell + high-contrast workspace layer. */
 :root {
   --tk-shell-canvas: #f6f3eb;
   --tk-shell-paper: #ffffff;
@@ -8,58 +9,72 @@
   --tk-shell-line: #e5dfd4;
 }
 .tk-sports-shell {
-  position: sticky;
-  top: 0;
-  z-index: 1500;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  min-height: 54px;
-  padding: 8px clamp(12px, 2vw, 28px);
-  color: var(--tk-shell-ink);
-  background: var(--tk-shell-paper);
+  position: sticky; top: 0; z-index: 1500;
+  display: flex; align-items: center; gap: 14px;
+  min-height: 54px; padding: 8px clamp(12px, 2vw, 28px);
+  color: var(--tk-shell-ink); background: var(--tk-shell-paper);
   border-bottom: 1px solid var(--tk-shell-line);
   box-shadow: 0 3px 14px rgb(29 45 77 / 7%);
   font: 600 13px/1.35 Inter, ui-sans-serif, system-ui, sans-serif;
 }
 .tk-sports-shell__hub {
-  display: inline-flex;
-  align-items: center;
-  min-height: 36px;
-  padding: 0 12px;
-  border-radius: 9px;
-  color: #fff;
-  background: var(--tk-shell-navy);
-  text-decoration: none;
-  white-space: nowrap;
+  display: inline-flex; align-items: center; min-height: 36px;
+  padding: 0 12px; border-radius: 9px; color: #fff;
+  background: var(--tk-shell-navy); text-decoration: none; white-space: nowrap;
 }
-.tk-sports-shell__label {
-  color: var(--tk-shell-muted);
-  font-size: 10px;
-  font-weight: 850;
-  letter-spacing: .9px;
-}
+.tk-sports-shell__label { color: var(--tk-shell-muted); font-size: 10px; font-weight: 850; letter-spacing: .9px; }
 .tk-sports-shell select {
-  min-width: 190px;
-  min-height: 38px;
-  padding: 0 34px 0 11px;
-  border: 1px solid var(--tk-shell-line);
-  border-radius: 9px;
-  color: var(--tk-shell-ink);
-  background: #faf9f6;
-  font: inherit;
+  min-width: 190px; min-height: 38px; padding: 0 34px 0 11px;
+  border: 1px solid var(--tk-shell-line); border-radius: 9px;
+  color: var(--tk-shell-ink); background: #faf9f6; font: inherit;
 }
-.tk-sports-shell__current {
-  margin-left: auto;
-  color: var(--tk-shell-red);
-  font-weight: 800;
+.tk-sports-shell__current { margin-left: auto; color: var(--tk-shell-red); font-weight: 800; }
+
+/* Shared high-contrast tokens for both VNext and the retained badminton engine. */
+#app-shell:not(.hidden) .page { color: var(--tk-shell-ink) !important; }
+#app-shell:not(.hidden) .page > :is(h1,h2,h3),
+#app-shell:not(.hidden) .page > .split :is(h1,h2,h3),
+#app-shell:not(.hidden) .page > .split > div > :is(h1,h2,h3) {
+  color: #17364b !important; opacity: 1 !important;
+  -webkit-text-fill-color: #17364b !important;
+}
+#app-shell:not(.hidden) .page .card.kpi > span {
+  color: #526174 !important; opacity: 1 !important;
+  -webkit-text-fill-color: #526174 !important;
+}
+#app-shell:not(.hidden) .page .card.kpi > strong {
+  color: #17364b !important; opacity: 1 !important;
+  -webkit-text-fill-color: #17364b !important;
+}
+#app-shell:not(.hidden) #h201-analytics .h201-panel {
+  background: #ffffff !important; color: #1e293b !important;
+}
+#app-shell:not(.hidden) #h201-analytics .h201-panel h2 {
+  color: #17364b !important; opacity: 1 !important;
+  -webkit-text-fill-color: #17364b !important;
+}
+#app-shell:not(.hidden) #h201-analytics .h201-panel .h201-sub,
+#app-shell:not(.hidden) #h201-analytics .h201-panel .h201-explain,
+#app-shell:not(.hidden) #h201-analytics .h201-panel .h201-donut-inner small {
+  color: #526174 !important; opacity: 1 !important;
+  -webkit-text-fill-color: #526174 !important;
+}
+#app-shell:not(.hidden) #h201-analytics .h201-panel .h201-bar-row,
+#app-shell:not(.hidden) #h201-analytics .h201-panel .h201-bar-row strong {
+  color: #334155 !important; opacity: 1 !important;
+  -webkit-text-fill-color: #334155 !important;
+}
+#app-shell:not(.hidden) #h201-analytics .h201-panel .h201-donut-inner strong {
+  color: #087e70 !important; -webkit-text-fill-color: #087e70 !important;
+}
+#app-shell:not(.hidden) :is(input,select,textarea):focus-visible,
+#app-shell:not(.hidden) :is(button,a):focus-visible {
+  outline: 3px solid #b96a42 !important; outline-offset: 3px !important;
 }
 @media (max-width: 640px) {
   .tk-sports-shell {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 7px 10px;
-    padding: 8px 10px;
+    display: grid; grid-template-columns: auto 1fr;
+    gap: 7px 10px; padding: 8px 10px;
   }
   .tk-sports-shell__hub { grid-row: span 2; }
   .tk-sports-shell__label { align-self: end; }
