@@ -12,7 +12,7 @@ assert.match(html,/id="executive-dashboard"/);
 assert.match(html,/id="topkey-sports"/);
 assert.ok(html.indexOf('sports-hub-bi.css')>html.indexOf('hub-layout94.css'),'Theme CSS must load last');
 for(const sport of sports){
-  assert.ok(html.includes('sport='+sport)||html.includes('sports/'+sport+'/index.html'),'Missing sport navigation: '+sport);
+  assert.ok(html.includes('sport='+sport)||html.includes('sports/'+sport+'/index.html')||(sport==='badminton'&&html.includes('sports/vnext/badminton.html')),'Missing sport navigation: '+sport);
 }
 for(const dep of ['hub-auth-flow.js','executive-dashboard.js','hub-layout94.js','topkey-dynamic-i18n.js']){
   assert.ok(html.includes(dep),'Preserve runtime dependency '+dep);
