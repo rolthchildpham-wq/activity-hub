@@ -116,7 +116,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          base="https://topkey-activity-management.edgeone.dev"
+          base="http://127.0.0.1:4173"
           sports=(football volleyball running handmade shuttle cooking badminton)
           tabs=(overview control teams schedule umpire live finance announcements audit health settings)
           for sport in "${sports[@]}"; do
