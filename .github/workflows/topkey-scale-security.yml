@@ -1,7 +1,7 @@
 name: TOPKEY archive scale and rules regression
 on:
   push:
-    branches: [main, fix/h123-scale-security]
+    branches: [main, fix/h123-scale-security, rebuild/sports-hub-ecc-unified]
   pull_request:
 permissions:
   contents: read
@@ -28,6 +28,8 @@ jobs:
           node topkey/tests/scale-1000.cjs
           node topkey/tests/closed-admin-tabs.cjs
           node topkey/tests/h119/policy_rules_parity.cjs
+      - name: Sports Hub unification and data-contract guard
+        run: node topkey/tests/sports-hub-unification-contract.test.cjs
       - name: Real Firebase Database emulator authorization tests
         working-directory: topkey
         env:
