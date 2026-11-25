@@ -37,7 +37,7 @@ test('desktop workspace exposes the full navigation without the mobile overlay',
  await asAdmin.setViewportSize({width:1440,height:900});
  await asAdmin.goto(workspace(''));
  await expect(asAdmin.getByRole('navigation',{name:'Các chức năng'})).toBeVisible();
- for(const label of ['Tổng quan','Lịch thi đấu','Bảng đấu','Trực tiếp','Xếp hạng','Điểm danh','Trọng tài','Tài chính','Nhật ký'])
+ for(const label of ['Tổng quan','Lịch thi đấu','Bảng đấu','Trực tiếp','Xếp hạng','Phân tích','Điểm danh','Trọng tài','Tài chính','Nhật ký'])
   await expect(asAdmin.getByRole('navigation',{name:'Các chức năng'}).getByRole('link',{name:new RegExp(label)})).toBeVisible();
  await expect(asAdmin.getByRole('navigation',{name:'Điều hướng nhanh'})).toBeHidden();
 });

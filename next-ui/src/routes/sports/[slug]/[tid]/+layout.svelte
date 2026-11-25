@@ -32,6 +32,7 @@
   {key:'bracket',label:'Bảng đấu',icon:'🏆'},
   {key:'live',label:'Trực tiếp',icon:'●'},
   {key:'leaderboard',label:'Xếp hạng',icon:'≡'},
+  {key:'analytics',label:'Phân tích',icon:'▥'},
   {key:'check-in',label:'Điểm danh',icon:'✓'},
   {key:'referee',label:'Trọng tài',icon:'⚖'},
   {key:'finance',label:'Tài chính',icon:'₫'},
