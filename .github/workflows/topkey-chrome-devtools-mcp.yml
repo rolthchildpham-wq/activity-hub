@@ -66,9 +66,15 @@ jobs:
               badmintonCard:cards.some(card=>card.textContent.includes("Cầu lông")),
               navLinks:document.querySelectorAll(".tk210-nav a").length,
               overflow:document.documentElement.scrollWidth>innerWidth+2,
-              h219:[...document.styleSheets].some(sheet=>sheet.href?.includes("hub-dashboard-reference-h219.css"))};
-            if(cards.length<8||!result.badmintonCard||result.overflow||!result.h219)
-              throw new Error("H219 Hub contract failed: "+JSON.stringify(result));
+              h219:[...document.styleSheets].some(sheet=>sheet.href?.includes("hub-dashboard-reference-h219.css")),
+              eccDesign:[...document.styleSheets].some(sheet=>sheet.href?.includes("hub-ecc-design-system.css"))};
+            const rgb=value=>value.match(/[\\d.]+/g).slice(0,3).map(Number);
+            const lum=value=>{const channels=rgb(value).map(v=>{v/=255;return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*channels[0]+.7152*channels[1]+.0722*channels[2]};
+            const cardStyle=getComputedStyle(cards[0]),paragraphStyle=getComputedStyle(cards[0].querySelector("p"));
+            const contrast=(Math.max(lum(cardStyle.backgroundColor),lum(paragraphStyle.color))+.05)/(Math.min(lum(cardStyle.backgroundColor),lum(paragraphStyle.color))+.05);
+            result.cardBackground=cardStyle.backgroundColor;result.cardText=paragraphStyle.color;result.cardContrast=Number(contrast.toFixed(2));
+            if(cards.length<8||!result.badmintonCard||result.overflow||!result.h219||!result.eccDesign||contrast<4.5)
+              throw new Error("ECC Hub visual contract failed: "+JSON.stringify(result));
             return JSON.stringify(result);
           }' --pageId 1 --output-format=json | tee artifacts/chrome-devtools/hub-desktop.json
           chrome-devtools evaluate_script 'async () => {
@@ -106,7 +112,11 @@ jobs:
             const result={width:innerWidth,scrollWidth:document.documentElement.scrollWidth,
               overflow:document.documentElement.scrollWidth>innerWidth+2,
               navPosition:getComputedStyle(document.querySelector(".tk210-nav")).position};
-            if(result.overflow)throw new Error("Hub mobile overflow: "+JSON.stringify(result));
+            const navRect=document.querySelector(".tk210-nav").getBoundingClientRect();
+            const heroRect=document.querySelector(".tk-bi-hero").getBoundingClientRect();
+            result.navTop=Math.round(navRect.top);result.heroBottom=Math.round(heroRect.bottom);
+            if(result.overflow||result.navPosition!=="fixed"||navRect.top<heroRect.bottom)
+              throw new Error("Hub mobile navigation/layout failed: "+JSON.stringify(result));
             return JSON.stringify(result);
           }' --pageId 1 --output-format=json | tee artifacts/chrome-devtools/hub-mobile.json
           chrome-devtools take_screenshot 1 --filePath artifacts/chrome-devtools/hub-mobile.png
@@ -152,7 +162,10 @@ jobs:
               T.Auth.can=()=>true;
               T.Auth.role=()=>"ADMIN";
               T.Auth.profile={role:"ADMIN",displayName:"Chrome QA fixture"};
-              T.Auth.user={uid:"chrome-ui-fixture",email:"chrome-ui-fixture@example.invalid"};
+              window.__TOPKEY_QA_WRITE_ATTEMPTS=0;
+              for(const method of ["queueSet","queueMulti","audit"]){
+                if(typeof T.Data?.[method]==="function")T.Data[method]=async()=>{window.__TOPKEY_QA_WRITE_ATTEMPTS++;return null};
+              }
               document.querySelector("#login-screen")?.classList.add("hidden");
               document.querySelector("#app-shell")?.classList.remove("hidden");
               A.setupUI?.();
@@ -160,13 +173,27 @@ jobs:
               A.renderAll?.();
               A.showTab("overview");
               const sport=new URLSearchParams(location.search).get("sport")||(location.pathname.includes("/sports/badminton/")?"badminton":"");
+              const panel=document.querySelector("#h201-analytics .h201-panel");
+              const heading=panel?.querySelector("h2"),sub=panel?.querySelector(".h201-sub");
+              const rgb=value=>value.match(/[\\d.]+/g).slice(0,3).map(Number);
+              const lum=value=>{const channels=rgb(value).map(v=>{v/=255;return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*channels[0]+.7152*channels[1]+.0722*channels[2]};
+              const contrast=(a,b)=>(Math.max(lum(a),lum(b))+.05)/(Math.min(lum(a),lum(b))+.05);
+              const panelBg=panel?getComputedStyle(panel).backgroundColor:"";
+              const headingColor=heading?getComputedStyle(heading).color:"";
+              const subColor=sub?getComputedStyle(sub).color:"";
               const result={url:location.href,sport,appReady:true,
                 pageCount:document.querySelectorAll("#app-shell .page").length,
                 tabCount:document.querySelectorAll("#app-shell [data-tab]").length,
                 collapsible:!!window.TopkeyCollapsibleH141,
                 enginePath:location.pathname,
+                analyticsContrast:heading?Number(contrast(panelBg,headingColor).toFixed(2)):0,
+                analyticsSubContrast:sub?Number(contrast(panelBg,subColor).toFixed(2)):0,
+                writeAttempts:window.__TOPKEY_QA_WRITE_ATTEMPTS,
                 fixture:"UI_ONLY_NO_DATABASE_WRITES"};
               if(result.pageCount<11||result.tabCount<11)throw new Error("Incomplete sport workspace: "+JSON.stringify(result));
+              if(!panel||result.analyticsContrast<4.5||result.analyticsSubContrast<4.5)
+                throw new Error("Workspace contrast failed: "+JSON.stringify(result));
+              if(result.writeAttempts!==0)throw new Error("UI fixture attempted Firebase writes: "+JSON.stringify(result));
               if(sport==="badminton"&&!location.pathname.includes("/sports/badminton/index.html"))
                 throw new Error("Shared badminton launcher did not reach badminton engine: "+JSON.stringify(result));
               return JSON.stringify(result);
@@ -211,7 +238,8 @@ jobs:
               const restored=fixture.classList.contains("tk141-panel-folded")===initial;
               if(!restored)throw new Error("Nested card did not restore original state");
               fixture.remove();
-              return JSON.stringify({collapseExpand:"PASS",restored:true,ariaExpanded:"accessible",fixture:"UI_ONLY"});
+              if(window.__TOPKEY_QA_WRITE_ATTEMPTS!==0)throw new Error("Accordion fixture attempted a data write");
+              return JSON.stringify({collapseExpand:"PASS",restored:true,ariaExpanded:"accessible",writeAttempts:window.__TOPKEY_QA_WRITE_ATTEMPTS,fixture:"UI_ONLY"});
             }' --pageId 1 --output-format=json | tee "artifacts/chrome-devtools/$sport-accordion.json"
             if grep -q 'Error:' "artifacts/chrome-devtools/$sport-accordion.json"; then exit 1; fi
             grep -q 'collapseExpand' "artifacts/chrome-devtools/$sport-accordion.json"
