@@ -93,3 +93,48 @@ body.tk-bi-hub .footer{color:#64748b!important}
 @media(max-width:680px){body.tk-bi-hub .brand-main{width:100%!important}.tk210-nav{gap:3px!important}.tk210-nav a{font-size:10px!important;gap:4px!important}.tk210-nav a span{display:inline!important}body.tk-bi-hub .tk-bi-hero{grid-template-columns:1fr!important;padding:18px!important}.tk210-hero-art{display:none!important}body.tk-bi-hub #topkey-sports.cards,body.tk-bi-hub #topkey-sports.cards.compact-sports{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}body.tk-bi-hub #topkey-sports .sport{min-height:190px!important;padding:13px!important}body.tk-bi-hub #topkey-sports .sport p{font-size:11px!important}body.tk-bi-hub .exec-kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important}body.tk-bi-hub .exec-grid{grid-template-columns:1fr!important}body.tk-bi-hub .exec-calendar-card{overflow-x:auto!important}}
 @media(max-width:390px){body.tk-bi-hub .brand-logo-wrap{width:88px!important;min-width:88px!important;height:40px!important}body.tk-bi-hub .brand-title h1{font-size:14px!important}body.tk-bi-hub #topkey-sports.cards,body.tk-bi-hub #topkey-sports.cards.compact-sports{grid-template-columns:1fr!important}}
 @media(prefers-reduced-motion:reduce){body.tk-bi-hub *{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
+
+/* H220 — compact seven-column calendar on phones; no inner horizontal scrolling. */
+@media(max-width:680px){
+  body.tk-bi-hub .exec-calendar-card{
+    padding:10px!important;
+    overflow-x:visible!important;
+  }
+  body.tk-bi-hub .exec-calendar-head{
+    flex-wrap:wrap!important;
+    gap:8px!important;
+  }
+  body.tk-bi-hub .exec-calendar-head>strong{
+    margin-left:auto!important;
+  }
+  body.tk-bi-hub .exec-calendar-weekdays,
+  body.tk-bi-hub .exec-calendar-grid{
+    width:100%!important;
+    min-width:0!important;
+    gap:3px!important;
+  }
+  body.tk-bi-hub .exec-calendar-weekdays span{
+    padding:4px 1px!important;
+    font-size:9px!important;
+  }
+  body.tk-bi-hub .exec-calendar-day{
+    min-width:0!important;
+    min-height:0!important;
+    padding:4px 2px!important;
+    gap:3px!important;
+    border-radius:6px!important;
+  }
+  body.tk-bi-hub .exec-calendar-date{
+    font-size:10px!important;
+    line-height:1.2!important;
+  }
+  body.tk-bi-hub .exec-calendar-event{
+    padding:2px 3px!important;
+    font-size:8px!important;
+    line-height:1.25!important;
+  }
+  body.tk-bi-hub .exec-calendar-more{
+    font-size:8px!important;
+  }
+}
