@@ -196,7 +196,7 @@ jobs:
                 analyticsContrast:heading?Number(contrast(panelBg,headingColor).toFixed(2)):0,
                 analyticsSubContrast:sub?Number(contrast(panelBg,subColor).toFixed(2)):0,
                 kpiColumns:document.querySelector("#page-overview > .grid.g4:first-child")?
-                  getComputedStyle(document.querySelector("#page-overview > .grid.g4:first-child")).gridTemplateColumns.split(/\\s+/).length:0,
+                  getComputedStyle(document.querySelector("#page-overview > .grid.g4:first-child")).gridTemplateColumns.split(/\s+/).length:0,
                 legacyHubLinksVisible:[...document.querySelectorAll("#app-shell .topbar .hub-link,#app-shell .topbar .hub-back")]
                   .filter(el=>getComputedStyle(el).display!=="none").length,
                 writeAttempts:window.__TOPKEY_QA_WRITE_ATTEMPTS,
@@ -261,7 +261,7 @@ jobs:
               const kpi=document.querySelector("#page-overview > .grid.g4:first-child");
               const result={width:innerWidth,scrollWidth:document.documentElement.scrollWidth,
                 overflow:document.documentElement.scrollWidth>innerWidth+2,
-                kpiColumns:kpi?getComputedStyle(kpi).gridTemplateColumns.split(/\\s+/).length:0};
+                kpiColumns:kpi?getComputedStyle(kpi).gridTemplateColumns.split(/\s+/).length:0};
               if(result.overflow)throw new Error("Mobile horizontal overflow: "+JSON.stringify(result));
               if(innerWidth>=360&&result.kpiColumns!==2)throw new Error("Mobile KPI grid must have two columns: "+JSON.stringify(result));
               return JSON.stringify(result);
