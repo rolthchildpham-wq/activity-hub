@@ -179,6 +179,7 @@ html body.tk-bi-hub .exec-insights-table td {
 }
 @media (min-width: 821px) {
   body.tk-bi-hub .wrap {
+    width: calc(100% - 218px) !important;
     box-sizing: border-box !important;
     padding-right: 24px !important;
   }
