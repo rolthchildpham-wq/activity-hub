@@ -363,13 +363,13 @@ jobs:
           for attempt in $(seq 1 18); do
             stamp="__h230_probe=${attempt}_${GITHUB_RUN_ID}"
             html_code="$(curl --silent --show-error --max-time 15 --location --output /tmp/tk-h230-vnext.html --write-out '%{http_code}' "$base/sports/vnext/index.html?sport=volleyball&$stamp" || true)"
-            css_code="$(curl --silent --show-error --max-time 15 --location --output /tmp/tk-h230-dashboard.css --write-out '%{http_code}' "$base/sports/vnext/dashboard-live-h227.css?v=h228-dashboard-tabs-20261125&$stamp" || true)"
+            css_code="$(curl --silent --show-error --max-time 15 --location --output /tmp/tk-h230-dashboard.css --write-out '%{http_code}' "$base/sports/vnext/dashboard-live-h227.css?v=h230-page-visibility-20261125&$stamp" || true)"
             js_code="$(curl --silent --show-error --max-time 15 --location --output /tmp/tk-h230-dashboard.js --write-out '%{http_code}' "$base/sports/vnext/src/dashboard-live-h227.js?v=h229-dashboard-retry-20261125&$stamp" || true)"
             echo "H230 live attempt=$attempt html=$html_code css=$css_code js=$js_code"
             if [ "$html_code" = "200" ] && [ "$css_code" = "200" ] && [ "$js_code" = "200" ] &&
               grep -Fq 'dashboard-live-h227.css?v=h228-dashboard-tabs-20261125' /tmp/tk-h230-vnext.html &&
               grep -Fq 'dashboard-live-h227.js?v=h229-dashboard-retry-20261125' /tmp/tk-h230-vnext.html &&
-              grep -Fq 'H228: the overview layout must never override the app' /tmp/tk-h230-dashboard.css &&
+              grep -Fq 'H230: page visibility is owned by App.showTab()' /tmp/tk-h230-dashboard.css &&
               grep -Fq '__TOPKEY_H227_INSTALL_ERROR' /tmp/tk-h230-dashboard.js; then
               ok=1
               break
