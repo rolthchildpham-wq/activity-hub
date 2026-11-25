@@ -296,9 +296,18 @@ jobs:
                 button.click();await wait(220);
                 const page=document.getElementById('page-$tab');
                 const active=[...document.querySelectorAll('#app-shell .page')].filter(item=>!item.classList.contains('hidden'));
-                if(!page||page.classList.contains('hidden')||active.length!==1)
-                  throw new Error('Tab activation failed $tab: '+JSON.stringify(active.map(item=>item.id)));
+                const overview=document.getElementById('page-overview');
+                const board=document.getElementById('tk227-board');
+                const overviewVisible=!!overview&&getComputedStyle(overview).display!=='none'&&overview.getClientRects().length>0;
+                const dashboardVisible=!!board&&board.getClientRects().length>0;
+                if(!page||page.classList.contains('hidden')||getComputedStyle(page).display==='none'||active.length!==1)
+                  throw new Error('Tab activation failed $tab: '+JSON.stringify({active:active.map(item=>item.id),computed:getComputedStyle(page||document.body).display}));
+                if('$tab'!=='overview'&&(overviewVisible||dashboardVisible))
+                  throw new Error('Overview/dashboard leaked into $tab: '+JSON.stringify({overviewVisible,dashboardVisible,overviewClass:overview?.className,boardParent:board?.parentElement?.id}));
+                if('$tab'==='overview'&&!overviewVisible)
+                  throw new Error('Overview dashboard is not visible on overview tab');
                 return JSON.stringify({tab:'$tab',activePage:page.id,
+                  overviewVisible,dashboardVisible,
                   visibleCards:page.querySelectorAll('.card,.subcard').length});
               }"
               chrome-devtools evaluate_script "$script" --pageId 1 --output-format=json | tee "artifacts/chrome-devtools/$sport-tab-$tab.json"
