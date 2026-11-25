@@ -74,12 +74,19 @@ jobs:
             const contrast=(Math.max(lum(cardStyle.backgroundColor),lum(paragraphStyle.color))+.05)/(Math.min(lum(cardStyle.backgroundColor),lum(paragraphStyle.color))+.05);
             const eccSheet=[...document.styleSheets].find(sheet=>sheet.href?.includes("hub-ecc-design-system.css"));
             const eccRules=eccSheet?[...eccSheet.cssRules].filter(rule=>rule.selectorText?.includes("#topkey-sports")&&rule.selectorText.includes(".sport")).map(rule=>({selector:rule.selectorText,bg:rule.style.backgroundColor,priority:rule.style.getPropertyPriority("background-color")})):[];
+            const focus=document.querySelector(".exec-insights-focus"),focusText=focus?.querySelector("p");
+            const focusBg=focus?getComputedStyle(focus).backgroundColor:"";
+            const focusColor=focusText?getComputedStyle(focusText).color:"";
+            const focusContrast=focusText?(Math.max(lum(focusBg),lum(focusColor))+.05)/(Math.min(lum(focusBg),lum(focusColor))+.05):0;
+            const lastCardRight=cards[cards.length-1].getBoundingClientRect().right;
             result.cardBackground=cardStyle.backgroundColor;result.cardText=paragraphStyle.color;result.cardContrast=Number(contrast.toFixed(2));
+            result.insightContrast=Number(focusContrast.toFixed(2));result.lastCardRight=Math.round(lastCardRight);
             result.bodyClass=document.body.className;result.catalogClass=document.querySelector("#topkey-sports").className;
             result.selectorMatches=document.querySelectorAll("html body.tk-bi-hub #topkey-sports.cards a.sport").length;
             result.cardInlineStyle=cards[0].getAttribute("style");result.cardBackgroundImage=cardStyle.backgroundImage;
             result.eccRuleCount=eccSheet?.cssRules?.length||0;result.eccRules=eccRules;
-            if(cards.length<8||!result.badmintonCard||result.overflow||!result.h219||!result.eccDesign||contrast<4.5)
+            if(cards.length<8||!result.badmintonCard||result.overflow||!result.h219||!result.eccDesign||
+              contrast<4.5||!focus||focusContrast<4.5||lastCardRight>innerWidth-8)
               throw new Error("ECC Hub visual contract failed: "+JSON.stringify(result));
             return JSON.stringify(result);
           }' --pageId 1 --output-format=json | tee artifacts/chrome-devtools/hub-desktop.json
