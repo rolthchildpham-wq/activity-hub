@@ -76,7 +76,12 @@ jobs:
             const eccRules=eccSheet?[...eccSheet.cssRules].filter(rule=>rule.selectorText?.includes("#topkey-sports")&&rule.selectorText.includes(".sport")).map(rule=>({selector:rule.selectorText,bg:rule.style.backgroundColor,priority:rule.style.getPropertyPriority("background-color")})):[];
             const lastCardRight=cards[cards.length-1].getBoundingClientRect().right;
             result.cardBackground=cardStyle.backgroundColor;result.cardText=paragraphStyle.color;result.cardContrast=Number(contrast.toFixed(2));
-            result.lastCardRight=Math.round(lastCardRight);
+            const wrap=document.querySelector("body.tk-bi-hub .wrap"),wrapRect=wrap.getBoundingClientRect();
+            const catalogRect=document.querySelector("#topkey-sports").getBoundingClientRect();
+            result.lastCardRight=Math.round(lastCardRight);result.viewportWidth=innerWidth;
+            result.wrapWidth=getComputedStyle(wrap).width;result.wrapMarginLeft=getComputedStyle(wrap).marginLeft;
+            result.wrapPaddingRight=getComputedStyle(wrap).paddingRight;result.wrapRight=Math.round(wrapRect.right);
+            result.catalogRight=Math.round(catalogRect.right);result.desktopBreakpoint=matchMedia("(min-width: 821px)").matches;
             result.bodyClass=document.body.className;result.catalogClass=document.querySelector("#topkey-sports").className;
             result.selectorMatches=document.querySelectorAll("html body.tk-bi-hub #topkey-sports.cards a.sport").length;
             result.cardInlineStyle=cards[0].getAttribute("style");result.cardBackgroundImage=cardStyle.backgroundImage;
