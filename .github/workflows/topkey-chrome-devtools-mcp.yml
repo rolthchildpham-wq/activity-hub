@@ -71,7 +71,7 @@ jobs:
           chrome-devtools take_screenshot 1 --filePath artifacts/chrome-devtools/hub-mobile.png
           chrome-devtools resize_page 1 --width 1440 --height 1000
 
-      - name: Full runtime and interaction matrix – all 7 sports
+      - name: Full UI fixture and interaction matrix – all 7 sports
         shell: bash
         run: |
           set -euo pipefail
@@ -79,69 +79,95 @@ jobs:
           sports=(football volleyball running handmade shuttle cooking badminton)
           tabs=(overview control teams schedule umpire live finance announcements audit health settings)
           for sport in "${sports[@]}"; do
-            route="/sports/vnext/index.html?sport=$sport&testlab=1"
+            if [ "$sport" = "badminton" ]; then
+              route="/sports/vnext/badminton.html?testlab=1&v=h219-liberty-dashboard-20261125&__topkey_reload=h219"
+            else
+              route="/sports/vnext/index.html?sport=$sport&testlab=1&v=h219-liberty-dashboard-20261125&__topkey_reload=h219"
+            fi
             echo "===== $sport =====" | tee -a artifacts/chrome-devtools/sport-matrix.txt
             chrome-devtools navigate_page 1 --url "$base$route" | tee "artifacts/chrome-devtools/$sport-navigation.txt"
             sleep 2
             chrome-devtools evaluate_script '() => {
-              const app=document.querySelector("#app-shell");
-              app?.classList.remove("hidden");
+              const T=window.Topkey,A=T?.App;
+              if(!A||!T?.Auth)throw new Error("Application modules not ready");
+              // UI-only fixture: grant client-side tab visibility in this isolated browser.
+              // No form submission, Firebase write, role persistence or real account mutation.
+              T.Auth.can=()=>true;
+              T.Auth.role=()=>"ADMIN";
+              T.Auth.profile={role:"ADMIN",displayName:"Chrome QA fixture"};
+              T.Auth.user={uid:"chrome-ui-fixture",email:"chrome-ui-fixture@example.invalid"};
               document.querySelector("#login-screen")?.classList.add("hidden");
-              document.querySelectorAll("#app-shell .page").forEach(page=>page.classList.add("hidden"));
-              return JSON.stringify({url:location.href,readyState:document.readyState,
-                collapsible:!!window.TopkeyCollapsibleH141,tabCount:document.querySelectorAll("#app-shell [data-tab]").length});
+              document.querySelector("#app-shell")?.classList.remove("hidden");
+              A.setupUI?.();
+              document.querySelectorAll("#app-shell [data-tab]").forEach(button=>button.classList.remove("hidden"));
+              A.renderAll?.();
+              A.showTab("overview");
+              const sport=new URLSearchParams(location.search).get("sport")||(location.pathname.includes("/sports/badminton/")?"badminton":"");
+              const result={url:location.href,sport,appReady:true,
+                pageCount:document.querySelectorAll("#app-shell .page").length,
+                tabCount:document.querySelectorAll("#app-shell [data-tab]").length,
+                collapsible:!!window.TopkeyCollapsibleH141,
+                enginePath:location.pathname,
+                fixture:"UI_ONLY_NO_DATABASE_WRITES"};
+              if(result.pageCount<11||result.tabCount<11)throw new Error("Incomplete sport workspace: "+JSON.stringify(result));
+              if(sport==="badminton"&&!location.pathname.includes("/sports/badminton/index.html"))
+                throw new Error("Shared badminton launcher did not reach badminton engine: "+JSON.stringify(result));
+              return JSON.stringify(result);
             }' --pageId 1 --output-format=json | tee "artifacts/chrome-devtools/$sport-boot.json"
-            if [ "$sport" = "badminton" ]; then
-              chrome-devtools evaluate_script '() => {
-                const result={sharedEntry:true,enginePath:location.pathname};
-                if(!location.pathname.includes("/sports/badminton/index.html"))
-                  throw new Error("Badminton shared entry did not hand off to its compatible engine: "+JSON.stringify(result));
-                return JSON.stringify(result);
-              }' --pageId 1 --output-format=json | tee artifacts/chrome-devtools/badminton-handoff.json
-            fi
+            if grep -q 'Error:' "artifacts/chrome-devtools/$sport-boot.json"; then exit 1; fi
+            grep -q 'UI_ONLY_NO_DATABASE_WRITES' "artifacts/chrome-devtools/$sport-boot.json"
             for tab in "${tabs[@]}"; do
               script="async () => {
-                const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
-                const button=document.querySelector('[data-tab=\"$tab\"]');
+                const wait=ms=>new Promise(resolve=>setTimeout(resolve,120));
+                const button=document.querySelector('#app-shell [data-tab=\"$tab\"]');
                 if(!button)throw new Error('Missing tab $tab');
                 button.click();await wait(220);
                 const page=document.getElementById('page-$tab');
                 const active=[...document.querySelectorAll('#app-shell .page')].filter(item=>!item.classList.contains('hidden'));
                 if(!page||page.classList.contains('hidden')||active.length!==1)
                   throw new Error('Tab activation failed $tab: '+JSON.stringify(active.map(item=>item.id)));
-                return JSON.stringify({sport:'$sport',tab:'$tab',activePage:page.id,
+                return JSON.stringify({tab:'$tab',activePage:page.id,
                   visibleCards:page.querySelectorAll('.card,.subcard').length});
               }"
               chrome-devtools evaluate_script "$script" --pageId 1 --output-format=json | tee "artifacts/chrome-devtools/$sport-tab-$tab.json"
+              if grep -q 'Error:' "artifacts/chrome-devtools/$sport-tab-$tab.json"; then exit 1; fi
+              grep -q "page-$tab" "artifacts/chrome-devtools/$sport-tab-$tab.json"
               chrome-devtools take_screenshot 1 --filePath "artifacts/chrome-devtools/$sport-tab-$tab.png" >/dev/null
             done
             chrome-devtools evaluate_script 'async () => {
-              const wait=ms=>new Promise(resolve=>setTimeout(resolve,80));
+              const wait=ms=>new Promise(resolve=>setTimeout(resolve,120));
+              const page=document.getElementById("page-settings");
+              const fixture=document.createElement("section");
+              fixture.className="subcard";
+              fixture.innerHTML="<h3>Chrome QA accordion fixture</h3><p>Temporary UI-only content. No business data.</p>";
+              page.appendChild(fixture);
+              await wait(250);
               if(!window.TopkeyCollapsibleH141)throw new Error("Collapsible runtime not initialized");
-              const cards=[...document.querySelectorAll("#app-shell .page .subcard")].filter(card=>card.dataset.tk141Foldable==="1");
-              if(!cards.length)throw new Error("No nested function cards were made collapsible");
-              const card=cards[0],toggle=card.querySelector(":scope > .tk141-panel-toggle");
-              if(!toggle)throw new Error("Nested card toggle missing");
-              const initial=card.classList.contains("tk141-panel-folded");
+              const toggle=fixture.querySelector(":scope > .tk141-panel-toggle");
+              if(!toggle)throw new Error("Nested card did not receive a toggle");
+              const initial=fixture.classList.contains("tk141-panel-folded");
               toggle.click();await wait();
-              const changed=card.classList.contains("tk141-panel-folded")!==initial;
+              const changed=fixture.classList.contains("tk141-panel-folded")!==initial;
               if(!changed||toggle.getAttribute("aria-expanded")!==String(initial))
                 throw new Error("Nested card did not change state");
               toggle.click();await wait();
-              if(card.classList.contains("tk141-panel-folded")!==initial)
-                throw new Error("Nested card did not restore original state");
-              return JSON.stringify({nestedCards:cards.length,collapseExpand:"PASS",restored:true,
-                ariaExpanded:toggle.getAttribute("aria-expanded")});
+              const restored=fixture.classList.contains("tk141-panel-folded")===initial;
+              if(!restored)throw new Error("Nested card did not restore original state");
+              fixture.remove();
+              return JSON.stringify({collapseExpand:"PASS",restored:true,ariaExpanded:"accessible",fixture:"UI_ONLY"});
             }' --pageId 1 --output-format=json | tee "artifacts/chrome-devtools/$sport-accordion.json"
-            chrome-devtools resize_page 1 --width 390 --height 844
+            if grep -q 'Error:' "artifacts/chrome-devtools/$sport-accordion.json"; then exit 1; fi
+            grep -q 'collapseExpand' "artifacts/chrome-devtools/$sport-accordion.json"
+            chrome-devtools resize_page 1 390 844
             chrome-devtools evaluate_script '() => {
               const result={width:innerWidth,scrollWidth:document.documentElement.scrollWidth,
                 overflow:document.documentElement.scrollWidth>innerWidth+2};
               if(result.overflow)throw new Error("Mobile horizontal overflow: "+JSON.stringify(result));
               return JSON.stringify(result);
             }' --pageId 1 --output-format=json | tee "artifacts/chrome-devtools/$sport-mobile.json"
+            if grep -q 'Error:' "artifacts/chrome-devtools/$sport-mobile.json"; then exit 1; fi
             chrome-devtools take_screenshot 1 --filePath "artifacts/chrome-devtools/$sport-mobile.png" >/dev/null
-            chrome-devtools resize_page 1 --width 1440 --height 1000
+            chrome-devtools resize_page 1 1440 1000
             chrome-devtools list_console_messages 1 --output-format=json > "artifacts/chrome-devtools/$sport-console.json" || true
             chrome-devtools list_network_requests 1 --output-format=json > "artifacts/chrome-devtools/$sport-network.json" || true
           done
@@ -151,7 +177,7 @@ jobs:
         run: |
           set -euo pipefail
           base="https://topkey-activity-management.edgeone.dev"
-          paths=("/" "/sports/vnext/index.html?sport=badminton" "/sports/badminton/index.html" "/hub-dashboard-reference-h219.css")
+          paths=("/" "/sports/vnext/index.html?sport=football" "/sports/vnext/badminton.html" "/sports/badminton/index.html" "/hub-dashboard-reference-h219.css" "/executive-dashboard.js?v=h219-calendar-20261125")
           for path in "${paths[@]}"; do
             code="$(curl --silent --show-error --location --max-time 25 -o /dev/null -w '%{http_code}' "$base$path" || true)"
             echo "$code $path" | tee -a artifacts/chrome-devtools/http-status.txt
