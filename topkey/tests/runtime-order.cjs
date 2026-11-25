@@ -6,6 +6,7 @@ const tick=()=>new Promise(r=>setTimeout(r,30));
  for(const order of ['auth-first','core-first']){
   const dom=new JSDOM('<body></body>',{url:'https://test.invalid/sports/badminton/',runScripts:'outside-only'}),w=dom.window,loaded=[];
   let clock=100000;w.Date.now=()=>clock;
+  Object.defineProperty(w.document,'hidden',{configurable:true,value:false});
   w.requestIdleCallback=fn=>w.setTimeout(fn,0);
   const append=w.document.head.appendChild.bind(w.document.head);
   w.document.head.appendChild=node=>{const out=append(node);if(node.tagName==='SCRIPT'){loaded.push(node.dataset.topkeySrc);queueMicrotask(()=>node.onload?.())}return out};
