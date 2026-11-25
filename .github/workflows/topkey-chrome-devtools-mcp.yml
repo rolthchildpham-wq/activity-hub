@@ -180,6 +180,11 @@ jobs:
               A.renderAll?.();
               A.showTab("overview");
               const sport=new URLSearchParams(location.search).get("sport")||(location.pathname.includes("/sports/badminton/")?"badminton":"");
+              const gridColumns=grid=>{
+                const value=grid?getComputedStyle(grid).gridTemplateColumns:"";
+                const repeat=value.match(/^repeat\((\d+),/);
+                return {count:repeat?Number(repeat[1]):value.trim().split(/\s+/).length,value};
+              };
               const panel=document.querySelector("#h201-analytics .h201-panel");
               const heading=panel?.querySelector("h2"),sub=panel?.querySelector(".h201-sub");
               const rgb=value=>value.match(/[\d.]+/g).slice(0,3).map(Number);
@@ -195,8 +200,8 @@ jobs:
                 enginePath:location.pathname,
                 analyticsContrast:heading?Number(contrast(panelBg,headingColor).toFixed(2)):0,
                 analyticsSubContrast:sub?Number(contrast(panelBg,subColor).toFixed(2)):0,
-                kpiColumns:document.querySelector("#page-overview > .grid.g4")?
-                  getComputedStyle(document.querySelector("#page-overview > .grid.g4")).gridTemplateColumns.split(/\s+/).length:0,
+                kpiColumns:gridColumns(document.querySelector("#page-overview > .grid.g4")).count,
+                kpiGridTemplate:gridColumns(document.querySelector("#page-overview > .grid.g4")).value,
                 legacyHubLinksVisible:[...document.querySelectorAll("#app-shell .topbar .hub-link,#app-shell .topbar .hub-back")]
                   .filter(el=>getComputedStyle(el).display!=="none").length,
                 writeAttempts:window.__TOPKEY_QA_WRITE_ATTEMPTS,
@@ -259,9 +264,12 @@ jobs:
             chrome-devtools resize_page 1 390 844
             chrome-devtools evaluate_script '() => {
               const kpi=document.querySelector("#page-overview > .grid.g4");
+              const gridTemplate=kpi?getComputedStyle(kpi).gridTemplateColumns:"";
+              const repeated=gridTemplate.match(/^repeat\((\d+),/);
+              const columns=repeated?Number(repeated[1]):gridTemplate.trim().split(/\s+/).length;
               const result={width:innerWidth,scrollWidth:document.documentElement.scrollWidth,
                 overflow:document.documentElement.scrollWidth>innerWidth+2,
-                kpiColumns:kpi?getComputedStyle(kpi).gridTemplateColumns.split(/\s+/).length:0};
+                kpiColumns:columns,kpiGridTemplate:gridTemplate};
               if(result.overflow)throw new Error("Mobile horizontal overflow: "+JSON.stringify(result));
               if(innerWidth>=360&&result.kpiColumns!==2)throw new Error("Mobile KPI grid must have two columns: "+JSON.stringify(result));
               return JSON.stringify(result);
