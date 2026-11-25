@@ -123,3 +123,63 @@ body.tk-bi-hub .tk210-nav a.active {
     font-size: 9px !important;
   }
 }
+
+/* Executive sport insights now follows the same light card language as the Hub. */
+html body.tk-bi-hub .exec-insights {
+  background: #ffffff !important;
+  background-image: none !important;
+  color: #1e293b !important;
+  border: 1px solid #e5dfd4 !important;
+  box-shadow: 0 4px 16px rgb(29 45 77 / 7%) !important;
+}
+html body.tk-bi-hub .exec-insights-heading h3 {
+  color: #1d2d4d !important; -webkit-text-fill-color: #1d2d4d !important;
+}
+html body.tk-bi-hub .exec-insights-heading p,
+html body.tk-bi-hub .exec-insights-footnote {
+  color: #526174 !important; -webkit-text-fill-color: #526174 !important;
+}
+html body.tk-bi-hub .exec-eyebrow {
+  color: #a63d32 !important; -webkit-text-fill-color: #a63d32 !important;
+}
+html body.tk-bi-hub .exec-insights-tab {
+  background: #f7f5f0 !important; color: #334155 !important;
+  border-color: #e5dfd4 !important;
+}
+html body.tk-bi-hub .exec-insights-tab[aria-pressed="true"] {
+  background: #1d2d4d !important; color: #ffffff !important;
+  border-color: #1d2d4d !important; -webkit-text-fill-color: #ffffff !important;
+}
+html body.tk-bi-hub .exec-insights-stat {
+  background: #faf9f6 !important; border-color: #e5dfd4 !important;
+}
+html body.tk-bi-hub .exec-insights-stat span {
+  color: #526174 !important; -webkit-text-fill-color: #526174 !important;
+}
+html body.tk-bi-hub .exec-insights-stat strong {
+  color: #17364b !important; -webkit-text-fill-color: #17364b !important;
+}
+html body.tk-bi-hub .exec-insights-focus {
+  background: #f7f3eb !important; border-left: 3px solid #a63d32 !important;
+}
+html body.tk-bi-hub .exec-insights-focus strong {
+  color: #17364b !important; -webkit-text-fill-color: #17364b !important;
+}
+html body.tk-bi-hub .exec-insights-focus p {
+  color: #526174 !important; -webkit-text-fill-color: #526174 !important;
+}
+html body.tk-bi-hub .exec-insights-tablewrap { border-color: #e5dfd4 !important; }
+html body.tk-bi-hub .exec-insights-table th {
+  background: #edf1f5 !important; color: #334155 !important;
+  border-color: #dbe3ea !important; -webkit-text-fill-color: #334155 !important;
+}
+html body.tk-bi-hub .exec-insights-table td {
+  background: #ffffff !important; color: #334155 !important;
+  border-color: #e5dfd4 !important; -webkit-text-fill-color: #334155 !important;
+}
+@media (min-width: 821px) {
+  body.tk-bi-hub .wrap {
+    box-sizing: border-box !important;
+    padding-right: 24px !important;
+  }
+}
