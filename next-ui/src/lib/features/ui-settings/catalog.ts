@@ -1,5 +1,5 @@
 export type UiRepository = {
- id:string;name:string;repo:string;url:string;group:'components'|'motion'|'visual';fit:'svelte'|'react'|'framework'|'optional';
+ id:string;name:string;repo:string;url:string;group:'components'|'motion'|'visual'|'sports';fit:'svelte'|'react'|'framework'|'optional';
  purpose:string;adminControl:string;enabledByDefault:boolean;notes:string;
 };
 export const uiRepositories:readonly UiRepository[]=[
@@ -14,9 +14,20 @@ export const uiRepositories:readonly UiRepository[]=[
  {id:'lucide',name:'Lucide',repo:'lucide-icons/lucide',url:'https://github.com/lucide-icons/lucide',group:'visual',fit:'svelte',purpose:'Bộ icon vector đồng nhất.',adminControl:'Chuẩn icon mặc định cho giao diện mới.',enabledByDefault:true,notes:'Dùng package/framework adapter phù hợp; tránh trộn nhiều bộ icon.'},
  {id:'lucide-react',name:'Lucide React',repo:'lucide-icons/lucide',url:'https://github.com/lucide-icons/lucide',group:'visual',fit:'react',purpose:'Adapter icon dành cho React.',adminControl:'Tham khảo tên và hình tượng icon; không cài adapter React vào Svelte.',enabledByDefault:false,notes:'Repository chung Lucide; package lucide-react chỉ dành cho React.'},
  {id:'threejs',name:'Three.js',repo:'mrdoob/three.js',url:'https://github.com/mrdoob/three.js',group:'visual',fit:'optional',purpose:'Đồ họa 3D/WebGL cho trải nghiệm đặc thù.',adminControl:'Chỉ bật ở module chuyên biệt khi có yêu cầu 3D.',enabledByDefault:false,notes:'Không tải vào dashboard mặc định; có thể tăng đáng kể bundle/GPU.'}
+,
+ {id:'sports-dashboard',name:'Sports Dashboard',repo:'abdulrahman-11/Sports-Dashboard',url:'https://github.com/abdulrahman-11/Sports-Dashboard',group:'sports',fit:'react',purpose:'Tham khảo bố cục live score, danh sách giải và bảng trận.',adminControl:'Dùng làm reference layout; port sang Svelte, không sao chép runtime.',enabledByDefault:false,notes:'Kiểm tra license, cấu trúc dữ liệu và khả năng responsive trước khi tái sử dụng.'},
+ {id:'openligadb',name:'OpenLigaDB',repo:'OpenLigaDB/OpenLigaDB',url:'https://github.com/OpenLigaDB/OpenLigaDB',group:'sports',fit:'framework',purpose:'Tham khảo API và mô hình dữ liệu lịch, bảng đấu, kết quả.',adminControl:'Chỉ tích hợp dữ liệu khi có nguồn/giấy phép và adapter được duyệt.',enabledByDefault:false,notes:'Không thay thế Firebase TOPKEY; chỉ dùng làm tham khảo hoặc connector tùy chọn.'},
+ {id:'scoreboard-topic',name:'GitHub Scoreboard Topic',repo:'topics/scoreboard',url:'https://github.com/topics/scoreboard',group:'sports',fit:'framework',purpose:'Tìm mẫu bảng điểm điện tử và hiển thị set/hiệp.',adminControl:'Admin chọn repo cụ thể sau khi đánh giá; topic không phải package.',enabledByDefault:false,notes:'Danh mục cộng đồng, chất lượng và license khác nhau theo từng repository.'},
+ {id:'sports-live-score-topic',name:'Sports Live Score Dashboard',repo:'topics/sports-live-score-dashboard',url:'https://github.com/topics/sports-live-score-dashboard',group:'sports',fit:'framework',purpose:'Tham khảo bố cục 3 cột live score, match center và standings.',adminControl:'Dùng làm nguồn thiết kế tham khảo, không tự cài dependency.',enabledByDefault:false,notes:'Topic cộng đồng; cần xác minh repo và quyền sử dụng từng mẫu.'},
+ {id:'fitness-dashboard-topic',name:'Fitness Dashboard',repo:'topics/fitness-dashboard',url:'https://github.com/topics/fitness-dashboard',group:'sports',fit:'framework',purpose:'Tham khảo dashboard vận động và hoạt động theo thời gian.',adminControl:'Chỉ hiển thị telemetry khi nguồn thực tế có dữ liệu tương ứng.',enabledByDefault:false,notes:'Không tự suy diễn nhịp tim, tốc độ, calories hay quãng đường.'},
+ {id:'strava-dashboard-topic',name:'Strava Dashboard',repo:'topics/strava-dashboard',url:'https://github.com/topics/strava-dashboard',group:'sports',fit:'framework',purpose:'Tham khảo bản đồ hoạt động và thống kê luyện tập.',adminControl:'Tích hợp chỉ khi có kết nối tài khoản và consent hợp lệ.',enabledByDefault:false,notes:'Không kết nối Strava hoặc gửi dữ liệu người dùng nếu chưa được cấp quyền.'},
+ {id:'sports-analytics-topic',name:'Sports Analytics',repo:'topics/sports-analytics',url:'https://github.com/topics/sports-analytics',group:'sports',fit:'framework',purpose:'Tham khảo heatmap, radar, so sánh đội/VĐV và phân tích trận.',adminControl:'Chọn biểu đồ dựa trên trường dữ liệu thật trong schema TOPKEY.',enabledByDefault:false,notes:'Mỗi môn có luật và chỉ số khác nhau; không dùng chung công thức xếp hạng.'},
+ {id:'brackets-viewer',name:'Brackets Viewer',repo:'Drarig29/brackets-viewer.js',url:'https://github.com/Drarig29/brackets-viewer.js',group:'sports',fit:'framework',purpose:'Thư viện hiển thị nhánh đấu loại trực tiếp và vòng bảng.',adminControl:'Đánh giá adapter Svelte và mapping schema trước khi tích hợp.',enabledByDefault:false,notes:'Hiện dùng bracket viewer nội bộ; không thay dữ liệu hay thuật toán giải.'},
+ {id:'bracketry',name:'Bracketry',repo:'sbachinin/bracketry',url:'https://github.com/sbachinin/bracketry',group:'sports',fit:'framework',purpose:'Tham khảo bracket gọn nhẹ, cuộn ngang và đánh dấu đường thắng.',adminControl:'So sánh với viewer nội bộ trước khi quyết định package.',enabledByDefault:false,notes:'Không tải song song hai thư viện bracket vào bundle production.'}
 ] as const;
 export const uiRepositoryGroups=[
  {id:'components',label:'Component & UI kits'},
  {id:'motion',label:'Chuyển động & tương tác'},
- {id:'visual',label:'Icon & đồ họa trực quan'}
+ {id:'visual',label:'Icon & đồ họa trực quan'},
+ {id:'sports',label:'Sports UI · Live Score · Analytics · Bracket'}
 ] as const;
