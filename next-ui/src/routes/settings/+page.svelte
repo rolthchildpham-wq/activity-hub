@@ -10,8 +10,8 @@
  let enabled=$state<Record<string,boolean>>(Object.fromEntries(uiRepositories.map(item=>[item.id,item.enabledByDefault])));
  let activeGroup=$state('all');
  const themes={ivory:{bg:'#f4f5f2',surface:'#ffffff',ink:'#183b38',accent:'#b85c46',nav:'#183b38'},slate:{bg:'#edf1f5',surface:'#ffffff',ink:'#24364b',accent:'#3b72a4',nav:'#24364b'},midnight:{bg:'#111b24',surface:'#1b2935',ink:'#edf4f5',accent:'#e28a69',nav:'#0b141c'}};
- $: selectedTheme=themes[theme];
- $: visibleRepositories=activeGroup==='all'?uiRepositories:uiRepositories.filter(item=>item.group===activeGroup);
+ let selectedTheme=$derived(themes[theme]);
+ let visibleRepositories=$derived(activeGroup==='all'?uiRepositories:uiRepositories.filter(item=>item.group===activeGroup));
  onMount(()=>{
   let alive=true;let unsubscribe=()=>{};
   try{unsubscribe=onAuthStateChanged(client().auth,async current=>{
