@@ -6,7 +6,7 @@
     : new URLSearchParams(location.search).get('sport') || 'football';
   const sports = [
     { key: 'football', icon: '⚽', name: 'Bóng đá', href: '/sports/vnext/index.html?sport=football' },
-    { key: 'badminton', icon: '🏸', name: 'Cầu lông', href: '/sports/badminton/index.html' },
+    { key: 'badminton', icon: '🏸', name: 'Cầu lông', href: '/sports/vnext/badminton.html' },
     { key: 'volleyball', icon: '🏐', name: 'Bóng chuyền', href: '/sports/vnext/index.html?sport=volleyball' },
     { key: 'running', icon: '🏃', name: 'Chạy bộ', href: '/sports/vnext/index.html?sport=running' },
     { key: 'handmade', icon: '🧶', name: 'DIY / Handmade', href: '/sports/vnext/index.html?sport=handmade' },
