@@ -109,6 +109,26 @@ export function filterScheduleMatches(
    ||(a[1].time??'').localeCompare(b[1].time??''));
 }
 
+export function sortDashboardMatches(matches:Record<string,Match>|null|undefined):Array<[string,Match]> {
+ const entries=Object.entries(matches??{}).filter((entry):entry is [string,Match]=>!!entry[1]&&typeof entry[1]==='object');
+ const priority=(m:Match)=>{
+  const status=(m.status??'SCHEDULED').toUpperCase();
+  if(status==='LIVE'||status==='IN_PROGRESS')return 0;
+  if(status==='SCHEDULED'||status==='PENDING')return 1;
+  if(completed.has(status))return 3;
+  return 2;
+ };
+ return entries.sort(([idA,a],[idB,b])=>{
+  const rank=priority(a)-priority(b);
+  if(rank)return rank;
+  const dateA=normalizeScheduleDate(a.date)||'9999-99-99';
+  const dateB=normalizeScheduleDate(b.date)||'9999-99-99';
+  const chronological=dateA.localeCompare(dateB)||(a.time??'').localeCompare(b.time??'');
+  if(priority(a)===3)return -chronological;
+  return chronological||idA.localeCompare(idB);
+ });
+}
+
 // SvelteKit is mounted at /next/ in the same TOPKEY host.
 export function legacyHref(s:SportKey,tid?:string):string {
  const sport=sports.find(x=>x.key===s);
