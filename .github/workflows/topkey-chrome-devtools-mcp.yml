@@ -125,7 +125,7 @@ jobs:
               const initial=card.classList.contains("tk141-panel-folded");
               toggle.click();await wait();
               const changed=card.classList.contains("tk141-panel-folded")!==initial;
-              if(!changed||toggle.getAttribute("aria-expanded")===String(initial))
+              if(!changed||toggle.getAttribute("aria-expanded")!==String(initial))
                 throw new Error("Nested card did not change state");
               toggle.click();await wait();
               if(card.classList.contains("tk141-panel-folded")!==initial)
