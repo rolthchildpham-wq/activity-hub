@@ -13,7 +13,7 @@ export type SportKey = (typeof sports)[number]['key'];
 export type Match = {
  id?:string;code?:string;teamAId?:string;teamBId?:string;
  status?:string;stage?:string;category?:string;group?:string;groupId?:string;
- groupName?:string;date?:string;time?:string;scoreA?:number;scoreB?:number;
+ groupName?:string;date?:string;time?:string;courtName?:string;courtId?:string;court?:string;scoreA?:number;scoreB?:number;
 };
 export type Team = {id?:string;name?:string;checkedIn?:boolean};
 export type ActiveMatch = {matchId?:string;started?:boolean;finished?:boolean};
