@@ -3,7 +3,7 @@ name: TOPKEY Chrome DevTools MCP full UI verification
 on:
   workflow_dispatch:
   push:
-    branches: [rebuild/sports-hub-ecc-unified]
+    branches: [rebuild/sports-hub-ecc-unified, fix/sports-hub-route-integrity]
   workflow_run:
     workflows: ["TOPKEY EdgeOne Git-provider readiness"]
     types: [completed]
