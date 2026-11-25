@@ -195,9 +195,15 @@ jobs:
                 enginePath:location.pathname,
                 analyticsContrast:heading?Number(contrast(panelBg,headingColor).toFixed(2)):0,
                 analyticsSubContrast:sub?Number(contrast(panelBg,subColor).toFixed(2)):0,
+                kpiColumns:document.querySelector("#page-overview > .grid.g4:first-child")?
+                  getComputedStyle(document.querySelector("#page-overview > .grid.g4:first-child")).gridTemplateColumns.split(/\\s+/).length:0,
+                legacyHubLinksVisible:[...document.querySelectorAll("#app-shell .topbar .hub-link,#app-shell .topbar .hub-back")]
+                  .filter(el=>getComputedStyle(el).display!=="none").length,
                 writeAttempts:window.__TOPKEY_QA_WRITE_ATTEMPTS,
                 fixture:"UI_ONLY_NO_DATABASE_WRITES"};
               if(result.pageCount<11||result.tabCount<11)throw new Error("Incomplete sport workspace: "+JSON.stringify(result));
+              if(innerWidth>=1200&&result.kpiColumns!==4)throw new Error("Desktop KPI grid must have four columns: "+JSON.stringify(result));
+              if(result.legacyHubLinksVisible!==0)throw new Error("Duplicate legacy Hub navigation is visible: "+JSON.stringify(result));
               if(!panel||result.analyticsContrast<4.5||result.analyticsSubContrast<4.5)
                 throw new Error("Workspace contrast failed: "+JSON.stringify(result));
               if(result.writeAttempts!==0)throw new Error("UI fixture attempted Firebase writes: "+JSON.stringify(result));
@@ -252,9 +258,12 @@ jobs:
             grep -q 'collapseExpand' "artifacts/chrome-devtools/$sport-accordion.json"
             chrome-devtools resize_page 1 390 844
             chrome-devtools evaluate_script '() => {
+              const kpi=document.querySelector("#page-overview > .grid.g4:first-child");
               const result={width:innerWidth,scrollWidth:document.documentElement.scrollWidth,
-                overflow:document.documentElement.scrollWidth>innerWidth+2};
+                overflow:document.documentElement.scrollWidth>innerWidth+2,
+                kpiColumns:kpi?getComputedStyle(kpi).gridTemplateColumns.split(/\\s+/).length:0};
               if(result.overflow)throw new Error("Mobile horizontal overflow: "+JSON.stringify(result));
+              if(innerWidth>=360&&result.kpiColumns!==2)throw new Error("Mobile KPI grid must have two columns: "+JSON.stringify(result));
               return JSON.stringify(result);
             }' --pageId 1 --output-format=json | tee "artifacts/chrome-devtools/$sport-mobile.json"
             if grep -q 'Error:' "artifacts/chrome-devtools/$sport-mobile.json"; then exit 1; fi
