@@ -1,0 +1,1 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {matchStatusLabel} from '../src/lib/entities/match-center.ts';test('final live center gate: status label is stable',()=>assert.equal(matchStatusLabel('LIVE'),'ĐANG LIVE'));
