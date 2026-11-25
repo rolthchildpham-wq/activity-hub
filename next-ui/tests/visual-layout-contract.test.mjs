@@ -17,17 +17,17 @@ function contrast(fg,bg){
 }
 test('known workspace text/background color pairs meet WCAG AA normal text 4.5:1',()=>{
  const pairs=[
-  ['sidebar items','#edfdf7','#083a35'],
-  ['breadcrumb','#476773','#ffffff'],
-  ['outline button','#075f55','#ffffff'],
-  ['mobile nav','#456a70','#ffffff'],
-  ['primary button','#ffffff','#08776c'],
+  ['sidebar items','#f7f4ef','#172b4d'],
+  ['breadcrumb','#5c6678','#ffffff'],
+  ['outline button','#263f63','#ffffff'],
+  ['mobile nav','#5c6678','#ffffff'],
+  ['primary button','#ffffff','#172b4d'],
   ['live badge','#9d3024','#ffebe6'],
-  ['muted copy','#486773','#ffffff']
+  ['muted copy','#5c6678','#ffffff']
  ];
  for(const [name,fg,bg] of pairs)assert.ok(contrast(fg,bg)>=4.5,
   name+' '+contrast(fg,bg).toFixed(2)+':1 fails AA');
- assert.match(workspace,/--tk-teal:#08776c/);
+ assert.match(workspace,/--tk-teal:#263F63/);
  assert.match(workspace,/\.workspace-sidebar \.workspace-nav a/);
 });
 test('Home and Workspace navigation are distinct with accessible active-state',()=>{
