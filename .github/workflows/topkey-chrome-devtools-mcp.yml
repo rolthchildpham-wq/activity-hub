@@ -72,7 +72,13 @@ jobs:
             const lum=value=>{const channels=rgb(value).map(v=>{v/=255;return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*channels[0]+.7152*channels[1]+.0722*channels[2]};
             const cardStyle=getComputedStyle(cards[0]),paragraphStyle=getComputedStyle(cards[0].querySelector("p"));
             const contrast=(Math.max(lum(cardStyle.backgroundColor),lum(paragraphStyle.color))+.05)/(Math.min(lum(cardStyle.backgroundColor),lum(paragraphStyle.color))+.05);
+            const eccSheet=[...document.styleSheets].find(sheet=>sheet.href?.includes("hub-ecc-design-system.css"));
+            const eccRules=eccSheet?[...eccSheet.cssRules].filter(rule=>rule.selectorText?.includes("#topkey-sports")&&rule.selectorText.includes(".sport")).map(rule=>({selector:rule.selectorText,bg:rule.style.backgroundColor,priority:rule.style.getPropertyPriority("background-color")})):[];
             result.cardBackground=cardStyle.backgroundColor;result.cardText=paragraphStyle.color;result.cardContrast=Number(contrast.toFixed(2));
+            result.bodyClass=document.body.className;result.catalogClass=document.querySelector("#topkey-sports").className;
+            result.selectorMatches=document.querySelectorAll("html body.tk-bi-hub #topkey-sports.cards a.sport").length;
+            result.cardInlineStyle=cards[0].getAttribute("style");result.cardBackgroundImage=cardStyle.backgroundImage;
+            result.eccRuleCount=eccSheet?.cssRules?.length||0;result.eccRules=eccRules;
             if(cards.length<8||!result.badmintonCard||result.overflow||!result.h219||!result.eccDesign||contrast<4.5)
               throw new Error("ECC Hub visual contract failed: "+JSON.stringify(result));
             return JSON.stringify(result);
