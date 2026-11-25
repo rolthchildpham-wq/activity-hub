@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { sports, summarize, groupPhases, activeLiveMatches, isTestLab, legacyHref, normalizeScheduleDate, filterScheduleMatches } from '../src/lib/domain.ts';
+import { sports, summarize, groupPhases, activeLiveMatches, isTestLab, legacyHref, normalizeScheduleDate, filterScheduleMatches, sortDashboardMatches } from '../src/lib/domain.ts';
 
 const fixture={
  teams:{a:{name:'A',checkedIn:true},b:{name:'B'},c:{name:'C',checkedIn:true}},
@@ -82,4 +82,21 @@ test('schedule filters treat missing status as scheduled and ignore undated matc
  const matches={a:{date:'2026-11-25'},b:{status:'FINISHED'},c:null};
  assert.deepEqual(filterScheduleMatches(matches,{}, {status:'SCHEDULED'}).map(([id])=>id),['a']);
  assert.deepEqual(filterScheduleMatches(matches,{}, {from:'2026-11-25'}).map(([id])=>id),['a']);
+});
+
+test('dashboard preview prioritizes live, upcoming, then most recently completed matches',()=>{
+ const matches={
+  finishedOld:{status:'FINISHED',date:'2026-11-10',time:'09:00'},
+  scheduledLater:{status:'SCHEDULED',date:'2026-11-28',time:'10:00'},
+  live:{status:'LIVE',date:'2026-11-24',time:'12:00'},
+  scheduledSoon:{status:'PENDING',date:'2026-11-26',time:'08:00'},
+  finishedRecent:{status:'FINISHED',date:'2026-11-25',time:'11:00'},
+  unknown:{status:'CANCELLED',date:'2026-11-25',time:'08:00'}
+ };
+ assert.deepEqual(sortDashboardMatches(matches).map(([id])=>id),[
+  'live','scheduledSoon','scheduledLater','unknown','finishedRecent','finishedOld'
+ ]);
+});
+test('dashboard preview safely ignores null Firebase match records',()=>{
+ assert.deepEqual(sortDashboardMatches({a:null,b:{status:'LIVE'}}).map(([id])=>id),['b']);
 });
