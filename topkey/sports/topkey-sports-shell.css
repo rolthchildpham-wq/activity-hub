@@ -81,3 +81,12 @@
   .tk-sports-shell select { width: 100%; min-width: 0; grid-column: 2; }
   .tk-sports-shell__current { display: none; }
 }
+
+#app-shell:not(.hidden) .tk-smooth-intro h2 {
+  color: #17364b !important; opacity: 1 !important;
+  -webkit-text-fill-color: #17364b !important;
+}
+#app-shell:not(.hidden) .tk-smooth-intro p {
+  color: #526174 !important; opacity: 1 !important;
+  -webkit-text-fill-color: #526174 !important;
+}
