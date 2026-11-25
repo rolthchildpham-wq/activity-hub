@@ -15,7 +15,7 @@ const bb=JSON.parse(fs.readFileSync(root+'/badminton/build.json','utf8'));
 assert.ok(hub.includes('release-runtime.js?v=h218-sports-redesign-20261124'),'Hub must load H218 runtime cache key');
 assert.ok(hub.includes('sports/vnext/index.html?sport=football&amp;v=h218-sports-redesign-20261124'),'Hub sport launch tickets must match H218 runtime');
 assert.ok(hub.includes('sports/vnext/badminton.html?sport=badminton&amp;__topkey_reload=h219-liberty-dashboard-20261125'),'Badminton must enter through the shared Sports Hub launcher');
-assert.ok(fs.readFileSync('topkey/sports/vnext/index.html','utf8').includes('tk219-badminton-unified-route'),'Shared launcher must preserve the dedicated badminton engine handoff');
+assert.ok(fs.readFileSync('topkey/sports/vnext/badminton.html','utf8').includes('../badminton/index.html'),'Shared VNext-folder launcher must preserve the dedicated badminton engine handoff');
 assert.ok(runtime.includes('h218-sports-redesign-20261124'),'release runtime must publish H218 cache tag');
 assert.equal(rootBuild.cacheTag,release.cacheTag);
 assert.ok(vhtml.includes('release-runtime.js?v=h218-sports-redesign-20261124'),'VNext must load H218 runtime cache key');
