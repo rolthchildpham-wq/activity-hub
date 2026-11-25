@@ -1,0 +1,2 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {bracketMatchView} from '../src/lib/entities/bracket-view.ts';
+test('bracket regression: a winner requires completed status and unequal numeric scores',()=>{assert.equal(bracketMatchView('m',{teamAId:'a',teamBId:'b',status:'FINISHED',scoreA:2,scoreB:1},{}).winnerId,'a');assert.equal(bracketMatchView('m',{teamAId:'a',teamBId:'b',status:'LIVE',scoreA:2,scoreB:1},{}).winnerId,null)});

@@ -1,0 +1,1 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {bracketStatusLabel} from '../src/lib/entities/bracket-view.ts';test('final bracket gate: status labels are stable',()=>assert.equal(bracketStatusLabel('FINISHED'),'HOÀN TẤT'));
