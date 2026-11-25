@@ -37,6 +37,7 @@ assert.ok(badmintonPage.includes('../topkey-sports-shell.js'), 'Badminton must l
 for (const key of ['football', 'badminton', 'volleyball', 'running', 'handmade', 'shuttle', 'cooking']) {
   assert.ok(sharedShell.includes("key: '" + key + "'"), 'Shared shell missing ' + key);
 }
+assert.ok(sharedShell.includes("href: '/sports/vnext/badminton.html'"), 'Shared navigation must route badminton through the common namespace');
 assert.ok(sharedShell.includes("setAttribute('aria-label', 'Điều hướng các bộ môn TOPKEY')"));
 assert.ok(sharedShell.includes("setAttribute('aria-label', 'Chuyển bộ môn')"));
 assert.ok(sharedShell.includes("location.hash.startsWith('#spectator')"));
