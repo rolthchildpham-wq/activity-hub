@@ -238,7 +238,11 @@ jobs:
                 A.state.courts={qaCourt:{id:"qaCourt",name:"Sân 1"}};
                 A.state.matches={qaMatch:{id:"qaMatch",code:"QA-01",teamAId:"qaA",teamBId:"qaB",category:"NAM_6V6",stage:"GROUP",groupName:"A",date:"2026-11-25",time:"19:30",courtId:"qaCourt",status:"LIVE",sets:[]}};
                 A.state.activeMatches={qaCourt:{matchId:"qaMatch",started:true,finished:false,sets:[{a:12,b:10}],setIndex:0}};
-                if(!window.TopkeyDashboardH227)throw new Error("H227 dashboard runtime unavailable");
+                for(let attempt=0;attempt<50&&!window.TopkeyDashboardH227;attempt++)await new Promise(resolve=>setTimeout(resolve,100));
+                if(!window.TopkeyDashboardH227)throw new Error("H227 dashboard runtime unavailable after 5s: "+JSON.stringify({
+                  script:[...document.scripts].filter(x=>x.src.includes("dashboard-live-h227")).map(x=>({src:x.src,readyState:x.readyState})),
+                  bootError:window.__TOPKEY_BOOT_ERROR||null,app:!!window.Topkey?.App,renderBranch:typeof window.Topkey?.App?.renderBranch
+                }));
                 window.TopkeyDashboardH227.render();
                 const board=document.querySelector("#tk227-board"),cards=board?.querySelectorAll(".tk227-match")||[];
                 const text=board?.textContent||"",adminCard=document.querySelector("#page-overview>.grid.g2>.card");
