@@ -1,5 +1,14 @@
 name: TOPKEY Next UI validation (no deployment)
 on:
+  push:
+    branches:
+      - main
+      - rebuild/sports-hub-ecc-unified
+    paths:
+      - 'next-ui/**'
+      - '.github/workflows/next-ui-validation.yml'
+      - 'scripts/stage-edgeone-next.mjs'
+      - 'scripts/tests/stage-edgeone-next.test.mjs'
   pull_request:
     paths:
       - 'scripts/stage-edgeone-next.mjs'
@@ -9,7 +18,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: next-ui-${{ github.event.pull_request.number }}
+  group: next-ui-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
