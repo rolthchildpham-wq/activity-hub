@@ -14,7 +14,7 @@ assert.ok(styles.includes("@media(max-width:760px)"));
 new vm.Script(publicJs);
 function element(){return {classList:{add(){},remove(){},toggle(){}},textContent:"",children:[],replaceChildren(){this.children=[]},appendChild(x){this.children.push(x)},append(...xs){this.children.push(...xs)},remove(){},after(){},querySelector(){return null},closest(){return null},setAttribute(){}}}
 const nodes={"public-spectator":element(),"spectator-schedule":element(),"spectator-live":element(),"spectator-title":element(),"login-screen":element(),"app-shell":element()};
-nodes["public-spectator"].querySelector=()=>({after(){}});
+nodes["public-spectator"].querySelector=selector=>selector===".split"?{after(){}}:null;
 const callbacks={};
 const dataset={
  matches:{m1:{id:"m1",code:"M001",teamAId:"a",teamBId:"b",status:"SCHEDULED",date:"2026-11-21",time:"17:15"}},
