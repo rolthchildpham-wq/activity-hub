@@ -14,7 +14,8 @@
     { key: 'cooking', icon: '👨‍🍳', name: 'Nấu ăn', href: '/sports/vnext/index.html?sport=cooking' }
   ];
 
-  if (location.hash.startsWith('#spectator') || location.hash.startsWith('#register')) return;
+  // Public routes are standalone read-only/judge experiences; never inject the admin sport switcher.
+  if (['#spectator', '#register', '#judge'].some(route => location.hash.startsWith(route))) return;
   if (document.getElementById('topkey-sports-shell')) return;
 
   const shell = document.createElement('nav');
