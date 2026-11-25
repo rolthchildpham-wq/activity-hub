@@ -5,6 +5,7 @@ const vnext=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
 const css=fs.readFileSync('topkey/hub-dashboard-reference-h219.css','utf8');
 const dash=fs.readFileSync('topkey/executive-dashboard.js','utf8');
 assert.ok(hub.includes('hub-dashboard-reference-h219.css?v=h219-liberty-dashboard-20261125'),'Hub must load H219 visual system');
+assert.ok(hub.includes('executive-dashboard.js?v=h219-calendar-20261125'),'Hub must bypass the stale dashboard script cache');
 assert.ok(hub.includes('sports/vnext/index.html?sport=badminton&amp;v=h219-liberty-dashboard-20261125'),'Badminton must use the shared sport launcher');
 assert.ok(!hub.includes('class="sport badminton"'),'Badminton must not be visually detached from the sport catalog');
 assert.ok(hub.includes("const base='./sports/vnext/index.html'")&&hub.includes("sport});"),'Test Lab must use the shared sport launcher for every sport');
