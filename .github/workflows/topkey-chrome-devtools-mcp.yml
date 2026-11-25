@@ -2,6 +2,8 @@ name: TOPKEY Chrome DevTools MCP full UI verification
 
 on:
   workflow_dispatch:
+  push:
+    branches: [rebuild/sports-hub-ecc-unified]
   workflow_run:
     workflows: ["TOPKEY EdgeOne Git-provider readiness"]
     types: [completed]
@@ -16,7 +18,7 @@ concurrency:
 
 jobs:
   chrome-devtools-full-ui:
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.workflow_run.conclusion == 'success'
     name: Chrome DevTools MCP – Hub and 7 sports
     runs-on: ubuntu-latest
     timeout-minutes: 40
@@ -31,7 +33,7 @@ jobs:
 
       - name: Install official Chrome DevTools MCP CLI
         run: |
-          npm install --global chrome-devtools-mcp@latest
+          npm install --global chrome-devtools-mcp@1.13.0
           chrome-devtools --help
 
       - name: Start isolated Chrome
@@ -41,11 +43,21 @@ jobs:
           chrome-devtools status
           mkdir -p artifacts/chrome-devtools
 
+      - name: Serve checked-out branch locally for real browser verification
+        run: |
+          set -euo pipefail
+          python3 topkey/tests/ui-fixture-server.py topkey > /tmp/topkey-http.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl --silent --fail http://127.0.0.1:4173/ >/dev/null; then break; fi
+            sleep 1
+          done
+          curl --silent --show-error --fail http://127.0.0.1:4173/ >/dev/null
+
       - name: Verify Hub desktop and mobile layout
         shell: bash
         run: |
           set -euo pipefail
-          base="https://topkey-activity-management.edgeone.dev"
+          base="http://127.0.0.1:4173"
           chrome-devtools navigate_page 1 --url "$base/" | tee artifacts/chrome-devtools/hub-navigation.txt
           sleep 2
           chrome-devtools evaluate_script '() => {
@@ -54,11 +66,32 @@ jobs:
               badmintonCard:cards.some(card=>card.textContent.includes("Cầu lông")),
               navLinks:document.querySelectorAll(".tk210-nav a").length,
               overflow:document.documentElement.scrollWidth>innerWidth+2,
-              h219:[...document.styleSheets].some(sheet=>sheet.href?.includes("hub-dashboard-reference-h219.css"))};
-            if(cards.length<8||!result.badmintonCard||result.overflow||!result.h219)
-              throw new Error("H219 Hub contract failed: "+JSON.stringify(result));
+              h219:[...document.styleSheets].some(sheet=>sheet.href?.includes("hub-dashboard-reference-h219.css")),
+              eccDesign:[...document.styleSheets].some(sheet=>sheet.href?.includes("hub-ecc-design-system.css"))};
+            const rgb=value=>value.match(/[\d.]+/g).slice(0,3).map(Number);
+            const lum=value=>{const channels=rgb(value).map(v=>{v/=255;return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*channels[0]+.7152*channels[1]+.0722*channels[2]};
+            const cardStyle=getComputedStyle(cards[0]),paragraphStyle=getComputedStyle(cards[0].querySelector("p"));
+            const contrast=(Math.max(lum(cardStyle.backgroundColor),lum(paragraphStyle.color))+.05)/(Math.min(lum(cardStyle.backgroundColor),lum(paragraphStyle.color))+.05);
+            const eccSheet=[...document.styleSheets].find(sheet=>sheet.href?.includes("hub-ecc-design-system.css"));
+            const eccRules=eccSheet?[...eccSheet.cssRules].filter(rule=>rule.selectorText?.includes("#topkey-sports")&&rule.selectorText.includes(".sport")).map(rule=>({selector:rule.selectorText,bg:rule.style.backgroundColor,priority:rule.style.getPropertyPriority("background-color")})):[];
+            const lastCardRight=cards[cards.length-1].getBoundingClientRect().right;
+            result.cardBackground=cardStyle.backgroundColor;result.cardText=paragraphStyle.color;result.cardContrast=Number(contrast.toFixed(2));
+            const wrap=document.querySelector("body.tk-bi-hub .wrap"),wrapRect=wrap.getBoundingClientRect();
+            const catalogRect=document.querySelector("#topkey-sports").getBoundingClientRect();
+            result.lastCardRight=Math.round(lastCardRight);result.viewportWidth=innerWidth;
+            result.wrapWidth=getComputedStyle(wrap).width;result.wrapMarginLeft=getComputedStyle(wrap).marginLeft;
+            result.wrapPaddingRight=getComputedStyle(wrap).paddingRight;result.wrapRight=Math.round(wrapRect.right);
+            result.catalogRight=Math.round(catalogRect.right);result.desktopBreakpoint=matchMedia("(min-width: 821px)").matches;
+            result.bodyClass=document.body.className;result.catalogClass=document.querySelector("#topkey-sports").className;
+            result.selectorMatches=document.querySelectorAll("html body.tk-bi-hub #topkey-sports.cards a.sport").length;
+            result.cardInlineStyle=cards[0].getAttribute("style");result.cardBackgroundImage=cardStyle.backgroundImage;
+            result.eccRuleCount=eccSheet?.cssRules?.length||0;result.eccRules=eccRules;
+            if(cards.length<8||!result.badmintonCard||result.overflow||!result.h219||!result.eccDesign||
+              contrast<4.5||lastCardRight>innerWidth-8)
+              throw new Error("ECC Hub visual contract failed: "+JSON.stringify(result));
             return JSON.stringify(result);
           }' --pageId 1 --output-format=json | tee artifacts/chrome-devtools/hub-desktop.json
+          if grep -q 'Error:' artifacts/chrome-devtools/hub-desktop.json; then exit 1; fi
           chrome-devtools evaluate_script 'async () => {
             const wait=ms=>new Promise(resolve=>setTimeout(resolve,120));
             document.querySelector("#tk28-language-options [data-lang=\"vi\"]")?.click();
@@ -78,10 +111,19 @@ jobs:
               champions:[{name:"Đội A",sport:"Cầu lông",category:"Đôi nam",tournament:"Giải đôi TOPKEY",year:2026}],
               events:[{sport:"Cầu lông",icon:"🏸",title:"Giải đôi TOPKEY",year:2026,income:12000000,expense:8000000,balance:4000000,pending:1}]};
             dashboard.render(data,{orgName:"TOPKEY · Chrome UI fixture",snapshotAt:Date.now()},"snapshot");
+            for(let attempt=0;attempt<20&&!document.querySelector(".exec-insights-focus");attempt++)await wait(100);
+            const focus=document.querySelector(".exec-insights-focus"),focusText=focus?.querySelector("p");
+            const focusBg=focus?getComputedStyle(focus).backgroundColor:"";
+            const focusColor=focusText?getComputedStyle(focusText).color:"";
+            const rgb=value=>{const match=String(value||"").match(/[0-9.]+/g);return match&&match.length>=3?match.slice(0,3).map(Number):null};
+            const lum=value=>{const channels=rgb(value);if(!channels)return 0;const linear=channels.map(v=>{v/=255;return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*linear[0]+.7152*linear[1]+.0722*linear[2]};
+            const insightContrast=focusText?(Math.max(lum(focusBg),lum(focusColor))+.05)/(Math.min(lum(focusBg),lum(focusColor))+.05):0;
             const result={languageModalClosed:document.querySelector("#tk28-language-modal")?.classList.contains("tk28-hidden")!==false,
               calendar:!!document.querySelector(".exec-calendar-card"),chartBars:document.querySelectorAll(".exec-bar-row").length,
-              kpiCards:document.querySelectorAll(".exec-kpi").length,calendarCells:document.querySelectorAll(".exec-calendar-day:not(.is-empty)").length};
-            if(!result.calendar||result.chartBars<2||result.kpiCards<4)throw new Error("Hub dashboard fixture incomplete: "+JSON.stringify(result));
+              kpiCards:document.querySelectorAll(".exec-kpi").length,calendarCells:document.querySelectorAll(".exec-calendar-day:not(.is-empty)").length,
+              insightContrast:Number(insightContrast.toFixed(2)),insightBackground:focusBg,insightText:focusColor};
+            if(!result.calendar||result.chartBars<2||result.kpiCards<4||!focus||insightContrast<4.5)
+              throw new Error("Hub dashboard fixture/contrast incomplete: "+JSON.stringify(result));
             return JSON.stringify(result);
           }' --pageId 1 --output-format=json | tee artifacts/chrome-devtools/hub-dashboard-fixture.json
           if grep -q 'Error:' artifacts/chrome-devtools/hub-dashboard-fixture.json; then exit 1; fi
@@ -94,7 +136,11 @@ jobs:
             const result={width:innerWidth,scrollWidth:document.documentElement.scrollWidth,
               overflow:document.documentElement.scrollWidth>innerWidth+2,
               navPosition:getComputedStyle(document.querySelector(".tk210-nav")).position};
-            if(result.overflow)throw new Error("Hub mobile overflow: "+JSON.stringify(result));
+            const navRect=document.querySelector(".tk210-nav").getBoundingClientRect();
+            const heroRect=document.querySelector(".tk-bi-hero").getBoundingClientRect();
+            result.navTop=Math.round(navRect.top);result.heroBottom=Math.round(heroRect.bottom);
+            if(result.overflow||result.navPosition!=="fixed"||navRect.top<heroRect.bottom)
+              throw new Error("Hub mobile navigation/layout failed: "+JSON.stringify(result));
             return JSON.stringify(result);
           }' --pageId 1 --output-format=json | tee artifacts/chrome-devtools/hub-mobile.json
           chrome-devtools take_screenshot 1 --filePath artifacts/chrome-devtools/hub-mobile.png
@@ -104,7 +150,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          base="https://topkey-activity-management.edgeone.dev"
+          base="http://127.0.0.1:4173"
           sports=(football volleyball running handmade shuttle cooking badminton)
           tabs=(overview control teams schedule umpire live finance announcements audit health settings)
           for sport in "${sports[@]}"; do
@@ -116,15 +162,34 @@ jobs:
             echo "===== $sport =====" | tee -a artifacts/chrome-devtools/sport-matrix.txt
             chrome-devtools navigate_page 1 --url "$base$route" | tee "artifacts/chrome-devtools/$sport-navigation.txt"
             sleep 2
-            chrome-devtools evaluate_script '() => {
-              const T=window.Topkey,A=T?.App;
-              if(!A||!T?.Auth)throw new Error("Application modules not ready");
-              // UI-only fixture: grant client-side tab visibility in this isolated browser.
-              // No form submission, Firebase write, role persistence or real account mutation.
+            chrome-devtools evaluate_script 'async () => {
+              const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+              const T=window.Topkey;
+              if(!window.TopkeyPlatform)throw new Error("Shared platform bootstrap unavailable");
+              // Isolated UI fixture only: explicitly release the core-loader gate.
+              // No Firebase sign-in, role write, form submission or business-data mutation.
+              window.__TOPKEY_ADMIN_READY=true;
+              window.dispatchEvent(new Event("topkey:admin-ready"));
+              let A=null;
+              for(let attempt=0;attempt<80;attempt++){
+                A=window.Topkey?.App||null;
+                if(A&&window.Topkey?.Auth)break;
+                await wait(250);
+              }
+              if(!A||!window.Topkey?.Auth)throw new Error("Application modules not ready: "+JSON.stringify({
+                platform:!!window.TopkeyPlatform,topkey:!!window.Topkey,
+                sport:window.Topkey?.SPORT?.key,auth:!!window.Topkey?.Auth,
+                adminReady:window.__TOPKEY_ADMIN_READY,bootError:window.__TOPKEY_BOOT_ERROR,
+                scripts:[...document.scripts].filter(s=>s.src).map(s=>({src:s.src,loaded:!!s.dataset.topkeyReady}))
+              }));
+              await A.__bootPromise?.catch(error=>{throw error});
               T.Auth.can=()=>true;
               T.Auth.role=()=>"ADMIN";
               T.Auth.profile={role:"ADMIN",displayName:"Chrome QA fixture"};
-              T.Auth.user={uid:"chrome-ui-fixture",email:"chrome-ui-fixture@example.invalid"};
+              window.__TOPKEY_QA_WRITE_ATTEMPTS=0;
+              for(const method of ["queueSet","queueMulti","audit"]){
+                if(typeof T.Data?.[method]==="function")T.Data[method]=async()=>{window.__TOPKEY_QA_WRITE_ATTEMPTS++;return null};
+              }
               document.querySelector("#login-screen")?.classList.add("hidden");
               document.querySelector("#app-shell")?.classList.remove("hidden");
               A.setupUI?.();
@@ -132,13 +197,38 @@ jobs:
               A.renderAll?.();
               A.showTab("overview");
               const sport=new URLSearchParams(location.search).get("sport")||(location.pathname.includes("/sports/badminton/")?"badminton":"");
+              const gridColumns=grid=>{
+                const value=grid?getComputedStyle(grid).gridTemplateColumns:"";
+                const repeat=value.match(/^repeat\((\d+),/);
+                return {count:repeat?Number(repeat[1]):value.trim().split(/\s+/).length,value};
+              };
+              const panel=document.querySelector("#h201-analytics .h201-panel");
+              const heading=panel?.querySelector("h2"),sub=panel?.querySelector(".h201-sub");
+              const rgb=value=>value.match(/[\d.]+/g).slice(0,3).map(Number);
+              const lum=value=>{const channels=rgb(value).map(v=>{v/=255;return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*channels[0]+.7152*channels[1]+.0722*channels[2]};
+              const contrast=(a,b)=>(Math.max(lum(a),lum(b))+.05)/(Math.min(lum(a),lum(b))+.05);
+              const panelBg=panel?getComputedStyle(panel).backgroundColor:"";
+              const headingColor=heading?getComputedStyle(heading).color:"";
+              const subColor=sub?getComputedStyle(sub).color:"";
               const result={url:location.href,sport,appReady:true,
                 pageCount:document.querySelectorAll("#app-shell .page").length,
                 tabCount:document.querySelectorAll("#app-shell [data-tab]").length,
                 collapsible:!!window.TopkeyCollapsibleH141,
                 enginePath:location.pathname,
+                analyticsContrast:heading?Number(contrast(panelBg,headingColor).toFixed(2)):0,
+                analyticsSubContrast:sub?Number(contrast(panelBg,subColor).toFixed(2)):0,
+                kpiColumns:gridColumns(document.querySelector("#page-overview > .grid.g4")).count,
+                kpiGridTemplate:gridColumns(document.querySelector("#page-overview > .grid.g4")).value,
+                legacyHubLinksVisible:[...document.querySelectorAll("#app-shell .topbar .hub-link,#app-shell .topbar .hub-back")]
+                  .filter(el=>getComputedStyle(el).display!=="none").length,
+                writeAttempts:window.__TOPKEY_QA_WRITE_ATTEMPTS,
                 fixture:"UI_ONLY_NO_DATABASE_WRITES"};
               if(result.pageCount<11||result.tabCount<11)throw new Error("Incomplete sport workspace: "+JSON.stringify(result));
+              if(innerWidth>=1200&&result.kpiColumns!==4)throw new Error("Desktop KPI grid must have four columns: "+JSON.stringify(result));
+              if(result.legacyHubLinksVisible!==0)throw new Error("Duplicate legacy Hub navigation is visible: "+JSON.stringify(result));
+              if(!panel||result.analyticsContrast<4.5||result.analyticsSubContrast<4.5)
+                throw new Error("Workspace contrast failed: "+JSON.stringify(result));
+              if(result.writeAttempts!==0)throw new Error("UI fixture attempted Firebase writes: "+JSON.stringify(result));
               if(sport==="badminton"&&!location.pathname.includes("/sports/badminton/index.html"))
                 throw new Error("Shared badminton launcher did not reach badminton engine: "+JSON.stringify(result));
               return JSON.stringify(result);
@@ -183,15 +273,22 @@ jobs:
               const restored=fixture.classList.contains("tk141-panel-folded")===initial;
               if(!restored)throw new Error("Nested card did not restore original state");
               fixture.remove();
-              return JSON.stringify({collapseExpand:"PASS",restored:true,ariaExpanded:"accessible",fixture:"UI_ONLY"});
+              if(window.__TOPKEY_QA_WRITE_ATTEMPTS!==0)throw new Error("Accordion fixture attempted a data write");
+              return JSON.stringify({collapseExpand:"PASS",restored:true,ariaExpanded:"accessible",writeAttempts:window.__TOPKEY_QA_WRITE_ATTEMPTS,fixture:"UI_ONLY"});
             }' --pageId 1 --output-format=json | tee "artifacts/chrome-devtools/$sport-accordion.json"
             if grep -q 'Error:' "artifacts/chrome-devtools/$sport-accordion.json"; then exit 1; fi
             grep -q 'collapseExpand' "artifacts/chrome-devtools/$sport-accordion.json"
             chrome-devtools resize_page 1 390 844
             chrome-devtools evaluate_script '() => {
+              const kpi=document.querySelector("#page-overview > .grid.g4");
+              const gridTemplate=kpi?getComputedStyle(kpi).gridTemplateColumns:"";
+              const repeated=gridTemplate.match(/^repeat\((\d+),/);
+              const columns=repeated?Number(repeated[1]):gridTemplate.trim().split(/\s+/).length;
               const result={width:innerWidth,scrollWidth:document.documentElement.scrollWidth,
-                overflow:document.documentElement.scrollWidth>innerWidth+2};
+                overflow:document.documentElement.scrollWidth>innerWidth+2,
+                kpiColumns:columns,kpiGridTemplate:gridTemplate};
               if(result.overflow)throw new Error("Mobile horizontal overflow: "+JSON.stringify(result));
+              if(innerWidth>=360&&result.kpiColumns!==2)throw new Error("Mobile KPI grid must have two columns: "+JSON.stringify(result));
               return JSON.stringify(result);
             }' --pageId 1 --output-format=json | tee "artifacts/chrome-devtools/$sport-mobile.json"
             if grep -q 'Error:' "artifacts/chrome-devtools/$sport-mobile.json"; then exit 1; fi
@@ -208,7 +305,12 @@ jobs:
           base="https://topkey-activity-management.edgeone.dev"
           paths=("/" "/sports/vnext/index.html?sport=football" "/sports/vnext/badminton.html" "/sports/badminton/index.html" "/hub-dashboard-reference-h219.css" "/executive-dashboard.js?v=h219-calendar-20261125")
           for path in "${paths[@]}"; do
-            code="$(curl --silent --show-error --location --max-time 25 -o /dev/null -w '%{http_code}' "$base$path" || true)"
+            code="000"
+            for attempt in 1 2 3 4; do
+              code="$(curl --silent --show-error --location --connect-timeout 10 --max-time 30 -o /dev/null -w '%{http_code}' "$base$path" || true)"
+              if [ "$code" = "200" ]; then break; fi
+              sleep 2
+            done
             echo "$code $path" | tee -a artifacts/chrome-devtools/http-status.txt
             test "$code" = "200"
           done
