@@ -10,6 +10,8 @@ const hub = read('index.html');
 const vnext = read('sports/vnext/src/config.js');
 const badminton = read('sports/badminton/src/config.js');
 const launcher = read('sports/vnext/badminton.html');
+const vnextPage = read('sports/vnext/index.html');
+const badmintonPage = read('sports/badminton/index.html');
 
 const sportLinks = [...hub.matchAll(/<a class="sport" href="([^"]+)"[\s\S]*?<h3>([^<]+)<\/h3>/g)]
   .map(([, href, name]) => ({ href: href.replaceAll('&amp;', '&'), name }));
@@ -32,6 +34,10 @@ assert.match(badminton, /T\.SCHEMA_VERSION = 3/, 'Badminton schema v3 must not b
 assert.match(vnext, /T\.SCHEMA_VERSION = 2/, 'Other VNext sports schema v2 must remain unchanged');
 assert.match(badminton, /T\.LEGACY_ROOT = 'topkey_badminton_app_ai'/, 'Legacy badminton data root must remain available');
 
+assert.ok(vnextPage.includes('topkey-sports-shell.js'), 'VNext workspaces must load the shared sport navigation');
+assert.ok(badmintonPage.includes('topkey-sports-shell.js'), 'Badminton must load the same shared sport navigation');
+assert.ok(vnextPage.includes('topkey-sports-shell.css'), 'VNext workspaces must load the shared sport shell styles');
+assert.ok(badmintonPage.includes('topkey-sports-shell.css'), 'Badminton must load the shared sport shell styles');
 assert.ok(hub.includes('hub-dashboard-reference-h219.css'), 'Current dashboard visual reference stylesheet must remain available during migration');
 assert.ok(hub.includes('id="topkey-sports"'), 'The unified sports catalog mount must remain present');
 
