@@ -31,7 +31,7 @@ jobs:
 
       - name: Install official Chrome DevTools MCP CLI
         run: |
-          npm install --global chrome-devtools-mcp@latest
+          npm install --global chrome-devtools-mcp@1.13.0
           chrome-devtools --help
 
       - name: Start isolated Chrome
