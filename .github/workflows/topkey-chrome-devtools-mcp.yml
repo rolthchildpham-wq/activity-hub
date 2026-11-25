@@ -322,6 +322,7 @@ jobs:
           set -euo pipefail
           node topkey/tests/hub-route-integrity.test.cjs
           node topkey/tests/hub-asset-inventory.test.cjs
+          node topkey/tests/hub-calendar-responsive-h220.test.cjs
           node topkey/tests/hub-navigation-semantics.test.cjs
           node topkey/tests/hub-dashboard-h219.test.cjs
           node topkey/tests/hub-readable-h216.test.cjs
