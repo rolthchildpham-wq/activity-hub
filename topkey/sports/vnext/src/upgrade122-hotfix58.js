@@ -37,7 +37,7 @@ function addMatch(rowA,rowB,m,rules){
   else if(S.mode==='score'){rowA.d++;rowB.d++;rowA.points+=drawPts;rowB.points+=drawPts}
 }
 function rowsFor(category,matches=canonicalMatches(category),onlyIds=null){
-  const teams=Object.values(App.state.teams||{}).filter(t=>(category==='ALL'||!category||teamCategory(t)===category)&&(!onlyIds||onlyIds.has(t.id)));
+  const teams=Object.values(App.state.teams||{}).filter(t=>(category==='ALL'||!category||!t.category||teamCategory(t)===category)&&(!onlyIds||onlyIds.has(t.id)));
   const rows=teams.map(t=>({id:t.id,name:t.name||t.id,category:teamCategory(t),played:0,w:0,d:0,l:0,points:0,for:0,against:0,setsFor:0,setsAgainst:0,bestTime:null,score:null}));
   const map=Object.fromEntries(rows.map(r=>[r.id,r])),rules=App.state.config?.rules||S.rules||{};
   matches.forEach(m=>{if(onlyIds&&(!onlyIds.has(m.teamAId)||(!['time','judged'].includes(S.mode)&&!onlyIds.has(m.teamBId))))return;addMatch(map[m.teamAId],map[m.teamBId],m,rules)});
@@ -57,7 +57,9 @@ function sortByCriteria(rows,criteria,matches,idx=0){
   for(let i=0;i<ordered.length;){let j=i+1,A=criterionValue(ordered[i],c);while(j<ordered.length&&criterionValue(ordered[j],c)===A)j++;out.push(...sortByCriteria(ordered.slice(i,j),criteria,matches,idx+1));i=j}return out;
 }
 function ranking(opts={}){
-  const category=typeof opts==='string'?opts:(opts.category||activeCategory||S.categories?.[0]||'OPEN'),matches=canonicalMatches(category),rows=rowsFor(category,matches);
+  const category=typeof opts==='string'?opts:(opts.category||activeCategory||S.categories?.[0]||'OPEN'),onlyIds=Array.isArray(opts.teamIds)?new Set(opts.teamIds):null;
+  const matches=(onlyIds?canonicalMatches('ALL'):canonicalMatches(category)).filter(m=>!onlyIds||(onlyIds.has(m.teamAId)&&(['time','judged'].includes(S.mode)||onlyIds.has(m.teamBId))));
+  const rows=rowsFor(category,matches,onlyIds);
   if(S.mode==='time')return rows.sort((a,b)=>(a.bestTime??Infinity)-(b.bestTime??Infinity)||a.name.localeCompare(b.name,'vi'));
   if(S.mode==='judged')return rows.sort((a,b)=>(b.score??-Infinity)-(a.score??-Infinity)||a.name.localeCompare(b.name,'vi'));
   const criteria=[...((App.state.config?.rules||S.rules||{}).tieBreakers||['points',S.mode==='sets'?'setDiff':'goalDiff',S.mode==='sets'?'pointDiff':'goalsFor','headToHead','name'])];
@@ -65,8 +67,67 @@ function ranking(opts={}){
 }
 App.ranking=ranking;
 
+function normalizedGroup(value){const group=String(value??'').replace(/^Bảng\s*/i,'').trim();return group.toUpperCase()==='ALL'?'':group}
+function groupBuckets(category=activeCategory){
+  const selected=String(category||'ALL'),assignments=new Map(),saved=App.state.config?.scheduleGroups||{};
+  const assign=(id,cat,group)=>{const g=normalizedGroup(group),c=String(cat||'');if(!id||!g||(selected!=='ALL'&&selected&&c&&c!==selected)||assignments.has(id))return;assignments.set(id,{category:c||teamCategory(App.state.teams?.[id]),group:g})};
+  Object.entries(saved).forEach(([cat,cfg])=>{
+    if(selected!=='ALL'&&selected&&cat!==selected)return;
+    const entries=Array.isArray(cfg?.entries)?cfg.entries:[];
+    const grouped=String(cfg?.format||'').toUpperCase()==='GROUP'||entries.some(e=>normalizedGroup(e?.group));
+    if(!grouped)return;
+    entries.forEach(entry=>assign(entry?.id,cat,entry?.group));
+  });
+  Object.values(App.state.matches||{}).forEach(m=>{
+    const cat=String(m.category||teamCategory(App.state.teams?.[m.teamAId]));
+    if(selected!=='ALL'&&selected&&cat!==selected)return;
+    const group=m.groupId??m.groupName??m.group??m.pool??'';
+    assign(m.teamAId,cat,group);assign(m.teamBId,cat,group);
+  });
+  Object.values(App.state.teams||{}).forEach(team=>{
+    const cat=teamCategory(team);
+    if(selected!=='ALL'&&selected&&cat!==selected)return;
+    assign(team.id,cat,team.groupId??team.groupName??team.group??team.pool??'');
+  });
+  const buckets=new Map();
+  Object.values(App.state.teams||{}).forEach(team=>{
+    const a=assignments.get(team.id);if(!a)return;
+    if(selected!=='ALL'&&selected&&a.category!==selected)return;
+    const key=a.category+'|'+a.group,item=buckets.get(key)||{category:a.category,group:a.group,teamIds:[]};
+    item.teamIds.push(team.id);buckets.set(key,item);
+  });
+  return [...buckets.values()].filter(g=>g.teamIds.length).sort((a,b)=>a.category.localeCompare(b.category,'vi')||a.group.localeCompare(b.group,'vi'));
+}
 function standingsCols(){if(S.mode==='time')return['#',S.participantLabel,'Lượt','Thành tích tốt nhất'];if(S.mode==='judged')return['#',S.participantLabel,'Lượt','Điểm tốt nhất'];if(S.mode==='sets')return['#','Đội','Trận','W-L','HS set','HS điểm','Điểm'];return['#','Đội','Trận','W-D-L','Hiệu số','Điểm']}
-function renderStandings(){const head=$('ranking-head'),box=$('standings-list');if(!head||!box)return;head.innerHTML='<tr>'+standingsCols().map(x=>`<th>${esc(x)}</th>`).join('')+'</tr>';box.innerHTML='';ranking({category:activeCategory}).forEach((r,i)=>{let vals;if(S.mode==='time')vals=[i+1,r.name,r.played,r.bestTime==null?'—':App.formatTime(r.bestTime)];else if(S.mode==='judged')vals=[i+1,r.name,r.played,r.score??'—'];else if(S.mode==='sets')vals=[i+1,r.name,r.played,`${r.w}-${r.l}`,r.setsFor-r.setsAgainst,r.for-r.against,r.points];else vals=[i+1,r.name,r.played,`${r.w}-${r.d}-${r.l}`,r.for-r.against,r.points];const tr=document.createElement('tr');vals.forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.appendChild(td)});box.appendChild(tr)})}
+function renderStandings(){
+  const head=$('ranking-head'),box=$('standings-list');if(!head||!box)return;
+  const tableWrap=box.closest('.table-wrap')||head.closest('.table-wrap')||box.closest('table')?.parentElement;
+  const groups=groupBuckets(activeCategory);let host=$('standings-group-tables');
+  if(groups.length){
+    if(!host){host=document.createElement('div');host.id='standings-group-tables';host.className='tk-standings-groups';if(tableWrap)tableWrap.after(host);else box.parentElement?.appendChild(host)}
+    host.replaceChildren();host.hidden=false;if(tableWrap)tableWrap.hidden=true;
+    const labels={NAM_6V6:'Nam 6 người',NU_6V6:'Nữ 6 người',MIX_6V6:'Nam nữ 6 người',PHONG_TRAO_6V6:'Phong trào 6 người'};
+    groups.forEach(g=>{
+      const rows=ranking({category:g.category,teamIds:g.teamIds}),section=document.createElement('section');section.className='subcard tk-group-standings';
+      const title=document.createElement('h3');title.textContent='Bảng '+g.group+(g.category?' · '+(labels[g.category]||g.category.replaceAll('_',' ')):'');
+      const wrap=document.createElement('div');wrap.className='table-wrap';
+      const table=document.createElement('table'),thead=document.createElement('thead'),trh=document.createElement('tr'),tbody=document.createElement('tbody');
+      standingsCols().forEach(label=>{const th=document.createElement('th');th.textContent=label;trh.appendChild(th)});thead.appendChild(trh);
+      rows.forEach((r,i)=>{
+        let values;if(S.mode==='time')values=[i+1,r.name,r.played,r.bestTime==null?'—':App.formatTime(r.bestTime)];
+        else if(S.mode==='judged')values=[i+1,r.name,r.played,r.score??'—'];
+        else if(S.mode==='sets')values=[i+1,r.name,r.played,r.w+'-'+r.l,r.setsFor-r.setsAgainst,r.for-r.against,r.points];
+        else values=[i+1,r.name,r.played,r.w+'-'+r.d+'-'+r.l,r.for-r.against,r.points];
+        const tr=document.createElement('tr');values.forEach(value=>{const td=document.createElement('td');td.textContent=String(value);tr.appendChild(td)});tbody.appendChild(tr);
+      });
+      table.append(thead,tbody);wrap.appendChild(table);section.append(title,wrap);host.appendChild(section);
+    });
+    return;
+  }
+  if(host)host.hidden=true;if(tableWrap)tableWrap.hidden=false;
+  head.innerHTML='<tr>'+standingsCols().map(x=>'<th>'+esc(x)+'</th>').join('')+'</tr>';box.innerHTML='';
+  ranking({category:activeCategory}).forEach((r,i)=>{let vals;if(S.mode==='time')vals=[i+1,r.name,r.played,r.bestTime==null?'—':App.formatTime(r.bestTime)];else if(S.mode==='judged')vals=[i+1,r.name,r.played,r.score??'—'];else if(S.mode==='sets')vals=[i+1,r.name,r.played,r.w+'-'+r.l,r.setsFor-r.setsAgainst,r.for-r.against,r.points];else vals=[i+1,r.name,r.played,r.w+'-'+r.d+'-'+r.l,r.for-r.against,r.points];const tr=document.createElement('tr');vals.forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.appendChild(td)});box.appendChild(tr)});
+}
 App.renderStandings=renderStandings;
 
 function ensureRankingToolbar(){const head=$('ranking-head');if(!head||$('tk58-ranking-toolbar'))return;const wrap=head.closest('.table-wrap')||head.parentElement;const bar=document.createElement('div');bar.id='tk58-ranking-toolbar';bar.className='tk58-toolbar';bar.innerHTML=`<b>🏆 BXH nhanh</b><label>Nội dung <select id="tk58-ranking-category">${(S.categories||[]).map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('')}</select></label><button id="tk58-report-btn" class="btn mini primary">🧾 Giải trình BXH</button>`;wrap.parentElement?.insertBefore(bar,wrap);$('tk58-ranking-category').value=activeCategory;$('tk58-ranking-category').onchange=e=>{activeCategory=e.target.value;renderStandings();renderPublicStandings()};$('tk58-report-btn').onclick=openReport;}
@@ -112,7 +173,13 @@ function canShare(){const role=rawRole();if(role==='ADMIN')return true;const p=T
 function patchPublicLinks(){try{window.TopkeyUpgrade14?.render?.()}catch{}const card=$('tk14-public-links-card');if(!card)return;card.classList.toggle('hidden',!canShare());const h=card.querySelector('h2');if(h)h.textContent='🔗 Setup · Liên kết & Chia sẻ';const p=card.querySelector('.muted');if(p)p.textContent='Quyền riêng: Liên kết & Chia sẻ. ADMIN cấp độc lập cho BTC; Trọng tài mặc định không có quyền.'}
 
 function ensurePublicStandings(){const pub=$('public-spectator');if(!pub||$('tk58-public-ranking'))return;const sec=document.createElement('section');sec.id='tk58-public-ranking';sec.className='card';sec.innerHTML=`<div class="split"><h2>🏆 Bảng xếp hạng</h2><select id="tk58-public-category">${(S.categories||[]).map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('')}</select></div><div id="tk58-public-ranking-body"></div>`;const sched=$('spectator-schedule')?.parentElement;pub.insertBefore(sec,sched||null);$('tk58-public-category').value=activeCategory;$('tk58-public-category').onchange=e=>{activeCategory=e.target.value;const a=$('tk58-ranking-category');if(a)a.value=activeCategory;renderPublicStandings()}}
-function renderPublicStandings(){ensurePublicStandings();const box=$('tk58-public-ranking-body');if(!box)return;const rows=ranking({category:activeCategory});box.innerHTML=rows.map((r,i)=>{let sub;if(S.mode==='time')sub=`${r.played} lượt · ${r.bestTime==null?'—':App.formatTime(r.bestTime)}`;else if(S.mode==='judged')sub=`${r.played} lượt · ${r.score??'—'} điểm`;else if(S.mode==='sets')sub=`${r.played} trận · ${r.w}-${r.l} · HS set ${r.setsFor-r.setsAgainst} · HS điểm ${r.for-r.against}`;else sub=`${r.played} trận · ${r.w}-${r.d}-${r.l} · HS ${r.for-r.against}`;return `<div class="tk58-rank-row"><b>${i+1}</b><span><strong>${esc(r.name)}</strong><small>${esc(sub)}</small></span><em>${S.mode==='time'?(r.bestTime==null?'—':App.formatTime(r.bestTime)):S.mode==='judged'?(r.score??'—'):r.points}</em></div>`}).join('')}
+function renderPublicStandings(){
+ ensurePublicStandings();const box=$('tk58-public-ranking-body');if(!box)return;
+ const groups=groupBuckets(activeCategory);
+ const rowHtml=(r,i)=>{let sub;if(S.mode==='time')sub=r.played+' lượt · '+(r.bestTime==null?'—':App.formatTime(r.bestTime));else if(S.mode==='judged')sub=r.played+' lượt · '+(r.score??'—')+' điểm';else if(S.mode==='sets')sub=r.played+' trận · '+r.w+'-'+r.l+' · HS set '+(r.setsFor-r.setsAgainst)+' · HS điểm '+(r.for-r.against);else sub=r.played+' trận · '+r.w+'-'+r.d+'-'+r.l+' · HS '+(r.for-r.against);return '<div class="tk58-rank-row"><b>'+(i+1)+'</b><span><strong>'+esc(r.name)+'</strong><small>'+esc(sub)+'</small></span><em>'+(S.mode==='time'?(r.bestTime==null?'—':App.formatTime(r.bestTime)):S.mode==='judged'?(r.score??'—'):r.points)+'</em></div>'};
+ if(groups.length){box.innerHTML=groups.map(g=>'<section class="subcard tk-group-standings"><h3>Bảng '+esc(g.group)+(g.category?' · '+esc(g.category.replaceAll('_',' ')):'')+'</h3>'+ranking({category:g.category,teamIds:g.teamIds}).map(rowHtml).join('')+'</section>').join('');return}
+ box.innerHTML=ranking({category:activeCategory}).map(rowHtml).join('');
+}
 const baseStartPublic=App.startPublicSpectator?.bind(App);App.startPublicSpectator=function(){if(!T.Data.ready)return baseStartPublic?.();['matches','courts','activeMatches','teams','config'].forEach(b=>{if(this['pubOff'+b])this['pubOff'+b]();this['pubOff'+b]=T.Data.listen(b,v=>{this.state[b]=v||{};this.renderSpectator()})})};
 const baseRenderSpectator=App.renderSpectator?.bind(App);if(baseRenderSpectator)App.renderSpectator=function(...a){const r=baseRenderSpectator(...a);renderPublicStandings();return r};
 
