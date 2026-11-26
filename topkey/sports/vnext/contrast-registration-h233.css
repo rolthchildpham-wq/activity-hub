@@ -1,0 +1,10 @@
+/* H233: keep registration controls readable on the dark Teams workspace surfaces. */
+#page-teams .tk9-card,
+#page-teams .tk9-count,
+#page-teams .tk9-count b {
+  color: #ffffff !important;
+}
+#page-teams .tk9-card :is(b, span, small),
+#page-teams .tk9-count :is(b, span, small) {
+  color: inherit !important;
+}
