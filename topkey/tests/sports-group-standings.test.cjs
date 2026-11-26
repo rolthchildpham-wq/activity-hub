@@ -36,11 +36,11 @@ test('final runtime ranking filters each group and uses volleyball set-differenc
  assert.equal(groupB[1].points,0);
 });
 test('the final H58 module owns the active renderer and emits independent group sections',()=>{
- assert.equal((h58.match(/function renderStandings\\(\\)/g)||[]).length,1);
- assert.match(h58,/App\\.renderStandings=renderStandings/);
+ assert.equal((h58.match(/function renderStandings\(\)/g)||[]).length,1);
+ assert.match(h58,/App\.renderStandings=renderStandings/);
  assert.match(h58,/className='subcard tk-group-standings'/);
- assert.match(h58,/ranking\\(\\{category:g\\.category,teamIds:g\\.teamIds\\}\\)/);
- assert.match(h58,/function renderPublicStandings\\(\\)/);
- assert.match(bundle,/H97 module src\\/upgrade122-hotfix58\\.js/);
+ assert.match(h58,/ranking\(\{category:g\.category,teamIds:g\.teamIds\}\)/);
+ assert.match(h58,/function renderPublicStandings\(\)/);
+ assert.match(bundle,/H97 module src\/upgrade122-hotfix58\.js/);
  assert.match(bundle,/className='subcard tk-group-standings'/);
 });
