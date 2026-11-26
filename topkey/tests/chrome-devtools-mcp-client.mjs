@@ -6,25 +6,18 @@
  * it never talks to Chrome/CDP directly.
  */
 import http from 'node:http';
-import {spawn} from 'node:child_process';
 import {existsSync} from 'node:fs';
 import path from 'node:path';
-import {fileURLToPath, pathToFileURL} from 'node:url';
-import {createRequire} from 'node:module';
 
 const ROOT=process.cwd();
 const MCP_ROOT=path.join(ROOT,'.tools','chrome-devtools-mcp');
 const SERVER=path.join(MCP_ROOT,'out','Default','gen','src','bin','chrome-devtools-mcp.js');
 const PORT=Number(process.env.TOPKEY_MCP_BRIDGE_PORT||4174);
-const require=createRequire(path.join(ROOT,'__topkey_mcp_loader.cjs'));
-const importPackage=async name=>import(pathToFileURL(require.resolve(name,{paths:[ROOT]})).href);
+import {Client} from '@modelcontextprotocol/client';
+import {StdioClientTransport} from '@modelcontextprotocol/client/stdio';
 
 async function connectMcp(){
   if(!existsSync(SERVER))throw new Error('Official Chrome DevTools MCP server build not found: '+SERVER);
-  const [{Client},{StdioClientTransport}]=await Promise.all([
-    importPackage('@modelcontextprotocol/client'),
-    importPackage('@modelcontextprotocol/client/stdio')
-  ]);
   const transport=new StdioClientTransport({
     command:process.execPath,
     args:[SERVER,'--headless=true','--isolated=true','--usageStatistics=false',
