@@ -239,11 +239,11 @@ async function startBridge() {
 
 async function callOne(argv) {
   try {
-    const toolCall = parseLegacy(argv);
+    // Parse inside the daemon so every request uses the MCP-created pageId.
     const response = await fetch('http://127.0.0.1:' + PORT + '/call', {
       method: 'POST',
       headers: {'content-type': 'application/json'},
-      body: JSON.stringify(toolCall),
+      body: JSON.stringify({argv}),
     });
     const payload = await response.json();
     if (!response.ok) throw new Error(payload.error || 'MCP bridge request failed');
