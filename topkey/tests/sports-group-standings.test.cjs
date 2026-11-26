@@ -2,6 +2,7 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const h58=fs.readFileSync('topkey/sports/vnext/src/upgrade122-hotfix58.js','utf8');
 const bundle=fs.readFileSync('topkey/sports/vnext/h97-vnext.bundle.js','utf8');
+const h12=fs.readFileSync('topkey/sports/vnext/src/upgrade12.js','utf8');
 const state={teams:{
  A:{id:'A',name:'Alpha',category:'NAM_6V6'},B:{id:'B',name:'Bravo',category:'NAM_6V6'},C:{id:'C',name:'Charlie',category:'NAM_6V6'},
  D:{id:'D',name:'Delta'},E:{id:'E',name:'Echo'}
@@ -18,6 +19,12 @@ const documentStub={readyState:'complete',head:{appendChild(){}},createElement()
 const sandbox={window:{Topkey:T,addEventListener(){}},document:documentStub,location:{hash:''},console,Intl,Date,Map,Set,Object,Array,String,Number,Math,JSON,Promise,setTimeout:()=>0,clearTimeout(){}};
 vm.runInNewContext(h58,sandbox,{timeout:3000});
 const api=sandbox.window.TopkeyUpgrade122Hotfix58;
+test('legacy category tabs insert relative to their actual DOM parent, not an assumed card child',()=>{
+ assert.match(h12,/const anchor=body\\.closest\\('\\.table-wrap'\\)\\|\\|body\\.closest\\('table'\\)\\|\\|body/);
+ assert.match(h12,/parent\\.insertBefore\\(h,anchor\\)/);
+ assert.doesNotMatch(h12,/body\\.closest\\('\\.card'\\)\\?\\.insertBefore\\(h,body\\.closest\\('\\.table-wrap'\\)\\)/);
+ assert.match(bundle,/parent\\.insertBefore\\(h,anchor\\)/);
+});
 test('runtime H58 builds exactly two saved round-robin groups',()=>{
  const groups=api.groupBuckets('NAM_6V6');
  assert.equal(groups.length,2);
