@@ -56,11 +56,16 @@ jobs:
           git -C .tools/chrome-devtools-mcp checkout 8c43179464d368a6a3c7f8ce2ee024e1e736b795
           echo "Official Chrome DevTools MCP commit: $(git -C .tools/chrome-devtools-mcp rev-parse HEAD)"
           npm ci --prefix .tools/chrome-devtools-mcp
-          git -C .tools/chrome-devtools-mcp/third_party/devtools-frontend sparse-checkout add build buildtools third_party/inspector_protocol third_party/ninja third_party/node third_party/typescript third_party/cpython3
-          git -C .tools/chrome-devtools-mcp/third_party/devtools-frontend submodule update --init build buildtools third_party/inspector_protocol third_party/ninja third_party/node third_party/typescript third_party/cpython3
-          test -x .tools/chrome-devtools-mcp/third_party/devtools-frontend/buildtools/linux64/gn
-          test -x .tools/chrome-devtools-mcp/third_party/devtools-frontend/third_party/ninja/ninja
-          npm run build --prefix .tools/chrome-devtools-mcp
+          # Follow the official repository sync script. It initializes the
+          # pinned frontend submodule and runs gclient-sync to fetch GN, Ninja
+          # and the DEPS/CIPD inputs required by this source revision.
+          cd .tools/chrome-devtools-mcp
+          git submodule update --init
+          node scripts/gclient-sync.ts
+          npm run build
+          cd "$GITHUB_WORKSPACE"
+          test -x .tools/chrome-devtools-mcp/buildtools/linux64/gn
+          test -x .tools/chrome-devtools-mcp/third_party/ninja/ninja
           test -f .tools/chrome-devtools-mcp/out/Default/gen/src/bin/chrome-devtools-mcp.js
           node topkey/tests/chrome-devtools-mcp-client.mjs daemon > /tmp/topkey-mcp-bridge.log 2>&1 &
           echo $! > /tmp/topkey-mcp-bridge.pid
