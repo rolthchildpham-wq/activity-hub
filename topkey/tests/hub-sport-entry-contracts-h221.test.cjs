@@ -33,14 +33,25 @@ assert.equal(catalog.length, 8, 'Hub catalog must contain seven sports plus Vlog
 assert.ok(vnext.includes(shellAsset), 'VNext workspace must load the shared ECC sport shell stylesheet');
 assert.ok(badmintonEntry.includes(shellAsset), 'Badminton workspace must load the same shared ECC sport shell stylesheet');
 
-assert.match(badmintonAdapter, /new URL\('\.\.\/badminton\/index\.html',\s*location\.href\)/,
-  'Badminton adapter must forward to the retained production badminton engine');
-assert.match(badmintonAdapter, /query\.delete\('sport'\)/,
-  'Badminton adapter must remove only the routing selector before forwarding');
-assert.match(badmintonAdapter, /target\.search\s*=\s*query\.toString\(\)/,
-  'Badminton adapter must preserve remaining query parameters');
+assert.match(badmintonAdapter, /query\.set\('sport',\s*'badminton'\)/,
+  'Badminton entry must select the badminton sport inside the shared VNext workspace');
+assert.match(badmintonAdapter, /new URL\('\.\/index\.html',\s*location\.href\)/,
+  'Badminton entry must stay within the VNext workspace route');
+assert.doesNotMatch(badmintonAdapter, /location\.replace\([^)]*\.\.\/badminton\/index\.html/,
+  'Badminton entry must not redirect to the standalone legacy screen');
 assert.match(badmintonAdapter, /target\.hash\s*=\s*location\.hash/,
-  'Badminton adapter must preserve public route hashes');
+  'Badminton entry must preserve public route hashes');
+
+const config = fs.readFileSync(path.join(root, 'sports/vnext/src/config.js'), 'utf8');
+assert.match(config, /badminton:\{[\s\S]*?root:'topkey_badminton_vnext_2026'/,
+  'Badminton must use its existing Firebase VNext root');
+assert.match(config, /legacyEngineRoot:'topkey_badminton_vnext_2026'/,
+  'Legacy badminton data root must remain unchanged');
+assert.match(config, /preserveExistingEngine:true/,
+  'The retained badminton domain engine must be declared as preserved');
+for (const format of ['BEST_OF_3_21_SWITCH_10','SETS_21_21_15_SWITCH_7','BEST_OF_3_15_SWITCH_7']) {
+  assert.ok(config.includes(format), 'Missing badminton format profile ' + format);
+}
 
 console.log(JSON.stringify({
   status: 'PASS',
