@@ -1,14 +1,18 @@
 ---
 name: topkey-web-engineering
-description: ECC-first brownfield-safe workflow for all TOPKEY web development.
+description: ECC and Frontend System Design guided, brownfield-safe workflow for TOPKEY web development.
 license: MIT
 ---
 
 # TOPKEY Web Engineering Standard
 
 Use the user's canonical ECC fork: https://github.com/rolthchildpham-wq/ECC
+Use the framework-agnostic design checklist: https://github.com/rolthchildpham-wq/frontend-system-design
+
+ECC defines engineering discipline and verification. Frontend System Design defines the questions/checklist for product and UI design. Neither reference overrides TOPKEY's existing architecture or business contracts.
 
 ## Required sequence
+0. Read ECC guidance and use Frontend System Design to check requirements, user journeys, platform, state, roles, component boundaries, responsive behavior, accessibility, performance and testability. Treat it as a checklist, not a prescribed stack.
 1. Research actual runtime ownership, routes, callers, data contracts, styles, tests, and deployment.
 2. Plan a coherent patch with acceptance criteria and rollback.
 3. Write regression tests before implementation (RED), implement (GREEN), then refactor.
@@ -28,7 +32,7 @@ Use the user's canonical ECC fork: https://github.com/rolthchildpham-wq/ECC
 - [Semgrep](https://github.com/rolthchildpham-wq/semgrep), [Biome](https://github.com/rolthchildpham-wq/biome), [ESLint](https://github.com/rolthchildpham-wq/eslint): static analysis and linting, using the existing targeted TOPKEY quality configuration.
 - [RealWorld](https://github.com/rolthchildpham-wq/realworld_): API contract reference only if a real backend/API boundary is introduced.
 
-Do not bulk-copy unrelated repositories or install their frameworks as dependencies. Adapt useful patterns to the existing static EdgeOne + Firebase runtime and SvelteKit migration app. See topkey/ENGINEERING-REFERENCE-ADOPTION.md for the full adoption matrix and safety boundaries.
+Do not bulk-copy unrelated repositories or install their frameworks as dependencies. Do not replace TOPKEY's framework, routing, state model, Firebase topology, data schema, domain model or deployment platform merely to match a reference. Adapt useful patterns to the existing static EdgeOne + Firebase runtime and SvelteKit migration app. Architecture changes require evidence, alternatives, migration/rollback design and explicit approval. See topkey/ENGINEERING-REFERENCE-ADOPTION.md for the full adoption matrix and safety boundaries.
 
 ## TOPKEY invariants
 Preserve Firebase Auth/session, roles and fine-grained permissions, each sport's Firebase root/schema/records, teams, schedules, scheduler constraints, scores, standings, referee/live workflows, finance/audit, offline persistence, public spectator/registration/judge routes, service-worker and EdgeOne behavior.
