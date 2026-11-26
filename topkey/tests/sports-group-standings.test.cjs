@@ -20,10 +20,10 @@ const sandbox={window:{Topkey:T,addEventListener(){}},document:documentStub,loca
 vm.runInNewContext(h58,sandbox,{timeout:3000});
 const api=sandbox.window.TopkeyUpgrade122Hotfix58;
 test('legacy category tabs insert relative to their actual DOM parent, not an assumed card child',()=>{
- assert.match(h12,/const anchor=body\\.closest\\('\\.table-wrap'\\)\\|\\|body\\.closest\\('table'\\)\\|\\|body/);
- assert.match(h12,/parent\\.insertBefore\\(h,anchor\\)/);
- assert.doesNotMatch(h12,/body\\.closest\\('\\.card'\\)\\?\\.insertBefore\\(h,body\\.closest\\('\\.table-wrap'\\)\\)/);
- assert.match(bundle,/parent\\.insertBefore\\(h,anchor\\)/);
+ assert.match(h12,/const anchor=body\.closest\('\.table-wrap'\)\|\|body\.closest\('table'\)\|\|body/);
+ assert.match(h12,/parent\.insertBefore\(h,anchor\)/);
+ assert.doesNotMatch(h12,/body\.closest\('\.card'\)\?\.insertBefore\(h,body\.closest\('\.table-wrap'\)\)/);
+ assert.match(bundle,/parent\.insertBefore\(h,anchor\)/);
 });
 test('runtime H58 builds exactly two saved round-robin groups',()=>{
  const groups=api.groupBuckets('NAM_6V6');
