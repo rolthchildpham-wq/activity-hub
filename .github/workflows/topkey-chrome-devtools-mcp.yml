@@ -33,19 +33,9 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Install official Chrome DevTools MCP CLI
-        run: |
-          npm install --global chrome-devtools-mcp@1.13.0
-          chrome-devtools --help
-
-      - name: Start isolated Chrome
-        run: |
-          set -euo pipefail
-          chrome-devtools start --headless --isolated --no-usage-statistics --workspace="$GITHUB_WORKSPACE"
-          chrome-devtools status
-          mkdir -p artifacts/chrome-devtools
-
       - name: Serve checked-out branch locally for real browser verification
+        id: fixture_server
+        continue-on-error: true
         run: |
           set -euo pipefail
           python3 topkey/tests/ui-fixture-server.py topkey > /tmp/topkey-http.log 2>&1 &
@@ -55,14 +45,54 @@ jobs:
           done
           curl --silent --show-error --fail http://127.0.0.1:4173/ >/dev/null
 
+      - name: Build official Chrome DevTools MCP and connect a persistent MCP client
+        id: mcp_bootstrap
+        if: steps.fixture_server.outcome == 'success'
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          mkdir -p .tools artifacts/chrome-devtools
+          git clone https://github.com/ChromeDevTools/chrome-devtools-mcp.git .tools/chrome-devtools-mcp
+          git -C .tools/chrome-devtools-mcp checkout 8c43179464d368a6a3c7f8ce2ee024e1e736b795
+          echo "Official Chrome DevTools MCP commit: $(git -C .tools/chrome-devtools-mcp rev-parse HEAD)"
+          npm ci --prefix .tools/chrome-devtools-mcp
+          # Follow the official repository sync script. It initializes the
+          # pinned frontend submodule and runs gclient-sync to fetch GN, Ninja
+          # and the DEPS/CIPD inputs required by this source revision.
+          cd .tools/chrome-devtools-mcp
+          git submodule update --init
+          node scripts/gclient-sync.ts
+          npm run build
+          cd "$GITHUB_WORKSPACE"
+          test -x .tools/chrome-devtools-mcp/buildtools/linux64/gn
+          test -x .tools/chrome-devtools-mcp/third_party/ninja/ninja
+          test -f .tools/chrome-devtools-mcp/out/Default/gen/src/bin/chrome-devtools-mcp.js
+          node topkey/tests/chrome-devtools-mcp-client.mjs daemon > /tmp/topkey-mcp-bridge.log 2>&1 &
+          echo $! > /tmp/topkey-mcp-bridge.pid
+          for attempt in $(seq 1 90); do
+            if curl --silent --fail http://127.0.0.1:4174/health >/dev/null; then break; fi
+            if ! kill -0 "$(cat /tmp/topkey-mcp-bridge.pid)" 2>/dev/null; then
+              cat /tmp/topkey-mcp-bridge.log
+              exit 1
+            fi
+            sleep 1
+          done
+          curl --silent --show-error --fail http://127.0.0.1:4174/health | tee artifacts/chrome-devtools/mcp-health.json
+          cat /tmp/topkey-mcp-bridge.log | tee artifacts/chrome-devtools/mcp-bootstrap.log
+
       - name: Verify Hub desktop and mobile layout
+        id: hub_ui
+        if: steps.fixture_server.outcome == 'success' && steps.mcp_bootstrap.outcome == 'success'
+        continue-on-error: true
         shell: bash
         run: |
           set -euo pipefail
+          mcp_tool(){ node topkey/tests/chrome-devtools-mcp-client.mjs call "$@" 2>&1 | tee -a artifacts/chrome-devtools/mcp-tool-output.log; }
           base="http://127.0.0.1:4173"
-          chrome-devtools navigate_page 1 --url "$base/" | tee artifacts/chrome-devtools/hub-navigation.txt
+          mcp_tool navigate_page 1 --url "$base/" | tee artifacts/chrome-devtools/hub-navigation.txt
+          mcp_tool take_snapshot 1 --filePath artifacts/chrome-devtools/hub-desktop.txt >/dev/null
           sleep 2
-          chrome-devtools evaluate_script '() => {
+          mcp_tool evaluate_script '() => {
             const cards=[...document.querySelectorAll("#topkey-sports .sport")];
             const result={url:location.href,title:document.title,sportCards:cards.length,
               badmintonCard:cards.some(card=>card.textContent.includes("Cầu lông")),
@@ -94,7 +124,7 @@ jobs:
             return JSON.stringify(result);
           }' --pageId 1 --output-format=json | tee artifacts/chrome-devtools/hub-desktop.json
           if grep -q 'Error:' artifacts/chrome-devtools/hub-desktop.json; then exit 1; fi
-          chrome-devtools evaluate_script 'async () => {
+          mcp_tool evaluate_script 'async () => {
             const wait=ms=>new Promise(resolve=>setTimeout(resolve,120));
             document.querySelector("#tk28-language-options [data-lang=\"vi\"]")?.click();
             await wait(180);
@@ -129,12 +159,13 @@ jobs:
             return JSON.stringify(result);
           }' --pageId 1 --output-format=json | tee artifacts/chrome-devtools/hub-dashboard-fixture.json
           if grep -q 'Error:' artifacts/chrome-devtools/hub-dashboard-fixture.json; then exit 1; fi
-          chrome-devtools take_screenshot 1 --filePath artifacts/chrome-devtools/hub-desktop.png
-          chrome-devtools evaluate_script '() => {document.querySelector("#executive-dashboard")?.scrollIntoView({block:"start"});return "dashboard-scrolled"}' --pageId 1
-          chrome-devtools take_screenshot 1 --filePath artifacts/chrome-devtools/hub-dashboard-ui-fixture.png
-          chrome-devtools evaluate_script '() => {window.scrollTo(0,0);return "top"}' --pageId 1
-          chrome-devtools resize_page 1 390 844
-          chrome-devtools evaluate_script '() => {
+          mcp_tool take_screenshot 1 --filePath artifacts/chrome-devtools/hub-desktop.png
+          mcp_tool take_snapshot 1 --filePath artifacts/chrome-devtools/hub-desktop-after-dashboard.txt >/dev/null
+          mcp_tool evaluate_script '() => {document.querySelector("#executive-dashboard")?.scrollIntoView({block:"start"});return "dashboard-scrolled"}' --pageId 1
+          mcp_tool take_screenshot 1 --filePath artifacts/chrome-devtools/hub-dashboard-ui-fixture.png
+          mcp_tool evaluate_script '() => {window.scrollTo(0,0);return "top"}' --pageId 1
+          mcp_tool resize_page 1 390 844
+          mcp_tool evaluate_script '() => {
             const result={width:innerWidth,scrollWidth:document.documentElement.scrollWidth,
               overflow:document.documentElement.scrollWidth>innerWidth+2,
               navPosition:getComputedStyle(document.querySelector(".tk210-nav")).position};
@@ -165,15 +196,21 @@ jobs:
               throw new Error("H220 mobile calendar horizontal overflow: "+JSON.stringify(result));
             return JSON.stringify(result);
           }' --pageId 1 --output-format=json | tee artifacts/chrome-devtools/hub-mobile.json
-          chrome-devtools take_screenshot 1 --filePath artifacts/chrome-devtools/hub-mobile.png
-          chrome-devtools evaluate_script '() => {document.querySelector(".exec-calendar-card")?.scrollIntoView({block:"center"});return "calendar-mobile-scrolled"}' --pageId 1
-          chrome-devtools take_screenshot 1 --filePath artifacts/chrome-devtools/hub-calendar-mobile.png
-          chrome-devtools resize_page 1 1440 1000
+          mcp_tool take_screenshot 1 --filePath artifacts/chrome-devtools/hub-mobile.png
+          mcp_tool take_snapshot 1 --filePath artifacts/chrome-devtools/hub-mobile.txt >/dev/null
+          mcp_tool evaluate_script '() => {document.querySelector(".exec-calendar-card")?.scrollIntoView({block:"center"});return "calendar-mobile-scrolled"}' --pageId 1
+          mcp_tool take_screenshot 1 --filePath artifacts/chrome-devtools/hub-calendar-mobile.png
+          mcp_tool resize_page 1 1440 1000
 
       - name: Full UI fixture and interaction matrix – all 7 sports
+        id: sports_ui
+        if: steps.fixture_server.outcome == 'success' && steps.mcp_bootstrap.outcome == 'success'
+        continue-on-error: true
         shell: bash
         run: |
-          set -euo pipefail
+          set -uo pipefail
+          mcp_tool(){ node topkey/tests/chrome-devtools-mcp-client.mjs call "$@"; }
+          failed=0
           base="http://127.0.0.1:4173"
           sports=(football volleyball running handmade shuttle cooking badminton)
           tabs=(overview control teams schedule umpire live finance announcements audit health settings)
@@ -184,9 +221,9 @@ jobs:
               route="/sports/vnext/index.html?sport=$sport&testlab=1&v=h219-liberty-dashboard-20261125&__topkey_reload=h219"
             fi
             echo "===== $sport =====" | tee -a artifacts/chrome-devtools/sport-matrix.txt
-            chrome-devtools navigate_page 1 --url "$base$route" | tee "artifacts/chrome-devtools/$sport-navigation.txt"
+            mcp_tool navigate_page 1 --url "$base$route" | tee "artifacts/chrome-devtools/$sport-navigation.txt"
             sleep 2
-            chrome-devtools evaluate_script 'async () => {
+            mcp_tool evaluate_script 'async () => {
               const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
               const T=window.Topkey;
               if(!window.TopkeyPlatform)throw new Error("Shared platform bootstrap unavailable");
@@ -325,8 +362,9 @@ jobs:
                 throw new Error("Badminton did not remain in the shared VNext workspace: "+JSON.stringify(result));
               return JSON.stringify(result);
             }' --pageId 1 --output-format=json | tee "artifacts/chrome-devtools/$sport-boot.json"
-            if grep -q 'Error:' "artifacts/chrome-devtools/$sport-boot.json"; then exit 1; fi
-            grep -q 'UI_ONLY_NO_DATABASE_WRITES' "artifacts/chrome-devtools/$sport-boot.json"
+            if grep -q 'Error:' "artifacts/chrome-devtools/$sport-boot.json"; then failed=1; fi
+            if ! grep -q 'UI_ONLY_NO_DATABASE_WRITES' "artifacts/chrome-devtools/$sport-boot.json"; then failed=1; fi
+            mcp_tool take_snapshot 1 --filePath "artifacts/chrome-devtools/$sport-boot.txt" >/dev/null
             for tab in "${tabs[@]}"; do
               script="async () => {
                 const wait=ms=>new Promise(resolve=>setTimeout(resolve,120));
@@ -369,12 +407,13 @@ jobs:
                 return JSON.stringify({tab:'$tab',activePage:page.id,
                   overviewVisible,dashboardVisible,visibleCards:page.querySelectorAll('.card,.subcard').length,contrastAudit});
               }"
-              chrome-devtools evaluate_script "$script" --pageId 1 --output-format=json | tee "artifacts/chrome-devtools/$sport-tab-$tab.json"
-              if grep -q 'Error:' "artifacts/chrome-devtools/$sport-tab-$tab.json"; then exit 1; fi
-              grep -q "page-$tab" "artifacts/chrome-devtools/$sport-tab-$tab.json"
-              chrome-devtools take_screenshot 1 --filePath "artifacts/chrome-devtools/$sport-tab-$tab.png" >/dev/null
+              mcp_tool evaluate_script "$script" --pageId 1 --output-format=json | tee "artifacts/chrome-devtools/$sport-tab-$tab.json"
+              if grep -q 'Error:' "artifacts/chrome-devtools/$sport-tab-$tab.json"; then failed=1; fi
+              if ! grep -q "page-$tab" "artifacts/chrome-devtools/$sport-tab-$tab.json"; then failed=1; fi
+              mcp_tool take_screenshot 1 --filePath "artifacts/chrome-devtools/$sport-tab-$tab.png" >/dev/null
+              mcp_tool take_snapshot 1 --filePath "artifacts/chrome-devtools/$sport-tab-$tab.txt" >/dev/null
             done
-            chrome-devtools evaluate_script 'async () => {
+            mcp_tool evaluate_script 'async () => {
               const wait=ms=>new Promise(resolve=>setTimeout(resolve,120));
               const page=document.getElementById("page-settings");
               const fixture=document.createElement("section");
@@ -397,10 +436,10 @@ jobs:
               if(window.__TOPKEY_QA_WRITE_ATTEMPTS!==0)throw new Error("Accordion fixture attempted a data write");
               return JSON.stringify({collapseExpand:"PASS",restored:true,ariaExpanded:"accessible",writeAttempts:window.__TOPKEY_QA_WRITE_ATTEMPTS,fixture:"UI_ONLY"});
             }' --pageId 1 --output-format=json | tee "artifacts/chrome-devtools/$sport-accordion.json"
-            if grep -q 'Error:' "artifacts/chrome-devtools/$sport-accordion.json"; then exit 1; fi
-            grep -q 'collapseExpand' "artifacts/chrome-devtools/$sport-accordion.json"
-            chrome-devtools resize_page 1 390 844
-            chrome-devtools evaluate_script '() => {
+            if grep -q 'Error:' "artifacts/chrome-devtools/$sport-accordion.json"; then failed=1; fi
+            if ! grep -q 'collapseExpand' "artifacts/chrome-devtools/$sport-accordion.json"; then failed=1; fi
+            mcp_tool resize_page 1 390 844
+            mcp_tool evaluate_script '() => {
               const kpi=document.querySelector("#page-overview > .grid.g4");
               const gridTemplate=kpi?getComputedStyle(kpi).gridTemplateColumns:"";
               const repeated=gridTemplate.match(/^repeat\((\d+),/);
@@ -412,17 +451,25 @@ jobs:
               if(innerWidth>=360&&result.kpiColumns!==2)throw new Error("Mobile KPI grid must have two columns: "+JSON.stringify(result));
               return JSON.stringify(result);
             }' --pageId 1 --output-format=json | tee "artifacts/chrome-devtools/$sport-mobile.json"
-            if grep -q 'Error:' "artifacts/chrome-devtools/$sport-mobile.json"; then exit 1; fi
-            chrome-devtools take_screenshot 1 --filePath "artifacts/chrome-devtools/$sport-mobile.png" >/dev/null
-            chrome-devtools resize_page 1 1440 1000
-            chrome-devtools list_console_messages 1 --output-format=json > "artifacts/chrome-devtools/$sport-console.json" || true
-            chrome-devtools list_network_requests 1 --output-format=json > "artifacts/chrome-devtools/$sport-network.json" || true
+            if grep -q 'Error:' "artifacts/chrome-devtools/$sport-mobile.json"; then failed=1; fi
+            mcp_tool take_screenshot 1 --filePath "artifacts/chrome-devtools/$sport-mobile.png" >/dev/null
+            mcp_tool resize_page 1 1440 1000
+            mcp_tool list_console_messages 1 --output-format=json > "artifacts/chrome-devtools/$sport-console.json" 2>&1
+            mcp_tool list_network_requests 1 --output-format=json > "artifacts/chrome-devtools/$sport-network.json" 2>&1
           done
+          if [ "$failed" -ne 0 ] || grep -R -q 'MCP_TOOL_ERROR' artifacts/chrome-devtools; then
+            echo "One or more sports failed; all remaining sports were still attempted."
+            exit 1
+          fi
 
       - name: Production HTTP and asset checks
+        id: production
+        if: always()
+        continue-on-error: true
         shell: bash
         run: |
           set -euo pipefail
+          mkdir -p artifacts/chrome-devtools
           base="https://topkey-activity-management.edgeone.dev"
           paths=("/" "/sports/vnext/index.html?sport=football" "/sports/vnext/badminton.html" "/sports/badminton/index.html" "/hub-dashboard-reference-h219.css" "/executive-dashboard.js?v=h232-live-schedule-20261126")
           for path in "${paths[@]}"; do
@@ -437,6 +484,9 @@ jobs:
           done
 
       - name: Run regression tests
+        id: regression
+        if: always()
+        continue-on-error: true
         run: |
           set -euo pipefail
           node topkey/tests/hub-route-integrity.test.cjs
@@ -467,6 +517,35 @@ jobs:
           if-no-files-found: warn
           retention-days: 14
 
-      - name: Stop Chrome DevTools MCP
+      - name: Stop persistent MCP client and official server
         if: always()
-        run: chrome-devtools stop || true
+        run: |
+          if [ -f /tmp/topkey-mcp-bridge.pid ]; then
+            kill "$(cat /tmp/topkey-mcp-bridge.pid)" 2>/dev/null || true
+          fi
+          cat /tmp/topkey-mcp-bridge.log || true
+
+      - name: Aggregate required verification gates
+        id: aggregate
+        if: always()
+        env:
+          FIXTURE_SERVER_OUTCOME: ${{ steps.fixture_server.outcome }}
+          MCP_BOOTSTRAP_OUTCOME: ${{ steps.mcp_bootstrap.outcome }}
+          HUB_UI_OUTCOME: ${{ steps.hub_ui.outcome }}
+          SPORTS_UI_OUTCOME: ${{ steps.sports_ui.outcome }}
+          PRODUCTION_OUTCOME: ${{ steps.production.outcome }}
+          REGRESSION_OUTCOME: ${{ steps.regression.outcome }}
+        run: |
+          set -euo pipefail
+          failed=0
+          for gate in FIXTURE_SERVER MCP_BOOTSTRAP HUB_UI SPORTS_UI PRODUCTION REGRESSION; do
+            variable="${gate}_OUTCOME"
+            outcome="${!variable}"
+            echo "$gate: $outcome"
+            if [ "$outcome" != "success" ]; then failed=1; fi
+          done
+          if [ "$failed" -ne 0 ]; then
+            echo "One or more required gates failed or were blocked."
+            exit 1
+          fi
+          echo "All required gates passed with MCP-backed browser evidence."

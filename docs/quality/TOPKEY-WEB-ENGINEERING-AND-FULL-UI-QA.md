@@ -1,105 +1,127 @@
 # TOPKEY Web Engineering & Full UI QA Standard
 
-> Project-specific execution standard. ECC is the engineering-method baseline; this document does not import ECC's runtime architecture into TOPKEY.
+This is the project execution contract for TOPKEY Activity Hub. ECC defines engineering discipline; Frontend System Design is a framework-agnostic design checklist; Chrome DevTools MCP is the required real-browser test channel. None of these references authorizes an architecture or framework migration.
 
-## 1. Repository boundaries
+## 1. Repository and reference boundaries
 
-- **ECC** (`rolthchildpham-wq/ECC`) is the reference for coding discipline, change-impact analysis, security review, accessibility, testing and evidence.
-- **TOPKEY Activity Hub** (`rolthchildpham-wq/activity-hub`) is the only repository to change when implementing TOPKEY product requirements.
-- Do not change TOPKEY's business architecture, Firebase RTDB roots/schema, Auth/session model, role/permission semantics, tournament IDs, records, schedules, scores, results, finance or audit contracts unless the requirement explicitly calls for a data migration and it has a reviewed migration/rollback plan.
-- Chrome DevTools MCP is the browser-verification system. Static tests are necessary but never sufficient for UI acceptance.
+- **Product code:** `rolthchildpham-wq/activity-hub` only.
+- **Engineering discipline:** `rolthchildpham-wq/ECC` — research-first, impact analysis, TDD, security, review and evidence.
+- **Design checklist:** `rolthchildpham-wq/frontend-system-design` — requirements, user journeys, platform, state, roles, component boundaries, responsive UX, accessibility, performance and QA.
+- **Browser test system:** official `ChromeDevTools/chrome-devtools-mcp` repository, built and run as an MCP server and controlled by an MCP client.
 
-## 2. Required change workflow
+Do not copy a reference repository's framework, runtime, routing, state, database, component library or deployment platform into TOPKEY. Adopt a practice only after mapping it to the existing code and business contracts.
 
-1. **Discover**: inspect ECC guidance, TOPKEY entrypoints, affected runtime modules, routes, data contracts, styles, service worker/cache keys, deployment configuration and existing tests.
-2. **Impact map**: list touched files, public routes, roles, Firebase roots/paths, business workflows, cache keys and dependent sports. Identify no-touch invariants.
-3. **Define acceptance**: write observable user actions and expected UI/data outcomes before implementation.
-4. **Implement in bounded slices**: keep UI, domain logic, persistence and routing responsibilities explicit. Avoid broad rewrites or concurrent edits to the same files.
-5. **Test bottom-up**: syntax/static → unit/domain → Firebase emulator/security → integration → real Chrome desktop/mobile → production-host checks.
-6. **Review evidence**: inspect screenshots, console, network, geometry, test logs and data persistence evidence. A green static suite alone cannot close a UI issue.
-7. **Release**: merge only after required checks pass. Treat GitHub merge and EdgeOne deployment as separate states.
-8. **Verify production**: confirm the served HTML and every changed asset/cache key, then use Chrome against the production URL for the affected user journeys. If the EdgeOne deploy hook is absent, report that deployment was not triggered; never infer deployment from merge.
-9. **Report**: provide commit/PR, test matrix, pass/fail/blocked counts, unresolved defects, deployment status and screenshot/evidence links.
+## 2. Required change lifecycle
 
-## 3. No-touch data and security invariants
+1. **Discover:** inspect current production/runtime ownership, entrypoints, routes, callers, APIs, persistence, auth, permissions, styles, service worker/cache keys, deployment configuration and existing tests.
+2. **Map impact:** enumerate touched files, sports, routes, roles, Firebase roots/paths, records, workflows, assets, cache keys and integrations. Explicitly list invariants.
+3. **Specify:** write acceptance criteria as observable user journeys, including loading, empty, error, denied-permission and responsive states. Define evidence and rollback.
+4. **TDD:** add a regression test that fails for the reported defect; implement a bounded patch; prove the test turns green; refactor only while keeping it green.
+5. **Review:** inspect the complete diff, security/permission boundaries, data compatibility, accessibility, responsive behavior, performance, caching and deployment impact.
+6. **Verify bottom-up:** syntax/static → unit/domain → repository regression → Firebase emulator/security → integration → Chrome DevTools MCP → production-host verification.
+7. **Release:** do not merge or deploy before required gates are green and the user has authorized release.
+8. **Report:** separate code, tests, browser evidence and deployment status. Use PASS / FAIL / BLOCKED / NOT TESTED; never infer success.
 
-Unless explicitly authorized, preserve:
+## 3. Mandatory Chrome DevTools MCP protocol
 
-- Firebase project/configuration and each sport's existing RTDB root.
-- Auth UID, login/session handoff, profile loading and logout behavior.
-- ADMIN/BTC/UMPIRE/VIEWER/LIVE_ONLY role semantics and detailed permission checks.
-- Tournament IDs and all teams, members, categories, courts, schedules, score events, standings, match history, registrations, announcements, finance, audit and offline queue records.
-- Spectator, registration and judge deep links, query parameters and hashes.
-- Existing scoring/rules engines. UI unification must use an adapter; it must not silently replace sport-specific scoring logic with generic behavior.
+The workflow must use the actual official MCP server, not its companion CLI.
 
-Any data migration requires a separate reviewed plan, backup, dry run, rollback and explicit approval.
+### 3.1 Build the server from the official repository
 
-## 4. Full Sports Hub browser matrix
+- Checkout `https://github.com/ChromeDevTools/chrome-devtools-mcp` at an explicit reviewed commit or release tag and record the resolved SHA in CI logs.
+- Use a supported Node version declared by that pinned revision.
+- Install dependencies and run the repository's documented build from its own checkout.
+- After `npm ci`, follow the pinned repository's own dependency bootstrap: `git submodule update --init` and `node scripts/gclient-sync.ts` (or the equivalent official `npm run sync` lifecycle). Do not guess nested submodule paths; gclient-sync resolves the revision's DEPS/CIPD inputs such as GN and Ninja.
+- Verify the GN binary, Ninja binary and generated server entrypoint exist before proceeding.
+- Do not use `chrome-devtools start/status/navigate/evaluate/stop` or `npx chrome-devtools` as a substitute for the MCP protocol.
 
-Run with official Chrome DevTools MCP on a real Chromium browser. The matrix must cover:
+### 3.2 Connect a real MCP client
 
-- Hub: desktop 1440px+, tablet 768px and mobile 390px/360px.
+- Use the MCP TypeScript client/stdio transport dependency compatible with the pinned official server. Prefer the client package already pinned in the server checkout; do not independently float SDK versions.
+- Start the official `chrome-devtools-mcp` server executable as a child process through `StdioClientTransport`.
+- Connect `Client` and prove the MCP `initialize` handshake completed.
+- Call `tools/list` and assert required tools exist: `new_page`, `list_pages`, `navigate_page`, `select_page`, `take_snapshot`, `evaluate_script`, `take_screenshot`, `resize_page`, `list_console_messages`, and `list_network_requests`.
+- Open a page through `tools/call(new_page)`, resolve its returned page ID, and use that same page ID for all page-scoped calls.
+- Every browser action must be issued using `client.callTool({name, arguments})`. Record the tool name, safe arguments, success/error and relevant result metadata.
+- Keep one MCP client, one server process and one browser session alive for the entire Hub/sport matrix. Do not reconnect or start a new browser per tab/sport.
+- On shutdown, close the MCP client/stdio transport cleanly and retain server stderr/logs.
+
+### 3.3 MCP failure policy
+
+Any failure in build, server startup, initialize handshake, `tools/list`, page creation/page selection, or a required `tools/call` is a hard MCP gate failure. Browser checks become BLOCKED; the workflow must not silently fall back to CLI, direct CDP, Puppeteer or Playwright. Capture diagnostics, continue independent static/regression/HTTP checks, then fail the aggregate job. Never mark the browser gate PASS.
+
+## 4. No-touch data and security invariants
+
+Unless a requirement explicitly authorizes a separately reviewed migration, preserve:
+
+- Firebase project/configuration and each sport's existing RTDB root/schema.
+- Auth UID, login/session handoff, profile loading and logout.
+- ADMIN/BTC/UMPIRE/VIEWER/LIVE_ONLY semantics and fine-grained permission checks.
+- Tournament IDs and all teams, members, categories, courts, schedules, score events, standings, results, match history, registrations, announcements, finance, audit and offline queue records.
+- Spectator, registration and judge routes, query parameters, hashes and deep links.
+- Existing scoring/rules engines. Shared navigation uses adapters; it does not merge engines or data roots.
+
+Do not use a production account or browser fixture to mutate business data. UI-only tests must run against isolated fixtures and assert zero write attempts. Persistence/authorization tests that require writes must use a dedicated Firebase emulator project and explicitly scoped test data. Any production data migration requires a separate plan, backup, dry run, rollback and explicit approval.
+
+## 5. Full Sports Hub browser matrix
+
+### Surfaces and viewport sizes
+
+- Hub desktop: 1440px or wider; tablet: 768px; mobile: 390px and 360px.
 - Seven sports: football, badminton, volleyball, running, handmade, shuttlecock and cooking.
-- Eleven workspace tabs per sport: overview, control, teams/check-in, schedule/standings, umpire, live/commentary, finance, announcements, audit, health and settings.
-- Roles: ADMIN, BTC, UMPIRE, VIEWER and LIVE_ONLY, including denied/hidden actions.
-- Public routes: spectator, registration and judge.
-- Each tab: click the navigation control; assert exactly one page is visible; assert selected nav state; assert overview/dashboard is hidden outside overview; capture a screenshot.
-- Each visible interactive control: inspect accessible name/label, disabled/permission state, event binding and expected result. Execute safe UI-only actions against isolated fixtures; never send production writes from a browser fixture.
-- Workflow actions: create/edit/cancel team and member; check-in; import/export CSV; create/edit/delete schedule; smart-scheduler preview/apply; date locks/busy teams/daily limits; score +/−/undo/next set/end match; results/standings; stream apply/pause/resume/stop; commentary; finance add/export; announcements; user/role/permission changes; audit view; backup/export/import; offline queue and reconnect.
-- Sport-specific rules and formats must be tested from their actual rule configuration, not generic placeholder content.
+- Eleven workspace areas per sport: overview, control, teams/check-in, schedule/standings, umpire, live/commentary, finance, announcements, audit, health and settings.
+- Roles: ADMIN, BTC, UMPIRE, VIEWER and LIVE_ONLY; verify both allowed and denied/hidden actions.
+- Public spectator, registration and judge routes.
 
-## 5. Browser assertions
+### Interaction requirements
 
-At minimum capture and assert:
+- Click every navigation item and relevant card/control; assert route identity, selected nav state and exactly one visible workspace page.
+- Assert dashboard/overview is hidden outside overview; no duplicated panels, stale content or leaked controls.
+- Inspect accessible name/label, keyboard focus, disabled state, permission state, event binding and expected result for visible interactive controls.
+- Exercise safe fixture interactions: accordion open/close, selectors, filters, date pickers, dialogs, validation, empty/loading/error states and responsive navigation.
+- Exercise business workflows against isolated fixtures or emulator data as appropriate: team/member lifecycle, check-in, CSV import/export, schedule lifecycle, smart-scheduler preview/apply, date locks/busy teams/daily limits, scoring/undo/next set/end match, results/standings, stream lifecycle, commentary, finance, announcements, role/permission administration, audit, backup/import/export, offline queue and reconnect.
+- Verify sport-specific rules from the real configuration, not a generic placeholder.
+- Continue independent sports and checks after a test fails. Collect all results; the aggregate job remains failed if any required assertion fails.
 
-- Current URL and route identity; no unintended redirect or loss of query/hash.
-- App boot completion, correct sport identity and correct data-root contract.
-- One visible workspace page after every tab click.
-- No dashboard leakage above another tab.
-- No horizontal overflow at supported viewport widths.
-- Readable foreground/background contrast (WCAG AA target 4.5:1 for normal text).
-- No uncaught console errors; classify warnings and browser Issues.
-- Changed HTML/CSS/JS requests return successful status; no missing assets.
-- Forms, buttons and select controls have labels/names and expected enabled/disabled state.
-- Fixture write-attempt counter remains zero unless a dedicated emulator-backed test explicitly expects a write.
-- Capture screenshots for Hub desktop/mobile and every sport/tab, plus console and network snapshots.
+### Required assertions
+
+- URL, route and query/hash preservation; no unexpected redirect.
+- App boot completion, correct sport identity and correct adapter/data-root contract.
+- Exactly one active workspace page after each navigation action.
+- No horizontal overflow at all supported viewports.
+- WCAG AA contrast target (4.5:1 for normal text), visible focus and accessible control names.
+- No uncaught console errors; warnings are captured and classified.
+- Changed HTML/CSS/JS requests succeed; no missing or stale assets.
+- Permission-sensitive actions match the active test role.
+- Fixture write-attempt counter remains zero unless a dedicated emulator test explicitly expects writes.
+- Screenshot and DOM snapshot evidence for Hub and every sport/tab; console and network evidence for each sport.
 
 ## 6. Badminton shared-workspace acceptance
 
-Badminton is not integrated merely because the Hub card exists or a redirect reaches the legacy application.
+Badminton is not integrated merely because its Hub card exists or a redirect opens the legacy application.
 
-Acceptance requires all of the following:
+1. Hub launches the canonical shared VNext workspace with `sport=badminton`; the URL remains in the shared shell (currently `/sports/vnext/index.html?sport=badminton`, or an explicitly documented same-shell route).
+2. Shared header, sport switcher, navigation, workspace frame, responsive behavior and tab semantics match other sports.
+3. Existing badminton scoring/tournament engine remains behind a documented adapter, preserving rule formats, umpire flow, live score, reports, history and public routes.
+4. Firebase root/schema and auth/session handoff remain unchanged.
+5. Test adapter contract, every badminton tab, scoring lifecycle, public links and desktop/mobile browser UI.
+6. A redirect to a standalone legacy page is a hard failure for shared-workspace acceptance.
 
-1. Hub launches the canonical shared VNext workspace with `sport=badminton`; the URL stays within `/sports/vnext/index.html` (or a documented same-shell route) and does not redirect to `/sports/badminton/index.html`.
-2. Shared header, sport switcher, navigation, workspace frame, responsive behavior and tab semantics are the same as other sports.
-3. Existing badminton scoring/tournament engine is retained behind a documented adapter. Preserve its rule formats, umpire flow, live score, reports, history and public routes.
-4. Existing Firebase root/schema and auth/session handoff remain unchanged.
-5. Test the adapter contract, every badminton tab, scoring lifecycle, public links and desktop/mobile browser UI.
-6. Browser evidence must prove there is one shared workspace, not a shared menu wrapped around a separate legacy screen.
+## 7. Evidence, aggregation and release report
 
-## 7. Evidence and release report
+Upload a run artifact containing:
 
-Store each Chrome run as a downloadable artifact containing:
+- MCP server commit/version, Node version, build log, initialize handshake and tools/list result.
+- MCP call log with tool names, page IDs, outcomes and errors.
+- Hub desktop/tablet/mobile screenshots and DOM snapshots.
+- `<sport>-boot.json`, `<sport>-mobile.json`, `<sport>-tab-<tab>.png` and matching DOM/JSON snapshots.
+- `<sport>-console.json`, `<sport>-network.json`, route/HTTP status logs and aggregate summary.
+- Server stderr and test diagnostics even on failure.
 
-- `hub-desktop.png`, `hub-mobile.png`
-- `<sport>-boot.json`, `<sport>-mobile.json`
-- `<sport>-tab-<tab>.png` and matching JSON for every sport/tab
-- `<sport>-console.json`, `<sport>-network.json`
-- route/HTTP status logs and test summary
+Definitions:
+- **PASS:** executed directly and evidence captured.
+- **FAIL:** executed and did not meet acceptance.
+- **BLOCKED:** could not execute due to a failed prerequisite, missing credential or unavailable service.
+- **NOT TESTED:** no evidence was produced.
 
-The release report must distinguish:
-
-- **PASS**: directly executed and evidence captured.
-- **FAIL**: executed and did not meet acceptance.
-- **BLOCKED**: could not be executed due to missing credentials, unavailable service or environment.
-- **NOT TESTED**: no evidence; never represent as PASS.
-
-A UI-only fixture is not proof of real Firebase persistence. A host HTTP 200 is not proof of a complete production user journey. A merged PR is not proof of deployment.
-
-## 8. Current baseline known gaps (2026-11-26)
-
-- H230 dashboard visibility fix is merged and its CSS/HTML/JS cache key is verified on the live EdgeOne host.
-- Current Chrome MCP workflow covers Hub desktop/mobile, all 7 sport launches, 11 tab visibility assertions per sport, accordion interaction, mobile overflow, console/network snapshots and production HTTP/assets.
-- The current workflow's badminton assertion still expects the legacy route `/sports/badminton/index.html`; therefore the current green run does **not** prove shared-workspace integration. Change this assertion when the adapter implementation is ready so a redirect is a hard failure.
-- The current per-tab browser loop primarily verifies navigation/visibility and captures screenshots. It does not yet execute every business action listed in section 4. Add isolated, emulator-backed interaction suites before calling the full functional matrix complete.
-- Current fixtures replace data write methods and record zero write attempts. Firebase persistence, real account/role behavior, offline sync and live streaming must be reported separately as blocked/not tested unless dedicated emulator/production-safe tests provide evidence.
+Static tests, HTTP 200, a UI-only fixture, a screenshot, PR merge and deployment are distinct evidence types. None substitutes for another.
