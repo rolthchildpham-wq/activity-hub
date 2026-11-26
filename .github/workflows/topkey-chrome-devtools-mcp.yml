@@ -259,9 +259,13 @@ jobs:
                   !dashboardFixture.hasLiveScore||!dashboardFixture.hasCategory||!dashboardFixture.hasCourt||
                   !dashboardFixture.hasSetRules||dashboardFixture.adminContrast<4.5)
                   throw new Error("H227 volleyball dashboard fixture failed: "+JSON.stringify(dashboardFixture));
-                A.state.config={...A.state.config,scheduleGroups:{NAM_6V6:{entries:[
+                A.state.config=A.state.config||{};
+                A.state.config.scheduleGroups={NAM_6V6:{format:"GROUP",entries:[
                   {id:"qaA",group:"A"},{id:"qaB",group:"A"},{id:"qaC",group:"B"},{id:"qaD",group:"B"}
-                ]}}};
+                ]}};
+                const categorySelect=document.getElementById("tk58-ranking-category");
+                if(categorySelect){categorySelect.value="NAM_6V6";categorySelect.dispatchEvent(new Event("change",{bubbles:true}))}
+                dashboardFixture.groupBucketCount=window.TopkeyUpgrade122Hotfix58?.groupBuckets?.("NAM_6V6")?.length||0;
                 A.state.teams={
                   qaA:{id:"qaA",name:"Đội A",category:"NAM_6V6"},qaB:{id:"qaB",name:"Đội B",category:"NAM_6V6"},
                   qaC:{id:"qaC",name:"Đội C",category:"NAM_6V6"},qaD:{id:"qaD",name:"Đội D",category:"NAM_6V6"}
@@ -279,7 +283,7 @@ jobs:
                 dashboardFixture.groupAIsolated=!!groupA&&groupAText.includes("Đội A")&&groupAText.includes("Đội B")&&!groupAText.includes("Đội C");
                 dashboardFixture.groupBIsolated=!!groupB&&groupBText.includes("Đội C")&&groupBText.includes("Đội D")&&!groupBText.includes("Đội A");
                 if(dashboardFixture.groupTables!==2||!dashboardFixture.groupAIsolated||!dashboardFixture.groupBIsolated){
-                  const groupDiagnostics={method:String(A.renderStandings).slice(0,420),configKeys:Object.keys(A.state.config||{}),savedGroups:A.state.config?.scheduleGroups,teamIds:Object.values(A.state.teams||{}).map(t=>({id:t.id,category:t.category})),matchGroups:Object.values(A.state.matches||{}).map(m=>({id:m.id,group:m.group,category:m.category})),tableExists:!!document.getElementById("standings-list"),hostExists:!!document.getElementById("standings-group-tables"),hostParent:document.getElementById("standings-group-tables")?.parentElement?.className};
+                  const groupDiagnostics={groupBucketCount:window.TopkeyUpgrade122Hotfix58?.groupBuckets?.("NAM_6V6")?.length||0,activeCategory:categorySelect?.value,method:String(A.renderStandings).slice(0,420),configKeys:Object.keys(A.state.config||{}),savedGroups:A.state.config?.scheduleGroups,teamIds:Object.values(A.state.teams||{}).map(t=>({id:t.id,category:t.category})),matchGroups:Object.values(A.state.matches||{}).map(m=>({id:m.id,group:m.group,category:m.category})),tableExists:!!document.getElementById("standings-list"),hostExists:!!document.getElementById("standings-group-tables"),hostParent:document.getElementById("standings-group-tables")?.parentElement?.className};
                   throw new Error("Volleyball group standings must render as separate A/B tables: "+JSON.stringify({dashboardFixture,groupDiagnostics}));
                 }
               }
