@@ -43,8 +43,8 @@ assert.match(badmintonAdapter, /target\.hash\s*=\s*location\.hash/,
   'Badminton entry must preserve public route hashes');
 
 const config = fs.readFileSync(path.join(root, 'sports/vnext/src/config.js'), 'utf8');
-assert.ok(vnext.includes('src/config.js?v=h231-badminton-shared-workspace-20261126'));
-assert.ok(vnext.includes('h97-vnext.bundle.js?v=h231-badminton-shared-workspace-20261126'));
+assert.ok(vnext.includes('src/config.js?v=h232-badminton-config-parity-20261126'));
+assert.ok(vnext.includes('h97-vnext.bundle.js?v=h232-badminton-config-parity-20261126'));
 assert.match(config, /badminton:\{[\s\S]*?root:'topkey_badminton_vnext_2026'/,
   'Badminton must use its existing Firebase VNext root');
 assert.match(config, /legacyEngineRoot:'topkey_badminton_vnext_2026'/,
