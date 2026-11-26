@@ -280,6 +280,10 @@ jobs:
                 const profileSelect=document.querySelector("#rules-form select[name=badmintonFormatProfile]");
                 result.badmintonFormatOptions=profileSelect?[...profileSelect.options].map(option=>option.value):[];
                 result.badmintonWorkspacePath=location.pathname;
+                result.badmintonConfigKey=T.SPORT?.key||null;
+                result.badmintonProfileCount=T.SPORT?.profile?.matchFormatProfiles?.length||0;
+                result.badmintonRuleFields=document.getElementById("match-rule-fields")?.innerHTML||"";
+                result.badmintonCoreScripts=[...document.scripts].filter(script=>script.src.includes("config.js")||script.src.includes("h97-vnext.bundle.js")).map(script=>script.src);
                 if(!profileSelect||profileSelect.options.length!==3||location.pathname!=="/sports/vnext/index.html")
                   throw new Error("Badminton shared workspace/format selector failed: "+JSON.stringify(result));
               }
