@@ -459,6 +459,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          mkdir -p artifacts/chrome-devtools
           base="https://topkey-activity-management.edgeone.dev"
           paths=("/" "/sports/vnext/index.html?sport=football" "/sports/vnext/badminton.html" "/sports/badminton/index.html" "/hub-dashboard-reference-h219.css" "/executive-dashboard.js?v=h232-live-schedule-20261126")
           for path in "${paths[@]}"; do
