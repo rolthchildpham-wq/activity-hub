@@ -55,7 +55,7 @@ for (const format of ['BEST_OF_3_21_SWITCH_10','SETS_21_21_15_SWITCH_7','BEST_OF
 }
 
 const appSource = fs.readFileSync(path.join(root, 'sports/vnext/src/app.js'), 'utf8');
-assert.match(appSource, /name='badmintonFormatProfile'/);
+assert.match(appSource, /select\.name='badmintonFormatProfile'/);
 assert.match(appSource, /rules\.setPoints=\[\.\.\.selectedProfile\.points\]/);
 assert.match(appSource, /rules\.changeEndsAt=\[\.\.\.selectedProfile\.changeEndsAt\]/);
 assert.match(appSource, /set\.endsChanged=true/);
