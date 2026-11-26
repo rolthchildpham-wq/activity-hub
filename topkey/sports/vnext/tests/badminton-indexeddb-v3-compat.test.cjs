@@ -65,7 +65,8 @@ const values = new Map([
   // production tournament ID remains in the standalone engine's keys.
   ['topkey_badminton_tid', 'main_2026'],
   ['topkey_badminton_tid_prod', 'main_2026'],
-  ['topkey_vnext_tid', 'production_event_2025'],
+  // The old primary key may be absent after a partial local migration;
+  // the old production backup key must still win over the stale new default.
   ['topkey_vnext_prod_tid', 'production_event_2025']
 ]);
 const writes = [];
