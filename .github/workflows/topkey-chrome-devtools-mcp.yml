@@ -276,14 +276,25 @@ jobs:
                   .filter(el=>getComputedStyle(el).display!=="none").length,
                 writeAttempts:window.__TOPKEY_QA_WRITE_ATTEMPTS,dashboardFixture,
                 fixture:"UI_ONLY_NO_DATABASE_WRITES"};
+              if(sport==="badminton"){
+                const profileSelect=document.querySelector("#rules-form select[name=badmintonFormatProfile]");
+                result.badmintonFormatOptions=profileSelect?[...profileSelect.options].map(option=>option.value):[];
+                result.badmintonWorkspacePath=location.pathname;
+                result.badmintonConfigKey=T.SPORT?.key||null;
+                result.badmintonProfileCount=T.SPORT?.profile?.matchFormatProfiles?.length||0;
+                result.badmintonRuleFields=document.getElementById("match-rule-fields")?.innerHTML||"";
+                result.badmintonCoreScripts=[...document.scripts].filter(script=>script.src.includes("config.js")||script.src.includes("h97-vnext.bundle.js")).map(script=>script.src);
+                if(!profileSelect||profileSelect.options.length!==3||location.pathname!=="/sports/vnext/index.html")
+                  throw new Error("Badminton shared workspace/format selector failed: "+JSON.stringify(result));
+              }
               if(result.pageCount<11||result.tabCount<11)throw new Error("Incomplete sport workspace: "+JSON.stringify(result));
               if(innerWidth>=1200&&result.kpiColumns!==4)throw new Error("Desktop KPI grid must have four columns: "+JSON.stringify(result));
               if(result.legacyHubLinksVisible!==0)throw new Error("Duplicate legacy Hub navigation is visible: "+JSON.stringify(result));
               if(!panel||result.analyticsContrast<4.5||result.analyticsSubContrast<4.5)
                 throw new Error("Workspace contrast failed: "+JSON.stringify(result));
               if(result.writeAttempts!==0)throw new Error("UI fixture attempted Firebase writes: "+JSON.stringify(result));
-              if(sport==="badminton"&&!location.pathname.includes("/sports/badminton/index.html"))
-                throw new Error("Shared badminton launcher did not reach badminton engine: "+JSON.stringify(result));
+              if(sport==="badminton"&&location.pathname!=="/sports/vnext/index.html")
+                throw new Error("Badminton did not remain in the shared VNext workspace: "+JSON.stringify(result));
               return JSON.stringify(result);
             }' --pageId 1 --output-format=json | tee "artifacts/chrome-devtools/$sport-boot.json"
             if grep -q 'Error:' "artifacts/chrome-devtools/$sport-boot.json"; then exit 1; fi

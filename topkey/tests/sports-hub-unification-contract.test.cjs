@@ -6,6 +6,7 @@ const root = path.resolve(__dirname, '..');
 const read = relative => fs.readFileSync(path.join(root, relative), 'utf8');
 const hub = read('index.html');
 const vnext = read('sports/vnext/src/config.js');
+const vnextBundle = read('sports/vnext/h97-vnext.bundle.js');
 const badminton = read('sports/badminton/src/config.js');
 const launcher = read('sports/vnext/badminton.html');
 const vnextPage = read('sports/vnext/index.html');
@@ -21,15 +22,22 @@ for (const name of ['Cầu lông', 'Bóng đá', 'Bóng chuyền', 'Chạy bộ'
 }
 const badmintonCard = sportLinks.find(item => item.name === 'Cầu lông');
 assert.match(badmintonCard.href, /^\.\/sports\/vnext\//, 'Badminton must launch through the common sports route');
-assert.match(launcher, /\.\.\/badminton\/index\.html/, 'Badminton adapter must preserve the original engine');
+assert.match(launcher, /query\.set\('sport', 'badminton'\)/, 'Badminton adapter must enter the shared VNext workspace');
+assert.doesNotMatch(launcher, /location\.replace\([^)]*\.\.\/badminton\/index\.html/, 'Badminton must not navigate to a standalone screen');
 
 assert.equal(badminton.match(/T\.ROOT = '([^']+)'/)?.[1], 'topkey_badminton_vnext_2026');
 assert.match(badminton, /T\.SCHEMA_VERSION = 3/);
 assert.match(vnext, /T\.SCHEMA_VERSION = 2/);
+assert.match(vnext, /badminton:\{[\s\S]*?schemaVersion:3/);
+assert.match(vnext, /T\.SCHEMA_VERSION=T\.SPORT\.schemaVersion\|\|2/);
+assert.match(vnext, /T\.MATCH_STATUSES=T\.SPORT\.key==='badminton'/);
+assert.match(vnextBundle, /badminton:\{\.\.\.common,key:'badminton',schemaVersion:3/);
+assert.match(vnextBundle, /T\.MATCH_STATUSES=T\.SPORT\.key==='badminton'/);
 assert.match(badminton, /T\.LEGACY_ROOT = 'topkey_badminton_app_ai'/);
 assert.match(vnext, /football:\{[\s\S]*?root:'topkey_football_vnext_2026'/);
 assert.match(vnext, /volleyball:\{[\s\S]*?root:'topkey_volleyball_vnext_2026'/);
 for (const [sport, root] of Object.entries({
+  badminton: 'topkey_badminton_vnext_2026',
   football: 'topkey_football_vnext_2026',
   volleyball: 'topkey_volleyball_vnext_2026',
   running: 'topkey_running_vnext_2026',

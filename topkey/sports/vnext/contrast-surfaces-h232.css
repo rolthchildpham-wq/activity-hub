@@ -1,0 +1,15 @@
+/* H232: restore readable ink on the light surfaces created by H218. */
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) :is(.subcard,.control-card,.court-card,.list-card,.checkin-row,.team-picker,.team-pick,.rule-chip,.schedule-preview,.modal-box,.tk-group-standings) :is(h1,h2,h3,h4,p,small,label,strong,b,span,em,li,td,th,.muted,.note,.hint,.description){
+ color:#29465b!important;opacity:1!important;text-shadow:none!important;
+}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) :is(.subcard,.control-card,.court-card,.list-card,.checkin-row,.team-picker,.team-pick,.rule-chip,.schedule-preview,.modal-box,.tk-group-standings) :is(a:not(.btn),.link){color:#155d88!important}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .tk-group-standings{background:#fff!important;border:1px solid #d7e1e9!important;border-radius:14px!important;padding:14px!important}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .tk-group-standings h3{color:#17384d!important;font-weight:850!important;margin:0 0 10px!important}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .tk-group-standings .table-wrap{overflow-x:auto!important}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .tk-group-standings table{min-width:620px!important}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .tk-group-standings th{background:#eaf2f7!important;color:#29485d!important}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .tk-group-standings td{background:#fff!important;color:#263f52!important}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .tk-group-standings tr:nth-child(even) td{background:#f7fafc!important}
+
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) #standings-group-tables{display:grid;gap:14px;min-width:0}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) #standings-group-tables[hidden]{display:none!important}

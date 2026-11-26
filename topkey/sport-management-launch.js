@@ -1,7 +1,7 @@
 (()=>{'use strict';
 const SPORTS=[
  {key:'football',name:'Bóng đá',icon:'⚽',href:'./sports/vnext/index.html?sport=football',description:'Lịch đấu, kết quả, BXH, sân, trọng tài, tài chính'},
- {key:'badminton',name:'Cầu lông',icon:'🏸',href:'./sports/badminton/index.html',description:'Nội dung thi, lịch sân, điểm set, trọng tài, BXH'},
+ {key:'badminton',name:'Cầu lông',icon:'🏸',href:'./sports/vnext/badminton.html?sport=badminton',description:'Nội dung thi, lịch sân, điểm set, trọng tài, BXH'},
  {key:'volleyball',name:'Bóng chuyền',icon:'🏐',href:'./sports/vnext/index.html?sport=volleyball',description:'Đội, lịch trận, tỷ số set, BXH, live'},
  {key:'running',name:'Chạy bộ',icon:'🏃',href:'./sports/vnext/index.html?sport=running',description:'Đăng ký VĐV, cự ly, thời gian, xếp hạng'},
  {key:'cooking',name:'Nấu ăn',icon:'👨‍🍳',href:'./sports/vnext/index.html?sport=cooking',description:'Đội thi, lịch chấm, giám khảo, kết quả'},
