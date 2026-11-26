@@ -47,7 +47,7 @@ jobs:
       - name: Install MCP TypeScript client and start one persistent MCP session
         run: |
           set -euo pipefail
-          npm install --no-save --package-lock=false @modelcontextprotocol/client@2.4.0
+          npm install --prefix topkey/tests --no-save --package-lock=false @modelcontextprotocol/client@2.4.0
           mkdir -p artifacts/chrome-devtools
           node topkey/tests/chrome-devtools-mcp-client.mjs daemon > /tmp/topkey-mcp-bridge.log 2>&1 &
           echo $! > /tmp/topkey-mcp-bridge.pid
