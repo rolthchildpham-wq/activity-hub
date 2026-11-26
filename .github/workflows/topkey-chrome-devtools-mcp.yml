@@ -376,7 +376,7 @@ jobs:
         run: |
           set -euo pipefail
           base="https://topkey-activity-management.edgeone.dev"
-          paths=("/" "/sports/vnext/index.html?sport=football" "/sports/vnext/badminton.html" "/sports/badminton/index.html" "/hub-dashboard-reference-h219.css" "/executive-dashboard.js?v=h219-calendar-20261125")
+          paths=("/" "/sports/vnext/index.html?sport=football" "/sports/vnext/badminton.html" "/sports/badminton/index.html" "/hub-dashboard-reference-h219.css" "/executive-dashboard.js?v=h232-live-schedule-20261126")
           for path in "${paths[@]}"; do
             code="000"
             for attempt in 1 2 3 4; do
