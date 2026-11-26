@@ -15,13 +15,13 @@ const context={state:{teams:{
 },config:{rules:{winPoints:3,lossPoints:0,tieBreakers:['points','setDiff','pointDiff','name']}}},setWinnerId(m){let a=0,b=0;(m.sets||[]).forEach(s=>{if(s.a>s.b)a++;else if(s.b>s.a)b++});return a>b?m.teamAId:b>a?m.teamBId:''}};
 test('volleyball standings filter to one saved group and apply set-difference tie break',()=>{
  const rows=ranking.call(context,{teamIds:['A','B','C'],category:'NAM_6V6'});
- assert.deepEqual(rows.map(x=>x.id),['C','A','B']);
+ assert.equal(Array.from(rows,x=>x.id).join(','),'C,A,B');
  assert.equal(rows[0].points,3);
  assert.equal(rows[0].setsFor-rows[0].setsAgainst,3);
 });
 test('group B standings do not mix teams or match results from group A',()=>{
  const rows=ranking.call(context,{teamIds:['D','E'],category:'NAM_6V6'});
- assert.deepEqual(rows.map(x=>x.id),['D','E']);
+ assert.equal(Array.from(rows,x=>x.id).join(','),'D,E');
  assert.equal(rows[0].played,1);
  assert.equal(rows[1].points,0);
 });
