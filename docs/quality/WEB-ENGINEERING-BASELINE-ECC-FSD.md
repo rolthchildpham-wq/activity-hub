@@ -46,7 +46,7 @@ Run syntax/static checks, focused tests, repository regressions, Firebase emulat
 ### G6 — Real browser verification through MCP
 Use the exact protocol in the project QA standard:
 1. Checkout the official ChromeDevTools MCP repository at a pinned commit and record its SHA.
-2. Install/build from that repository using the pinned revision's supported Node version and required submodules.
+2. Install/build from that repository using the pinned revision's supported Node version and official dependency bootstrap (`git submodule update --init` plus `node scripts/gclient-sync.ts`); do not guess nested submodule paths.
 3. Start the official `chrome-devtools-mcp` server entrypoint as an MCP stdio child process.
 4. Connect a compatible TypeScript MCP `Client`; prove the initialize handshake.
 5. Call `tools/list` and assert required navigation, snapshot, evaluation, screenshot, viewport, console and network tools exist.
