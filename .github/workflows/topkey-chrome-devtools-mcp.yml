@@ -33,17 +33,30 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Install official Chrome DevTools MCP CLI
-        run: |
-          npm install --global chrome-devtools-mcp@1.13.0
-          chrome-devtools --help
-
-      - name: Start isolated Chrome
+      - name: Checkout and build the official Chrome DevTools MCP repository
         run: |
           set -euo pipefail
-          chrome-devtools start --headless --isolated --no-usage-statistics --workspace="$GITHUB_WORKSPACE"
-          chrome-devtools status
+          mkdir -p .tools
+          git clone https://github.com/ChromeDevTools/chrome-devtools-mcp.git .tools/chrome-devtools-mcp
+          git -C .tools/chrome-devtools-mcp checkout 8c43179464d368a6a3c7f8ce2ee024e1e736b795
+          echo "ChromeDevTools MCP source commit: $(git -C .tools/chrome-devtools-mcp rev-parse HEAD)"
+          npm ci --prefix .tools/chrome-devtools-mcp
+          npm run build --prefix .tools/chrome-devtools-mcp
+          test -f .tools/chrome-devtools-mcp/out/Default/gen/src/bin/chrome-devtools-mcp.js
+
+      - name: Install MCP TypeScript client and start one persistent MCP session
+        run: |
+          set -euo pipefail
+          npm install --no-save --package-lock=false @modelcontextprotocol/client@2.4.0
           mkdir -p artifacts/chrome-devtools
+          node topkey/tests/chrome-devtools-mcp-client.mjs daemon > /tmp/topkey-mcp-bridge.log 2>&1 &
+          echo $! > /tmp/topkey-mcp-bridge.pid
+          for attempt in $(seq 1 60); do
+            if curl --silent --fail http://127.0.0.1:4174/health >/dev/null; then break; fi
+            sleep 1
+          done
+          curl --silent --show-error --fail http://127.0.0.1:4174/health
+          cat /tmp/topkey-mcp-bridge.log
 
       - name: Serve checked-out branch locally for real browser verification
         run: |
@@ -59,6 +72,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          chrome-devtools(){ node topkey/tests/chrome-devtools-mcp-client.mjs call "$@"; }
           base="http://127.0.0.1:4173"
           chrome-devtools navigate_page 1 --url "$base/" | tee artifacts/chrome-devtools/hub-navigation.txt
           sleep 2
@@ -174,6 +188,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          chrome-devtools(){ node topkey/tests/chrome-devtools-mcp-client.mjs call "$@"; }
           base="http://127.0.0.1:4173"
           sports=(football volleyball running handmade shuttle cooking badminton)
           tabs=(overview control teams schedule umpire live finance announcements audit health settings)
@@ -423,6 +438,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          chrome-devtools(){ node topkey/tests/chrome-devtools-mcp-client.mjs call "$@"; }
           base="https://topkey-activity-management.edgeone.dev"
           paths=("/" "/sports/vnext/index.html?sport=football" "/sports/vnext/badminton.html" "/sports/badminton/index.html" "/hub-dashboard-reference-h219.css" "/executive-dashboard.js?v=h232-live-schedule-20261126")
           for path in "${paths[@]}"; do
@@ -467,6 +483,10 @@ jobs:
           if-no-files-found: warn
           retention-days: 14
 
-      - name: Stop Chrome DevTools MCP
+      - name: Stop persistent MCP client and official server
         if: always()
-        run: chrome-devtools stop || true
+        run: |
+          if [ -f /tmp/topkey-mcp-bridge.pid ]; then
+            kill "$(cat /tmp/topkey-mcp-bridge.pid)" 2>/dev/null || true
+          fi
+          cat /tmp/topkey-mcp-bridge.log || true
