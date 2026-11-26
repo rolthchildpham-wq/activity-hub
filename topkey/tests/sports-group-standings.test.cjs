@@ -7,7 +7,7 @@ const method=app.slice(start,end).trim().replace(/,\s*$/,'');
 const ranking=vm.runInNewContext('({'+method+'}).ranking',{S:{mode:'sets',rules:{winPoints:3,lossPoints:0,tieBreakers:['points','setDiff','pointDiff','name']}},Object,Number,Math,Set});
 const context={state:{teams:{
  A:{id:'A',name:'Alpha',category:'NAM_6V6'},B:{id:'B',name:'Bravo',category:'NAM_6V6'},C:{id:'C',name:'Charlie',category:'NAM_6V6'},
- D:{id:'D',name:'Delta',category:'NAM_6V6'},E:{id:'E',name:'Echo',category:'NAM_6V6'}
+ D:{id:'D',name:'Delta'},E:{id:'E',name:'Echo'}
 },matches:{
  ab:{id:'ab',category:'NAM_6V6',status:'FINISHED',teamAId:'A',teamBId:'B',winnerId:'A',sets:[{a:25,b:20},{a:20,b:25},{a:25,b:23},{a:20,b:25},{a:15,b:12}]},
  ca:{id:'ca',category:'NAM_6V6',status:'FINISHED',teamAId:'C',teamBId:'A',winnerId:'C',sets:[{a:25,b:10},{a:25,b:11},{a:25,b:12}]},
