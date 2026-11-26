@@ -386,6 +386,46 @@ jobs:
             exit 1
           fi
           echo "### H228/H229 dashboard tab-isolation HTML, CSS and runtime verified on live EdgeOne." >> "$GITHUB_STEP_SUMMARY"
+      - name: Verify H232 live badminton, group standings, calendar and contrast assets
+        shell: bash
+        env:
+          EDGEONE_DEPLOY_HOOK: ${{ secrets.EDGEONE_DEPLOY_HOOK }}
+        run: |
+          set -euo pipefail
+          if [ -z "${EDGEONE_DEPLOY_HOOK}" ]; then
+            echo "::warning::H232 source is merged but no EdgeOne deploy hook is configured; live verification is skipped and production is NOT confirmed."
+            echo "### H232 production verification skipped — deploy hook is not configured." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          base="https://topkey-activity-management.edgeone.dev"
+          ok=0
+          for attempt in $(seq 1 18); do
+            root_code="$(curl --silent --show-error --max-time 15 --location --output /tmp/tk-h232-root.html --write-out '%{http_code}' "$base/index.html?__h232_probe=$GITHUB_RUN_ID-$attempt" || true)"
+            vnext_code="$(curl --silent --show-error --max-time 15 --location --output /tmp/tk-h232-vnext.html --write-out '%{http_code}' "$base/sports/vnext/index.html?sport=volleyball&__h232_probe=$GITHUB_RUN_ID-$attempt" || true)"
+            if [ "$root_code" = "200" ] && [ "$vnext_code" = "200" ] &&
+              grep -Fq 'executive-dashboard.js?v=h232-live-schedule-20261126' /tmp/tk-h232-root.html &&
+              grep -Fq 'src/config.js?v=h232-badminton-config-parity-20261126' /tmp/tk-h232-vnext.html &&
+              grep -Fq 'h97-vnext.bundle.js?v=h232-badminton-config-parity-20261126' /tmp/tk-h232-vnext.html &&
+              grep -Fq 'contrast-surfaces-h232.css?v=h232-surface-contrast-20261126' /tmp/tk-h232-vnext.html; then
+              curl --fail --silent --show-error --max-time 20 "$base/executive-dashboard.js?v=h232-live-schedule-20261126" -o /tmp/tk-h232-executive.js
+              curl --fail --silent --show-error --max-time 20 "$base/sports/vnext/h97-vnext.bundle.js?v=h232-badminton-config-parity-20261126" -o /tmp/tk-h232-vnext.js
+              curl --fail --silent --show-error --max-time 20 "$base/sports/vnext/contrast-surfaces-h232.css?v=h232-surface-contrast-20261126" -o /tmp/tk-h232-contrast.css
+              grep -Fq "db.ref(s.root+'/matches')" /tmp/tk-h232-executive.js
+              grep -Fq 'Lịch thi đấu và hoạt động các môn' /tmp/tk-h232-executive.js
+              grep -Fq 'BEST_OF_3_21_SWITCH_10' /tmp/tk-h232-vnext.js
+              grep -Fq 'tk-group-standings' /tmp/tk-h232-vnext.js
+              grep -Fq 'H232: restore readable ink on the light surfaces created by H218.' /tmp/tk-h232-contrast.css
+              ok=1
+              break
+            fi
+            echo "H232 live propagation attempt=$attempt root=$root_code vnext=$vnext_code"
+            sleep 8
+          done
+          if [ "$ok" != "1" ]; then
+            echo "::error::H232 live assets have not propagated to EdgeOne. Do not claim production is updated."
+            exit 1
+          fi
+          echo "### H232 production HTML, runtime bundle, active schedule calendar and contrast CSS verified on EdgeOne." >> "$GITHUB_STEP_SUMMARY"
       - name: Document EdgeOne release settings
         shell: bash
         env:
