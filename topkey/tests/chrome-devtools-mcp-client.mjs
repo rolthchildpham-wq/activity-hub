@@ -106,6 +106,21 @@ function extractPageId(result, preferredUrl) {
         const found = walk(parsed);
         if (found !== undefined) return found;
       } catch {}
+      // The official MCP list_pages output currently renders page handles as
+      // numbered lines (for example "2: Title (http://...) [selected]").
+      // Resolve the numeric handle from that text, preferring the requested URL.
+      const pageLines = trimmed.split(/\r?\n/);
+      for (const line of pageLines) {
+        const listedPage = line.match(/^\s*(\d+):\s+.*?\((https?:\/\/[^)]+)\)/);
+        if (listedPage && preferredUrl && (listedPage[2] === preferredUrl || listedPage[2].startsWith(preferredUrl))) {
+          return Number(listedPage[1]);
+        }
+      }
+      const selectedLine = pageLines.find(line => /^\s*\d+:/.test(line) && /\[selected\]/i.test(line));
+      if (selectedLine) {
+        const selectedMatch = selectedLine.match(/^\s*(\d+):/);
+        if (selectedMatch) return Number(selectedMatch[1]);
+      }
       const match = trimmed.match(/(?:page\s*id|pageId|\bid)\s*[:=#]\s*["']?(\d+)/i);
       if (match) return Number(match[1]);
       return undefined;
