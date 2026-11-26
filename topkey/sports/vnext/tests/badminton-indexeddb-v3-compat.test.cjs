@@ -61,6 +61,10 @@ vm.runInNewContext(vnextSource, context, {filename: 'vnext-idb.js'});
 
 const firebaseSource = fs.readFileSync(path.join(__dirname, '../src/firebase.js'), 'utf8');
 const values = new Map([
+  // Simulate a stale default written by the new shell while the real
+  // production tournament ID remains in the standalone engine's keys.
+  ['topkey_badminton_tid', 'main_2026'],
+  ['topkey_badminton_tid_prod', 'main_2026'],
   ['topkey_vnext_tid', 'production_event_2025'],
   ['topkey_vnext_prod_tid', 'production_event_2025']
 ]);
