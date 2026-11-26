@@ -47,6 +47,6 @@ console.log(JSON.stringify({
   catalogEntries: catalog.length,
   sportEntries: requiredSports.length - 1,
   sharedShellStylesheet: shellAsset,
-  badmintonEngine: 'retained behind explicit route adapter',
+  badmintonEngine: 'legacy engine source retained; shared VNext entry enabled',
   queryAndHashForwarding: 'verified'
 }, null, 2));
