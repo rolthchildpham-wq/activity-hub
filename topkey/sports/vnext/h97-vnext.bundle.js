@@ -1876,9 +1876,10 @@ const wait=()=>{if(!window.firebase?.apps?.length){setTimeout(wait,200);return}f
 (()=>{
 'use strict';
 const T=window.Topkey,App=T?.App,U=T?.U,S=T?.SPORT;
-if(!T||!App||!U||!S||window.__TOPKEY_H58_INSTALLED)return;
-window.__TOPKEY_H58_INSTALLED=true;
 const VERSION='2026.11.06-vnext-upgrade122-hotfix58-multisport-parity';
+if(!T||!App||!U||!S){window.__TOPKEY_H58_STATUS='skipped: missing TOPKEY core';return}
+if(window.__TOPKEY_H58_INSTALLED===VERSION){window.__TOPKEY_H58_STATUS='already-installed';return}
+window.__TOPKEY_H58_INSTALLED=VERSION;window.__TOPKEY_H58_STATUS='installing';
 const CACHE_TAG='u122h58-20261106';
 const $=id=>document.getElementById(id);
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -2080,7 +2081,7 @@ function publicBootFix(){const h=location.hash;if(h==='#spectator'||h==='#regist
 window.addEventListener('hashchange',()=>setTimeout(publicBootFix,0));
 
 function hook(){style();stamp();publicBootFix();ensureRankingToolbar();renderStandings();patchPublicLinks();if(location.hash==='#spectator')renderPublicStandings();const baseAll=App.renderAll?.bind(App);if(baseAll&&!App.__h58All){App.__h58All=true;App.renderAll=function(...a){const r=baseAll(...a);stamp();ensureRankingToolbar();renderStandings();patchPublicLinks();return r}}const baseTab=App.showTab?.bind(App);if(baseTab&&!App.__h58Tab){App.__h58Tab=true;App.showTab=function(tab,...a){const r=baseTab(tab,...a);if(tab==='settings')setTimeout(patchPublicLinks,0);if(tab==='overview')setTimeout(()=>{ensureRankingToolbar();renderStandings()},0);return r}}}
-hook();window.TopkeyLifecycle?.bind(()=>{stamp();patchPublicLinks()},{settleTicks:6,settleEvery:300,debounceMs:60});
+hook();window.TopkeyLifecycle?.bind(()=>{stamp();patchPublicLinks()},{settleTicks:6,settleEvery:300,debounceMs:60});window.__TOPKEY_H58_STATUS='installed';
 window.TopkeyUpgrade122Hotfix58={VERSION,CACHE_TAG,ranking,groupBuckets,renderStandings,renderPublicStandings,canonicalMatches,isAdministrativeLoss,reorderMatches,matchForScheduleRow,reportHtml,csvText};
 })();
 
