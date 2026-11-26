@@ -33,15 +33,33 @@
       const isTestTid = value => String(value || '').startsWith('__testlab_');
       const storageKey = 'topkey_' + T.SPORT.key + '_tid';
       const backupKey = storageKey + '_prod';
-      let savedTid = localStorage.getItem(storageKey) || '';
-      let prodBackup = localStorage.getItem(backupKey) || '';
-      if (isTestTid(savedTid)) { localStorage.removeItem(storageKey); savedTid = ''; }
-      if (isTestTid(prodBackup)) { localStorage.removeItem(backupKey); prodBackup = ''; }
+      // The standalone badminton engine used these keys before it was routed
+      // into the shared VNext workspace. Prefer them for badminton so the
+      // production tournament ID is carried forward instead of silently
+      // falling back to main_2026.
+      const legacyTidKeys = T.SPORT.key === 'badminton'
+        ? ['topkey_vnext_tid', 'topkey_vnext_prod_tid']
+        : [];
+      const readFirst = keys => keys.map(key => localStorage.getItem(key) || '').find(Boolean) || '';
+      const savedTidKeys = T.SPORT.key === 'badminton'
+        ? [...legacyTidKeys, storageKey, backupKey]
+        : [storageKey];
+      let savedTid = readFirst(savedTidKeys);
+      let prodBackup = readFirst([...legacyTidKeys.slice(1), backupKey]);
+      if (isTestTid(savedTid)) {
+        [storageKey, ...legacyTidKeys.slice(0, 1)].forEach(key => localStorage.removeItem(key));
+        savedTid = '';
+      }
+      if (isTestTid(prodBackup)) {
+        [backupKey, ...legacyTidKeys.slice(1)].forEach(key => localStorage.removeItem(key));
+        prodBackup = '';
+      }
       this.tid = urlTid || savedTid || prodBackup || 'main_2026';
-      if (urlTid && !isTestTid(urlTid)) {
-        localStorage.setItem(storageKey, urlTid);
-        localStorage.setItem(backupKey, urlTid);
-      } else if (savedTid && !isTestTid(savedTid)) localStorage.setItem(backupKey, savedTid);
+      if (!isTestTid(this.tid)) {
+        // Keep both key families synchronized after resolving the canonical ID.
+        // This also repairs a missing primary key when only the legacy backup exists.
+        [storageKey, backupKey, ...legacyTidKeys].forEach(key => localStorage.setItem(key, this.tid));
+      }
       this.listeners = [];
       this.pending = 0;
       this._initPromise = null;
