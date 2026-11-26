@@ -1077,7 +1077,7 @@ function adminSearchUI(){
   if(!bar){
     bar=document.createElement('div');bar.id='tk16-admin-search';bar.className='tk16-searchbar';
     bar.innerHTML=`<div class="field tk16-search-field"><label>🔎 Tìm lịch theo tên VĐV / đội</label><input id="tk16-admin-search-input" type="search" autocomplete="off" placeholder="VD: BẮC, VIỆT, KHÁNH LINH, Đội 8, MEN_G27..."></div><button id="tk16-admin-search-btn" type="button" class="btn primary">🔎 Tìm</button><button id="tk16-admin-search-clear" type="button" class="btn">× Xóa tìm</button><span id="tk16-admin-search-count" class="tk16-search-count"></span>`;
-    const wrap=card.querySelector('.table-wrap');card.insertBefore(bar,wrap);
+    const wrap=card.querySelector('.table-wrap');if(wrap?.parentNode)wrap.parentNode.insertBefore(bar,wrap);else card.appendChild(bar);
     const input=$('tk16-admin-search-input');
     const run=()=>{App.scheduleSearch=input.value;applyAdminFilter(App)};
     input.addEventListener('input',run);input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();run()}});
@@ -1110,7 +1110,7 @@ function publicSearchUI(){
   if(!bar){
     bar=document.createElement('div');bar.id='tk16-public-search';bar.className='tk16-searchbar tk16-public-searchbar';
     bar.innerHTML=`<div class="field tk16-search-field"><label>🔎 Tìm lịch của VĐV / đội</label><input id="tk16-public-search-input" type="search" autocomplete="off" placeholder="Nhập tên VĐV hoặc tên đội..."></div><button id="tk16-public-search-btn" type="button" class="btn primary">🔎 Tìm</button><button id="tk16-public-search-clear" type="button" class="btn">× Xóa tìm</button><span id="tk16-public-search-count" class="tk16-search-count"></span>`;
-    card.insertBefore(bar,sched);
+    if(sched.parentNode)sched.parentNode.insertBefore(bar,sched);else card.appendChild(bar);
     const input=$('tk16-public-search-input');const run=()=>{App.publicScheduleSearch=input.value;applyPublicFilter(App)};
     input.addEventListener('input',run);input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();run()}});
     $('tk16-public-search-btn').onclick=run;$('tk16-public-search-clear').onclick=()=>{input.value='';App.publicScheduleSearch='';applyPublicFilter(App);input.focus()};
