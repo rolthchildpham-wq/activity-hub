@@ -82,9 +82,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mcp_tool(){ node topkey/tests/chrome-devtools-mcp-client.mjs call "$@"; }
+          mcp_tool(){ node topkey/tests/chrome-devtools-mcp-client.mjs call "$@" 2>&1 | tee -a artifacts/chrome-devtools/mcp-tool-output.log; }
           base="http://127.0.0.1:4173"
           mcp_tool navigate_page 1 --url "$base/" | tee artifacts/chrome-devtools/hub-navigation.txt
+          mcp_tool take_snapshot 1 --filePath artifacts/chrome-devtools/hub-desktop.txt >/dev/null
           sleep 2
           mcp_tool evaluate_script '() => {
             const cards=[...document.querySelectorAll("#topkey-sports .sport")];
@@ -154,6 +155,7 @@ jobs:
           }' --pageId 1 --output-format=json | tee artifacts/chrome-devtools/hub-dashboard-fixture.json
           if grep -q 'Error:' artifacts/chrome-devtools/hub-dashboard-fixture.json; then exit 1; fi
           mcp_tool take_screenshot 1 --filePath artifacts/chrome-devtools/hub-desktop.png
+          mcp_tool take_snapshot 1 --filePath artifacts/chrome-devtools/hub-desktop-after-dashboard.txt >/dev/null
           mcp_tool evaluate_script '() => {document.querySelector("#executive-dashboard")?.scrollIntoView({block:"start"});return "dashboard-scrolled"}' --pageId 1
           mcp_tool take_screenshot 1 --filePath artifacts/chrome-devtools/hub-dashboard-ui-fixture.png
           mcp_tool evaluate_script '() => {window.scrollTo(0,0);return "top"}' --pageId 1
@@ -190,6 +192,7 @@ jobs:
             return JSON.stringify(result);
           }' --pageId 1 --output-format=json | tee artifacts/chrome-devtools/hub-mobile.json
           mcp_tool take_screenshot 1 --filePath artifacts/chrome-devtools/hub-mobile.png
+          mcp_tool take_snapshot 1 --filePath artifacts/chrome-devtools/hub-mobile.txt >/dev/null
           mcp_tool evaluate_script '() => {document.querySelector(".exec-calendar-card")?.scrollIntoView({block:"center"});return "calendar-mobile-scrolled"}' --pageId 1
           mcp_tool take_screenshot 1 --filePath artifacts/chrome-devtools/hub-calendar-mobile.png
           mcp_tool resize_page 1 1440 1000
@@ -355,7 +358,8 @@ jobs:
               return JSON.stringify(result);
             }' --pageId 1 --output-format=json | tee "artifacts/chrome-devtools/$sport-boot.json"
             if grep -q 'Error:' "artifacts/chrome-devtools/$sport-boot.json"; then failed=1; fi
-            grep -q 'UI_ONLY_NO_DATABASE_WRITES' "artifacts/chrome-devtools/$sport-boot.json"
+            if ! grep -q 'UI_ONLY_NO_DATABASE_WRITES' "artifacts/chrome-devtools/$sport-boot.json"; then failed=1; fi
+            mcp_tool take_snapshot 1 --filePath "artifacts/chrome-devtools/$sport-boot.txt" >/dev/null
             for tab in "${tabs[@]}"; do
               script="async () => {
                 const wait=ms=>new Promise(resolve=>setTimeout(resolve,120));
@@ -400,8 +404,9 @@ jobs:
               }"
               mcp_tool evaluate_script "$script" --pageId 1 --output-format=json | tee "artifacts/chrome-devtools/$sport-tab-$tab.json"
               if grep -q 'Error:' "artifacts/chrome-devtools/$sport-tab-$tab.json"; then failed=1; fi
-              grep -q "page-$tab" "artifacts/chrome-devtools/$sport-tab-$tab.json"
+              if ! grep -q "page-$tab" "artifacts/chrome-devtools/$sport-tab-$tab.json"; then failed=1; fi
               mcp_tool take_screenshot 1 --filePath "artifacts/chrome-devtools/$sport-tab-$tab.png" >/dev/null
+              mcp_tool take_snapshot 1 --filePath "artifacts/chrome-devtools/$sport-tab-$tab.txt" >/dev/null
             done
             mcp_tool evaluate_script 'async () => {
               const wait=ms=>new Promise(resolve=>setTimeout(resolve,120));
@@ -444,8 +449,8 @@ jobs:
             if grep -q 'Error:' "artifacts/chrome-devtools/$sport-mobile.json"; then failed=1; fi
             mcp_tool take_screenshot 1 --filePath "artifacts/chrome-devtools/$sport-mobile.png" >/dev/null
             mcp_tool resize_page 1 1440 1000
-            mcp_tool list_console_messages 1 --output-format=json > "artifacts/chrome-devtools/$sport-console.json" || true
-            mcp_tool list_network_requests 1 --output-format=json > "artifacts/chrome-devtools/$sport-network.json" || true
+            mcp_tool list_console_messages 1 --output-format=json > "artifacts/chrome-devtools/$sport-console.json" 2>&1
+            mcp_tool list_network_requests 1 --output-format=json > "artifacts/chrome-devtools/$sport-network.json" 2>&1
           done
           if [ "$failed" -ne 0 ] || grep -R -q 'MCP_TOOL_ERROR' artifacts/chrome-devtools; then
             echo "One or more sports failed; all remaining sports were still attempted."
