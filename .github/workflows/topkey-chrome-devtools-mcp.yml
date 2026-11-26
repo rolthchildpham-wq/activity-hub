@@ -259,6 +259,27 @@ jobs:
                   !dashboardFixture.hasLiveScore||!dashboardFixture.hasCategory||!dashboardFixture.hasCourt||
                   !dashboardFixture.hasSetRules||dashboardFixture.adminContrast<4.5)
                   throw new Error("H227 volleyball dashboard fixture failed: "+JSON.stringify(dashboardFixture));
+                A.state.config={...A.state.config,scheduleGroups:{NAM_6V6:{entries:[
+                  {id:"qaA",group:"A"},{id:"qaB",group:"A"},{id:"qaC",group:"B"},{id:"qaD",group:"B"}
+                ]}}};
+                A.state.teams={
+                  qaA:{id:"qaA",name:"Đội A",category:"NAM_6V6"},qaB:{id:"qaB",name:"Đội B",category:"NAM_6V6"},
+                  qaC:{id:"qaC",name:"Đội C",category:"NAM_6V6"},qaD:{id:"qaD",name:"Đội D",category:"NAM_6V6"}
+                };
+                A.state.matches={
+                  qaGroupA:{id:"qaGroupA",category:"NAM_6V6",stage:"GROUP",group:"A",status:"FINISHED",teamAId:"qaA",teamBId:"qaB",winnerId:"qaA",sets:[{a:25,b:20},{a:25,b:22},{a:25,b:23}]},
+                  qaGroupB:{id:"qaGroupB",category:"NAM_6V6",stage:"GROUP",group:"B",status:"FINISHED",teamAId:"qaC",teamBId:"qaD",winnerId:"qaC",sets:[{a:25,b:18},{a:25,b:20},{a:25,b:22}]}
+                };
+                A.renderStandings();
+                const groupSections=[...document.querySelectorAll("#standings-group-tables .tk-group-standings")];
+                const groupA=groupSections.find(section=>section.textContent.includes("Bảng A"));
+                const groupB=groupSections.find(section=>section.textContent.includes("Bảng B"));
+                const groupAText=groupA?.textContent||"",groupBText=groupB?.textContent||"";
+                dashboardFixture.groupTables=groupSections.length;
+                dashboardFixture.groupAIsolated=!!groupA&&groupAText.includes("Đội A")&&groupAText.includes("Đội B")&&!groupAText.includes("Đội C");
+                dashboardFixture.groupBIsolated=!!groupB&&groupBText.includes("Đội C")&&groupBText.includes("Đội D")&&!groupBText.includes("Đội A");
+                if(dashboardFixture.groupTables!==2||!dashboardFixture.groupAIsolated||!dashboardFixture.groupBIsolated)
+                  throw new Error("Volleyball group standings must render as separate A/B tables: "+JSON.stringify(dashboardFixture));
               }
               const panelBg=panel?getComputedStyle(panel).backgroundColor:"";
               const headingColor=heading?getComputedStyle(heading).color:"";
@@ -317,9 +338,29 @@ jobs:
                   throw new Error('Overview/dashboard leaked into $tab: '+JSON.stringify({overviewVisible,dashboardVisible,overviewClass:overview?.className,boardParent:board?.parentElement?.id}));
                 if('$tab'==='overview'&&!overviewVisible)
                   throw new Error('Overview dashboard is not visible on overview tab');
+                const surfaceSelector='.card,.subcard,.control-card,.court-card,.list-card,.checkin-row,.team-picker,.team-pick,.check-option,.rule-chip,.schedule-preview,.table-wrap,.modal-box,.tk-group-standings,.tk227-match,.tk227-rule,.official-score .side,.score-head>div,.video-box,.radio-row,.danger-check,.delete-preview,.mode-note,.tk79-prize-editor,.tk152-panel';
+                const textSelector='h1,h2,h3,h4,p,small,label,strong,b,span,em,li,td,th';
+                const rgb=value=>{const m=String(value||'').match(/[\\d.]+/g);return m&&m.length>=3?m.slice(0,3).map(Number):null};
+                const lum=value=>{const v=rgb(value);if(!v)return 0;const a=v.map(n=>{n/=255;return n<=.04045?n/12.92:Math.pow((n+.055)/1.055,2.4)});return .2126*a[0]+.7152*a[1]+.0722*a[2]};
+                const ratio=(bg,fg)=>(Math.max(lum(bg),lum(fg))+.05)/(Math.min(lum(bg),lum(fg))+.05);
+                const failures=[];let minContrast=99,samples=0;
+                for(const surface of page.querySelectorAll(surfaceSelector)){
+                  if(!surface.getClientRects().length)continue;
+                  const bg=getComputedStyle(surface).backgroundColor;
+                  if(!bg||bg==='rgba(0, 0, 0, 0)')continue;
+                  for(const el of surface.querySelectorAll(textSelector)){
+                    if(el.closest('button,.btn')||el.closest(surfaceSelector)!==surface||!el.getClientRects().length||!el.textContent.trim())continue;
+                    const ownBg=getComputedStyle(el).backgroundColor;
+                    const effectiveBg=ownBg&&ownBg!=='rgba(0, 0, 0, 0)'?ownBg:bg;
+                    const value=ratio(effectiveBg,getComputedStyle(el).color);samples++;
+                    minContrast=Math.min(minContrast,value);
+                    if(value<4.5&&failures.length<12)failures.push({tag:el.tagName,className:String(el.className||''),text:el.textContent.trim().slice(0,60),bg:effectiveBg,fg:getComputedStyle(el).color,ratio:Number(value.toFixed(2))});
+                  }
+                }
+                const contrastAudit={samples,minContrast:Number(minContrast.toFixed(2)),failures};
+                if(failures.length)throw new Error('WCAG AA light-surface contrast failed $tab: '+JSON.stringify(contrastAudit));
                 return JSON.stringify({tab:'$tab',activePage:page.id,
-                  overviewVisible,dashboardVisible,
-                  visibleCards:page.querySelectorAll('.card,.subcard').length});
+                  overviewVisible,dashboardVisible,visibleCards:page.querySelectorAll('.card,.subcard').length,contrastAudit});
               }"
               chrome-devtools evaluate_script "$script" --pageId 1 --output-format=json | tee "artifacts/chrome-devtools/$sport-tab-$tab.json"
               if grep -q 'Error:' "artifacts/chrome-devtools/$sport-tab-$tab.json"; then exit 1; fi
