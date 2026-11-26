@@ -26,6 +26,7 @@
   };
   const key=new URLSearchParams(location.search).get('sport')||'football';
   T.SPORT=T.SPORTS[key]||T.SPORTS.football;
+  T.SCHEMA_VERSION=T.SPORT.schemaVersion||2;
   T.ROOT=T.SPORT.root;
   T.DEFAULT_RULES=T.SPORT.rules;
   T.MATCH_STATUSES=['SCHEDULED','CHECK_IN','READY','CALLED','LIVE','SUSPENDED','FINISHED','WALKOVER','RETIRED','DISQUALIFIED','CANCELLED'];
