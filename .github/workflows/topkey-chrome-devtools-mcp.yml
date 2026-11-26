@@ -265,7 +265,6 @@ jobs:
                 ]}};
                 const categorySelect=document.getElementById("tk58-ranking-category");
                 if(categorySelect){categorySelect.value="NAM_6V6";categorySelect.dispatchEvent(new Event("change",{bubbles:true}))}
-                dashboardFixture.groupBucketCount=window.TopkeyUpgrade122Hotfix58?.groupBuckets?.("NAM_6V6")?.length||0;
                 A.state.teams={
                   qaA:{id:"qaA",name:"Đội A",category:"NAM_6V6"},qaB:{id:"qaB",name:"Đội B",category:"NAM_6V6"},
                   qaC:{id:"qaC",name:"Đội C",category:"NAM_6V6"},qaD:{id:"qaD",name:"Đội D",category:"NAM_6V6"}
@@ -274,6 +273,7 @@ jobs:
                   qaGroupA:{id:"qaGroupA",category:"NAM_6V6",stage:"GROUP",group:"A",status:"FINISHED",teamAId:"qaA",teamBId:"qaB",winnerId:"qaA",sets:[{a:25,b:20},{a:25,b:22},{a:25,b:23}]},
                   qaGroupB:{id:"qaGroupB",category:"NAM_6V6",stage:"GROUP",group:"B",status:"FINISHED",teamAId:"qaC",teamBId:"qaD",winnerId:"qaC",sets:[{a:25,b:18},{a:25,b:20},{a:25,b:22}]}
                 };
+                dashboardFixture.groupBucketCount=window.TopkeyUpgrade122Hotfix58?.groupBuckets?.("NAM_6V6")?.length||0;
                 A.renderStandings();
                 const groupSections=[...document.querySelectorAll("#standings-group-tables .tk-group-standings")];
                 const groupA=groupSections.find(section=>section.textContent.includes("Bảng A"));
