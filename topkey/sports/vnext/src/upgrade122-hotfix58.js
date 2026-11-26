@@ -105,7 +105,7 @@ function renderStandings(){
   const tableWrap=box.closest('.table-wrap')||head.closest('.table-wrap')||box.closest('table')?.parentElement;
   const groups=groupBuckets(activeCategory);let host=$('standings-group-tables');
   if(groups.length){
-    if(!host){host=document.createElement('div');host.id='standings-group-tables';host.className='tk-standings-groups';if(tableWrap)tableWrap.after(host);else box.parentElement?.appendChild(host)}
+    if(!host){host=document.createElement('div');host.id='standings-group-tables';host.className='tk-standings-groups';const parent=tableWrap?.parentNode||box.parentElement;if(parent)parent.appendChild(host)}
     host.replaceChildren();host.hidden=false;if(tableWrap)tableWrap.hidden=true;
     const labels={NAM_6V6:'Nam 6 người',NU_6V6:'Nữ 6 người',MIX_6V6:'Nam nữ 6 người',PHONG_TRAO_6V6:'Phong trào 6 người'};
     groups.forEach(g=>{
@@ -131,7 +131,7 @@ function renderStandings(){
 }
 App.renderStandings=renderStandings;
 
-function ensureRankingToolbar(){const head=$('ranking-head');if(!head||$('tk58-ranking-toolbar'))return;const wrap=head.closest('.table-wrap')||head.parentElement;const bar=document.createElement('div');bar.id='tk58-ranking-toolbar';bar.className='tk58-toolbar';bar.innerHTML=`<b>🏆 BXH nhanh</b><label>Nội dung <select id="tk58-ranking-category">${(S.categories||[]).map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('')}</select></label><button id="tk58-report-btn" class="btn mini primary">🧾 Giải trình BXH</button>`;wrap.parentElement?.insertBefore(bar,wrap);$('tk58-ranking-category').value=activeCategory;$('tk58-ranking-category').onchange=e=>{activeCategory=e.target.value;renderStandings();renderPublicStandings()};$('tk58-report-btn').onclick=openReport;}
+function ensureRankingToolbar(){const head=$('ranking-head');if(!head||$('tk58-ranking-toolbar'))return;const wrap=head.closest('.table-wrap')||head.parentElement;const bar=document.createElement('div');bar.id='tk58-ranking-toolbar';bar.className='tk58-toolbar';bar.innerHTML=`<b>🏆 BXH nhanh</b><label>Nội dung <select id="tk58-ranking-category">${(S.categories||[]).map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('')}</select></label><button id="tk58-report-btn" class="btn mini primary">🧾 Giải trình BXH</button>`;if(wrap?.parentNode)wrap.parentNode.appendChild(bar);$('tk58-ranking-category').value=activeCategory;$('tk58-ranking-category').onchange=e=>{activeCategory=e.target.value;renderStandings();renderPublicStandings()};$('tk58-report-btn').onclick=openReport;}
 
 function isAdministrativeLoss(m){if(!m||!TERMINAL.has(String(m.status||'').toUpperCase()))return false;if(['WALKOVER','RETIRED','DISQUALIFIED'].includes(String(m.status||'').toUpperCase()))return true;if(m.walkoverTeamId||m.retiredTeamId||m.disqualifiedTeamId||m.withdrawnTeamId||m.forfeitTeamId||m.loserId)return true;const reason=[m.walkoverReason,m.resultReason,m.outcomeReason,m.cancelReason].join('|').toUpperCase();return /WITHDRAW|FORFEIT|WALKOVER|\bWO\b|RETIR|DISQUAL|XU.?THUA|BO.?CUOC/.test(reason)}
 function matchForScheduleRow(row){
@@ -143,29 +143,30 @@ function matchForScheduleRow(row){
 }
 function reorderMatches(){
   const box=$('matches-list');if(!box)return;
-  let header=null,group=[];
+  const original=[...box.children],ordered=[];let header=null,group=[];
   const flush=()=>{
-    if(!header||!group.length){group=[];return;}
+    if(header)ordered.push(header);
     group.sort((a,b)=>{
       const fa=isAdministrativeLoss(a.m)?1:0,fb=isAdministrativeLoss(b.m)?1:0;if(fa!==fb)return fa-fb;
       const ao=Number(a.m.scheduleOrder),bo=Number(b.m.scheduleOrder),av=Number.isFinite(ao),bv=Number.isFinite(bo);
       if(av&&bv&&ao!==bo)return ao-bo;if(av!==bv)return av?-1:1;
       return String(a.m.time||'99:99').localeCompare(String(b.m.time||'99:99'))||String(a.m.code||'').localeCompare(String(b.m.code||''));
     });
-    let anchor=header;
     group.forEach(({row,m})=>{
-      anchor.after(row);anchor=row;row.dataset.matchId=m.id||'';
+      ordered.push(row);row.dataset.matchId=m.id||'';
       row.classList.toggle('tk58-forfeit-bottom',isAdministrativeLoss(m));
       const badge=row.cells?.[5]?.querySelector?.('.tk12-status-badge');
-      if(badge){badge.dataset.tk58Administrative=isAdministrativeLoss(m)?'1':'0';}
+      if(badge)badge.dataset.tk58Administrative=isAdministrativeLoss(m)?'1':'0';
     });
-    group=[];
+    header=null;group=[];
   };
-  for(const row of [...box.children]){
+  for(const row of original){
     if(row.classList?.contains('tk12-day-row')){flush();header=row;continue;}
-    if(row.classList?.contains('tk12-match-row')){const m=matchForScheduleRow(row);if(m)group.push({row,m});}
+    if(row.classList?.contains('tk12-match-row')){const m=matchForScheduleRow(row);if(m){group.push({row,m});continue;}}
+    flush();ordered.push(row);
   }
   flush();
+  const fragment=document.createDocumentFragment();ordered.forEach(node=>fragment.appendChild(node));box.appendChild(fragment);
 }
 const baseRenderMatches=App.renderMatches?.bind(App);if(baseRenderMatches)App.renderMatches=function(...a){const r=baseRenderMatches(...a);reorderMatches();return r};
 
@@ -173,7 +174,7 @@ function rawRole(){return String(T.Auth?.profile?.role||T.Auth?.role?.()||'').tr
 function canShare(){const role=rawRole();if(role==='ADMIN')return true;const p=T.Auth?.profile?.permissions||{},m=String(p.modules?.publicLinks||'').toLowerCase(),d=String(p.details?.['publicLinks:manage']||p.details?.['settings:publicLinks']||'').toLowerCase();if(['none','view','edit'].includes(m))return m==='view'||m==='edit';if(['none','view','edit'].includes(d))return d==='view'||d==='edit';return role==='BTC'}
 function patchPublicLinks(){try{window.TopkeyUpgrade14?.render?.()}catch{}const card=$('tk14-public-links-card');if(!card)return;card.classList.toggle('hidden',!canShare());const h=card.querySelector('h2');if(h)h.textContent='🔗 Setup · Liên kết & Chia sẻ';const p=card.querySelector('.muted');if(p)p.textContent='Quyền riêng: Liên kết & Chia sẻ. ADMIN cấp độc lập cho BTC; Trọng tài mặc định không có quyền.'}
 
-function ensurePublicStandings(){const pub=$('public-spectator');if(!pub||$('tk58-public-ranking'))return;const sec=document.createElement('section');sec.id='tk58-public-ranking';sec.className='card';sec.innerHTML=`<div class="split"><h2>🏆 Bảng xếp hạng</h2><select id="tk58-public-category">${(S.categories||[]).map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('')}</select></div><div id="tk58-public-ranking-body"></div>`;const sched=$('spectator-schedule')?.parentElement;pub.insertBefore(sec,sched||null);$('tk58-public-category').value=activeCategory;$('tk58-public-category').onchange=e=>{activeCategory=e.target.value;const a=$('tk58-ranking-category');if(a)a.value=activeCategory;renderPublicStandings()}}
+function ensurePublicStandings(){const pub=$('public-spectator');if(!pub||$('tk58-public-ranking'))return;const sec=document.createElement('section');sec.id='tk58-public-ranking';sec.className='card';sec.innerHTML=`<div class="split"><h2>🏆 Bảng xếp hạng</h2><select id="tk58-public-category">${(S.categories||[]).map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('')}</select></div><div id="tk58-public-ranking-body"></div>`;const sched=$('spectator-schedule')?.parentElement;pub.appendChild(sec);$('tk58-public-category').value=activeCategory;$('tk58-public-category').onchange=e=>{activeCategory=e.target.value;const a=$('tk58-ranking-category');if(a)a.value=activeCategory;renderPublicStandings()}}
 function renderPublicStandings(){
  ensurePublicStandings();const box=$('tk58-public-ranking-body');if(!box)return;
  const groups=groupBuckets(activeCategory);

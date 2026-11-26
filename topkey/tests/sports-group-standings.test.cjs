@@ -30,6 +30,9 @@ test('legacy category tabs insert relative to their actual DOM parent, not an as
  assert.doesNotMatch(h16,/card\.insertBefore\(bar,(?:wrap|sched)\)/);
  assert.match(bundle,/wrap\?\.parentNode\)wrap\.parentNode\.insertBefore\(bar,wrap\)/);
  assert.match(bundle,/sched\.parentNode\)sched\.parentNode\.insertBefore\(bar,sched\)/);
+ const h58=fs.readFileSync('topkey/sports/vnext/src/upgrade122-hotfix58.js','utf8');
+ assert.doesNotMatch(h58,/insertBefore|\.after\(/);
+ assert.doesNotMatch(bundle.slice(bundle.indexOf('function normalizedGroup'),bundle.indexOf('function isAdministrativeLoss')),/insertBefore|\.after\(/);
 });
 test('runtime H58 builds exactly two saved round-robin groups',()=>{
  const groups=api.groupBuckets('NAM_6V6');
