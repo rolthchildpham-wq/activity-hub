@@ -2,6 +2,7 @@ const fs=require('node:fs');
 const assert=require('node:assert/strict');
 const root='topkey/sports';
 const vhtml=fs.readFileSync(root+'/vnext/index.html','utf8');
+const sportConfig=fs.readFileSync(root+'/vnext/src/config.js','utf8');
 const bhtml=fs.readFileSync(root+'/badminton/index.html','utf8');
 const vcss=fs.readFileSync(root+'/vnext/workspace-redesign-h218.css','utf8');
 const bcss=fs.readFileSync(root+'/badminton/workspace-redesign-h218.css','utf8');
@@ -37,7 +38,7 @@ for(const [name,css] of [['VNext seven-sport engine',vcss],['Badminton',bcss]]){
  assert.ok(css.includes('!important'),name+' must override legacy stylesheet cascade');
 }
 for(const sport of ['football','volleyball','running','handmade','shuttle','cooking','badminton']){
- assert.ok(vhtml.includes("'"+sport+"'"),'missing VNext sport '+sport);
+ assert.ok(sportConfig.includes("key:'"+sport+"'"),'missing VNext sport '+sport);
 }
 for(const tab of ['overview','control','teams','schedule','umpire','live','finance','announcements','audit','health','settings']){
  assert.ok(vhtml.includes('data-tab="'+tab+'"'),'VNext missing tab '+tab);
