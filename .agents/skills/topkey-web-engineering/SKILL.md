@@ -29,7 +29,7 @@ ECC provides engineering discipline: research-first, impact mapping, TDD, securi
 
 ## Required Chrome DevTools MCP procedure
 
-For real-browser acceptance, checkout and build the official `ChromeDevTools/chrome-devtools-mcp` repository at a pinned commit. Start its `chrome-devtools-mcp` server entrypoint using MCP stdio transport. Connect a compatible MCP TypeScript `Client`, complete `initialize`, call `tools/list`, then use `client.callTool` for every browser operation. Use one persistent client/server/browser session for the complete Hub and seven-sport matrix.
+For real-browser acceptance, checkout and build the official `ChromeDevTools/chrome-devtools-mcp` repository at a pinned commit. Follow that revision's own dependency bootstrap (`npm ci`, `git submodule update --init`, `node scripts/gclient-sync.ts`) rather than guessing nested submodule paths. Start its `chrome-devtools-mcp` server entrypoint using MCP stdio transport. Connect a compatible MCP TypeScript `Client`, complete `initialize`, call `tools/list`, then use `client.callTool` for every browser operation. Use one persistent client/server/browser session for the complete Hub and seven-sport matrix.
 
 Required MCP tools include `new_page`, `list_pages`, `navigate_page`, `select_page`, `take_snapshot`, `evaluate_script`, `take_screenshot`, `resize_page`, `list_console_messages` and `list_network_requests`.
 
