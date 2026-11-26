@@ -276,6 +276,13 @@ jobs:
                   .filter(el=>getComputedStyle(el).display!=="none").length,
                 writeAttempts:window.__TOPKEY_QA_WRITE_ATTEMPTS,dashboardFixture,
                 fixture:"UI_ONLY_NO_DATABASE_WRITES"};
+              if(sport==="badminton"){
+                const profileSelect=document.querySelector('#rules-form select[name="badmintonFormatProfile"]');
+                result.badmintonFormatOptions=profileSelect?[...profileSelect.options].map(option=>option.value):[];
+                result.badmintonWorkspacePath=location.pathname;
+                if(!profileSelect||profileSelect.options.length!==3||location.pathname!=="/sports/vnext/index.html")
+                  throw new Error("Badminton shared workspace/format selector failed: "+JSON.stringify(result));
+              }
               if(result.pageCount<11||result.tabCount<11)throw new Error("Incomplete sport workspace: "+JSON.stringify(result));
               if(innerWidth>=1200&&result.kpiColumns!==4)throw new Error("Desktop KPI grid must have four columns: "+JSON.stringify(result));
               if(result.legacyHubLinksVisible!==0)throw new Error("Duplicate legacy Hub navigation is visible: "+JSON.stringify(result));
