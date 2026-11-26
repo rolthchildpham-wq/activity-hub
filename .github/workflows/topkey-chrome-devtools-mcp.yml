@@ -278,8 +278,10 @@ jobs:
                 dashboardFixture.groupTables=groupSections.length;
                 dashboardFixture.groupAIsolated=!!groupA&&groupAText.includes("Đội A")&&groupAText.includes("Đội B")&&!groupAText.includes("Đội C");
                 dashboardFixture.groupBIsolated=!!groupB&&groupBText.includes("Đội C")&&groupBText.includes("Đội D")&&!groupBText.includes("Đội A");
-                if(dashboardFixture.groupTables!==2||!dashboardFixture.groupAIsolated||!dashboardFixture.groupBIsolated)
-                  throw new Error("Volleyball group standings must render as separate A/B tables: "+JSON.stringify(dashboardFixture));
+                if(dashboardFixture.groupTables!==2||!dashboardFixture.groupAIsolated||!dashboardFixture.groupBIsolated){
+                  const groupDiagnostics={method:String(A.renderStandings).slice(0,420),configKeys:Object.keys(A.state.config||{}),savedGroups:A.state.config?.scheduleGroups,teamIds:Object.values(A.state.teams||{}).map(t=>({id:t.id,category:t.category})),matchGroups:Object.values(A.state.matches||{}).map(m=>({id:m.id,group:m.group,category:m.category})),tableExists:!!document.getElementById("standings-list"),hostExists:!!document.getElementById("standings-group-tables"),hostParent:document.getElementById("standings-group-tables")?.parentElement?.className};
+                  throw new Error("Volleyball group standings must render as separate A/B tables: "+JSON.stringify({dashboardFixture,groupDiagnostics}));
+                }
               }
               const panelBg=panel?getComputedStyle(panel).backgroundColor:"";
               const headingColor=heading?getComputedStyle(heading).color:"";
