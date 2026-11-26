@@ -13,3 +13,18 @@ html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .tk-group-sta
 
 html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) #standings-group-tables{display:grid;gap:14px;min-width:0}
 html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) #standings-group-tables[hidden]{display:none!important}
+
+/* Volleyball registration controls are intentionally compact light surfaces. */
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .tk9-card{
+ background:#f7fafc!important;color:#29465b!important;border:1px solid #dce6ed!important;
+ border-radius:10px!important;padding:9px 11px!important;
+}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .tk9-card :is(b,strong,span,label){
+ color:#29465b!important;opacity:1!important;
+}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .tk9-count{
+ display:inline-flex!important;align-items:center!important;gap:5px!important;
+ background:#eef4f8!important;color:#29465b!important;border:1px solid #dce6ed!important;
+ border-radius:999px!important;padding:5px 9px!important;
+}
+html[data-tk-sport] #app-shell:not(.hidden) .page:not(#page-never) .tk9-count b{color:#17384d!important}
