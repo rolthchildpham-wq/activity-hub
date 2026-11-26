@@ -3,6 +3,7 @@ const test=require('node:test'),assert=require('node:assert/strict'),fs=require(
 const h58=fs.readFileSync('topkey/sports/vnext/src/upgrade122-hotfix58.js','utf8');
 const bundle=fs.readFileSync('topkey/sports/vnext/h97-vnext.bundle.js','utf8');
 const h12=fs.readFileSync('topkey/sports/vnext/src/upgrade12.js','utf8');
+const h16=fs.readFileSync('topkey/sports/vnext/src/upgrade16.js','utf8');
 const state={teams:{
  A:{id:'A',name:'Alpha',category:'NAM_6V6'},B:{id:'B',name:'Bravo',category:'NAM_6V6'},C:{id:'C',name:'Charlie',category:'NAM_6V6'},
  D:{id:'D',name:'Delta'},E:{id:'E',name:'Echo'}
@@ -24,6 +25,11 @@ test('legacy category tabs insert relative to their actual DOM parent, not an as
  assert.match(h12,/parent\.insertBefore\(h,anchor\)/);
  assert.doesNotMatch(h12,/body\.closest\('\.card'\)\?\.insertBefore\(h,body\.closest\('\.table-wrap'\)\)/);
  assert.match(bundle,/parent\.insertBefore\(h,anchor\)/);
+ assert.match(h16,/wrap\?\.parentNode\)wrap\.parentNode\.insertBefore\(bar,wrap\)/);
+ assert.match(h16,/sched\.parentNode\)sched\.parentNode\.insertBefore\(bar,sched\)/);
+ assert.doesNotMatch(h16,/card\.insertBefore\(bar,(?:wrap|sched)\)/);
+ assert.match(bundle,/wrap\?\.parentNode\)wrap\.parentNode\.insertBefore\(bar,wrap\)/);
+ assert.match(bundle,/sched\.parentNode\)sched\.parentNode\.insertBefore\(bar,sched\)/);
 });
 test('runtime H58 builds exactly two saved round-robin groups',()=>{
  const groups=api.groupBuckets('NAM_6V6');
