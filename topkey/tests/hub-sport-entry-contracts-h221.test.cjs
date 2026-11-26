@@ -48,10 +48,17 @@ assert.match(config, /badminton:\{[\s\S]*?root:'topkey_badminton_vnext_2026'/,
 assert.match(config, /legacyEngineRoot:'topkey_badminton_vnext_2026'/,
   'Legacy badminton data root must remain unchanged');
 assert.match(config, /preserveExistingEngine:true/,
+
   'The retained badminton domain engine must be declared as preserved');
 for (const format of ['BEST_OF_3_21_SWITCH_10','SETS_21_21_15_SWITCH_7','BEST_OF_3_15_SWITCH_7']) {
   assert.ok(config.includes(format), 'Missing badminton format profile ' + format);
 }
+
+const appSource = fs.readFileSync(path.join(root, 'sports/vnext/src/app.js'), 'utf8');
+assert.match(appSource, /name='badmintonFormatProfile'/);
+assert.match(appSource, /rules\.setPoints=\[\.\.\.selectedProfile\.points\]/);
+assert.match(appSource, /rules\.changeEndsAt=\[\.\.\.selectedProfile\.changeEndsAt\]/);
+assert.match(appSource, /set\.endsChanged=true/);
 
 console.log(JSON.stringify({
   status: 'PASS',
