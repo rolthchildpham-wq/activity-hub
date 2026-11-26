@@ -12,7 +12,6 @@ import http from 'node:http';
 import {appendFileSync, existsSync, mkdirSync} from 'node:fs';
 import path from 'node:path';
 import {createRequire} from 'node:module';
-import {pathToFileURL} from 'node:url';
 
 const ROOT = process.cwd();
 const MCP_ROOT = path.join(ROOT, '.tools', 'chrome-devtools-mcp');
@@ -37,12 +36,8 @@ async function connectOfficialServer() {
   // Resolve the SDK from the official server checkout. The server's lockfile
   // pins @modelcontextprotocol/client and its stdio transport compatibly.
   const requireFromMcp = createRequire(path.join(MCP_ROOT, 'package.json'));
-  const clientUrl = pathToFileURL(requireFromMcp.resolve('@modelcontextprotocol/client'));
-  const stdioUrl = pathToFileURL(requireFromMcp.resolve('@modelcontextprotocol/client/stdio'));
-  const [{Client}, {StdioClientTransport}] = await Promise.all([
-    import(clientUrl.href),
-    import(stdioUrl.href),
-  ]);
+  const {Client} = requireFromMcp('@modelcontextprotocol/client');
+  const {StdioClientTransport} = requireFromMcp('@modelcontextprotocol/client/stdio');
 
   const transport = new StdioClientTransport({
     command: process.execPath,
@@ -122,9 +117,11 @@ function extractPageId(result, preferredUrl) {
       }
       return undefined;
     }
-    if (Number.isInteger(value.pageId)) return value.pageId;
-    if (Number.isInteger(value.id) && (!preferredUrl || value.url === preferredUrl || value.url?.startsWith(preferredUrl))) {
-      return value.id;
+    const explicitPageId = Number(value.pageId);
+    if (Number.isInteger(explicitPageId) && explicitPageId > 0) return explicitPageId;
+    const candidateId = Number(value.id);
+    if (Number.isInteger(candidateId) && candidateId > 0 && (!preferredUrl || value.url === preferredUrl || value.url?.startsWith(preferredUrl))) {
+      return candidateId;
     }
     for (const item of Object.values(value)) {
       const found = walk(item);
