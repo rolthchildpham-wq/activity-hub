@@ -41,6 +41,9 @@ jobs:
           git -C .tools/chrome-devtools-mcp checkout 8c43179464d368a6a3c7f8ce2ee024e1e736b795
           echo "ChromeDevTools MCP source commit: $(git -C .tools/chrome-devtools-mcp rev-parse HEAD)"
           npm ci --prefix .tools/chrome-devtools-mcp
+          git -C .tools/chrome-devtools-mcp/third_party/devtools-frontend sparse-checkout add --no-cone /buildtools/
+          git -C .tools/chrome-devtools-mcp/third_party/devtools-frontend submodule update --init buildtools
+          test -x .tools/chrome-devtools-mcp/third_party/devtools-frontend/buildtools/linux64/gn
           npm run build --prefix .tools/chrome-devtools-mcp
           test -f .tools/chrome-devtools-mcp/out/Default/gen/src/bin/chrome-devtools-mcp.js
 
