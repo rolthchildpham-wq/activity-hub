@@ -1,34 +1,46 @@
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
-const app=fs.readFileSync('topkey/sports/vnext/src/app.js','utf8');
-const start=app.indexOf(' ranking(options={}){'),end=app.indexOf(' setWinnerId',start);
-assert.ok(start>=0&&end>start,'ranking method must exist');
-const method=app.slice(start,end).trim().replace(/,\s*$/,'');
-const ranking=vm.runInNewContext('({'+method+'}).ranking',{S:{mode:'sets',rules:{winPoints:3,lossPoints:0,tieBreakers:['points','setDiff','pointDiff','name']}},Object,Number,Math,Set});
-const context={state:{teams:{
+const h58=fs.readFileSync('topkey/sports/vnext/src/upgrade122-hotfix58.js','utf8');
+const bundle=fs.readFileSync('topkey/sports/vnext/h97-vnext.bundle.js','utf8');
+const state={teams:{
  A:{id:'A',name:'Alpha',category:'NAM_6V6'},B:{id:'B',name:'Bravo',category:'NAM_6V6'},C:{id:'C',name:'Charlie',category:'NAM_6V6'},
  D:{id:'D',name:'Delta'},E:{id:'E',name:'Echo'}
 },matches:{
- ab:{id:'ab',category:'NAM_6V6',status:'FINISHED',teamAId:'A',teamBId:'B',winnerId:'A',sets:[{a:25,b:20},{a:20,b:25},{a:25,b:23},{a:20,b:25},{a:15,b:12}]},
- ca:{id:'ca',category:'NAM_6V6',status:'FINISHED',teamAId:'C',teamBId:'A',winnerId:'C',sets:[{a:25,b:10},{a:25,b:11},{a:25,b:12}]},
- de:{id:'de',category:'NAM_6V6',status:'FINISHED',teamAId:'D',teamBId:'E',winnerId:'D',sets:[{a:25,b:18},{a:25,b:20},{a:25,b:22}]}
-},config:{rules:{winPoints:3,lossPoints:0,tieBreakers:['points','setDiff','pointDiff','name']}}},setWinnerId(m){let a=0,b=0;(m.sets||[]).forEach(s=>{if(s.a>s.b)a++;else if(s.b>s.a)b++});return a>b?m.teamAId:b>a?m.teamBId:''}};
-test('volleyball standings filter to one saved group and apply set-difference tie break',()=>{
- const rows=ranking.call(context,{teamIds:['A','B','C'],category:'NAM_6V6'});
- assert.deepEqual(rows.map(x=>x.id),['C','A','B']);
- assert.equal(rows[0].points,3);
- assert.equal(rows[0].setsFor-rows[0].setsAgainst,3);
+ ab:{id:'ab',category:'NAM_6V6',stage:'GROUP',group:'A',status:'FINISHED',teamAId:'A',teamBId:'B',winnerId:'A',sets:[{a:25,b:20},{a:20,b:25},{a:25,b:23},{a:20,b:25},{a:15,b:12}]},
+ ca:{id:'ca',category:'NAM_6V6',stage:'GROUP',group:'A',status:'FINISHED',teamAId:'C',teamBId:'A',winnerId:'C',sets:[{a:25,b:10},{a:25,b:11},{a:25,b:12}]},
+ de:{id:'de',category:'NAM_6V6',stage:'GROUP',group:'B',status:'FINISHED',teamAId:'D',teamBId:'E',winnerId:'D',sets:[{a:25,b:18},{a:25,b:20},{a:25,b:22}]}
+},config:{rules:{winPoints:3,lossPoints:0,tieBreakers:['points','setDiff','pointDiff','headToHead','name']},scheduleGroups:{NAM_6V6:{format:'GROUP',entries:[
+ {id:'A',group:'A'},{id:'B',group:'A'},{id:'C',group:'A'},{id:'D',group:'B'},{id:'E',group:'B'}
+]}}}};
+const App={state,formatTime:value=>String(value)};
+const T={App,SPORT:{key:'volleyball',mode:'sets',categories:['NAM_6V6'],rules:{winPoints:3,lossPoints:0,tieBreakers:['points','setDiff','pointDiff','headToHead','name']}},U:{toast(){}}};
+const documentStub={readyState:'complete',head:{appendChild(){}},createElement(){return{id:'',textContent:'',style:{},classList:{add(){},remove(){},toggle(){}},appendChild(){},setAttribute(){}}},getElementById(){return null},addEventListener(){},querySelector(){return null},querySelectorAll(){return[]}};
+const sandbox={window:{Topkey:T,addEventListener(){}},document:documentStub,location:{hash:''},console,Intl,Date,Map,Set,Object,Array,String,Number,Math,JSON,Promise,setTimeout:()=>0,clearTimeout(){}};
+vm.runInNewContext(h58,sandbox,{timeout:3000});
+const api=sandbox.window.TopkeyUpgrade122Hotfix58;
+test('runtime H58 builds exactly two saved round-robin groups',()=>{
+ const groups=api.groupBuckets('NAM_6V6');
+ assert.equal(groups.length,2);
+ assert.equal(groups.map(g=>g.group).join(','),'A,B');
+ assert.equal(groups[0].teamIds.join(','),'A,B,C');
+ assert.equal(groups[1].teamIds.join(','),'D,E');
 });
-test('group B standings do not mix teams or match results from group A',()=>{
- const rows=ranking.call(context,{teamIds:['D','E'],category:'NAM_6V6'});
- assert.deepEqual(rows.map(x=>x.id),['D','E']);
- assert.equal(rows[0].played,1);
- assert.equal(rows[1].points,0);
+test('final runtime ranking filters each group and uses volleyball set-difference tie break',()=>{
+ const groupA=App.ranking({category:'NAM_6V6',teamIds:['A','B','C']});
+ assert.equal(groupA.map(x=>x.id).join(','),'C,A,B');
+ assert.equal(groupA[0].points,3);
+ assert.equal(groupA[0].setsFor-groupA[0].setsAgainst,3);
+ const groupB=App.ranking({category:'NAM_6V6',teamIds:['D','E']});
+ assert.equal(groupB.map(x=>x.id).join(','),'D,E');
+ assert.equal(groupB[0].played,1);
+ assert.equal(groupB[1].points,0);
 });
-test('rendering reads saved scheduleGroups and emits independent group tables',()=>{
- assert.match(app,/scheduleGroups/);
- assert.equal((app.match(/(?:^|,)\s*renderStandings\(\)\{/g)||[]).length,1,'there must be exactly one active renderStandings method; a later duplicate would overwrite group tables');
- assert.match(app,/m\.groupId\?\?m\.groupName\?\?m\.group\?\?m\.pool/);
- assert.match(app,/tk-group-standings/);
- assert.match(app,/this\.ranking\(\{teamIds:g\.teamIds,category:g\.category\}\)/);
+test('the final H58 module owns the active renderer and emits independent group sections',()=>{
+ assert.equal((h58.match(/function renderStandings\\(\\)/g)||[]).length,1);
+ assert.match(h58,/App\\.renderStandings=renderStandings/);
+ assert.match(h58,/className='subcard tk-group-standings'/);
+ assert.match(h58,/ranking\\(\\{category:g\\.category,teamIds:g\\.teamIds\\}\\)/);
+ assert.match(h58,/function renderPublicStandings\\(\\)/);
+ assert.match(bundle,/H97 module src\\/upgrade122-hotfix58\\.js/);
+ assert.match(bundle,/className='subcard tk-group-standings'/);
 });
