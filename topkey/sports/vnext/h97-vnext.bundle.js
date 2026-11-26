@@ -2081,7 +2081,7 @@ window.addEventListener('hashchange',()=>setTimeout(publicBootFix,0));
 
 function hook(){style();stamp();publicBootFix();ensureRankingToolbar();renderStandings();patchPublicLinks();if(location.hash==='#spectator')renderPublicStandings();const baseAll=App.renderAll?.bind(App);if(baseAll&&!App.__h58All){App.__h58All=true;App.renderAll=function(...a){const r=baseAll(...a);stamp();ensureRankingToolbar();renderStandings();patchPublicLinks();return r}}const baseTab=App.showTab?.bind(App);if(baseTab&&!App.__h58Tab){App.__h58Tab=true;App.showTab=function(tab,...a){const r=baseTab(tab,...a);if(tab==='settings')setTimeout(patchPublicLinks,0);if(tab==='overview')setTimeout(()=>{ensureRankingToolbar();renderStandings()},0);return r}}}
 hook();window.TopkeyLifecycle?.bind(()=>{stamp();patchPublicLinks()},{settleTicks:6,settleEvery:300,debounceMs:60});
-window.TopkeyUpgrade122Hotfix58={VERSION,CACHE_TAG,ranking,canonicalMatches,isAdministrativeLoss,reorderMatches,matchForScheduleRow,reportHtml,csvText};
+window.TopkeyUpgrade122Hotfix58={VERSION,CACHE_TAG,ranking,groupBuckets,renderStandings,renderPublicStandings,canonicalMatches,isAdministrativeLoss,reorderMatches,matchForScheduleRow,reportHtml,csvText};
 })();
 
 
