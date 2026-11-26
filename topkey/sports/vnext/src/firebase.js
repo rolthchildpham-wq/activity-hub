@@ -52,10 +52,10 @@
         prodBackup = '';
       }
       this.tid = urlTid || savedTid || prodBackup || 'main_2026';
-      if (urlTid && !isTestTid(urlTid)) {
-        [storageKey, backupKey, ...legacyTidKeys].forEach(key => localStorage.setItem(key, urlTid));
-      } else if (savedTid && !isTestTid(savedTid)) {
-        [backupKey, ...legacyTidKeys].forEach(key => localStorage.setItem(key, savedTid));
+      if (!isTestTid(this.tid)) {
+        // Keep both key families synchronized after resolving the canonical ID.
+        // This also repairs a missing primary key when only the legacy backup exists.
+        [storageKey, backupKey, ...legacyTidKeys].forEach(key => localStorage.setItem(key, this.tid));
       }
       this.listeners = [];
       this.pending = 0;
