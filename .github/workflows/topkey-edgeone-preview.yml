@@ -39,6 +39,9 @@ on:
       - 'topkey/tests/sport-workspaces-ux-h214.test.cjs'
       - 'topkey/l/index.html'
       - 'topkey/sports/vnext/h97-vnext.bundle.js'
+      - 'topkey/sports/vnext/contrast-surfaces-h232.css'
+      - 'topkey/tests/sports-group-standings.test.cjs'
+      - 'topkey/tests/executive-dashboard-live-calendar.test.cjs'
       - 'topkey/tests/short-public-links-h136.test.cjs'
       - 'topkey/sports/vnext/sport-identities-h132.css'
       - 'topkey/sports/vnext/sport-identities-h132.js'
@@ -100,6 +103,8 @@ jobs:
           node --check topkey/sports/badminton/upgrade122-hotfix76.js
           node topkey/tests/badminton-report-polling-h135.test.cjs
           node topkey/tests/short-public-links-h136.test.cjs
+          node topkey/tests/sports-group-standings.test.cjs
+          node topkey/tests/executive-dashboard-live-calendar.test.cjs
           node --check topkey/tests/vlog-create-entry-save.test.cjs
           node topkey/tests/vlog-create-entry-save.test.cjs
           node --check topkey/hub-compact-h130.js
