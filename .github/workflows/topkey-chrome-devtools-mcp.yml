@@ -406,6 +406,8 @@ jobs:
           node topkey/tests/badminton-dashboard-smooth-h129.test.cjs
           node topkey/tests/hub-sidebar-full-patch-h130.test.cjs
           node topkey/tests/short-public-links-h136.test.cjs
+          node topkey/tests/sports-group-standings.test.cjs
+          node topkey/tests/executive-dashboard-live-calendar.test.cjs
 
       - name: Upload Chrome DevTools evidence
         if: always()
