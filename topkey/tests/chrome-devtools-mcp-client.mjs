@@ -89,7 +89,9 @@ async function connectOfficialServer() {
   if (!Number.isInteger(pageId)) {
     throw new Error('Could not resolve pageId from new_page/list_pages: ' + JSON.stringify(created));
   }
-  await client.callTool({name: 'select_page', arguments: {pageId}});
+  const selected = await client.callTool({name: 'select_page', arguments: {pageId}});
+  if (selected.isError) throw new Error('MCP select_page failed: ' + JSON.stringify(selected.content));
+  record({kind: 'tools/call', name: 'select_page', success: true, pageId});
   process.stdout.write('[MCP] new_page/select_page: PASS (pageId=' + pageId + ')\n');
 }
 
