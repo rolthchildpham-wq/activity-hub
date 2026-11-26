@@ -39,7 +39,7 @@ assert(view&&manage);
 assert.equal(manage.href,'./sports/vnext/index.html?sport=football');
 assert(manage.className.includes('sport'),'Management link must use Hub auth ticket handling');
 tabs.find(x=>x.dataset.sport==='badminton').events.click();
-assert.equal(manage.href,'./sports/badminton/index.html');
+assert.equal(manage.href,'./sports/vnext/badminton.html?sport=badminton');
 tabs.find(x=>x.dataset.sport==='running').events.click();
 assert.equal(manage.href,'./sports/vnext/index.html?sport=running');
 assert.equal(view.href,manage.href);
