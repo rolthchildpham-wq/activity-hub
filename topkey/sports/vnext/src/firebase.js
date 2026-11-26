@@ -41,7 +41,10 @@
         ? ['topkey_vnext_tid', 'topkey_vnext_prod_tid']
         : [];
       const readFirst = keys => keys.map(key => localStorage.getItem(key) || '').find(Boolean) || '';
-      let savedTid = readFirst([...legacyTidKeys.slice(0, 1), storageKey]);
+      const savedTidKeys = T.SPORT.key === 'badminton'
+        ? [...legacyTidKeys, storageKey, backupKey]
+        : [storageKey];
+      let savedTid = readFirst(savedTidKeys);
       let prodBackup = readFirst([...legacyTidKeys.slice(1), backupKey]);
       if (isTestTid(savedTid)) {
         [storageKey, ...legacyTidKeys.slice(0, 1)].forEach(key => localStorage.removeItem(key));
