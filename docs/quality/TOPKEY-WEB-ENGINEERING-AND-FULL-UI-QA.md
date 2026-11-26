@@ -31,7 +31,8 @@ The workflow must use the actual official MCP server, not its companion CLI.
 - Checkout `https://github.com/ChromeDevTools/chrome-devtools-mcp` at an explicit reviewed commit or release tag and record the resolved SHA in CI logs.
 - Use a supported Node version declared by that pinned revision.
 - Install dependencies and run the repository's documented build from its own checkout.
-- Initialize only the DevTools frontend submodules required by that pinned revision's build scripts; verify GN, Ninja and the generated server entrypoint exist before proceeding.
+- After `npm ci`, follow the pinned repository's own dependency bootstrap: `git submodule update --init` and `node scripts/gclient-sync.ts` (or the equivalent official `npm run sync` lifecycle). Do not guess nested submodule paths; gclient-sync resolves the revision's DEPS/CIPD inputs such as GN and Ninja.
+- Verify the GN binary, Ninja binary and generated server entrypoint exist before proceeding.
 - Do not use `chrome-devtools start/status/navigate/evaluate/stop` or `npx chrome-devtools` as a substitute for the MCP protocol.
 
 ### 3.2 Connect a real MCP client
