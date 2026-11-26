@@ -27,6 +27,7 @@ test('group B standings do not mix teams or match results from group A',()=>{
 });
 test('rendering reads saved scheduleGroups and emits independent group tables',()=>{
  assert.match(app,/scheduleGroups/);
+ assert.equal((app.match(/(?:^|,)\\s*renderStandings\\(\\)\\{/g)||[]).length,1,'there must be exactly one active renderStandings method; a later duplicate would overwrite group tables');
  assert.match(app,/m\.groupId\?\?m\.groupName\?\?m\.group\?\?m\.pool/);
  assert.match(app,/tk-group-standings/);
  assert.match(app,/this\.ranking\(\{teamIds:g\.teamIds,category:g\.category\}\)/);
