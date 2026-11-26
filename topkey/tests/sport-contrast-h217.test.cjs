@@ -3,8 +3,11 @@ const assert=require('node:assert/strict');
 const vhtml=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
 const bhtml=fs.readFileSync('topkey/sports/badminton/index.html','utf8');
 const vcss=fs.readFileSync('topkey/sports/vnext/contrast-global-h217.css','utf8');
+const surface=fs.readFileSync('topkey/sports/vnext/contrast-surfaces-h232.css','utf8');
 const bcss=fs.readFileSync('topkey/sports/badminton/contrast-global-h217.css','utf8');
 assert.ok(vhtml.includes('contrast-global-h217.css?v=h217-20261124'),'VNext must load H217');
+assert.ok(vhtml.includes('contrast-surfaces-h232.css?v=h232-surface-contrast-20261126'),'VNext must load the final light-surface contrast correction');
+for(const token of ['.subcard','.team-picker','.rule-chip','.modal-box','#29465b!important','#17384d!important'])assert.ok(surface.includes(token),'H232 missing '+token);
 assert.ok(bhtml.includes('contrast-global-h217.css?v=h217-20261124'),'Badminton must load H217');
 for(const [name,css] of [['VNext',vcss],['Badminton',bcss]]){
  for(const token of ['#f8fbff','#d2e0ec','#e8f2fa','#102a43','#7897b0','@media(max-width:690px)','prefers-reduced-motion:reduce']){
@@ -17,4 +20,4 @@ function lum(hex){const c=hex.match(/[0-9a-f]{2}/gi).map(v=>parseInt(v,16)/255).
 function ratio(a,b){const [hi,lo]=[lum(a),lum(b)].sort((x,y)=>y-x);return(hi+.05)/(lo+.05)}
 for(const [fg,bg] of [['#f8fbff','#12283b'],['#d2e0ec','#12283b'],['#e8f2fa','#12283b'],['#f7fbff','#102a43']])assert.ok(ratio(fg,bg)>=4.5,'WCAG AA failed '+fg+'/'+bg);
 assert.ok(vcss.includes('!important') && bcss.includes('!important'),'H217 must override legacy low-contrast theme rules');
-console.log('H217 global sport contrast passed for VNext six-sport engine and Badminton; WCAG AA color pairs verified.');
+console.log('H217/H232 global sport contrast passed for VNext surfaces and Badminton; WCAG AA base color pairs verified.');
