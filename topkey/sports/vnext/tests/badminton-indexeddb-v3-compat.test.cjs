@@ -58,7 +58,39 @@ vm.runInNewContext(vnextSource, context, {filename: 'vnext-idb.js'});
   assert.equal(opened, true, 'existing version-3 database must open without VersionError');
   assert.deepEqual([...existingStores].sort(), ['cache', 'queue', 'receipts']);
   assert.match(legacySource, /indexedDB\.open\('topkey_badminton_vnext',\s*3\)/);
-  console.log('PASS badminton IndexedDB v3 compatibility; existing stores preserved');
+
+const firebaseSource = fs.readFileSync(path.join(__dirname, '../src/firebase.js'), 'utf8');
+const values = new Map([
+  ['topkey_vnext_tid', 'production_event_2025'],
+  ['topkey_vnext_prod_tid', 'production_event_2025']
+]);
+const writes = [];
+const storage = {
+  getItem(key) { return values.get(key) || null; },
+  setItem(key, value) { values.set(key, String(value)); writes.push([key, String(value)]); },
+  removeItem(key) { values.delete(key); }
+};
+const firebaseContext = {
+  window: {Topkey: {U: {id: () => 'id'}, SPORT: {key: 'badminton'}, ROOT: 'topkey_badminton_vnext_2026'}},
+  navigator: {onLine: true},
+  location: {search: ''},
+  localStorage: storage,
+  URLSearchParams,
+  addEventListener() {},
+  console,
+  setTimeout,
+  clearTimeout
+};
+firebaseContext.window.window = firebaseContext.window;
+vm.runInNewContext(firebaseSource, firebaseContext, {filename: 'vnext-firebase.js'});
+assert.equal(firebaseContext.window.Topkey.Data.tid, 'production_event_2025',
+  'shared badminton workspace must restore the legacy production tournament ID');
+assert.equal(values.get('topkey_badminton_tid'), 'production_event_2025',
+  'legacy production tournament ID must be mirrored to the shared-shell key');
+assert.equal(values.get('topkey_vnext_tid'), 'production_event_2025',
+  'legacy tournament key must remain intact for rollback compatibility');
+
+  console.log('PASS badminton IndexedDB v3 + legacy production tournament ID compatibility; stores preserved');
 })().catch(error => {
   console.error(error);
   process.exitCode = 1;
