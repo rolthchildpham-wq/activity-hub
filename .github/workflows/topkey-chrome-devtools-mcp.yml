@@ -274,6 +274,7 @@ jobs:
                   qaGroupB:{id:"qaGroupB",category:"NAM_6V6",stage:"GROUP",group:"B",status:"FINISHED",teamAId:"qaC",teamBId:"qaD",winnerId:"qaC",sets:[{a:25,b:18},{a:25,b:20},{a:25,b:22}]}
                 };
                 dashboardFixture.groupBucketCount=window.TopkeyUpgrade122Hotfix58?.groupBuckets?.("NAM_6V6")?.length||0;
+                dashboardFixture.h58Status=window.__TOPKEY_H58_STATUS||"missing";
                 A.renderStandings();
                 const groupSections=[...document.querySelectorAll("#standings-group-tables .tk-group-standings")];
                 const groupA=groupSections.find(section=>section.textContent.includes("Bảng A"));
@@ -283,7 +284,7 @@ jobs:
                 dashboardFixture.groupAIsolated=!!groupA&&groupAText.includes("Đội A")&&groupAText.includes("Đội B")&&!groupAText.includes("Đội C");
                 dashboardFixture.groupBIsolated=!!groupB&&groupBText.includes("Đội C")&&groupBText.includes("Đội D")&&!groupBText.includes("Đội A");
                 if(dashboardFixture.groupTables!==2||!dashboardFixture.groupAIsolated||!dashboardFixture.groupBIsolated){
-                  const groupDiagnostics={groupBucketCount:window.TopkeyUpgrade122Hotfix58?.groupBuckets?.("NAM_6V6")?.length||0,activeCategory:categorySelect?.value,method:String(A.renderStandings).slice(0,420),configKeys:Object.keys(A.state.config||{}),savedGroups:A.state.config?.scheduleGroups,teamIds:Object.values(A.state.teams||{}).map(t=>({id:t.id,category:t.category})),matchGroups:Object.values(A.state.matches||{}).map(m=>({id:m.id,group:m.group,category:m.category})),tableExists:!!document.getElementById("standings-list"),hostExists:!!document.getElementById("standings-group-tables"),hostParent:document.getElementById("standings-group-tables")?.parentElement?.className};
+                  const groupDiagnostics={h58Status:window.__TOPKEY_H58_STATUS,h58Installed:window.__TOPKEY_H58_INSTALLED,sportKey:window.Topkey?.SPORT?.key,groupBucketCount:window.TopkeyUpgrade122Hotfix58?.groupBuckets?.("NAM_6V6")?.length||0,activeCategory:categorySelect?.value,method:String(A.renderStandings).slice(0,420),configKeys:Object.keys(A.state.config||{}),savedGroups:A.state.config?.scheduleGroups,teamIds:Object.values(A.state.teams||{}).map(t=>({id:t.id,category:t.category})),matchGroups:Object.values(A.state.matches||{}).map(m=>({id:m.id,group:m.group,category:m.category})),tableExists:!!document.getElementById("standings-list"),hostExists:!!document.getElementById("standings-group-tables"),hostParent:document.getElementById("standings-group-tables")?.parentElement?.className};
                   throw new Error("Volleyball group standings must render as separate A/B tables: "+JSON.stringify({dashboardFixture,groupDiagnostics}));
                 }
               }
