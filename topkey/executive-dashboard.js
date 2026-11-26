@@ -24,17 +24,40 @@ function championRows(t,sportName){const c=obj(t.config),top=c.finalTop3||c.top3
 function financeStats(t){let income=0,expense=0,pending=0;arr(t.finance).forEach(r=>{const a=Number(r.amount)||0;if(String(r.type).toUpperCase()==='INCOME')income+=a;else expense+=a;if(!['PAID','DONE','COMPLETED'].includes(String(r.status||'').toUpperCase()))pending++});return{income,expense,balance:income-expense,pending}}
 function tournamentTitle(t,tid,sport){return t?.config?.title||t?.title||`${sport} · ${tid}`}
 async function readRaw(db){
- const out={};SPORTS.forEach(s=>out[s.key]={});
- let idx={};try{idx=(await db.ref(`${AUTH_ROOT}/tournamentIndex`).once('value')).val()||{}}catch(e){console.warn('Executive tournamentIndex read',e)}
- for(const s of SPORTS){const rows=obj(idx[s.key]);for(const [tid,e0] of Object.entries(rows)){const e=obj(e0),r=obj(e.finalReport);const teams=Array.isArray(r.teams)?Object.fromEntries(r.teams.map((x,i)=>[x.id||`t${i}`,x])):obj(r.teams);const matches=Array.isArray(r.matches)?Object.fromEntries(r.matches.map((x,i)=>[x.id||`m${i}`,x])):obj(r.matches);const finRows=Array.isArray(r.finance?.rows)?Object.fromEntries(r.finance.rows.map((x,i)=>[x.id||`f${i}`,x])):obj(r.finance?.rows);out[s.key][tid]={config:{title:e.title||r.title||'',closedAt:e.closedAt||e.reportGeneratedAt||r.generatedAt||0,createdAt:e.createdAt||r.generatedAt||0,finalTop3:r.top4||{}},meta:{createdAt:e.createdAt||r.generatedAt||0},teams,matches,finance:finRows,title:e.title||r.title||''};}}
+ const out={};SPORTS.forEach(s=>out[s.key]={});out.__liveCalendarEvents=[];
+ let idx={};try{idx=(await db.ref(AUTH_ROOT+'/tournamentIndex').once('value')).val()||{}}catch(e){console.warn('Executive tournamentIndex read',e)}
+ for(const s of SPORTS){
+  const rows=obj(idx[s.key]);
+  for(const [tid,e0] of Object.entries(rows)){
+   const e=obj(e0),r=obj(e.finalReport),teams=Array.isArray(r.teams)?Object.fromEntries(r.teams.map((x,i)=>[x.id||('t'+i),x])):obj(r.teams),matches=Array.isArray(r.matches)?Object.fromEntries(r.matches.map((x,i)=>[x.id||('m'+i),x])):obj(r.matches),finRows=Array.isArray(r.finance?.rows)?Object.fromEntries(r.finance.rows.map((x,i)=>[x.id||('f'+i),x])):obj(r.finance?.rows);
+   out[s.key][tid]={config:{title:e.title||r.title||'',closedAt:e.closedAt||e.reportGeneratedAt||r.generatedAt||0,createdAt:e.createdAt||r.generatedAt||0,finalTop3:r.top4||{}},meta:{createdAt:e.createdAt||r.generatedAt||0},teams,matches,finance:finRows,title:e.title||r.title||''};
+  }
+  // The archive index contains only closed/final reports. Read the current
+  // sport-scoped schedule separately so upcoming Saturday fixtures are visible.
+  try{
+   const results=await Promise.all([
+    db.ref(s.root+'/matches').once('value'),
+    db.ref(s.root+'/teams').once('value'),
+    db.ref(s.root+'/config').once('value')
+   ]);
+   const liveMatches=obj(results[0].val()),liveTeams=obj(results[1].val()),liveConfig=obj(results[2].val()),archivedIds=new Set(Object.values(out[s.key]).flatMap(t=>Object.keys(obj(t.matches))));
+   for(const [id,m0] of Object.entries(liveMatches)){
+    const m=obj(m0),date=String(m.date||'').slice(0,10),status=String(m.status||'SCHEDULED').toUpperCase();
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||status==='CANCELLED'||archivedIds.has(id))continue;
+    const teamA=obj(liveTeams[m.teamAId]),teamB=obj(liveTeams[m.teamBId]),a=teamA.name||teamA.teamName||teamA.p1||m.participantName||'',b=teamB.name||teamB.teamName||teamB.p1||'';
+    const label=[m.code||'Trận',a,b?('vs '+b):''].filter(Boolean).join(' · ');
+    out.__liveCalendarEvents.push({date,time:String(m.time||''),sport:s.name,icon:s.icon,title:liveConfig.title||s.name,label,status,matchId:id});
+   }
+  }catch(e){console.warn('Executive live schedule read '+s.key,e)}
+ }
  return out;
 }
-function compute(raw,meta){const clubs=[],years={},allPeople=new Set(),champions=[],events=[],calendarEvents=[];let totalEntries=0,totalIncome=0,totalExpense=0,totalPending=0;
+function compute(raw,meta){const clubs=[],years={},allPeople=new Set(),champions=[],events=[],calendarEvents=[...(raw.__liveCalendarEvents||[])];let totalEntries=0,totalIncome=0,totalExpense=0,totalPending=0;
  for(const s of SPORTS){const tournaments=obj(raw[s.key]),cm=obj(meta.clubs?.[s.key]),clubPeople=new Set();let cIncome=0,cExpense=0,cPending=0,cEvents=0,lastYear=0,firstYear=9999,cChamps=0;
   for(const [tid,t0] of Object.entries(tournaments)){if(String(tid).startsWith('__testlab_'))continue;const t=obj(t0);if(!Object.keys(t).length)continue;const teams=arr(t.teams);const matches=arr(t.matches);if(!teams.length&&!matches.length&&!arr(t.finance).length&&!t.config)continue;cEvents++;const y=tournamentDate(t);if(y){firstYear=Math.min(firstYear,y);lastYear=Math.max(lastYear,y);years[y]??={events:0,people:new Set(),income:0,expense:0};years[y].events++}
    const eventPeople=new Set();teams.forEach(team=>{participantNames(team).forEach(n=>{addPerson(clubPeople,n);addPerson(allPeople,n);addPerson(eventPeople,n);if(y)addPerson(years[y].people,n)});totalEntries++});
    const fs=financeStats(t);cIncome+=fs.income;cExpense+=fs.expense;cPending+=fs.pending;totalIncome+=fs.income;totalExpense+=fs.expense;totalPending+=fs.pending;if(y){years[y].income+=fs.income;years[y].expense+=fs.expense}
-   const eventTitle=tournamentTitle(t,tid,s.name);const ch=championRows(t,s.name);cChamps+=ch.length;ch.forEach(x=>champions.push({...x,tournament:eventTitle,year:y||'—'}));events.push({sport:s.name,icon:s.icon,tid,title:eventTitle,year:y||'—',participants:eventPeople.size||teams.length,teams:teams.length,matches:matches.length,...fs});matches.forEach(match=>{const matchDate=String(match?.date||'').slice(0,10);if(/^\d{4}-\d{2}-\d{2}$/.test(matchDate))calendarEvents.push({date:matchDate,time:String(match.time||''),sport:s.name,icon:s.icon,title:eventTitle,status:String(match.status||'')})});
+   const eventTitle=tournamentTitle(t,tid,s.name);const ch=championRows(t,s.name);cChamps+=ch.length;ch.forEach(x=>champions.push({...x,tournament:eventTitle,year:y||'—'}));events.push({sport:s.name,icon:s.icon,tid,title:eventTitle,year:y||'—',participants:eventPeople.size||teams.length,teams:teams.length,matches:matches.length,...fs});matches.forEach(match=>{const matchDate=String(match?.date||'').slice(0,10);if(/^\d{4}-\d{2}-\d{2}$/.test(matchDate)){const teamMap=obj(t.teams),a=obj(teamMap[match.teamAId]),b=obj(teamMap[match.teamBId]),label=[match.code||'Trận',a.name||a.teamName||a.p1||match.participantName||'',(b.name||b.teamName||b.p1)?'vs '+(b.name||b.teamName||b.p1):''].filter(Boolean).join(' · ');calendarEvents.push({date:matchDate,time:String(match.time||''),sport:s.name,icon:s.icon,title:eventTitle,label,status:String(match.status||'')})}});
   }
   const founded=Number(cm.foundedYear)|| (firstYear===9999?null:firstYear);clubs.push({key:s.key,name:cm.displayName||`${s.name} Club`,sport:s.name,icon:s.icon,founded,head:cm.headOrganizer||'',events:cEvents,people:clubPeople.size,income:cIncome,expense:cExpense,balance:cIncome-cExpense,pending:cPending,lastYear:lastYear||null,champions:cChamps,active:cm.active!==false});
  }
@@ -42,21 +65,22 @@ function compute(raw,meta){const clubs=[],years={},allPeople=new Set(),champions
 function renderShell(){const host=$('#executive-dashboard');if(!host)return;host.innerHTML=`<div class="panel exec-dashboard"><div class="exec-head"><div><h2>📊 Dashboard điều hành xã đoàn</h2><div class="muted">Tổng hợp toàn bộ CLB, lịch sử giải, VĐV, thành tích và tài chính cho Ban lãnh đạo.</div></div><div class="exec-actions"><button id="exec-refresh" class="exec-btn primary">↻ Cập nhật dữ liệu</button></div></div><div id="exec-body"><div class="exec-empty">Đang tải dashboard…</div></div><div class="exec-footer-note"><span id="exec-source"></span><span>${VERSION}</span></div></div>`}
 function calendarMarkup(items){
  const valid=(Array.isArray(items)?items:[]).filter(item=>/^\d{4}-\d{2}-\d{2}$/.test(String(item.date||'')));
- const anchor=valid.reduce((latest,item)=>item.date>latest?item.date:latest,'');
- const selected=anchor?new Date(anchor+'T12:00:00'):new Date();
+ const today=new Date(),todayKey=today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
+ const upcoming=valid.map(item=>item.date).filter(date=>date>=todayKey).sort()[0];
+ const anchor=upcoming||valid.reduce((latest,item)=>item.date>latest?item.date:latest,'');
+ const selected=anchor?new Date(anchor+'T12:00:00'):today;
  const year=selected.getFullYear(),month=selected.getMonth(),firstDay=new Date(year,month,1).getDay(),days=new Date(year,month+1,0).getDate();
- const monthLabel=new Intl.DateTimeFormat('vi-VN',{month:'long',year:'numeric'}).format(selected);
- const monthPrefix=year+'-'+String(month+1).padStart(2,'0')+'-';
+ const monthLabel=new Intl.DateTimeFormat('vi-VN',{month:'long',year:'numeric'}).format(selected),monthPrefix=year+'-'+String(month+1).padStart(2,'0')+'-';
  const byDay=new Map();valid.filter(item=>item.date.startsWith(monthPrefix)).forEach(item=>{const rows=byDay.get(item.date)||[];rows.push(item);byDay.set(item.date,rows)});
  const cells=Array.from({length:firstDay},()=>'<div class="exec-calendar-day is-empty" aria-hidden="true"></div>');
  for(let day=1;day<=days;day++){
   const date=monthPrefix+String(day).padStart(2,'0'),rows=byDay.get(date)||[];
-  const tags=rows.slice(0,2).map(item=>'<span class="exec-calendar-event" title="'+esc(item.title+' · '+item.sport+(item.time?' · '+item.time:''))+'">'+esc(item.icon+' '+item.sport+(item.time?' · '+item.time:''))+'</span>').join('');
-  const more=rows.length>2?'<small class="exec-calendar-more">+'+(rows.length-2)+' hoạt động</small>':'';
+  const tags=rows.slice(0,2).map(item=>'<span class="exec-calendar-event" title="'+esc((item.title||item.sport)+' · '+(item.label||'')+(item.time?' · '+item.time:''))+'">'+esc(item.icon+' '+(item.label||item.sport+(item.time?' · '+item.time:'')))+'</span>').join('');
+  const more=rows.length>2?'<small class="exec-calendar-more">+'+(rows.length-2)+' trận/hoạt động</small>':'';
   cells.push('<div class="exec-calendar-day'+(rows.length?' has-events':'')+'" data-date="'+date+'"><span class="exec-calendar-date">'+day+'</span>'+tags+more+'</div>');
  }
  const weekdays=['CN','T2','T3','T4','T5','T6','T7'].map(day=>'<span>'+day+'</span>').join('');
- return '<section class="exec-card exec-calendar-card"><div class="exec-calendar-head"><div><h3>📅 Lịch hoạt động các môn</h3><p>Tháng có dữ liệu trận đấu gần nhất · lấy từ lịch đã lưu</p></div><strong>'+esc(monthLabel)+'</strong></div><div class="exec-calendar-weekdays">'+weekdays+'</div><div class="exec-calendar-grid">'+cells.join('')+'</div>'+(valid.length?'':'<p class="exec-calendar-empty">Chưa có ngày thi đấu trong snapshot đã lưu.</p>')+'</section>';
+ return '<section class="exec-card exec-calendar-card"><div class="exec-calendar-head"><div><h3>📅 Lịch thi đấu và hoạt động các môn</h3><p>Lịch đang diễn ra + lịch sử đã lưu · hiển thị đúng ngày trong tuần</p></div><strong>'+esc(monthLabel)+'</strong></div><div class="exec-calendar-weekdays">'+weekdays+'</div><div class="exec-calendar-grid">'+cells.join('')+'</div>'+(valid.length?'':'<p class="exec-calendar-empty">Chưa có trận có ngày thi đấu trong dữ liệu hiện tại hoặc lịch sử.</p>')+'</section>';
 }
 function render(data,meta,source){const b=$('#exec-body');if(!b)return;const k=data.kpi, maxEvents=Math.max(1,...data.clubs.map(x=>x.events));const alerts=[];data.clubs.forEach(c=>{if(!c.head)alerts.push({bad:false,text:`${c.icon} ${c.name}: chưa khai báo Trưởng BTC/phụ trách.`});if(!c.founded)alerts.push({bad:false,text:`${c.icon} ${c.name}: chưa có năm thành lập.`});if(c.balance<0)alerts.push({bad:true,text:`${c.icon} ${c.name}: đang âm quỹ ${money(Math.abs(c.balance))}.`});if(c.pending)alerts.push({bad:false,text:`${c.icon} ${c.name}: còn ${c.pending} khoản tài chính chưa hoàn tất.`});});
  const clubRows=data.clubs.filter(x=>x.active).map(c=>`<tr><td><span class="exec-sports-title">${c.icon} ${esc(c.name)}</span><br><span class="exec-meta">${esc(c.sport)}</span></td><td>${c.founded||'—'}</td><td>${esc(c.head||'Chưa khai báo')}</td><td>${c.events}</td><td>${c.people}</td><td>${c.lastYear||'—'}</td><td>${money(c.income)}</td><td>${money(c.expense)}</td><td class="${c.balance<0?'exec-bad':'exec-good'}">${money(c.balance)}</td></tr>`).join('');
@@ -73,6 +97,6 @@ function render(data,meta,source){const b=$('#exec-body');if(!b)return;const k=d
 }
 async function boot(){renderShell();const host=$('#executive-dashboard');if(!host||!window.firebase)return;let auth=firebase.auth(),db=firebase.database();auth.onAuthStateChanged(async user=>{if(!user){host.classList.add('hidden');return}let profile={};try{profile=(await db.ref(`${AUTH_ROOT}/users/${user.uid}`).once('value')).val()||{}}catch{}const m=mode(profile);if(m==='none'){host.classList.add('hidden');return}host.classList.remove('hidden');let meta={};try{meta=(await db.ref(`${AUTH_ROOT}/associationDashboard`).once('value')).val()||{}}catch{}const isAdmin=roleKey(profile.role)==='ADMIN';$('#exec-refresh').style.display=isAdmin?'':'none';async function load(){if(isAdmin){const raw=await readRaw(db),data=compute(raw,meta);meta={...meta,snapshot:data,snapshotAt:Date.now()};render(data,meta,'live');try{await db.ref(`${AUTH_ROOT}/associationDashboard`).update({snapshot:data,snapshotAt:meta.snapshotAt})}catch(e){console.warn('Executive snapshot save',e)}}else if(meta.snapshot){render(meta.snapshot,meta,'snapshot')}else $('#exec-body').innerHTML='<div class="exec-empty">Chưa có snapshot lãnh đạo. ADMIN cần mở Dashboard và bấm “Cập nhật dữ liệu”.</div>'}
  let loading=false;$('#exec-refresh').onclick=async()=>{if(loading)return;loading=true;$('#exec-refresh').disabled=true;try{await load()}catch(e){console.error('Dashboard refresh',e);$('#exec-source').textContent='Chưa cập nhật được dữ liệu. Vui lòng thử lại.'}finally{loading=false;$('#exec-refresh').disabled=false}};if(meta.snapshot){render(meta.snapshot,meta,'snapshot')}else await $('#exec-refresh').onclick()})}
-window.TopkeyExecutiveDashboard={compute,readRaw,render};
+window.TopkeyExecutiveDashboard={compute,readRaw,render,calendarMarkup};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
