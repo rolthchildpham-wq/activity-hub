@@ -137,6 +137,7 @@ jobs:
             await wait(180);
             const dashboard=window.TopkeyExecutiveDashboard,host=document.getElementById("executive-dashboard");
             if(!dashboard||!host)throw new Error("Executive dashboard runtime unavailable");
+            window.TopkeyHubWorkspaceNav?.activate("executive-dashboard",{scroll:false});
             host.classList.remove("hidden");
             const clubs=[
               {icon:"🏸",name:"Cầu lông",sport:"Cầu lông",founded:2022,head:"Ban tổ chức",events:6,people:38,lastYear:2026,income:12000000,expense:8000000,balance:4000000,pending:1,active:true},
