@@ -28,11 +28,12 @@ const expectedStyles = [
   'hub-contrast-readable-h216.css',
   'hub-dashboard-reference-h219.css',
   'hub-ecc-design-system.css',
-  'hub-workspace-nav-h231.css'
+  'hub-workspace-nav-h231.css',
+  'hub-redesign-h240.css'
 ];
 const expectedScripts = [
   'release-runtime.js',
-  'hub-workspace-nav-h231.js',
+  'hub-workspace-h240.js',
   'upgrade30.js',
   'upgrade53.js',
   'executive-sport-insights.js',
@@ -63,8 +64,9 @@ assert.deepEqual(styles, expectedStyles, 'Hub stylesheet order/inventory changed
 assert.deepEqual(scripts, expectedScripts, 'Hub script order/inventory changed; review runtime dependencies before changing');
 assert.equal(new Set(styles).size, styles.length, 'Duplicate Hub stylesheet import');
 assert.equal(new Set(scripts).size, scripts.length, 'Duplicate Hub script import');
-assert.equal(styles.at(-2), 'hub-ecc-design-system.css', 'ECC design layer must remain immediately before the workspace navigation layer');
-assert.equal(styles.at(-1), 'hub-workspace-nav-h231.css', 'Workspace navigation layer must remain the final Hub stylesheet');
+assert.equal(styles.at(-2), 'hub-workspace-nav-h231.css', 'Legacy workspace style layer must remain before H240');
+assert.equal(styles.at(-1), 'hub-redesign-h240.css', 'H240 must be the final Hub visual layer');
+assert.equal(scripts.includes('hub-workspace-nav-h231.js'), false, 'Legacy H231 controller must not compete with H240');
 
 console.log(JSON.stringify({
   status: 'PASS',
