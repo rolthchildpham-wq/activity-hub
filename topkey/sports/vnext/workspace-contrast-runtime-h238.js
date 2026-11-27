@@ -62,7 +62,7 @@
     subtree:true,childList:true,attributes:true,characterData:true,
     attributeFilter:['class','style']
   });
-  window.__TOPKEY_WORKSPACE_CONTRAST_H239={
+  window.__TOPKEY_WORKSPACE_CONTRAST_H245={
     version:'h245-wrapper-inclusive-aa-20261127',
     apply,
     disconnect:()=>observer.disconnect()
