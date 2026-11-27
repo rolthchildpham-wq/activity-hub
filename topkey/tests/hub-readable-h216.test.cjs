@@ -28,7 +28,7 @@ for(const token of ['#29465b','#075c43','#124d83','#8b1f2d','tk12-status-badge.f
 const sportHtml=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
 const scheduleRuntime=fs.readFileSync('topkey/sports/vnext/workspace-contrast-runtime-h238.js','utf8');
 const sportIdentity=fs.readFileSync('topkey/sports/vnext/sport-identities-h132.css','utf8');
-assert.ok(sportHtml.includes('workspace-contrast-h234.css?v=h247-prize-contrast-20261127'),'All VNext sports must load the cache-busted H237 schedule contrast layer');
+assert.ok(sportHtml.includes('workspace-contrast-h234.css?v=h250-overview-podium-medals-20261127'),'All VNext sports must load the cache-busted H237 schedule contrast layer');
 assert.ok(sportHtml.includes('workspace-contrast-runtime-h238.js?v=h249-settings-clock-priority-aa-20261127'),'All VNext sports must load the H237 runtime guard');
 assert.ok(scheduleRuntime.includes(`node.style.setProperty('color',SAFE,'important')`),'H239 must apply WCAG-safe foregrounds to dynamic light surfaces');
 assert.ok(scheduleRuntime.includes("const ROOT = 'body';"),'H243 must scan the full document across legacy sport handoff roots');
