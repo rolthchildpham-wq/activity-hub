@@ -59,3 +59,9 @@ body.tk-bi-hub .exec-card :is(h2,h3,strong){color:#fff}
 body.tk-bi-hub .exec-card :is(p,small,.muted){color:var(--tk-muted)}
 @media(max-width:900px){body.tk-bi-hub .exec-kpis,body.tk-bi-hub .cards.compact-sports{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:640px){body.tk-bi-hub .exec-kpis,body.tk-bi-hub .cards.compact-sports{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* Canva mobile shell: persistent bottom navigation and safe-area spacing. */
+@media(max-width:640px){
+ body.tk-bi-hub .tk210-nav{position:fixed;left:0;right:0;bottom:0;z-index:1200;display:flex;justify-content:space-around;gap:4px;padding:8px 8px calc(8px + env(safe-area-inset-bottom,0px));border-top:1px solid rgba(10,166,166,.32);background:rgba(11,31,51,.97);box-shadow:0 -8px 24px rgba(0,0,0,.28);backdrop-filter:blur(14px)}
+ body.tk-bi-hub .tk210-nav a{flex:1;justify-content:center;min-height:46px;padding:8px 7px;font-size:11px}
+ body.tk-bi-hub main.wrap{padding-bottom:calc(100px + env(safe-area-inset-bottom,0px))}
+}
