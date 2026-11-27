@@ -4,6 +4,8 @@ const h58=fs.readFileSync('topkey/sports/vnext/src/upgrade122-hotfix58.js','utf8
 const bundle=fs.readFileSync('topkey/sports/vnext/h97-vnext.bundle.js','utf8');
 const h12=fs.readFileSync('topkey/sports/vnext/src/upgrade12.js','utf8');
 const h16=fs.readFileSync('topkey/sports/vnext/src/upgrade16.js','utf8');
+assert.doesNotThrow(()=>new vm.Script(h58), 'H58 source must parse before UI tests');
+assert.doesNotThrow(()=>new vm.Script(bundle), 'shipped bundle must parse before UI tests');
 const state={teams:{
  A:{id:'A',name:'Alpha',category:'NAM_6V6'},B:{id:'B',name:'Bravo',category:'NAM_6V6'},C:{id:'C',name:'Charlie',category:'NAM_6V6'},
  D:{id:'D',name:'Delta'},E:{id:'E',name:'Echo'}
@@ -50,6 +52,15 @@ test('final runtime ranking filters each group and uses volleyball set-differenc
  assert.equal(groupB.map(x=>x.id).join(','),'D,E');
  assert.equal(groupB[0].played,1);
  assert.equal(groupB[1].points,0);
+});
+test('H58 reclaims the active standings renderer if a later runtime replaces it',()=>{
+ const laterRenderer=function(){this.__baseStandingsCalls=(this.__baseStandingsCalls||0)+1};
+ App.renderStandings=laterRenderer;
+ api.ensureStandingsRenderer();
+ assert.notEqual(App.renderStandings,laterRenderer);
+ assert.equal(App.renderStandings.__tkH58Wrapped,true);
+ App.renderStandings();
+ assert.equal(App.__baseStandingsCalls,1);
 });
 test('the final H58 module owns the active renderer and emits independent group sections',()=>{
  assert.equal((h58.match(/function renderStandings\(\)/g)||[]).length,1);

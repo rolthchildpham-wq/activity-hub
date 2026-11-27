@@ -129,6 +129,13 @@ function renderStandings(){
   head.innerHTML='<tr>'+standingsCols().map(x=>'<th>'+esc(x)+'</th>').join('')+'</tr>';box.innerHTML='';
   ranking({category:activeCategory}).forEach((r,i)=>{let vals;if(S.mode==='time')vals=[i+1,r.name,r.played,r.bestTime==null?'—':App.formatTime(r.bestTime)];else if(S.mode==='judged')vals=[i+1,r.name,r.played,r.score??'—'];else if(S.mode==='sets')vals=[i+1,r.name,r.played,r.w+'-'+r.l,r.setsFor-r.setsAgainst,r.for-r.against,r.points];else vals=[i+1,r.name,r.played,r.w+'-'+r.d+'-'+r.l,r.for-r.against,r.points];const tr=document.createElement('tr');vals.forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.appendChild(td)});box.appendChild(tr)});
 }
+function ensureStandingsRenderer(){
+  const current=App.renderStandings;
+  if(current===renderStandings||current?.__tkH58Wrapped)return;
+  const previous=typeof current==='function'?current.bind(App):null;
+  const owned=function(...args){const result=previous?.(...args);renderStandings();return result};
+  owned.__tkH58Wrapped=true;App.renderStandings=owned;
+}
 App.renderStandings=renderStandings;
 
 function ensureRankingToolbar(){const head=$('ranking-head');if(!head||$('tk58-ranking-toolbar'))return;const wrap=head.closest('.table-wrap')||head.parentElement;const bar=document.createElement('div');bar.id='tk58-ranking-toolbar';bar.className='tk58-toolbar';bar.innerHTML=`<b>🏆 BXH nhanh</b><label>Nội dung <select id="tk58-ranking-category">${(S.categories||[]).map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('')}</select></label><button id="tk58-report-btn" class="btn mini primary">🧾 Giải trình BXH</button>`;if(wrap?.parentNode)wrap.parentNode.appendChild(bar);$('tk58-ranking-category').value=activeCategory;$('tk58-ranking-category').onchange=e=>{activeCategory=e.target.value;renderStandings();renderPublicStandings()};$('tk58-report-btn').onclick=openReport;}
@@ -206,7 +213,7 @@ function style(){if($('tk58-style'))return;const s=document.createElement('style
 function publicBootFix(){const h=location.hash;if(h==='#spectator'||h==='#register'){document.getElementById('login-screen')?.classList.add('hidden');document.getElementById('app-shell')?.classList.add('hidden');document.getElementById('public-spectator')?.classList.toggle('hidden',h!=='#spectator');document.getElementById('public-register')?.classList.toggle('hidden',h!=='#register');}}
 window.addEventListener('hashchange',()=>setTimeout(publicBootFix,0));
 
-function hook(){style();stamp();publicBootFix();ensureRankingToolbar();renderStandings();patchPublicLinks();if(location.hash==='#spectator')renderPublicStandings();const baseAll=App.renderAll?.bind(App);if(baseAll&&!App.__h58All){App.__h58All=true;App.renderAll=function(...a){const r=baseAll(...a);stamp();ensureRankingToolbar();renderStandings();patchPublicLinks();return r}}const baseTab=App.showTab?.bind(App);if(baseTab&&!App.__h58Tab){App.__h58Tab=true;App.showTab=function(tab,...a){const r=baseTab(tab,...a);if(tab==='settings')setTimeout(patchPublicLinks,0);if(tab==='overview')setTimeout(()=>{ensureRankingToolbar();renderStandings()},0);return r}}}
-hook();window.TopkeyLifecycle?.bind(()=>{stamp();patchPublicLinks()},{settleTicks:6,settleEvery:300,debounceMs:60});window.__TOPKEY_H58_STATUS='installed';
-window.TopkeyUpgrade122Hotfix58={VERSION,CACHE_TAG,ranking,groupBuckets,renderStandings,renderPublicStandings,canonicalMatches,isAdministrativeLoss,reorderMatches,matchForScheduleRow,reportHtml,csvText};
+function hook(){style();stamp();publicBootFix();ensureStandingsRenderer();ensureRankingToolbar();renderStandings();patchPublicLinks();if(location.hash==='#spectator')renderPublicStandings();const baseAll=App.renderAll?.bind(App);if(baseAll&&!App.__h58All){App.__h58All=true;App.renderAll=function(...a){const r=baseAll(...a);stamp();ensureRankingToolbar();renderStandings();patchPublicLinks();return r}}const baseTab=App.showTab?.bind(App);if(baseTab&&!App.__h58Tab){App.__h58Tab=true;App.showTab=function(tab,...a){const r=baseTab(tab,...a);if(tab==='settings')setTimeout(patchPublicLinks,0);if(tab==='overview')setTimeout(()=>{ensureStandingsRenderer();ensureRankingToolbar();renderStandings()},0);return r}}}
+hook();window.TopkeyLifecycle?.bind(()=>{stamp();ensureStandingsRenderer();renderStandings();patchPublicLinks()},{settleTicks:6,settleEvery:300,debounceMs:60});window.__TOPKEY_H58_STATUS='installed';
+window.TopkeyUpgrade122Hotfix58={VERSION,CACHE_TAG,ranking,groupBuckets,renderStandings,ensureStandingsRenderer,renderPublicStandings,canonicalMatches,isAdministrativeLoss,reorderMatches,matchForScheduleRow,reportHtml,csvText};
 })();
