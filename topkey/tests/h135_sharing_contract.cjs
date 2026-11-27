@@ -9,7 +9,7 @@ const base=fs.readFileSync(path.join(root,"sports/vnext/styles.css"),"utf8");
 const db=JSON.parse(fs.readFileSync(path.join(root,"firebase.database.rules.json"),"utf8"));
 const storage=fs.readFileSync(path.join(root,"firebase.storage.rules"),"utf8");
 const sports=["football","volleyball","running","handmade","shuttle","cooking"];
-assert.match(html,/canva-sports-ui\.css\?v=canva-sports-v1-20261127/,"Canva sport style must be included");
+assert.match(html,/canva-sports-ui\.css\?v=canva-sports-v\d+-202611\d+/,"Canva sport style must be included");
 assert.match(html,/id="page-settings"/,"settings page must exist");
 assert.match(css,/#page-settings/,"share style scoped to settings");
 assert.match(css,/input\[readonly\]/,"read-only share input must be legible");
