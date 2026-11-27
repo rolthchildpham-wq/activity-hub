@@ -573,6 +573,7 @@ jobs:
           node topkey/tests/hub-sport-entry-contracts-h221.test.cjs
           node topkey/tests/sport-shell-public-route-isolation-h222.test.cjs
           node topkey/tests/hub-asset-inventory.test.cjs
+          node topkey/tests/canva-ui-replacement.test.cjs
           node topkey/tests/hub-calendar-responsive-h220.test.cjs
           node topkey/tests/hub-navigation-semantics.test.cjs
           node topkey/tests/hub-dashboard-h219.test.cjs
