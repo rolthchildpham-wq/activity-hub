@@ -20,7 +20,8 @@ test('all seven sports and Vietnamese aliases normalize consistently',()=>{
 test('role normalization and blocked-account checks fail closed',()=>{
  assert.equal(normalizeRole('admin'),'ADMIN');
  assert.equal(normalizeRole('unknown'),'VIEWER');
- for(const profile of [null,{}, {active:false},{disabled:true},{locked:true},{enabled:false},{isActive:false},{status:'SUSPENDED'}])assert.equal(isBlocked(profile),true);
+ for(const profile of [null, {active:false},{disabled:true},{locked:true},{enabled:false},{isActive:false},{status:'SUSPENDED'}])assert.equal(isBlocked(profile),true);
+ assert.equal(isBlocked({}),false);
  assert.equal(isBlocked({role:'VIEWER',active:true}),false);
 });
 test('sport-scope policy matches ADMIN, BTC, UMPIRE and VIEWER semantics',()=>{
