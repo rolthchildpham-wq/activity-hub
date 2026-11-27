@@ -36,6 +36,7 @@ assert.ok(scheduleRuntime.includes('characterData:true'),'H245 must observe in-p
 assert.ok(scheduleRuntime.includes('if (!node.textContent.trim()) continue;'),'H245 must include text-bearing wrapper elements in contrast auditing');
 assert.ok(scheduleRuntime.includes('new MutationObserver(schedule)'),'H239 must observe dynamic workspace page changes');
 assert.ok(sportIdentity.includes('html[data-tk-sport="badminton"]'),'H247 must define a dedicated badminton sport identity');
+assert.ok(sportHtml.includes('sport-identities-h132.css?v=h247-badminton-identity-20261127'),'Shared sports workspace must load H247 identity stylesheet');
 console.log('H244 global document contrast runtime contract passed.');
 
 assert.ok(scheduleRuntime.includes("const ROOT = 'body';"), 'Dynamic contrast guard must cover legacy pages mounted outside #app-shell');
