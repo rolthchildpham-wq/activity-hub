@@ -39,22 +39,23 @@ html body #app-shell #page-schedule .card :is(.muted,.note,.hint,.description){
 }
 
 
-/* H241 Volleyball settings: the live clock/status timestamp is an unclassed <b> on a white settings card. */
-html body #app-shell #page-settings .card :is(b,span,small,p,label,li,td,th,strong,em):not(button *):not(.btn *){
-  color:#29465b!important;
-  -webkit-text-fill-color:#29465b!important;
-  opacity:1!important;
-  text-shadow:none!important;
-}
-html body #app-shell #page-settings .card :is(button,.btn) :is(b,span,small,strong){
-  color:inherit!important;
-  -webkit-text-fill-color:currentColor!important;
-}
 
-/* H242: the settings live-clock timestamp is an unclassed <b> outside the .card subtree. */
-html body #app-shell #page-settings b:not(button *):not(.btn *) {
+
+/* H243: target the live report timestamp without relying on the #app-shell ancestor. */
+html body #page-settings b:not(button *):not(.btn *) {
   color:#29465b!important;
   -webkit-text-fill-color:#29465b!important;
   opacity:1!important;
   text-shadow:none!important;
+}
+/* The prize editor intentionally uses a dark navy surface; keep its labels light. */
+html body #page-settings #tk79-prize-editor :is(h1,h2,h3,h4,p,small,label,strong,b,span,em,li,td,th):not(button *) {
+  color:#f3f8fc!important;
+  -webkit-text-fill-color:#f3f8fc!important;
+  opacity:1!important;
+}
+html body #page-settings #tk79-prize-editor :is(input,select,textarea) {
+  color:#17364b!important;
+  -webkit-text-fill-color:#17364b!important;
+  background:#fff!important;
 }
