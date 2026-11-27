@@ -426,6 +426,43 @@ jobs:
             exit 1
           fi
           echo "### H232 production HTML, runtime bundle, active schedule calendar and contrast CSS verified on EdgeOne." >> "$GITHUB_STEP_SUMMARY"
+      - name: Verify H250 Hub redesign and sport contrast runtime on live EdgeOne
+        shell: bash
+        env:
+          EDGEONE_DEPLOY_HOOK: ${{ secrets.EDGEONE_DEPLOY_HOOK }}
+        run: |
+          set -euo pipefail
+          if [ -z "${EDGEONE_DEPLOY_HOOK}" ]; then
+            echo "::error::EDGEONE_DEPLOY_HOOK is missing; H250 cannot be confirmed on production."
+            exit 1
+          fi
+          base="https://topkey-activity-management.edgeone.dev"
+          ok=0
+          for attempt in $(seq 1 18); do
+            stamp="__h250_probe=${GITHUB_RUN_ID}-${attempt}"
+            root_code="$(curl --silent --show-error --max-time 15 --location --output /tmp/tk-h250-root.html --write-out '%{http_code}' "$base/index.html?$stamp" || true)"
+            sport_code="$(curl --silent --show-error --max-time 15 --location --output /tmp/tk-h250-sport.html --write-out '%{http_code}' "$base/sports/vnext/index.html?sport=badminton&$stamp" || true)"
+            css_code="$(curl --silent --show-error --max-time 15 --location --output /tmp/tk-h250-contrast.css --write-out '%{http_code}' "$base/sports/vnext/workspace-contrast-h234.css?v=h250-overview-podium-medals-20261127&$stamp" || true)"
+            runtime_code="$(curl --silent --show-error --max-time 15 --location --output /tmp/tk-h250-runtime.js --write-out '%{http_code}' "$base/sports/vnext/workspace-contrast-runtime-h238.js?v=h250-overview-podium-medals-aa-20261127&$stamp" || true)"
+            echo "H250 live attempt=$attempt root=$root_code sport=$sport_code css=$css_code runtime=$runtime_code"
+            if [ "$root_code" = "200" ] && [ "$sport_code" = "200" ] && [ "$css_code" = "200" ] && [ "$runtime_code" = "200" ] &&
+              grep -Fq 'hub-redesign-h240.css?v=h240-full-visual-system-20261127' /tmp/tk-h250-root.html &&
+              grep -Fq 'hub-workspace-h240.js?v=h240-single-workspace-20261127' /tmp/tk-h250-root.html &&
+              grep -Fq 'workspace-contrast-h234.css?v=h250-overview-podium-medals-20261127' /tmp/tk-h250-sport.html &&
+              grep -Fq 'workspace-contrast-runtime-h238.js?v=h250-overview-podium-medals-aa-20261127' /tmp/tk-h250-sport.html &&
+              grep -Fq 'H250: podium medal glyphs' /tmp/tk-h250-contrast.css &&
+              grep -Fq 'const podiumMedal = node.classList.contains' /tmp/tk-h250-runtime.js &&
+              grep -Fq 'window.__TOPKEY_WORKSPACE_CONTRAST_H250' /tmp/tk-h250-runtime.js; then
+              ok=1
+              break
+            fi
+            sleep 8
+          done
+          if [ "$ok" != "1" ]; then
+            echo "::error::H250 Hub redesign and contrast runtime have not propagated to EdgeOne Production. Do not claim deployment complete."
+            exit 1
+          fi
+          echo "### H250 production verified: Hub H240, podium WCAG AA CSS, runtime H250 and live sport workspace HTML/assets are serving from EdgeOne." >> "$GITHUB_STEP_SUMMARY"
       - name: Document EdgeOne release settings
         shell: bash
         env:
