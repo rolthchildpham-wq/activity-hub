@@ -116,3 +116,12 @@ body.tk-bi-hub .exec-calendar-day :is(span,small){min-width:0;overflow-wrap:anyw
  body.tk-bi-hub .exec-calendar-date{font-size:10px}
  body.tk-bi-hub .exec-calendar-event{font-size:9px;padding:2px}
 }
+
+/* Compact seven-sport launcher: single row on desktop, contained horizontal rail on smaller screens. */
+body.tk-bi-hub #topkey-sports.cards,body.tk-bi-hub #topkey-sports.cards.compact-sports{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;width:100%;max-width:100%;min-width:0;margin:0 0 14px;padding:0;overflow:visible}
+body.tk-bi-hub #topkey-sports.cards .sport,body.tk-bi-hub #topkey-sports.cards.compact-sports .sport{min-width:0;min-height:78px;height:78px;padding:9px 5px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border-radius:12px}
+body.tk-bi-hub #topkey-sports .sport .emoji{font-size:24px;line-height:1;margin:0}
+body.tk-bi-hub #topkey-sports .sport h3{width:100%;max-width:100%;margin:0;font-size:clamp(10px,.8vw,12px);line-height:1.22;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.tk-bi-hub #topkey-sports .sport p,body.tk-bi-hub #topkey-sports .sport .badge,body.tk-bi-hub #topkey-sports .sport .open{display:none!important}
+@media(max-width:1100px){body.tk-bi-hub #topkey-sports.cards,body.tk-bi-hub #topkey-sports.cards.compact-sports{display:flex;flex-wrap:nowrap;gap:8px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;padding-bottom:6px;scrollbar-width:thin}body.tk-bi-hub #topkey-sports.cards .sport{flex:0 0 clamp(110px,16vw,152px);width:auto;scroll-snap-align:start}}
+@media(max-width:650px){body.tk-bi-hub #topkey-sports.cards .sport{flex-basis:114px;min-height:64px;height:64px}body.tk-bi-hub #topkey-sports .sport .emoji{font-size:21px}body.tk-bi-hub #topkey-sports .sport h3{font-size:11px}}
