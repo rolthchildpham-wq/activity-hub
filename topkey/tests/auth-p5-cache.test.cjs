@@ -1,12 +1,13 @@
 "use strict";
-const fs=require("node:fs"), assert=require("node:assert/strict");
+const fs=require("node:fs"),assert=require("node:assert/strict");
 const html=fs.readFileSync("topkey/sports/vnext/index.html","utf8");
 const sw=fs.readFileSync("topkey/sports/vnext/sw.js","utf8");
 const legacy=fs.readFileSync("topkey/sports/badminton/index.html","utf8");
 const legacySw=fs.readFileSync("topkey/sports/badminton/sw.js","utf8");
-const match=html.match(/topkey-shared-auth\\.js\\?v=([\\w-]+)/);
-assert.ok(match,"shared VNext HTML missing auth asset");
-const version=match[1];
+const marker="topkey-shared-auth.js?v=";
+const start=html.indexOf(marker);
+assert.ok(start>=0,"shared VNext HTML missing auth asset");
+const version=html.slice(start+marker.length).split('"')[0].split("'")[0];
 assert.ok(sw.includes("topkey-shared-auth.js?v="+version),"VNext SW must use same auth version as HTML; HTML "+version);
 assert.ok(sw.includes("topkey-h136-vnext-shell"),"VNext SW cache key must remain release-aware");
 const library="../../vendor/qrcode.min.js?v=h136-20261114";
