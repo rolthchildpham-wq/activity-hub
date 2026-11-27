@@ -3,7 +3,6 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 
 const read=(p)=>readFileSync(new URL(p,import.meta.url),'utf8');
-const legacy=read('../../topkey/sports/vnext/src/public-viewer-h137.js').includes('') ? '' : read('../../topkey/sports/vnext/src/public-viewer-h137.js');
 const source=read('../src/lib/shared/api/limited-branch.ts');
 const finance=read('../src/routes/sports/[slug]/[tid]/finance/+page.svelte');
 const history=read('../src/routes/sports/[slug]/[tid]/history/+page.svelte');
