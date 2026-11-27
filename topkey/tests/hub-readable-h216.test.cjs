@@ -29,6 +29,6 @@ const sportHtml=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
 const scheduleRuntime=fs.readFileSync('topkey/sports/vnext/workspace-contrast-runtime-h238.js','utf8');
 assert.ok(sportHtml.includes('workspace-contrast-h234.css?v=h238-dynamic-light-surface-aa-20261127'),'All VNext sports must load the cache-busted H237 schedule contrast layer');
 assert.ok(sportHtml.includes('workspace-contrast-runtime-h238.js?v=h238-dynamic-light-surface-aa-20261127'),'All VNext sports must load the H237 runtime guard');
-assert.ok(scheduleRuntime.includes(`node.style.setProperty('color', color, 'important')`),'H238 must apply WCAG-safe foregrounds to dynamic light surfaces');
+assert.ok(scheduleRuntime.includes(`node.style.setProperty('color',SAFE,'important')`),'H238 must apply WCAG-safe foregrounds to dynamic light surfaces');
 assert.ok(scheduleRuntime.includes('new MutationObserver(schedule)'),'H238 must observe dynamic workspace page changes');
 console.log('H238 dynamic workspace contrast runtime contract passed.');
