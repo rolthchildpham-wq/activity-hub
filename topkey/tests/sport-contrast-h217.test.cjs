@@ -22,7 +22,7 @@ console.log('H217 global sport contrast passed for VNext six-sport engine and Ba
 const scheduleContrast=fs.readFileSync('topkey/sports/vnext/workspace-contrast-h234.css','utf8');
 assert.ok(scheduleContrast.includes('html body #app-shell #page-schedule :is(b,span,small,p,label,li,td,th,strong,em)'),'Legacy schedule rows must receive explicit readable foregrounds without depending on page state classes');
 assert.ok(scheduleContrast.includes('-webkit-text-fill-color:#29465b!important'),'Schedule text must override WebKit/inline text fill');
-assert.ok(vhtml.includes('workspace-contrast-h234.css?v=h246-settings-timestamp-aa-20261127'),'VNext must load the cache-busted H243 settings contrast layer');
+assert.ok(vhtml.includes('workspace-contrast-h234.css?v=h247-prize-contrast-20261127'),'VNext must load the cache-busted H243 settings contrast layer');
 const scheduleRuntime=fs.readFileSync('topkey/sports/vnext/workspace-contrast-runtime-h238.js','utf8');
 assert.ok(vhtml.includes('workspace-contrast-runtime-h238.js?v=h245-wrapper-inclusive-aa-20261127'),'VNext must load the H237 schedule runtime guard');
 assert.ok(scheduleRuntime.includes(`node.style.setProperty('color',SAFE,'important')`),'H244 runtime must apply WCAG-safe foregrounds');
@@ -30,7 +30,8 @@ assert.ok(scheduleRuntime.includes("const ROOT = 'body';"),'H243 runtime must co
 assert.ok(scheduleRuntime.includes('characterData:true'),'H245 runtime must inspect wrapper text content');
 assert.ok(scheduleRuntime.includes("const settingsClock = node.tagName === 'B'"),'H246 must force readable color on the legacy settings live-clock label');
 assert.ok(scheduleRuntime.includes('new MutationObserver(schedule)'),'H244 runtime must track dynamic workspace content');
-console.log('H239 global workspace contrast regression contract passed.');
+assert.ok(scheduleCss.includes('#tk79-prize-editor :is(div,p,small,label,strong,b,span,em,li,td,th)'), 'H247 must preserve readable text inside the dark prize editor');
+console.log('H247 global workspace contrast regression contract passed.');
 
 const settingsContrast=fs.readFileSync('topkey/sports/vnext/workspace-contrast-h234.css','utf8');
 assert.ok(settingsContrast.includes('html body #page-settings b:not(button *):not(.btn *)'), 'H243 must cover unclassed live clock/status labels across settings surfaces, not only descendants of .card');
@@ -39,6 +40,6 @@ assert.ok(settingsContrast.includes('workspace-contrast-h234.css?v=h242-settings
 console.log('H242 settings live-label contrast contract passed.');
 
 assert.ok(settingsContrast.includes('html body #page-settings #tk79-prize-editor :is(h1,h2,h3,h4,p,small,label,strong,b,span,em,li,td,th)'), 'H243 must restore readable light text on the dark prize editor');
-assert.ok(vhtml.includes('workspace-contrast-h234.css?v=h246-settings-timestamp-aa-20261127'), 'VNext must load H245 cache-busted settings contrast rules');
+assert.ok(vhtml.includes('workspace-contrast-h234.css?v=h247-prize-contrast-20261127'), 'VNext must load H245 cache-busted settings contrast rules');
 
 assert.ok(scheduleRuntime.includes("const ROOT = 'body';"), 'Dynamic contrast guard must cover legacy pages mounted outside #app-shell');
