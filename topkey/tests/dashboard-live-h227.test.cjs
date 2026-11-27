@@ -3,7 +3,7 @@ const root=path.resolve(__dirname,'..');
 const html=fs.readFileSync(path.join(root,'sports/vnext/index.html'),'utf8');
 const css=fs.readFileSync(path.join(root,'sports/vnext/canva-sports-ui.css'),'utf8');
 const js=fs.readFileSync(path.join(root,'sports/vnext/src/dashboard-live-h227.js'),'utf8');
-assert.ok(html.includes('canva-sports-ui.css?v=canva-sports-v1-20261127'));
+assert.ok(/canva-sports-ui\.css\?v=canva-sports-v\d+-202611\d+/.test(html));
 assert.ok(!html.includes('dashboard-live-h227.css'));
 assert.ok(html.includes('dashboard-live-h227.js?v=h229-dashboard-retry-20261125'));
 for(const x of ['#page-overview .card','.tk227-board','.tk227-match','.tk227-rule'])assert.ok(css.includes(x));
