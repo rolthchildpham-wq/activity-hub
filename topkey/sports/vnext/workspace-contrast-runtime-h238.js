@@ -63,7 +63,7 @@
     attributeFilter:['class','style']
   });
   window.__TOPKEY_WORKSPACE_CONTRAST_H239={
-    version:'h239-global-workspace-dynamic-aa-20261127',
+    version:'h244-global-document-aa-20261127',
     apply,
     disconnect:()=>observer.disconnect()
   };
