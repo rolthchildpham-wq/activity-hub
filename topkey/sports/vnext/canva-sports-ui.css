@@ -227,3 +227,7 @@ html[data-tk-sport] #tk79-prize-list :is(input,button):focus-visible{outline:3px
 #spectator-live .tk143-media iframe[src^="https://player.twitch.tv/"]{width:100%;min-height:300px;aspect-ratio:16/9}
 #spectator-live .tk161-twitch-fallback{display:block;margin:8px 0;color:#B8F0ED;font-weight:700;text-decoration:underline}
 #spectator-live .tk161-twitch-fallback:focus-visible{outline:3px solid #55D7D2;outline-offset:2px}
+
+/* App.showTab() owns visibility; inactive pages must never occupy layout space. */
+#page-overview.hidden{display:none!important}
+#page-overview:not(.hidden){display:grid!important}
