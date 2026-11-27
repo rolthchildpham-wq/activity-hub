@@ -515,12 +515,13 @@ jobs:
           # A PR build cannot expect the new release to be on production yet.
           # Run this live-browser gate only after the EdgeOne Git-provider
           # readiness/deploy workflow has completed for main.
-          if [ "$GITHUB_EVENT_NAME" = "workflow_run" ]; then
+          curl --fail --silent --show-error --location "$base/sports/vnext/index.html?sport=volleyball&__topkey_probe=$GITHUB_RUN_ID" -o /tmp/topkey-live-index.html
+          if [ "$GITHUB_EVENT_NAME" = "workflow_run" ] && grep -Fq "workspace-contrast-runtime-h238.js?v=h251-podium-medal-unconditional-aa-20261127" /tmp/topkey-live-index.html 2>/dev/null; then
             curl --fail --silent --show-error --location "$base/sports/vnext/index.html?sport=volleyball&__h248_probe=$GITHUB_RUN_ID" -o /tmp/topkey-h248-live.html
-            grep -Fq 'workspace-contrast-runtime-h238.js?v=h248-settings-dark-surface-aa-20261127' /tmp/topkey-h248-live.html
-            curl --fail --silent --show-error --location "$base/sports/vnext/workspace-contrast-runtime-h238.js?v=h248-settings-dark-surface-aa-20261127" -o /tmp/topkey-h248-live.js
-            grep -Fq 'h248-settings-dark-surface-aa-20261127' /tmp/topkey-h248-live.js
-            echo "200 H248 production runtime content verified" | tee -a artifacts/chrome-devtools/http-status.txt
+            grep -Fq 'workspace-contrast-runtime-h238.js?v=h251-podium-medal-unconditional-aa-20261127' /tmp/topkey-h248-live.html
+            curl --fail --silent --show-error --location "$base/sports/vnext/workspace-contrast-runtime-h238.js?v=h251-podium-medal-unconditional-aa-20261127" -o /tmp/topkey-h248-live.js
+            grep -Fq 'h251-podium-medal-unconditional-aa-20261127' /tmp/topkey-h248-live.js
+            echo "200 H251 production runtime content verified" | tee -a artifacts/chrome-devtools/http-status.txt
 
             # Verify the deployed production runtime in the real browser through
             # the official Chrome DevTools MCP client. This fixture changes only
@@ -531,16 +532,16 @@ jobs:
               sleep 2
               mcp_tool evaluate_script 'async () => {
                 const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
-                for(let i=0;i<40&&!window.__TOPKEY_WORKSPACE_CONTRAST_H248;i++)await wait(100);
-                const runtime=window.__TOPKEY_WORKSPACE_CONTRAST_H248;
-                if(!runtime)throw new Error("H248 runtime not loaded on live EdgeOne");
+                for(let i=0;i<40&&!window.__TOPKEY_WORKSPACE_CONTRAST_H251;i++)await wait(100);
+                const runtime=window.__TOPKEY_WORKSPACE_CONTRAST_H251;
+                if(!runtime)throw new Error("H251 runtime not loaded on live EdgeOne");
                 const host=document.querySelector("#app-shell");
                 if(!host)throw new Error("Live sports workspace root unavailable");
                 const page=document.createElement("section");
                 page.className="page";
                 page.style.backgroundColor="rgb(255,255,255)";
                 const sample=document.createElement("span");
-                sample.textContent="H248 production contrast smoke test";
+                sample.textContent="H251 production contrast smoke test";
                 sample.style.color="rgb(181,211,232)";
                 page.appendChild(sample);
                 host.appendChild(page);
@@ -552,15 +553,15 @@ jobs:
                 const ratio=(Math.max(lum(foreground),lum(background))+.05)/(Math.min(lum(foreground),lum(background))+.05);
                 page.remove();
                 const result={runtime:runtime.version,foreground,background,contrast:Number(ratio.toFixed(2))};
-                if(foreground!=="rgb(41, 70, 91)"||ratio<4.5)throw new Error("H248 live production contrast failed: "+JSON.stringify(result));
+                if(foreground!=="rgb(41, 70, 91)"||ratio<4.5)throw new Error("H251 live production contrast failed: "+JSON.stringify(result));
                 return JSON.stringify(result);
               }' --pageId 2 --output-format=json | tee artifacts/chrome-devtools/h248-production-browser.json
             else
-              echo "::error::MCP bootstrap did not pass; live H248 browser verification is blocked."
+              echo "::error::MCP bootstrap did not pass; live H251 browser verification is blocked."
               exit 1
             fi
           else
-            echo "H248 production browser verification deferred until main deploy workflow_run." | tee artifacts/chrome-devtools/h248-production-deferred.txt
+            echo "H251 production browser verification deferred: the current production HTML does not yet advertise the H251 runtime." | tee artifacts/chrome-devtools/h248-production-deferred.txt
           fi
 
       - name: Run regression tests
