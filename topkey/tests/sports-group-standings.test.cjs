@@ -51,6 +51,15 @@ test('final runtime ranking filters each group and uses volleyball set-differenc
  assert.equal(groupB[0].played,1);
  assert.equal(groupB[1].points,0);
 });
+test('H58 reclaims the active standings renderer if a later runtime replaces it',()=>{
+ const laterRenderer=function(){this.__baseStandingsCalls=(this.__baseStandingsCalls||0)+1};
+ App.renderStandings=laterRenderer;
+ api.ensureStandingsRenderer();
+ assert.notEqual(App.renderStandings,laterRenderer);
+ assert.equal(App.renderStandings.__tkH58Wrapped,true);
+ App.renderStandings();
+ assert.equal(App.__baseStandingsCalls,1);
+});
 test('the final H58 module owns the active renderer and emits independent group sections',()=>{
  assert.equal((h58.match(/function renderStandings\(\)/g)||[]).length,1);
  assert.match(h58,/App\.renderStandings=renderStandings/);
