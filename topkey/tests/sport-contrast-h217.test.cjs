@@ -4,7 +4,8 @@ const vhtml=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
 const bhtml=fs.readFileSync('topkey/sports/badminton/index.html','utf8');
 const vcss=fs.readFileSync('topkey/sports/vnext/contrast-global-h217.css','utf8');
 const bcss=fs.readFileSync('topkey/sports/badminton/contrast-global-h217.css','utf8');
-assert.ok(vhtml.includes('contrast-global-h217.css?v=h217-20261124'),'VNext must load H217');
+assert.ok(vhtml.includes('canva-sports-ui.css?v=canva-sports-v1-20261127'),'VNext must load the consolidated Canva sports UI');
+assert.ok(!vhtml.includes('contrast-global-h217.css'),'Legacy H217 visual stylesheet must not load in VNext');
 assert.ok(bhtml.includes('contrast-global-h217.css?v=h217-20261124'),'Badminton must load H217');
 for(const [name,css] of [['VNext',vcss],['Badminton',bcss]]){
  for(const token of ['#f8fbff','#d2e0ec','#e8f2fa','#102a43','#7897b0','@media(max-width:690px)','prefers-reduced-motion:reduce']){
