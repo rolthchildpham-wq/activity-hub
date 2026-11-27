@@ -80,3 +80,22 @@ html body #page-settings b:not(button *):not(.btn *) {
   opacity:1!important;
   text-shadow:none!important;
 }
+
+/* H247: protect the intentionally dark prize editor from generic light-card contrast overrides. */
+html body #page-settings #tk79-prize-editor :is(div,p,small,label,strong,b,span,em,li,td,th):not(button *):not(.btn *) {
+  color:#e4eef5!important;
+  -webkit-text-fill-color:#e4eef5!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}
+html body #page-settings #tk79-prize-editor :is(input,select,textarea) {
+  color:#17364b!important;
+  -webkit-text-fill-color:#17364b!important;
+  background:#fff!important;
+}
+html body #page-settings b:not(#tk79-prize-editor b):not(button *):not(.btn *) {
+  color:#29465b!important;
+  -webkit-text-fill-color:#29465b!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}
