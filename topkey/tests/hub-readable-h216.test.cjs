@@ -29,7 +29,7 @@ const sportHtml=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
 const scheduleRuntime=fs.readFileSync('topkey/sports/vnext/workspace-contrast-runtime-h238.js','utf8');
 const sportIdentity=fs.readFileSync('topkey/sports/vnext/sport-identities-h132.css','utf8');
 assert.ok(sportHtml.includes('workspace-contrast-h234.css?v=h247-prize-contrast-20261127'),'All VNext sports must load the cache-busted H237 schedule contrast layer');
-assert.ok(sportHtml.includes('workspace-contrast-runtime-h238.js?v=h248-settings-dark-surface-aa-20261127'),'All VNext sports must load the H237 runtime guard');
+assert.ok(sportHtml.includes('workspace-contrast-runtime-h238.js?v=h249-settings-clock-priority-aa-20261127'),'All VNext sports must load the H237 runtime guard');
 assert.ok(scheduleRuntime.includes(`node.style.setProperty('color',SAFE,'important')`),'H239 must apply WCAG-safe foregrounds to dynamic light surfaces');
 assert.ok(scheduleRuntime.includes("const ROOT = 'body';"),'H243 must scan the full document across legacy sport handoff roots');
 assert.ok(scheduleRuntime.includes('characterData:true'),'H245 must observe in-place text-node updates');
