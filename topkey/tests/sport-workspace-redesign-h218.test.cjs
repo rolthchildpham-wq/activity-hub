@@ -27,7 +27,7 @@ assert.ok(vhtml.includes('collapsible-panels-h141.js?v=h142-collapsible-groups-2
 assert.ok(vhtml.includes('collapsible-panels-h141.js?v=h142-collapsible-groups-20261125'),'Shared VNext workspace must load nested collapsible function groups');
 assert.ok(collapsible.includes("panel.classList.contains('subcard')"),'Nested function-group cards must be collapsed by default');
 assert.ok(collapsible.includes("button.setAttribute('aria-controls',id)"),'Collapsible cards must expose accessible controls');
-assert.ok(bhtml.includes('workspace-redesign-h218.css?v=h218-sports-redesign-20261124'),'Badminton H218 stylesheet must load last');
+assert.ok(bhtml.includes("new URL('../vnext/index.html', location.href)"),'Legacy badminton entrypoint must redirect without rendering the old UI');
 assert.equal(release.releaseId,'H218');
 assert.equal(release.hub,'h218-sports-workspace-redesign');
 assert.equal(vb.cacheTag,release.cacheTag);
@@ -43,7 +43,7 @@ for(const sport of ['football','volleyball','running','handmade','shuttle','cook
 }
 for(const tab of ['overview','control','teams','schedule','umpire','live','finance','announcements','audit','health','settings']){
  assert.ok(vhtml.includes('data-tab="'+tab+'"'),'VNext missing tab '+tab);
- assert.ok(bhtml.includes('data-tab="'+tab+'"'),'Badminton missing tab '+tab);
+ assert.ok(vhtml.includes('data-tab="'+tab+'"'),'Shared badminton/VNext workspace missing tab '+tab);
 }
 assert.ok(vcss.includes('#app-shell:not(.hidden) .page:not(#page-never) .card'),'VNext H218 card selector must outrank legacy H217 cascade');
 assert.ok(vcss.includes('html[data-tk-sport] body #app-shell:not(.hidden) .page:not(#page-never) .card'),'VNext H218.1 final cascade guard must override H217 dark card surfaces');
