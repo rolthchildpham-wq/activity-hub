@@ -5,7 +5,8 @@ const publicJs=fs.readFileSync("topkey/sports/vnext/src/public-viewer-h137.js","
 const styles=fs.readFileSync("topkey/sports/vnext/canva-sports-ui.css","utf8");
 assert.ok(html.includes('window.__TOPKEY_PUBLIC_ROUTE==="spectator"'));
 assert.ok(html.includes('src/public-viewer-h137.js?v=h174-20261121'));
-assert.ok(html.includes('public-viewer-h137.css?v=h173-20261121'));
+assert.ok(html.includes('canva-sports-ui.css?v=canva-sports-v1-20261127'));
+assert.ok(!html.includes('public-viewer-h137.css'));
 assert.ok(publicJs.includes('{auth:false}'));
 assert.ok(!publicJs.includes("queueSet("));
 assert.ok(!publicJs.includes("ref.set("));
