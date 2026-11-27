@@ -1,1 +1,16 @@
-const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');const root=path.resolve(__dirname,'..');const html=fs.readFileSync(path.join(root,'sports/vnext/index.html'),'utf8'),css=fs.readFileSync(path.join(root,'sports/vnext/dashboard-live-h227.css'),'utf8'),js=fs.readFileSync(path.join(root,'sports/vnext/src/dashboard-live-h227.js'),'utf8');assert.match(html,/dashboard-live-h227\.css\?v=h230-page-visibility-20261125/);assert.match(html,/dashboard-live-h227\.js\?v=h229-dashboard-retry-20261125/);assert.ok(html.indexOf('dashboard-live-h227.css')>html.indexOf('topkey-sports-shell.css'));assert.ok(html.indexOf('dashboard-live-h227.js')>html.indexOf('dashboard-truth-h202.js'));for(const x of ['#page-overview .card','.tk227-board','.tk227-match','.tk227-rule'])assert.ok(css.includes(x));for(const x of ['s.matches','s.teams','s.courts','s.activeMatches','cfg.rules','T.DEFAULT_RULES'])assert.ok(js.includes(x));assert.match(js,/Trận đang thi đấu/);assert.match(js,/Thể thức giải/);assert.doesNotMatch(js,/queueSet|queueMulti|firebase\.database\(\)\.ref/);assert.match(css,/@media\(max-width:640px\)/);assert.ok(css.includes('#page-overview.hidden{display:none!important}'),'H228 must hide overview when inactive');assert.ok(css.includes('#page-overview:not(.hidden){display:grid!important}'),'H228 must show overview only when active');assert.ok(css.includes('#page-overview.hidden{display:none!important')&&css.includes('H230: page visibility is owned by App.showTab()'),'H230 must force-hide every inactive workspace page');console.log('H227 dashboard visual, live-data, sport-rule and read-only contracts passed.');
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+const root=path.resolve(__dirname,'..');
+const html=fs.readFileSync(path.join(root,'sports/vnext/index.html'),'utf8');
+const css=fs.readFileSync(path.join(root,'sports/vnext/canva-sports-ui.css'),'utf8');
+const js=fs.readFileSync(path.join(root,'sports/vnext/src/dashboard-live-h227.js'),'utf8');
+assert.ok(html.includes('canva-sports-ui.css?v=canva-sports-v1-20261127'));
+assert.ok(!html.includes('dashboard-live-h227.css'));
+assert.ok(html.includes('dashboard-live-h227.js?v=h229-dashboard-retry-20261125'));
+for(const x of ['#page-overview .card','.tk227-board','.tk227-match','.tk227-rule'])assert.ok(css.includes(x));
+for(const x of ['s.matches','s.teams','s.courts','s.activeMatches','cfg.rules','T.DEFAULT_RULES'])assert.ok(js.includes(x));
+assert.ok(js.includes('Trận đang thi đấu')&&js.includes('Thể thức giải'));
+assert.ok(!/queueSet|queueMulti|firebase\\.database\\(\\)\\.ref/.test(js));
+assert.ok(css.includes('@media(max-width:700px)'));
+assert.ok(css.includes('#page-overview.hidden{display:none!important}'));
+assert.ok(css.includes('#page-overview:not(.hidden){display:grid!important}'));
+console.log('Canva dashboard visual, live-data, sport-rule and read-only contracts passed.');
