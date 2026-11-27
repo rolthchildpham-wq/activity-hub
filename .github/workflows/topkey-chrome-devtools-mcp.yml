@@ -363,7 +363,7 @@ jobs:
                 kpiGridTemplate:gridColumns(document.querySelector("#page-overview > .grid.g4")).value,
                 legacyHubLinksVisible:[...document.querySelectorAll("#app-shell .topbar .hub-link,#app-shell .topbar .hub-back")]
                   .filter(el=>getComputedStyle(el).display!=="none").length,
-                writeAttempts:window.__TOPKEY_QA_WRITE_ATTEMPTS,dashboardFixture,
+                writeAttempts:window.__TOPKEY_QA_WRITE_ATTEMPTS,firebaseDisabled:window.__TOPKEY_QA_FIREBASE_DISABLED,dashboardFixture,
                 fixture:"UI_ONLY_NO_DATABASE_WRITES"};
               if(sport==="badminton"){
                 const profileSelect=document.querySelector("#rules-form select[name=badmintonFormatProfile]");
@@ -381,7 +381,7 @@ jobs:
               if(result.legacyHubLinksVisible!==0)throw new Error("Duplicate legacy Hub navigation is visible: "+JSON.stringify(result));
               if(!panel||result.analyticsContrast<4.5||result.analyticsSubContrast<4.5)
                 throw new Error("Workspace contrast failed: "+JSON.stringify(result));
-              if(result.writeAttempts!==0)throw new Error("UI fixture attempted Firebase writes: "+JSON.stringify(result));
+              if(result.writeAttempts!==0||!result.firebaseDisabled)throw new Error("UI fixture attempted Firebase writes or Firebase isolation failed: "+JSON.stringify(result));
               if(sport==="badminton"&&location.pathname!=="/sports/vnext/index.html")
                 throw new Error("Badminton did not remain in the shared VNext workspace: "+JSON.stringify(result));
               return JSON.stringify(result);
