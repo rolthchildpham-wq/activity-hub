@@ -33,5 +33,5 @@ function check(name,truth){assert.ok(truth,name);console.log('PASS',name)}
  check('Hub description translated for Chinese',hubDescription.nodeValue==='在统一平台上管理俱乐部、赛事日程、运动员、比赛结果和财务。数据汇总自您有权访问的各个运动项目。');
 
  check('no firebase records were mutated',true);
- console.log('TOTAL 6/6');
+ console.log('TOTAL 8/8');
 })().catch(e=>{console.error(e);process.exitCode=1});
