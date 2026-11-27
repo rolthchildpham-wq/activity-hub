@@ -1,0 +1,52 @@
+/* TOPKEY Canva UI v1 — replaces legacy Hub stylesheet stack.
+   Source: Canva design DAHcGwe0HHY. UI-only: preserve app markup, routes and data APIs. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root{color-scheme:dark;--tk-navy:#0B1F33;--tk-slate:#173A55;--tk-teal:#0AA6A6;--tk-white:#fff;--tk-ink:#F5FAFD;--tk-muted:#B8C9D6;--tk-line:#31536C;--tk-surface:#102B43;--tk-surface-2:#143650;--tk-radius:16px;--tk-shadow:0 12px 32px rgba(0,0,0,.22);--tk-space-1:4px;--tk-space-2:8px;--tk-space-3:12px;--tk-space-4:16px;--tk-space-6:24px;--tk-space-8:32px;--tk-space-10:40px}
+*,*::before,*::after{box-sizing:border-box}html{min-width:320px;scroll-behavior:smooth;background:var(--tk-navy)}body.tk-bi-hub{margin:0;min-height:100vh;background:var(--tk-navy);color:var(--tk-ink);font:400 15px/1.55 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}body.tk-bi-hub a{color:inherit}body.tk-bi-hub button,body.tk-bi-hub input,body.tk-bi-hub select,body.tk-bi-hub textarea{font:inherit}body.tk-bi-hub :focus-visible{outline:3px solid #55D7D2;outline-offset:3px}body.tk-bi-hub img,body.tk-bi-hub svg,body.tk-bi-hub video{max-width:100%;height:auto}
+body.tk-bi-hub .top{position:sticky;top:0;z-index:50;padding:14px clamp(16px,3vw,40px);background:rgba(11,31,51,.96);border-bottom:1px solid rgba(10,166,166,.3);box-shadow:0 8px 24px rgba(0,0,0,.18);backdrop-filter:blur(14px)}
+body.tk-bi-hub .brand{max-width:1480px;margin:auto;display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:20px}
+body.tk-bi-hub .brand-main{display:flex;align-items:center;gap:18px;min-width:0}
+body.tk-bi-hub .brand-logo-wrap{width:168px;min-width:120px;height:58px;display:flex;align-items:center;justify-content:center;padding:6px 10px;background:#fff;border-radius:12px;overflow:hidden}
+body.tk-bi-hub .brand-logo{width:100%;height:100%;object-fit:contain}
+body.tk-bi-hub .brand-title{min-width:0;border-left:1px solid rgba(184,201,214,.3);padding-left:18px}
+body.tk-bi-hub .brand-title h1{margin:0;font-size:clamp(17px,1.7vw,24px);font-weight:800;line-height:1.2;letter-spacing:-.035em;text-transform:none}
+body.tk-bi-hub .hub-title-line{display:inline}
+body.tk-bi-hub .eyebrow{margin-top:5px;color:#8ED9D6;font-size:11px;font-weight:700;letter-spacing:.08em}
+body.tk-bi-hub .tk210-nav{display:flex;align-items:center;gap:6px;min-width:0}
+body.tk-bi-hub .tk210-nav a{display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:9px 13px;border:1px solid transparent;border-radius:10px;color:var(--tk-muted);text-decoration:none;font-size:13px;font-weight:700;white-space:nowrap}
+body.tk-bi-hub .tk210-nav a:hover,body.tk-bi-hub .tk210-nav a.active,body.tk-bi-hub .tk210-nav a[aria-current=page]{background:rgba(10,166,166,.14);border-color:rgba(10,166,166,.4);color:#fff}
+body.tk-bi-hub .tk210-avatar{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--tk-teal);color:#062c37;font-weight:800;text-decoration:none}
+body.tk-bi-hub .status{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px}
+body.tk-bi-hub .pill{display:inline-flex;align-items:center;min-height:25px;padding:4px 9px;border:1px solid rgba(10,166,166,.35);border-radius:999px;background:rgba(10,166,166,.1);color:#B8F0ED;font-size:11px;font-weight:700}
+body.tk-bi-hub main.wrap{width:min(1480px,100%);margin:0 auto;padding:28px clamp(16px,3vw,40px) 56px;min-width:0;overflow-x:clip}
+body.tk-bi-hub .tk-bi-hero{position:relative;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(180px,.8fr);align-items:center;gap:24px;min-height:230px;padding:clamp(24px,4vw,48px);overflow:hidden;border:1px solid rgba(10,166,166,.28);border-radius:22px;background:linear-gradient(120deg,#173A55,#102B43 65%,#0B1F33);box-shadow:var(--tk-shadow)}
+body.tk-bi-hub .tk-bi-hero-kicker{color:#73D8D4;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+body.tk-bi-hub .tk-bi-hero h2{max-width:720px;margin:8px 0 12px;font-size:clamp(27px,3.6vw,46px);line-height:1.08;letter-spacing:-.045em}
+body.tk-bi-hub .tk-bi-hero p{max-width:680px;margin:0;color:var(--tk-muted);font-size:15px}
+body.tk-bi-hub .tk-bi-hero-cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+body.tk-bi-hub .tk-bi-link{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 16px;border:1px solid var(--tk-line);border-radius:10px;background:rgba(255,255,255,.05);color:#fff;text-decoration:none;font-weight:700}
+body.tk-bi-hub .tk-bi-link.primary,body.tk-bi-hub .sport .open{background:var(--tk-teal);border:1px solid #32C6C3;color:#052B35;font-weight:800}
+body.tk-bi-hub .tk210-hero-art{display:flex;align-items:center;justify-content:center;gap:12px;min-height:140px;position:relative}
+body.tk-bi-hub .tk210-athlete{display:grid;place-items:center;width:64px;height:64px;border:1px solid rgba(10,166,166,.35);border-radius:18px;background:rgba(10,166,166,.12);font-size:30px}
+body.tk-bi-hub .tk-bi-section-heading{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:30px 0 14px}
+body.tk-bi-hub .tk-bi-section-heading h2{margin:0;font-size:22px;letter-spacing:-.03em}
+body.tk-bi-hub .tk-bi-section-heading small{color:var(--tk-muted)}
+body.tk-bi-hub .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:0}
+body.tk-bi-hub .sport{position:relative;display:flex;flex-direction:column;min-width:0;min-height:230px;padding:22px;border:1px solid var(--tk-line);border-radius:var(--tk-radius);background:linear-gradient(145deg,#173A55,#102B43);box-shadow:0 8px 22px rgba(0,0,0,.15);text-decoration:none;transition:transform .16s ease,border-color .16s ease}
+body.tk-bi-hub .sport:hover{transform:translateY(-2px);border-color:var(--tk-teal);box-shadow:var(--tk-shadow)}
+body.tk-bi-hub .sport .emoji{font-size:34px;line-height:1.2}
+body.tk-bi-hub .sport h3{margin:14px 0 7px;color:#fff;font-size:19px;font-weight:800;letter-spacing:-.025em}
+body.tk-bi-hub .sport p{margin:0 0 18px;color:#C2D1DC;line-height:1.55;font-size:13px}
+body.tk-bi-hub .sport .open{display:inline-flex;align-items:center;justify-content:center;min-height:38px;margin-top:auto;padding:8px 12px;border-radius:9px;text-decoration:none;font-size:12px}
+body.tk-bi-hub .sport .badge{position:absolute;right:12px;top:12px;max-width:60%;padding:5px 8px;border:1px solid rgba(10,166,166,.4);border-radius:999px;background:rgba(10,166,166,.12);color:#B8F0ED;font-size:9px;font-weight:800}
+body.tk-bi-hub .panel,body.tk-bi-hub .feature{border:1px solid var(--tk-line);border-radius:var(--tk-radius);background:var(--tk-surface);box-shadow:var(--tk-shadow)}
+body.tk-bi-hub .feature-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+body.tk-bi-hub :is(button,.btn){min-height:40px;border:1px solid var(--tk-line);border-radius:10px;padding:9px 13px;background:var(--tk-slate);color:#fff;font-weight:700;cursor:pointer}
+body.tk-bi-hub :is(button,.btn):hover{border-color:var(--tk-teal);filter:brightness(1.08)}
+body.tk-bi-hub :is(input,select,textarea){min-width:0;max-width:100%;border:1px solid #45647B;border-radius:9px;padding:10px 12px;background:#0A2237;color:#fff}
+body.tk-bi-hub table{width:100%;border-collapse:collapse}body.tk-bi-hub th,body.tk-bi-hub td{padding:11px 12px;border-bottom:1px solid rgba(184,201,214,.16);text-align:left}body.tk-bi-hub th{background:#173A55;color:#E5F2F8;font-size:12px}
+body.tk-bi-hub .hidden{display:none!important}
+@media(max-width:1000px){body.tk-bi-hub .brand{grid-template-columns:minmax(0,1fr) auto}body.tk-bi-hub .tk210-nav{grid-column:1/-1;grid-row:2;overflow:auto;padding-bottom:2px}body.tk-bi-hub .status{grid-column:1/-1;grid-row:3}body.tk-bi-hub .cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){body.tk-bi-hub .top{position:relative;padding:12px 14px}body.tk-bi-hub .brand{grid-template-columns:minmax(0,1fr) auto;gap:10px}body.tk-bi-hub .brand-main{gap:10px}body.tk-bi-hub .brand-logo-wrap{width:86px;min-width:86px;height:42px;padding:4px}body.tk-bi-hub .brand-title{padding-left:10px}body.tk-bi-hub .brand-title h1{font-size:14px}body.tk-bi-hub .eyebrow{font-size:9px;letter-spacing:.02em}body.tk-bi-hub .tk210-nav{gap:4px;margin:0 -2px}body.tk-bi-hub .tk210-nav a{min-height:40px;padding:8px 10px;font-size:12px}body.tk-bi-hub .tk210-nav a span{display:inline}body.tk-bi-hub .status{display:none}body.tk-bi-hub main.wrap{padding:16px 14px 36px}body.tk-bi-hub .tk-bi-hero{grid-template-columns:1fr;min-height:0;padding:22px;border-radius:16px}body.tk-bi-hub .tk210-hero-art{min-height:60px;justify-content:flex-start}body.tk-bi-hub .tk210-athlete{width:46px;height:46px;font-size:22px}body.tk-bi-hub .tk-bi-hero h2{font-size:28px}body.tk-bi-hub .tk-bi-hero p{font-size:13px}body.tk-bi-hub .tk-bi-section-heading{align-items:flex-start;flex-direction:column;margin:22px 0 12px}body.tk-bi-hub .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}body.tk-bi-hub .sport{padding:14px;min-height:190px;border-radius:13px}body.tk-bi-hub .sport h3{font-size:15px;margin:10px 0 6px}body.tk-bi-hub .sport p{font-size:11px;line-height:1.45}body.tk-bi-hub .sport .badge{position:static;align-self:flex-start;max-width:100%;margin-bottom:8px;font-size:8px}body.tk-bi-hub .feature-grid{grid-template-columns:1fr}}
+@media(max-width:370px){body.tk-bi-hub .cards{grid-template-columns:1fr}body.tk-bi-hub .brand-title h1{font-size:12px}body.tk-bi-hub .tk210-nav a{padding:7px 8px}}
+@media(prefers-reduced-motion:reduce){body.tk-bi-hub *,body.tk-bi-hub *:before,body.tk-bi-hub *:after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
