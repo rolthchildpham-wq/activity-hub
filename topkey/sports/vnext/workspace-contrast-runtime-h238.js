@@ -1,7 +1,7 @@
-/* H238: contrast guard for dynamically-rendered text on light workspace surfaces. */
+/* H239: contrast guard for dynamically-rendered text on light workspace surfaces. */
 (() => {
   'use strict';
-  const ROOT = '#app-shell .page:not(.hidden)';
+  const ROOT = '#app-shell';
   const TEXT = 'h1,h2,h3,h4,p,small,label,strong,b,span,em,li,td,th,time,div';
   const SAFE = '#29465b';
 
@@ -58,10 +58,11 @@
   apply();
   const observer=new MutationObserver(schedule);
   observer.observe(document.documentElement,{
-    subtree:true,childList:true,attributes:true,attributeFilter:['class','style']
+    subtree:true,childList:true,attributes:true,characterData:true,
+    attributeFilter:['class','style']
   });
-  window.__TOPKEY_WORKSPACE_CONTRAST_H238={
-    version:'h238-dynamic-light-surface-aa-20261127',
+  window.__TOPKEY_WORKSPACE_CONTRAST_H239={
+    version:'h239-global-workspace-dynamic-aa-20261127',
     apply,
     disconnect:()=>observer.disconnect()
   };
