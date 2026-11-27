@@ -27,7 +27,8 @@ const expectedStyles = [
   'hub-layout-h209.css',
   'hub-contrast-readable-h216.css',
   'hub-dashboard-reference-h219.css',
-  'hub-ecc-design-system.css'
+  'hub-ecc-design-system.css',
+  'hub-workspace-nav-h231.css'
 ];
 const expectedScripts = [
   'release-runtime.js',
@@ -61,12 +62,14 @@ assert.deepEqual(styles, expectedStyles, 'Hub stylesheet order/inventory changed
 assert.deepEqual(scripts, expectedScripts, 'Hub script order/inventory changed; review runtime dependencies before changing');
 assert.equal(new Set(styles).size, styles.length, 'Duplicate Hub stylesheet import');
 assert.equal(new Set(scripts).size, scripts.length, 'Duplicate Hub script import');
-assert.equal(styles.at(-1), 'hub-ecc-design-system.css', 'ECC design layer must remain the final Hub stylesheet');
+assert.equal(styles.at(-2), 'hub-ecc-design-system.css', 'ECC design layer must remain immediately before the workspace navigation layer');
+assert.equal(styles.at(-1), 'hub-workspace-nav-h231.css', 'Workspace navigation layer must remain the final Hub stylesheet');
 
 console.log(JSON.stringify({
   status: 'PASS',
   stylesheetCount: styles.length,
   scriptCount: scripts.length,
-  finalDesignLayer: styles.at(-1),
+  finalDesignLayer: styles.at(-2),
+  finalWorkspaceLayer: styles.at(-1),
   policy: 'Inventory is intentionally frozen until each removal has parity evidence'
 }, null, 2));
