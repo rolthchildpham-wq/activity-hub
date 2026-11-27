@@ -1,4 +1,4 @@
-/* H245: contrast guard for dynamically-rendered text and text-bearing wrappers on light workspace surfaces. */
+/* H249: contrast guard for dynamically-rendered text and text-bearing wrappers on light workspace surfaces. */
 (() => {
   'use strict';
   // Scan the full document: legacy pages can be mounted outside #app-shell during sport handoff.
@@ -39,6 +39,15 @@
         const bg=effectiveBackground(node);
         // The settings live-clock <b> is injected by legacy code with a pale inline color.
         // Keep it dark on the light settings surface, but preserve the intentionally dark prize editor.
+        // The legacy live clock sits on a white status strip inside settings.
+        // Exempt it before the dark-surface rule so ancestor backgrounds cannot bleach it.
+        const settingsClock = node.tagName === 'B' &&
+          node.closest('#page-settings') && !node.closest('#tk79-prize-editor');
+        if (settingsClock) {
+          node.style.setProperty('color',SAFE,'important');
+          node.style.setProperty('-webkit-text-fill-color',SAFE,'important');
+          continue;
+        }
         const settingsDarkSurface = node.closest('#page-settings') &&
           luminance(bg) < 0.25 && !node.closest('button,.btn,input,select,textarea');
         if (settingsDarkSurface) {
@@ -46,8 +55,6 @@
           node.style.setProperty('-webkit-text-fill-color','#e4eef5','important');
           continue;
         }
-        const settingsClock = node.tagName === 'B' &&
-          node.closest('#page-settings') && !node.closest('#tk79-prize-editor');
         if (!settingsClock && (luminance(bg) < 0.72 || contrast(fg,bg) >= 4.5)) continue;
         if (node.style.getPropertyValue('color') !== SAFE ||
             node.style.getPropertyPriority('color') !== 'important') {
@@ -74,7 +81,7 @@
     attributeFilter:['class','style']
   });
   window.__TOPKEY_WORKSPACE_CONTRAST_H248={
-    version:'h248-settings-dark-surface-aa-20261127',
+    version:'h249-settings-clock-priority-aa-20261127',
     apply,
     disconnect:()=>observer.disconnect()
   };
