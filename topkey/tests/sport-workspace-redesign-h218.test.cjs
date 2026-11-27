@@ -24,7 +24,7 @@ assert.ok(bhtml.includes("query.set('sport', 'badminton')"),'Legacy badminton ro
 assert.ok(vhtml.includes('canva-sports-ui.css?v=canva-sports-v1-20261127'),'VNext must load the consolidated Canva sports UI');
 assert.ok(!vhtml.includes('workspace-redesign-h218.css'),'Legacy H218 stylesheet must not load in VNext');
 assert.ok(vhtml.includes('collapsible-panels-h141.js?v=h142-collapsible-groups-20261125'),'VNext must load nested collapsible function groups');
-assert.ok(bhtml.includes('collapsible-panels-h141.js?v=h142-collapsible-groups-20261125'),'Badminton must load nested collapsible function groups');
+assert.ok(vhtml.includes('collapsible-panels-h141.js?v=h142-collapsible-groups-20261125'),'Shared VNext workspace must load nested collapsible function groups');
 assert.ok(collapsible.includes("panel.classList.contains('subcard')"),'Nested function-group cards must be collapsed by default');
 assert.ok(collapsible.includes("button.setAttribute('aria-controls',id)"),'Collapsible cards must expose accessible controls');
 assert.ok(bhtml.includes('workspace-redesign-h218.css?v=h218-sports-redesign-20261124'),'Badminton H218 stylesheet must load last');
