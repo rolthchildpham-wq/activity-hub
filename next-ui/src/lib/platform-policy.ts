@@ -48,7 +48,7 @@ const roleTabs:Record<TopkeyRole,readonly string[]>={
 };
 function normalizedText(value:unknown):string{
  const raw=String(value??'').trim().toLowerCase();
- return (raw.normalize?raw.normalize('NFD').replace(/[\\u0300-\\u036f]/g,''):raw).replace(/đ/g,'d');
+ return (raw.normalize?raw.normalize('NFD').replace(/[\u0300-\u036f]/g,''):raw).replace(/đ/g,'d');
 }
 export function normalizeSport(value:unknown):string{
  const normalized=normalizedText(value);
