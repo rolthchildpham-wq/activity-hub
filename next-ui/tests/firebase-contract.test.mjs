@@ -16,7 +16,7 @@ test('show KPI only after all initial snapshots are received',()=>{
 });
 test('timeout and errors do not silently turn missing data into zeros',()=>{
  assert.match(source,/INITIAL_LOAD_TIMEOUT_MS=10_000/);
- assert.match(source,/fail\(new Error\('Quá thời gian đồng bộ:/);
+ assert.match(source,/fail\(new Error\('Quá thời gian xác minh quyền hoặc đồng bộ:/);
 });
 test('listeners are disposed after branch switch or permission failure',()=>{
  assert.match(source,/off\.forEach\(unsubscribe=>unsubscribe\(\)\)/);
