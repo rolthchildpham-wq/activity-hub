@@ -20,6 +20,7 @@ assert.ok(vcss.includes('!important') && bcss.includes('!important'),'H217 must 
 console.log('H217 global sport contrast passed for VNext six-sport engine and Badminton; WCAG AA color pairs verified.');
 
 const scheduleContrast=fs.readFileSync('topkey/sports/vnext/workspace-contrast-h234.css','utf8');
-assert.ok(scheduleContrast.includes('#page-schedule.page:not(.hidden) :is(b,span,small,p,label,li,td,th,strong,em)'),'Legacy schedule rows must receive explicit readable foregrounds');
+assert.ok(scheduleContrast.includes('html body #app-shell #page-schedule :is(b,span,small,p,label,li,td,th,strong,em)'),'Legacy schedule rows must receive explicit readable foregrounds without depending on page state classes');
 assert.ok(scheduleContrast.includes('-webkit-text-fill-color:#29465b!important'),'Schedule text must override WebKit/inline text fill');
-console.log('H235 legacy schedule contrast regression contract passed.');
+assert.ok(vhtml.includes('workspace-contrast-h234.css?v=h236-schedule-aa-20261127'),'VNext must load the cache-busted H236 schedule contrast fix');
+console.log('H236 legacy schedule AA contrast regression contract passed.');
