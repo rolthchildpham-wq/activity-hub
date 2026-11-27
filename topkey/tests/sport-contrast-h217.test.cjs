@@ -39,6 +39,6 @@ assert.ok(settingsContrast.includes('workspace-contrast-h234.css?v=h242-settings
 console.log('H242 settings live-label contrast contract passed.');
 
 assert.ok(settingsContrast.includes('html body #page-settings #tk79-prize-editor :is(h1,h2,h3,h4,p,small,label,strong,b,span,em,li,td,th)'), 'H243 must restore readable light text on the dark prize editor');
-assert.ok(vhtml.includes('workspace-contrast-h234.css?v=h245-settings-wrapper-aa-20261127'), 'VNext must load H245 cache-busted settings contrast rules');
+assert.ok(vhtml.includes('workspace-contrast-h234.css?v=h246-settings-timestamp-aa-20261127'), 'VNext must load H245 cache-busted settings contrast rules');
 
 assert.ok(scheduleRuntime.includes("const ROOT = 'body';"), 'Dynamic contrast guard must cover legacy pages mounted outside #app-shell');
