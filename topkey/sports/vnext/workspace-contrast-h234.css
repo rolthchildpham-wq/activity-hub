@@ -59,3 +59,16 @@ html body #page-settings #tk79-prize-editor :is(input,select,textarea) {
   -webkit-text-fill-color:#17364b!important;
   background:#fff!important;
 }
+
+/* H245: legacy live-clock markup can wrap its text in nested elements; cover the wrapper as well as leaf nodes. */
+html body #app-shell #page-settings b {
+  color:#29465b!important;
+  -webkit-text-fill-color:#29465b!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}
+html body #app-shell #page-settings #tk79-prize-editor :is(h1,h2,h3,h4,p,small,label,strong,b,span,em,li,td,th):not(button *) {
+  color:#f3f8fc!important;
+  -webkit-text-fill-color:#f3f8fc!important;
+  opacity:1!important;
+}
