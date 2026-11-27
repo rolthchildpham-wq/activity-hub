@@ -102,7 +102,11 @@ jobs:
               navLinks:document.querySelectorAll(".tk210-nav a").length,
               overflow:document.documentElement.scrollWidth>innerWidth+2,
               h219:[...document.styleSheets].some(sheet=>sheet.href?.includes("hub-dashboard-reference-h219.css")),
-              eccDesign:[...document.styleSheets].some(sheet=>sheet.href?.includes("hub-ecc-design-system.css"))};
+              eccDesign:[...document.styleSheets].some(sheet=>sheet.href?.includes("hub-ecc-design-system.css")),
+              h240:[...document.styleSheets].some(sheet=>sheet.href?.includes("hub-redesign-h240.css")),
+              hubController:window.TopkeyHubWorkspaceNav?.version==="H240",
+              footerHidden:document.querySelector(".footer")?.hidden===true,
+              activeWorkspace:document.querySelector("main.wrap")?.dataset.activeWorkspace};
             const rgb=value=>value.match(/[\d.]+/g).slice(0,3).map(Number);
             const lum=value=>{const channels=rgb(value).map(v=>{v/=255;return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*channels[0]+.7152*channels[1]+.0722*channels[2]};
             const cardStyle=getComputedStyle(cards[0]),paragraphStyle=getComputedStyle(cards[0].querySelector("p"));
@@ -121,7 +125,7 @@ jobs:
             result.selectorMatches=document.querySelectorAll("html body.tk-bi-hub #topkey-sports.cards a.sport").length;
             result.cardInlineStyle=cards[0].getAttribute("style");result.cardBackgroundImage=cardStyle.backgroundImage;
             result.eccRuleCount=eccSheet?.cssRules?.length||0;result.eccRules=eccRules;
-            if(cards.length<8||!result.badmintonCard||result.overflow||!result.h219||!result.eccDesign||
+            if(cards.length<8||!result.badmintonCard||result.overflow||!result.h219||!result.eccDesign||!result.h240||!result.hubController||!result.footerHidden||result.activeWorkspace!=="topkey-home"||cardStyle.backgroundColor==="rgb(255, 255, 255)"||
               contrast<4.5||lastCardRight>innerWidth-8)
               throw new Error("ECC Hub visual contract failed: "+JSON.stringify(result));
             return JSON.stringify(result);
@@ -133,6 +137,7 @@ jobs:
             await wait(180);
             const dashboard=window.TopkeyExecutiveDashboard,host=document.getElementById("executive-dashboard");
             if(!dashboard||!host)throw new Error("Executive dashboard runtime unavailable");
+            window.TopkeyHubWorkspaceNav?.activate("executive-dashboard",{scroll:false});
             host.classList.remove("hidden");
             const clubs=[
               {icon:"🏸",name:"Cầu lông",sport:"Cầu lông",founded:2022,head:"Ban tổ chức",events:6,people:38,lastYear:2026,income:12000000,expense:8000000,balance:4000000,pending:1,active:true},
@@ -212,16 +217,28 @@ jobs:
         shell: bash
         run: |
           set -uo pipefail
-          mcp_tool(){ node topkey/tests/chrome-devtools-mcp-client.mjs call "$@"; }
           failed=0
+          mkdir -p artifacts/chrome-devtools
+          # A single failed MCP interaction must be recorded, not terminate the matrix.
+          # The outer GitHub bash shell enables errexit, so guard every client invocation.
+          mcp_tool(){
+            local status=0
+            if node topkey/tests/chrome-devtools-mcp-client.mjs call "$@"; then
+              return 0
+            else
+              status=$?
+              printf 'MCP_TOOL_ERROR status=%s command=%q args=%q\\n' "$status" "$1" "${*:2}" | tee -a artifacts/chrome-devtools/mcp-errors.txt >&2
+              return 0
+            fi
+          }
           base="http://127.0.0.1:4173"
           sports=(football volleyball running handmade shuttle cooking badminton)
           tabs=(overview control teams schedule umpire live finance announcements audit health settings)
           for sport in "${sports[@]}"; do
             if [ "$sport" = "badminton" ]; then
-              route="/sports/vnext/badminton.html?testlab=1&v=h219-liberty-dashboard-20261125&__topkey_reload=h219"
+              route="/sports/vnext/badminton.html?testlab=1&tid=__testlab_u122_20261031_badminton_chromeqa&v=h219-liberty-dashboard-20261125&__topkey_reload=h219"
             else
-              route="/sports/vnext/index.html?sport=$sport&testlab=1&v=h219-liberty-dashboard-20261125&__topkey_reload=h219"
+              route="/sports/vnext/index.html?sport=$sport&testlab=1&tid=__testlab_u122_20261031_${sport}_chromeqa&v=h219-liberty-dashboard-20261125&__topkey_reload=h219"
             fi
             echo "===== $sport =====" | tee -a artifacts/chrome-devtools/sport-matrix.txt
             mcp_tool navigate_page 1 --url "$base$route" | tee "artifacts/chrome-devtools/$sport-navigation.txt"
@@ -248,6 +265,10 @@ jobs:
                 scripts:[...document.scripts].filter(s=>s.src).map(s=>({src:s.src,loaded:!!s.dataset.topkeyReady}))
               }));
               await A.__bootPromise?.catch(error=>{throw error});
+              // Strictly isolate UI QA from the linked production Firebase database.
+              // The admin fixture remains enabled, but every code path sees no writable DB.
+              if(T.Data){T.Data.db=null;T.Data.ready=false;T.Data.connected=false;}
+              window.__TOPKEY_QA_FIREBASE_DISABLED=!T.Data?.db;
               T.Auth.can=()=>true;
               T.Auth.role=()=>"ADMIN";
               T.Auth.profile={role:"ADMIN",displayName:"Chrome QA fixture"};
@@ -261,7 +282,11 @@ jobs:
               document.querySelectorAll("#app-shell [data-tab]").forEach(button=>button.classList.remove("hidden"));
               A.renderAll?.();
               A.showTab("overview");
-              const sport=new URLSearchParams(location.search).get("sport")||(location.pathname.includes("/sports/badminton/")?"badminton":"");
+              const sport=new URLSearchParams(location.search).get("sport")||(location.pathname.endsWith("/badminton.html")||location.pathname.includes("/sports/badminton/")?"badminton":"");
+              const expectedIdentity={football:"FOOTBALL OPERATIONS",volleyball:"VOLLEYBALL ARENA",running:"RACE CONTROL",handmade:"MAKERS STUDIO",shuttle:"SHUTTLECOCK",cooking:"CULINARY STUDIO",badminton:"BADMINTON ARENA"}[sport];
+              const navIdentity=getComputedStyle(document.querySelector("#app-shell .nav"),"::before").content;
+              if(!expectedIdentity||!navIdentity.includes(expectedIdentity))
+                throw new Error("Sport identity mismatch: "+JSON.stringify({sport,expectedIdentity,navIdentity,htmlSport:document.documentElement.dataset.tkSport}));
               const gridColumns=grid=>{
                 const value=grid?getComputedStyle(grid).gridTemplateColumns:"";
                 const repeat=value.match(/^repeat\((\d+),/);
@@ -342,7 +367,7 @@ jobs:
                 kpiGridTemplate:gridColumns(document.querySelector("#page-overview > .grid.g4")).value,
                 legacyHubLinksVisible:[...document.querySelectorAll("#app-shell .topbar .hub-link,#app-shell .topbar .hub-back")]
                   .filter(el=>getComputedStyle(el).display!=="none").length,
-                writeAttempts:window.__TOPKEY_QA_WRITE_ATTEMPTS,dashboardFixture,
+                writeAttempts:window.__TOPKEY_QA_WRITE_ATTEMPTS,firebaseDisabled:window.__TOPKEY_QA_FIREBASE_DISABLED,firebaseReady:T.Data?.ready===true,dashboardFixture,
                 fixture:"UI_ONLY_NO_DATABASE_WRITES"};
               if(sport==="badminton"){
                 const profileSelect=document.querySelector("#rules-form select[name=badmintonFormatProfile]");
@@ -360,7 +385,7 @@ jobs:
               if(result.legacyHubLinksVisible!==0)throw new Error("Duplicate legacy Hub navigation is visible: "+JSON.stringify(result));
               if(!panel||result.analyticsContrast<4.5||result.analyticsSubContrast<4.5)
                 throw new Error("Workspace contrast failed: "+JSON.stringify(result));
-              if(result.writeAttempts!==0)throw new Error("UI fixture attempted Firebase writes: "+JSON.stringify(result));
+              if(result.writeAttempts!==0||!result.firebaseDisabled||result.firebaseReady)throw new Error("UI fixture attempted Firebase writes or Firebase isolation failed: "+JSON.stringify(result));
               if(sport==="badminton"&&location.pathname!=="/sports/vnext/index.html")
                 throw new Error("Badminton did not remain in the shared VNext workspace: "+JSON.stringify(result));
               return JSON.stringify(result);
@@ -387,7 +412,7 @@ jobs:
                 if('$tab'==='overview'&&!overviewVisible)
                   throw new Error('Overview dashboard is not visible on overview tab');
                 const surfaceSelector='.card,.subcard,.tk9-card,.tk9-count,.control-card,.court-card,.list-card,.checkin-row,.team-picker,.team-pick,.check-option,.rule-chip,.schedule-preview,.table-wrap,.modal-box,.tk-group-standings,.tk227-match,.tk227-rule,.official-score .side,.score-head>div,.video-box,.radio-row,.danger-check,.delete-preview,.mode-note,.tk152-panel,#tk79-prize-editor,.tk79-prize-row';
-                const textSelector='h1,h2,h3,h4,p,small,label,strong,b,span,em,li,td,th';
+                const textSelector='h1,h2,h3,h4,p,small,label,strong,b,span,em,li,td,th,div.muted,div.note,div.hint,div.description';
                 const rgb=value=>{const m=String(value||'').match(/[\\d.]+/g);return m&&m.length>=3?m.slice(0,3).map(Number):null};
                 const lum=value=>{const v=rgb(value);if(!v)return 0;const a=v.map(n=>{n/=255;return n<=.04045?n/12.92:Math.pow((n+.055)/1.055,2.4)});return .2126*a[0]+.7152*a[1]+.0722*a[2]};
                 const ratio=(bg,fg)=>(Math.max(lum(bg),lum(fg))+.05)/(Math.min(lum(bg),lum(fg))+.05);
@@ -491,31 +516,31 @@ jobs:
           # Run this live-browser gate only after the EdgeOne Git-provider
           # readiness/deploy workflow has completed for main.
           if [ "$GITHUB_EVENT_NAME" = "workflow_run" ]; then
-            curl --fail --silent --show-error --location "$base/sports/vnext/index.html?sport=volleyball&__h239_probe=$GITHUB_RUN_ID" -o /tmp/topkey-h239-live.html
-            grep -Fq 'workspace-contrast-runtime-h238.js?v=h239-global-workspace-dynamic-aa-20261127' /tmp/topkey-h239-live.html
-            curl --fail --silent --show-error --location "$base/sports/vnext/workspace-contrast-runtime-h238.js?v=h239-global-workspace-dynamic-aa-20261127" -o /tmp/topkey-h239-live.js
-            grep -Fq 'h239-global-workspace-dynamic-aa-20261127' /tmp/topkey-h239-live.js
-            echo "200 H239 production runtime content verified" | tee -a artifacts/chrome-devtools/http-status.txt
+            curl --fail --silent --show-error --location "$base/sports/vnext/index.html?sport=volleyball&__h248_probe=$GITHUB_RUN_ID" -o /tmp/topkey-h248-live.html
+            grep -Fq 'workspace-contrast-runtime-h238.js?v=h248-settings-dark-surface-aa-20261127' /tmp/topkey-h248-live.html
+            curl --fail --silent --show-error --location "$base/sports/vnext/workspace-contrast-runtime-h238.js?v=h248-settings-dark-surface-aa-20261127" -o /tmp/topkey-h248-live.js
+            grep -Fq 'h248-settings-dark-surface-aa-20261127' /tmp/topkey-h248-live.js
+            echo "200 H248 production runtime content verified" | tee -a artifacts/chrome-devtools/http-status.txt
 
             # Verify the deployed production runtime in the real browser through
             # the official Chrome DevTools MCP client. This fixture changes only
             # transient DOM nodes; it never signs in or writes Firebase data.
             if [ "$MCP_BOOTSTRAP_OUTCOME" = "success" ]; then
               mcp_tool(){ node topkey/tests/chrome-devtools-mcp-client.mjs call "$@" 2>&1 | tee -a artifacts/chrome-devtools/mcp-tool-output.log; }
-              mcp_tool navigate_page 2 --url "$base/sports/vnext/index.html?sport=volleyball&__h239_live=$GITHUB_RUN_ID" | tee artifacts/chrome-devtools/h239-production-navigation.txt
+              mcp_tool navigate_page 2 --url "$base/sports/vnext/index.html?sport=volleyball&__h248_live=$GITHUB_RUN_ID" | tee artifacts/chrome-devtools/h248-production-navigation.txt
               sleep 2
               mcp_tool evaluate_script 'async () => {
                 const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
-                for(let i=0;i<40&&!window.__TOPKEY_WORKSPACE_CONTRAST_H239;i++)await wait(100);
-                const runtime=window.__TOPKEY_WORKSPACE_CONTRAST_H239;
-                if(!runtime)throw new Error("H239 runtime not loaded on live EdgeOne");
+                for(let i=0;i<40&&!window.__TOPKEY_WORKSPACE_CONTRAST_H248;i++)await wait(100);
+                const runtime=window.__TOPKEY_WORKSPACE_CONTRAST_H248;
+                if(!runtime)throw new Error("H248 runtime not loaded on live EdgeOne");
                 const host=document.querySelector("#app-shell");
                 if(!host)throw new Error("Live sports workspace root unavailable");
                 const page=document.createElement("section");
                 page.className="page";
                 page.style.backgroundColor="rgb(255,255,255)";
                 const sample=document.createElement("span");
-                sample.textContent="H239 production contrast smoke test";
+                sample.textContent="H248 production contrast smoke test";
                 sample.style.color="rgb(181,211,232)";
                 page.appendChild(sample);
                 host.appendChild(page);
@@ -527,15 +552,15 @@ jobs:
                 const ratio=(Math.max(lum(foreground),lum(background))+.05)/(Math.min(lum(foreground),lum(background))+.05);
                 page.remove();
                 const result={runtime:runtime.version,foreground,background,contrast:Number(ratio.toFixed(2))};
-                if(foreground!=="rgb(41, 70, 91)"||ratio<4.5)throw new Error("H239 live production contrast failed: "+JSON.stringify(result));
+                if(foreground!=="rgb(41, 70, 91)"||ratio<4.5)throw new Error("H248 live production contrast failed: "+JSON.stringify(result));
                 return JSON.stringify(result);
-              }' --pageId 2 --output-format=json | tee artifacts/chrome-devtools/h239-production-browser.json
+              }' --pageId 2 --output-format=json | tee artifacts/chrome-devtools/h248-production-browser.json
             else
-              echo "::error::MCP bootstrap did not pass; live H239 browser verification is blocked."
+              echo "::error::MCP bootstrap did not pass; live H248 browser verification is blocked."
               exit 1
             fi
           else
-            echo "H239 production browser verification deferred until main deploy workflow_run." | tee artifacts/chrome-devtools/h239-production-deferred.txt
+            echo "H248 production browser verification deferred until main deploy workflow_run." | tee artifacts/chrome-devtools/h248-production-deferred.txt
           fi
 
       - name: Run regression tests
@@ -551,6 +576,8 @@ jobs:
           node topkey/tests/hub-calendar-responsive-h220.test.cjs
           node topkey/tests/hub-navigation-semantics.test.cjs
           node topkey/tests/hub-dashboard-h219.test.cjs
+          node topkey/tests/hub-redesign-h240.test.cjs
+          node topkey/tests/h104-render-binding.test.cjs
           node topkey/tests/hub-readable-h216.test.cjs
           node topkey/tests/sport-contrast-h217.test.cjs
           node topkey/tests/sport-workspace-redesign-h218.test.cjs

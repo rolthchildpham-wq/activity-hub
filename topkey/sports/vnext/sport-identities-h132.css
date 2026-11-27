@@ -1,8 +1,9 @@
-/* TOPKEY H131 — six visual identities on the SAME VNext business engine.
+/* TOPKEY H247 — seven visual identities on the SAME VNext business engine.
  * Sport is set synchronously in <head> before first paint.
  * Never touch RTDB, Auth, officials, scores or routing semantics.
  */
-html[data-tk-sport]{--sport:#17745a;--sport-strong:#0b4436;--sport-soft:#e5f4ec;--sport-highlight:#6acda3;--sport-court:#075344;--sport-outline:#a7d9c4;--sport-emoji:"⚽";--sport-strap:"TRUNG TÂM ĐIỀU HÀNH BÓNG ĐÁ";--sport-sub:"Lịch đấu · Đội bóng · Tỷ số · Bảng xếp hạng"}
+html[data-tk-sport]{--sport:#087f8c;--sport-strong:#16465a;--sport-soft:#e3f6f6;--sport-highlight:#79d9d3;--sport-court:#0f606f;--sport-outline:#a9e0e5;--sport-emoji:"🏆";--sport-strap:"TOPKEY SPORTS OPERATIONS";--sport-sub:"Lịch thi đấu · Đội/VĐV · Trọng tài · Kết quả"}
+html[data-tk-sport="badminton"]{--sport:#087f8c;--sport-strong:#16465a;--sport-soft:#e3f6f6;--sport-highlight:#79d9d3;--sport-court:#0f606f;--sport-outline:#a9e0e5;--sport-emoji:"🏸";--sport-strap:"SÂN CẦU LÔNG • BADMINTON ARENA";--sport-sub:"Đội/đôi · Sân đấu · Set đấu · Trọng tài · Kết quả"}
 html[data-tk-sport="football"]{--sport:#16805e;--sport-strong:#104638;--sport-soft:#e5f5ec;--sport-highlight:#73d2a3;--sport-court:#0b634a;--sport-outline:#a8dcc2;--sport-emoji:"⚽";--sport-strap:"SÂN CỎ • FOOTBALL OPERATIONS";--sport-sub:"Đội bóng · Sân đấu · Bàn thắng · Bảng xếp hạng"}
 html[data-tk-sport="volleyball"]{--sport:#b35f16;--sport-strong:#593b27;--sport-soft:#fff2df;--sport-highlight:#fac26b;--sport-court:#744923;--sport-outline:#f1c995;--sport-emoji:"🏐";--sport-strap:"SÂN ĐẤU • VOLLEYBALL ARENA";--sport-sub:"Đội bóng · Set đấu · Trọng tài · Kết quả"}
 html[data-tk-sport="running"]{--sport:#a23e60;--sport-strong:#54243e;--sport-soft:#fbe9ef;--sport-highlight:#f1a5bf;--sport-court:#6e3055;--sport-outline:#edb6c9;--sport-emoji:"🏃";--sport-strap:"ĐƯỜNG CHẠY • RACE CONTROL";--sport-sub:"Vận động viên · Làn chạy · Thời gian · Thành tích"}

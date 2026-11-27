@@ -27,8 +27,20 @@ const sharedContrast=fs.readFileSync('topkey/sports/vnext/workspace-contrast-h23
 for(const token of ['#29465b','#075c43','#124d83','#8b1f2d','tk12-status-badge.finished','#526d80'])assert.ok(sharedContrast.includes(token),'Missing shared contrast token: '+token);
 const sportHtml=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
 const scheduleRuntime=fs.readFileSync('topkey/sports/vnext/workspace-contrast-runtime-h238.js','utf8');
-assert.ok(sportHtml.includes('workspace-contrast-h234.css?v=h237-schedule-aa-20261127'),'All VNext sports must load the cache-busted H237 schedule contrast layer');
-assert.ok(sportHtml.includes('workspace-contrast-runtime-h238.js?v=h239-global-workspace-dynamic-aa-20261127'),'All VNext sports must load the H237 runtime guard');
+const sportIdentity=fs.readFileSync('topkey/sports/vnext/sport-identities-h132.css','utf8');
+assert.ok(sportHtml.includes('workspace-contrast-h234.css?v=h250-overview-podium-medals-20261127'),'All VNext sports must load the cache-busted H237 schedule contrast layer');
+assert.ok(sportHtml.includes('workspace-contrast-runtime-h238.js?v=h250-overview-podium-medals-aa-20261127'),'All VNext sports must load the H237 runtime guard');
 assert.ok(scheduleRuntime.includes(`node.style.setProperty('color',SAFE,'important')`),'H239 must apply WCAG-safe foregrounds to dynamic light surfaces');
-assert.ok(scheduleRuntime.includes("const ROOT = '#app-shell';"),'H239 must scan all workspace pages, including hidden pages before activation');\nassert.ok(scheduleRuntime.includes('characterData:true'),'H239 must observe in-place text-node updates');\nassert.ok(scheduleRuntime.includes('new MutationObserver(schedule)'),'H239 must observe dynamic workspace page changes');
-console.log('H239 global workspace contrast runtime contract passed.');
+assert.ok(scheduleRuntime.includes("const ROOT = 'body';"),'H243 must scan the full document across legacy sport handoff roots');
+assert.ok(scheduleRuntime.includes('characterData:true'),'H245 must observe in-place text-node updates');
+assert.ok(scheduleRuntime.includes('if (!node.textContent.trim()) continue;'),'H245 must include text-bearing wrapper elements in contrast auditing');
+assert.ok(scheduleRuntime.includes('new MutationObserver(schedule)'),'H239 must observe dynamic workspace page changes');
+assert.ok(scheduleRuntime.includes("const settingsDarkSurface = node.closest('#page-settings')"),'H248 must protect dynamic dark settings surfaces from low-contrast inherited text');
+assert.ok(sportIdentity.includes('html[data-tk-sport="badminton"]'),'H247 must define a dedicated badminton sport identity');
+assert.ok(sportHtml.includes('sport-identities-h132.css?v=h247-badminton-identity-20261127'),'Shared sports workspace must load H247 identity stylesheet');
+console.log('H244 global document contrast runtime contract passed.');
+
+assert.ok(scheduleRuntime.includes("const ROOT = 'body';"), 'Dynamic contrast guard must cover legacy pages mounted outside #app-shell');
+
+assert.ok(scheduleRuntime.includes("const podiumMedal = node.classList.contains('tk9-medal')"), 'H250 runtime must guard medal glyphs on dark discs');
+assert.ok(scheduleRuntime.includes("window.__TOPKEY_WORKSPACE_CONTRAST_H250={"), 'H250 runtime version must be discoverable');

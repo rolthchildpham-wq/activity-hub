@@ -1,7 +1,8 @@
-/* H239: contrast guard for dynamically-rendered text on light workspace surfaces. */
+/* H250: contrast guard for dynamically-rendered text and text-bearing wrappers on light workspace surfaces. */
 (() => {
   'use strict';
-  const ROOT = '#app-shell';
+  // Scan the full document: legacy pages can be mounted outside #app-shell during sport handoff.
+  const ROOT = 'body';
   const TEXT = 'h1,h2,h3,h4,p,small,label,strong,b,span,em,li,td,th,time,div';
   const SAFE = '#29465b';
 
@@ -31,12 +32,37 @@
   const apply = () => {
     for (const root of document.querySelectorAll(ROOT)) {
       for (const node of root.querySelectorAll(TEXT)) {
-        if (node.closest('button,.btn,[role="button"],input,select,textarea')) continue;
-        if (!Array.from(node.childNodes).some(n=>n.nodeType===3 && n.textContent.trim())) continue;
+        // Audit dynamic labels inside controls too; only recolor when their effective surface is light.
+        if (!node.textContent.trim()) continue;
         const fg=rgb(getComputedStyle(node).color);
         if (!fg) continue;
         const bg=effectiveBackground(node);
-        if (luminance(bg) < 0.72 || contrast(fg,bg) >= 4.5) continue;
+        // The settings live-clock <b> is injected by legacy code with a pale inline color.
+        // Keep it dark on the light settings surface, but preserve the intentionally dark prize editor.
+        // Podium medals use a dark disc; override inherited/inline dark text on that disc.
+        const podiumMedal = node.classList.contains('tk9-medal') && luminance(bg) < 0.25;
+        if (podiumMedal) {
+          node.style.setProperty('color','#f8fbff','important');
+          node.style.setProperty('-webkit-text-fill-color','#f8fbff','important');
+          continue;
+        }
+        // The legacy live clock sits on a white status strip inside settings.
+        // Exempt it before the dark-surface rule so ancestor backgrounds cannot bleach it.
+        const settingsClock = node.tagName === 'B' &&
+          node.closest('#page-settings') && !node.closest('#tk79-prize-editor');
+        if (settingsClock) {
+          node.style.setProperty('color',SAFE,'important');
+          node.style.setProperty('-webkit-text-fill-color',SAFE,'important');
+          continue;
+        }
+        const settingsDarkSurface = node.closest('#page-settings') &&
+          luminance(bg) < 0.25 && !node.closest('button,.btn,input,select,textarea');
+        if (settingsDarkSurface) {
+          node.style.setProperty('color','#e4eef5','important');
+          node.style.setProperty('-webkit-text-fill-color','#e4eef5','important');
+          continue;
+        }
+        if (!settingsClock && (luminance(bg) < 0.72 || contrast(fg,bg) >= 4.5)) continue;
         if (node.style.getPropertyValue('color') !== SAFE ||
             node.style.getPropertyPriority('color') !== 'important') {
           node.style.setProperty('color',SAFE,'important');
@@ -61,8 +87,8 @@
     subtree:true,childList:true,attributes:true,characterData:true,
     attributeFilter:['class','style']
   });
-  window.__TOPKEY_WORKSPACE_CONTRAST_H239={
-    version:'h239-global-workspace-dynamic-aa-20261127',
+  window.__TOPKEY_WORKSPACE_CONTRAST_H250={
+    version:'h250-overview-podium-medals-aa-20261127',
     apply,
     disconnect:()=>observer.disconnect()
   };

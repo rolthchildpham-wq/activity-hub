@@ -25,9 +25,9 @@ function resetState(branch){const st=M[branch];P[branch]={};App.state[branch]={}
 function applySnapshot(branch,items,reset){
  if(reset)P[branch]={};for(const {key,value} of items){if(value===null)continue;const id=String(value?.id||key.split('~').at(-1));P[branch][id]={...value,id}};
  App.state[branch]=P[branch];
- if(branch==='teams'){safeRun(App.renderTeams);safeRun(App.renderCheckin);safeRun(App.renderSelectors)}
- else if(branch==='matches'){safeRun(App.renderMatches);safeRun(App.renderSelectors);safeRun(App.renderLiveScore)}
- else safeRun(App.renderFinance);
+ if(branch==='teams'){safeRun(App.renderTeams?.bind(App));safeRun(App.renderCheckin?.bind(App));safeRun(App.renderSelectors)}
+ else if(branch==='matches'){safeRun(App.renderMatches?.bind(App));safeRun(App.renderSelectors?.bind(App));safeRun(App.renderLiveScore)}
+ else safeRun(App.renderFinance?.bind(App));
  updateDerived();drawMore(branch); if(branch==='matches')decorateWinners();
 }
 function filters(branch){
@@ -122,7 +122,7 @@ function watchVisible(branch){
  if(!ref||typeof ref.orderByKey!=='function')return;
  let q=ref.orderByKey();if(prefix)q=q.startAt(prefix).endAt(prefix+'\uf8ff');
  q=dir==='asc'?q.limitToFirst(pageSize):q.limitToLast(pageSize);
- const doRender=()=>{if(watchFrame)return;watchFrame=requestAnimationFrame(()=>{watchFrame=0;if(branch==='teams'){safeRun(App.renderTeams);safeRun(App.renderCheckin)}else if(branch==='matches'){safeRun(App.renderMatches);decorateWinners()}else safeRun(App.renderFinance);updateDerived()})};
+ const doRender=()=>{if(watchFrame)return;watchFrame=requestAnimationFrame(()=>{watchFrame=0;if(branch==='teams'){safeRun(App.renderTeams?.bind(App));safeRun(App.renderCheckin)}else if(branch==='matches'){safeRun(App.renderMatches?.bind(App));decorateWinners()}else safeRun(App.renderFinance?.bind(App));updateDerived()})};
  const update=s=>{const row=s.val(),id=String(row?.id||s.key.split('~').at(-1));if(row!=null){const old=P[branch][id];if(old&&JSON.stringify(old)===JSON.stringify(row))return;P[branch][id]={...row,id};App.state[branch]=P[branch];doRender()}};
  const removed=s=>{const id=String(s.val()?.id||s.key.split('~').at(-1));if(P[branch][id]){delete P[branch][id];App.state[branch]=P[branch];doRender()}};
  for(const [ev,handler] of [['child_added',update],['child_changed',update],['child_removed',removed]]){q.on(ev,handler);watchOff.push(()=>q.off(ev,handler))}

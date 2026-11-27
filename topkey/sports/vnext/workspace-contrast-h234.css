@@ -25,3 +25,83 @@ html body #app-shell #page-schedule :is(.muted,.note,.hint,.description){
   color:#405e72!important;
   -webkit-text-fill-color:#405e72!important;
 }
+
+/* H240 schedule AA guard: explicit dark text on the white legacy schedule cards. */
+html body #app-shell #page-schedule .card *:not(button):not(.btn):not(input):not(select):not(textarea):not(svg):not(path){
+ color:#29465b!important;
+ -webkit-text-fill-color:#29465b!important;
+ opacity:1!important;
+ text-shadow:none!important;
+}
+html body #app-shell #page-schedule .card :is(.muted,.note,.hint,.description){
+ color:#405e72!important;
+ -webkit-text-fill-color:#405e72!important;
+}
+
+
+
+
+/* H243: target the live report timestamp without relying on the #app-shell ancestor. */
+html body #page-settings b:not(button *):not(.btn *) {
+  color:#29465b!important;
+  -webkit-text-fill-color:#29465b!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}
+/* The prize editor intentionally uses a dark navy surface; keep its labels light. */
+html body #page-settings #tk79-prize-editor :is(h1,h2,h3,h4,p,small,label,strong,b,span,em,li,td,th):not(button *) {
+  color:#f3f8fc!important;
+  -webkit-text-fill-color:#f3f8fc!important;
+  opacity:1!important;
+}
+html body #page-settings #tk79-prize-editor :is(input,select,textarea) {
+  color:#17364b!important;
+  -webkit-text-fill-color:#17364b!important;
+  background:#fff!important;
+}
+
+/* H245: legacy live-clock markup can wrap its text in nested elements; cover the wrapper as well as leaf nodes. */
+html body #app-shell #page-settings b {
+  color:#29465b!important;
+  -webkit-text-fill-color:#29465b!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}
+html body #app-shell #page-settings #tk79-prize-editor :is(h1,h2,h3,h4,p,small,label,strong,b,span,em,li,td,th):not(button *) {
+  color:#f3f8fc!important;
+  -webkit-text-fill-color:#f3f8fc!important;
+  opacity:1!important;
+}
+
+/* H246: final source-order guard for the settings live timestamp, including legacy pages mounted outside #app-shell. */
+html body #page-settings b:not(button *):not(.btn *) {
+  color:#29465b!important;
+  -webkit-text-fill-color:#29465b!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}
+
+/* H247: protect the intentionally dark prize editor from generic light-card contrast overrides. */
+html body #page-settings #tk79-prize-editor :is(div,p,small,label,strong,b,span,em,li,td,th):not(button *):not(.btn *) {
+  color:#e4eef5!important;
+  -webkit-text-fill-color:#e4eef5!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}
+html body #page-settings #tk79-prize-editor :is(input,select,textarea) {
+  color:#17364b!important;
+  -webkit-text-fill-color:#17364b!important;
+  background:#fff!important;
+}
+html body #page-settings b:not(#tk79-prize-editor b):not(button *):not(.btn *) {
+  color:#29465b!important;
+  -webkit-text-fill-color:#29465b!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}
+
+/* H250: podium medal glyphs sit on a dark medal disc inside the light overview card. */
+html body #app-shell #page-overview .tk9-podium .tk9-medal {
+  color:#f8fbff!important;
+  -webkit-text-fill-color:#f8fbff!important;
+}
