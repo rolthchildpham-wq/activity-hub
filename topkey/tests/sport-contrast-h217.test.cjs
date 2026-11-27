@@ -30,7 +30,7 @@ assert.ok(scheduleRuntime.includes("const ROOT = 'body';"),'H243 runtime must co
 assert.ok(scheduleRuntime.includes('characterData:true'),'H245 runtime must inspect wrapper text content');
 assert.ok(scheduleRuntime.includes("const settingsClock = node.tagName === 'B'"),'H246 must force readable color on the legacy settings live-clock label');
 assert.ok(scheduleRuntime.includes('new MutationObserver(schedule)'),'H244 runtime must track dynamic workspace content');
-assert.ok(scheduleCss.includes('#tk79-prize-editor :is(div,p,small,label,strong,b,span,em,li,td,th)'), 'H247 must preserve readable text inside the dark prize editor');
+assert.ok(scheduleContrast.includes('#tk79-prize-editor :is(div,p,small,label,strong,b,span,em,li,td,th)'), 'H247 must preserve readable text inside the dark prize editor');
 console.log('H247 global workspace contrast regression contract passed.');
 
 const settingsContrast=fs.readFileSync('topkey/sports/vnext/workspace-contrast-h234.css','utf8');
