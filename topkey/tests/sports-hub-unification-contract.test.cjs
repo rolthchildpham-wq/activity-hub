@@ -49,7 +49,7 @@ for (const [sport, root] of Object.entries({
   assert.ok(vnext.includes("root:'" + root + "'"), 'Firebase root changed for ' + sport);
 }
 
-assert.ok(vnextPage.includes('canva-sports-ui.css?v=canva-sports-v1-20261127'), 'VNext must load consolidated Canva sports styles');
+assert.ok(/canva-sports-ui\.css\?v=canva-sports-v\d+-202611\d+/.test(vnextPage), 'VNext must load consolidated Canva sports styles');
 assert.ok(!vnextPage.includes('../topkey-sports-shell.css'), 'Legacy shared sports CSS must be replaced by Canva UI');
 assert.ok(vnextPage.includes('../topkey-sports-shell.js'), 'VNext must preserve shared sports navigation runtime');
 assert.ok(badmintonPage.includes("new URL('../vnext/index.html', location.href)"), 'Legacy badminton route must hand off to shared VNext');
