@@ -25,3 +25,15 @@ html body #app-shell #page-schedule :is(.muted,.note,.hint,.description){
   color:#405e72!important;
   -webkit-text-fill-color:#405e72!important;
 }
+
+/* H240 schedule AA guard: explicit dark text on the white legacy schedule cards. */
+html body #app-shell #page-schedule .card *:not(button):not(.btn):not(input):not(select):not(textarea):not(svg):not(path){
+ color:#29465b!important;
+ -webkit-text-fill-color:#29465b!important;
+ opacity:1!important;
+ text-shadow:none!important;
+}
+html body #app-shell #page-schedule .card :is(.muted,.note,.hint,.description){
+ color:#405e72!important;
+ -webkit-text-fill-color:#405e72!important;
+}
