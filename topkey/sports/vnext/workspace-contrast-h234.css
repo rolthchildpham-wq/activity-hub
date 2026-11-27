@@ -9,3 +9,7 @@ html[data-tk-sport] body #app-shell:not(.hidden) .page:not(.hidden) :is(.empty-s
 html[data-tk-sport] body #app-shell:not(.hidden) .page:not(.hidden) :is(input,select,textarea){color:#17364b!important;-webkit-text-fill-color:#17364b!important;background:#fff!important;border-color:#7897b0!important;opacity:1!important}
 html[data-tk-sport] body #app-shell:not(.hidden) .page:not(.hidden) :is(input,textarea)::placeholder{color:#526d80!important;-webkit-text-fill-color:#526d80!important;opacity:1!important}
 html[data-tk-sport] body #app-shell:not(.hidden) .page:not(.hidden) :is(a,button,input,select,textarea):focus-visible{outline:3px solid #087da5!important;outline-offset:3px!important}
+/* H235: schedule headings and unclassed status summaries are rendered by the legacy scheduler outside card wrappers. Keep their text readable on light schedule surfaces. */
+html body #app-shell:not(.hidden) #page-schedule.page:not(.hidden) :is(b,span,small,p,label,li,td,th,strong,em){color:#29465b!important;-webkit-text-fill-color:#29465b!important;opacity:1!important;text-shadow:none!important}
+html body #app-shell:not(.hidden) #page-schedule.page:not(.hidden) :is(.muted,.note,.hint,.description){color:#405e72!important;-webkit-text-fill-color:#405e72!important;opacity:1!important}
+html body #app-shell:not(.hidden) #page-schedule.page:not(.hidden) :is(.status,.badge,.pill,.tk12-status-badge,.status-badge,.match-status,.state-badge,.status-pill){color:#29465b!important;-webkit-text-fill-color:#29465b!important;opacity:1!important}
