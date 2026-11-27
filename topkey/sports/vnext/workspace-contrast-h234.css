@@ -50,3 +50,16 @@ html body #app-shell #page-settings .card :is(button,.btn) :is(b,span,small,stro
   color:inherit!important;
   -webkit-text-fill-color:currentColor!important;
 }
+
+
+/* H242: settings surfaces can render live clock labels outside the .card subtree. Enforce AA on every light settings surface. */
+html body #app-shell #page-settings :is(h1,h2,h3,h4,p,small,label,strong,b,span,em,li,td,th,time,div):not(button *):not(.btn *) {
+  color:#29465b!important;
+  -webkit-text-fill-color:#29465b!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}
+html body #app-shell #page-settings :is(button,.btn) :is(h1,h2,h3,h4,p,small,label,strong,b,span,em,li,td,th,time,div) {
+  color:inherit!important;
+  -webkit-text-fill-color:currentColor!important;
+}
