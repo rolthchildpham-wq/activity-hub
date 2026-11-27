@@ -14,9 +14,12 @@ on:
 permissions:
   contents: read
 
+# Isolate each source revision so an older MCP build cannot hold the
+# newest PR revision in a permanent pending queue. Duplicate events for the
+# same SHA are coalesced; new commits always receive an independent run.
 concurrency:
-  group: topkey-chrome-devtools-mcp-v4-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: false
+  group: topkey-chrome-devtools-mcp-v5-${{ github.event.pull_request.number || github.ref }}-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: true
 
 jobs:
   chrome-devtools-full-ui:
