@@ -9,7 +9,7 @@ const start=html.indexOf(marker);
 assert.ok(start>=0,"shared VNext HTML missing auth asset");
 const version=html.slice(start+marker.length).split('"')[0].split("'")[0];
 assert.ok(sw.includes("topkey-shared-auth.js?v="+version),"VNext SW must use same auth version as HTML; HTML "+version);
-assert.ok(sw.includes("topkey-h136-vnext-shell"),"VNext SW cache key must remain release-aware");
+assert.ok(sw.includes("topkey-canva-v1-vnext-shell"),"VNext SW cache key must remain release-aware");
 const library="../../vendor/qrcode.min.js?v=h136-20261114";
 assert.ok(html.includes(library),"VNext must load local QR library");
 assert.ok(sw.includes(library),"VNext must precache local QR library");
