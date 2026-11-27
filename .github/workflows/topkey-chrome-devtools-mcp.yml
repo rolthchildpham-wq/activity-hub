@@ -516,31 +516,31 @@ jobs:
           # Run this live-browser gate only after the EdgeOne Git-provider
           # readiness/deploy workflow has completed for main.
           if [ "$GITHUB_EVENT_NAME" = "workflow_run" ]; then
-            curl --fail --silent --show-error --location "$base/sports/vnext/index.html?sport=volleyball&__h245_probe=$GITHUB_RUN_ID" -o /tmp/topkey-h245-live.html
-            grep -Fq 'workspace-contrast-runtime-h238.js?v=h245-wrapper-inclusive-aa-20261127' /tmp/topkey-h245-live.html
-            curl --fail --silent --show-error --location "$base/sports/vnext/workspace-contrast-runtime-h238.js?v=h245-wrapper-inclusive-aa-20261127" -o /tmp/topkey-h245-live.js
-            grep -Fq 'h245-wrapper-inclusive-aa-20261127' /tmp/topkey-h245-live.js
-            echo "200 H245 production runtime content verified" | tee -a artifacts/chrome-devtools/http-status.txt
+            curl --fail --silent --show-error --location "$base/sports/vnext/index.html?sport=volleyball&__h248_probe=$GITHUB_RUN_ID" -o /tmp/topkey-h248-live.html
+            grep -Fq 'workspace-contrast-runtime-h238.js?v=h248-settings-dark-surface-aa-20261127' /tmp/topkey-h248-live.html
+            curl --fail --silent --show-error --location "$base/sports/vnext/workspace-contrast-runtime-h238.js?v=h248-settings-dark-surface-aa-20261127" -o /tmp/topkey-h248-live.js
+            grep -Fq 'h248-settings-dark-surface-aa-20261127' /tmp/topkey-h248-live.js
+            echo "200 H248 production runtime content verified" | tee -a artifacts/chrome-devtools/http-status.txt
 
             # Verify the deployed production runtime in the real browser through
             # the official Chrome DevTools MCP client. This fixture changes only
             # transient DOM nodes; it never signs in or writes Firebase data.
             if [ "$MCP_BOOTSTRAP_OUTCOME" = "success" ]; then
               mcp_tool(){ node topkey/tests/chrome-devtools-mcp-client.mjs call "$@" 2>&1 | tee -a artifacts/chrome-devtools/mcp-tool-output.log; }
-              mcp_tool navigate_page 2 --url "$base/sports/vnext/index.html?sport=volleyball&__h245_live=$GITHUB_RUN_ID" | tee artifacts/chrome-devtools/h245-production-navigation.txt
+              mcp_tool navigate_page 2 --url "$base/sports/vnext/index.html?sport=volleyball&__h248_live=$GITHUB_RUN_ID" | tee artifacts/chrome-devtools/h248-production-navigation.txt
               sleep 2
               mcp_tool evaluate_script 'async () => {
                 const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
-                for(let i=0;i<40&&!window.__TOPKEY_WORKSPACE_CONTRAST_H245;i++)await wait(100);
-                const runtime=window.__TOPKEY_WORKSPACE_CONTRAST_H245;
-                if(!runtime)throw new Error("H245 runtime not loaded on live EdgeOne");
+                for(let i=0;i<40&&!window.__TOPKEY_WORKSPACE_CONTRAST_H248;i++)await wait(100);
+                const runtime=window.__TOPKEY_WORKSPACE_CONTRAST_H248;
+                if(!runtime)throw new Error("H248 runtime not loaded on live EdgeOne");
                 const host=document.querySelector("#app-shell");
                 if(!host)throw new Error("Live sports workspace root unavailable");
                 const page=document.createElement("section");
                 page.className="page";
                 page.style.backgroundColor="rgb(255,255,255)";
                 const sample=document.createElement("span");
-                sample.textContent="H245 production contrast smoke test";
+                sample.textContent="H248 production contrast smoke test";
                 sample.style.color="rgb(181,211,232)";
                 page.appendChild(sample);
                 host.appendChild(page);
@@ -552,15 +552,15 @@ jobs:
                 const ratio=(Math.max(lum(foreground),lum(background))+.05)/(Math.min(lum(foreground),lum(background))+.05);
                 page.remove();
                 const result={runtime:runtime.version,foreground,background,contrast:Number(ratio.toFixed(2))};
-                if(foreground!=="rgb(41, 70, 91)"||ratio<4.5)throw new Error("H245 live production contrast failed: "+JSON.stringify(result));
+                if(foreground!=="rgb(41, 70, 91)"||ratio<4.5)throw new Error("H248 live production contrast failed: "+JSON.stringify(result));
                 return JSON.stringify(result);
-              }' --pageId 2 --output-format=json | tee artifacts/chrome-devtools/h245-production-browser.json
+              }' --pageId 2 --output-format=json | tee artifacts/chrome-devtools/h248-production-browser.json
             else
-              echo "::error::MCP bootstrap did not pass; live H245 browser verification is blocked."
+              echo "::error::MCP bootstrap did not pass; live H248 browser verification is blocked."
               exit 1
             fi
           else
-            echo "H245 production browser verification deferred until main deploy workflow_run." | tee artifacts/chrome-devtools/h245-production-deferred.txt
+            echo "H248 production browser verification deferred until main deploy workflow_run." | tee artifacts/chrome-devtools/h248-production-deferred.txt
           fi
 
       - name: Run regression tests
