@@ -8,3 +8,8 @@ for(const path of ['topkey/index.html','topkey/sports/badminton/index.html','top
  assert.doesNotMatch(s,/topkey-activity-management\.edgeone\.dev/,path+': no hardcoded dead host');
 }
 console.log('EdgeOne deployment-host redirect regression passed for Hub, Badminton, VNext');
+
+const edgeone=JSON.parse(fs.readFileSync('topkey/edgeone.json','utf8'));
+assert.ok(edgeone.rewrites?.some(rule=>rule.source==='/'&&rule.destination==='/index.html'), 'EdgeOne root URL must rewrite to the published Hub index.html entrypoint');
+assert.ok(!edgeone.rewrites?.some(rule=>rule.source==='/*'), 'Do not rewrite all multi-page sport routes to the Hub index');
+console.log('EdgeOne root entrypoint rewrite contract passed; multi-page sports routes remain intact.');
