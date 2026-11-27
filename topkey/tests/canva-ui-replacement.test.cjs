@@ -12,9 +12,9 @@ function styles(html){
 assert.deepEqual(styles(hub),['./canva-ui-system.css?v=canva-ui-v1-20261127']);
 assert.deepEqual(styles(sports),['./canva-sports-ui.css?v=canva-sports-v1-20261127']);
 for(const [name,html] of [['Hub',hub],['Sports VNext',sports]]){
- const markup=html.replace(/<script\\b[\\s\\S]*?<\\/script>/gi,'');
- assert.ok(!/\\sstyle\\s*=/.test(markup),name+' must not retain inline style attributes');
- assert.ok(!/<style\\b/i.test(markup),name+' must not retain embedded style blocks');
+ const markup=html.replace(/<script\b[\s\S]*?<\/script>/gi,'');
+ assert.ok(!/\sstyle\s*=/.test(markup),name+' must not retain inline style attributes');
+ assert.ok(!/<style\b/i.test(markup),name+' must not retain embedded style blocks');
 }
 for(const legacy of ['styles.css','upgrade30.css','upgrade53.css','hub-redesign-h240.css','hub-canva-design-system-h251.css'])assert.ok(!hub.includes(legacy),'Legacy Hub CSS still linked: '+legacy);
 for(const legacy of ['styles.css','upgrade9.css','upgrade11.css','upgrade122-hotfix61.css','workspace-redesign-h218.css','canva-sports-design-system-h251.css','contrast-global-h217.css'])assert.ok(!sports.includes(legacy),'Legacy Sports CSS still linked: '+legacy);
