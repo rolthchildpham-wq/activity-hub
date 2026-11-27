@@ -32,7 +32,10 @@ assert.ok(scheduleRuntime.includes('new MutationObserver(schedule)'),'H239 runti
 console.log('H239 global workspace contrast regression contract passed.');
 
 const settingsContrast=fs.readFileSync('topkey/sports/vnext/workspace-contrast-h234.css','utf8');
-assert.ok(settingsContrast.includes('html body #app-shell #page-settings b:not(button *):not(.btn *)'), 'H242 must cover unclassed live clock/status labels across settings surfaces, not only descendants of .card');
+assert.ok(settingsContrast.includes('html body #page-settings b:not(button *):not(.btn *)'), 'H243 must cover unclassed live clock/status labels across settings surfaces, not only descendants of .card');
 assert.ok(settingsContrast.includes('-webkit-text-fill-color:#29465b!important'), 'H242 must enforce a dark WebKit text fill on light settings surfaces');
 assert.ok(settingsContrast.includes('workspace-contrast-h234.css?v=h242-settings-aa-20261127')===false, 'Cache-busting belongs to the HTML entrypoint, not the stylesheet');
 console.log('H242 settings live-label contrast contract passed.');
+
+assert.ok(settingsContrast.includes('html body #page-settings #tk79-prize-editor :is(h1,h2,h3,h4,p,small,label,strong,b,span,em,li,td,th)'), 'H243 must restore readable light text on the dark prize editor');
+assert.ok(vhtml.includes('workspace-contrast-h234.css?v=h243-settings-contrast-20261127'), 'VNext must load H243 cache-busted settings contrast rules');
