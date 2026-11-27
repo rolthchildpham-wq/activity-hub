@@ -283,6 +283,10 @@ jobs:
               A.renderAll?.();
               A.showTab("overview");
               const sport=new URLSearchParams(location.search).get("sport")||(location.pathname.endsWith("/badminton.html")||location.pathname.includes("/sports/badminton/")?"badminton":"");
+              const expectedIdentity={football:"FOOTBALL OPERATIONS",volleyball:"VOLLEYBALL ARENA",running:"RACE CONTROL",handmade:"MAKERS STUDIO",shuttle:"SHUTTLECOCK",cooking:"CULINARY STUDIO",badminton:"BADMINTON ARENA"}[sport];
+              const navIdentity=getComputedStyle(document.querySelector("#app-shell .nav"),"::before").content;
+              if(!expectedIdentity||!navIdentity.includes(expectedIdentity))
+                throw new Error("Sport identity mismatch: "+JSON.stringify({sport,expectedIdentity,navIdentity,htmlSport:document.documentElement.dataset.tkSport}));
               const gridColumns=grid=>{
                 const value=grid?getComputedStyle(grid).gridTemplateColumns:"";
                 const repeat=value.match(/^repeat\((\d+),/);
@@ -408,7 +412,7 @@ jobs:
                 if('$tab'==='overview'&&!overviewVisible)
                   throw new Error('Overview dashboard is not visible on overview tab');
                 const surfaceSelector='.card,.subcard,.tk9-card,.tk9-count,.control-card,.court-card,.list-card,.checkin-row,.team-picker,.team-pick,.check-option,.rule-chip,.schedule-preview,.table-wrap,.modal-box,.tk-group-standings,.tk227-match,.tk227-rule,.official-score .side,.score-head>div,.video-box,.radio-row,.danger-check,.delete-preview,.mode-note,.tk152-panel,#tk79-prize-editor,.tk79-prize-row';
-                const textSelector='h1,h2,h3,h4,p,small,label,strong,b,span,em,li,td,th';
+                const textSelector='h1,h2,h3,h4,p,small,label,strong,b,span,em,li,td,th,div.muted,div.note,div.hint,div.description';
                 const rgb=value=>{const m=String(value||'').match(/[\\d.]+/g);return m&&m.length>=3?m.slice(0,3).map(Number):null};
                 const lum=value=>{const v=rgb(value);if(!v)return 0;const a=v.map(n=>{n/=255;return n<=.04045?n/12.92:Math.pow((n+.055)/1.055,2.4)});return .2126*a[0]+.7152*a[1]+.0722*a[2]};
                 const ratio=(bg,fg)=>(Math.max(lum(bg),lum(fg))+.05)/(Math.min(lum(bg),lum(fg))+.05);
