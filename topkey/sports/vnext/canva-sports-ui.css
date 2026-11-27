@@ -99,3 +99,10 @@ html.tk-public-boot #public-spectator .grid.g2{grid-template-columns:repeat(2,mi
  .topbar>.nav button,.topbar>.nav a{flex:1 0 auto;min-width:68px;min-height:46px;justify-content:center;padding:8px 9px;font-size:11px}
  #app-shell,.shell{padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))}
 }
+
+/* Migrated VNext critical preboot, test-lab and registration styles from inline blocks. */
+html.tk-public-boot #login-screen,html.tk-public-boot #app-shell{display:none!important}html.tk-public-boot .public-register:not(.hidden),html.tk-public-boot #public-judge:not(.hidden){display:block!important}
+
+#tk152-panel{border:1px solid #527b99;border-radius:12px;padding:13px;margin:14px 0;background:#0d2940;color:#f5fbff;display:grid;gap:8px}#tk152-panel :is(select,input,textarea){background:#102f49;color:#fff;border:1px solid #7cacc9;border-radius:8px;padding:10px;width:100%;font:inherit;min-height:44px}#tk152-panel label{font-weight:600;color:#e1f1ff}#tk152-panel .tk152-buttons{display:flex;gap:8px;flex-wrap:wrap}#tk152-panel .tk152-buttons button{min-height:44px;flex:1 1 110px}#tk152-panel small{color:#d1e4f4}#tk152-panel :is(input,select,textarea,button):focus-visible{outline:3px solid #91e8f4;outline-offset:2px}
+
+html body #page-teams #tk9-registration-admin .tk9-card{color:#172b3d!important;background-color:#f7fafc!important}html body #page-teams #tk9-registration-admin .tk9-count{color:#172b3d!important;background-color:#eef4f8!important}html body #page-teams #tk9-registration-admin .tk9-card :is(b,span,small),html body #page-teams #tk9-registration-admin .tk9-count :is(b,span,small){color:#172b3d!important}
