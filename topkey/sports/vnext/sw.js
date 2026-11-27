@@ -1,5 +1,5 @@
 /* H109 - release-aware offline shell; no automatic page reload on SW takeover. */
-const CACHE='topkey-h136-vnext-shell';
+const CACHE='topkey-canva-v1-vnext-shell';
 const SHELL=['./index.html','./canva-sports-ui.css?v=canva-sports-v1-20261127','../../vendor/qrcode.min.js?v=h136-20261114','./build.json','../../release-runtime.js?v=h218-sports-redesign-20261124','../../topkey-platform-core.js?v=h217-unified-20261124','../../topkey-hub-guard-core.js?v=h217-unified-20261124','../../topkey-shared-auth.js?v=u122h120-auth-p5-20261110','./hub-entry-guard.js?v=h217-unified-20261124','../../h108-auth-guard.js?v=h217-unified-20261124','../badminton/production-loader.js?v=ppt-upload-20261111','./src/config.js?v=h232-badminton-config-parity-20261126','./h97-vnext.bundle.js?v=h232-badminton-config-parity-20261126','../../h104-v2-engine.js?v=h217-unified-20261124','../../h104-indexed-runtime.js?v=h217-unified-20261124','../../h114-runtime-fixes.js'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>Promise.allSettled(SHELL.map(x=>c.add(x))))));
 self.addEventListener('activate',e=>e.waitUntil(Promise.all([caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE&&(k.startsWith('topkey-')&&(k.includes('sports-vnext-')||k.includes('vnext-shell')))).map(k=>caches.delete(k)))),self.clients.claim()])));
