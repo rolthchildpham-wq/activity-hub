@@ -13,3 +13,15 @@ html[data-tk-sport] body #app-shell:not(.hidden) .page:not(.hidden) :is(a,button
 html body #app-shell:not(.hidden) #page-schedule.page:not(.hidden) :is(b,span,small,p,label,li,td,th,strong,em){color:#29465b!important;-webkit-text-fill-color:#29465b!important;opacity:1!important;text-shadow:none!important}
 html body #app-shell:not(.hidden) #page-schedule.page:not(.hidden) :is(.muted,.note,.hint,.description){color:#405e72!important;-webkit-text-fill-color:#405e72!important;opacity:1!important}
 html body #app-shell:not(.hidden) #page-schedule.page:not(.hidden) :is(.status,.badge,.pill,.tk12-status-badge,.status-badge,.match-status,.state-badge,.status-pill){color:#29465b!important;-webkit-text-fill-color:#29465b!important;opacity:1!important}
+
+/* H236: harden schedule text contrast on light legacy calendar cards; no class-state dependency. */
+html body #app-shell #page-schedule :is(b,span,small,p,label,li,td,th,strong,em){
+  color:#29465b!important;
+  -webkit-text-fill-color:#29465b!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}
+html body #app-shell #page-schedule :is(.muted,.note,.hint,.description){
+  color:#405e72!important;
+  -webkit-text-fill-color:#405e72!important;
+}

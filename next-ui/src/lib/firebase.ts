@@ -1,6 +1,7 @@
 import {initializeApp,getApps,getApp} from 'firebase/app';
 import {getAuth,type Auth} from 'firebase/auth';
-import {getDatabase,ref,onValue,type Database} from 'firebase/database';
+import {canAccess,isBlocked} from './platform-policy';
+import {getDatabase,ref,onValue,get,type Database} from 'firebase/database';
 import type {SportKey,TournamentSnapshot} from './domain';
 import {emptyTournament} from './domain';
 
@@ -25,6 +26,7 @@ const ROOTS:Record<Exclude<SportKey,'vlog'>,string>={
  cooking:'topkey_cooking_vnext_2026'
 };
 const BRANCHES=['config','teams','matches','activeMatches'] as const;
+const AUTH_ROOT='topkey_badminton_vnext_2026';
 const INITIAL_LOAD_TIMEOUT_MS=10_000;
 
 export function client():{auth:Auth;db:Database}{
@@ -51,7 +53,7 @@ export function listenTournament(
  const next=emptyTournament();
  const received=new Set<string>();
  const off:(()=>void)[]=[];
- let stopped=false;
+ let stopped=false,branchesStarted=false;
  let timeout:ReturnType<typeof setTimeout>|undefined;
  const cleanup=()=>{
   if(stopped)return;
@@ -66,27 +68,54 @@ export function listenTournament(
   // Only complete initial snapshots can be presented as trusted statistics.
   onData({...next});
  };
+ const startBranches=()=>{
+  if(stopped||branchesStarted)return;
+  branchesStarted=true;
+  for(const branch of BRANCHES){
+   if(stopped)break;
+   const location=ROOTS[sport]+'/tournaments/'+tid+'/'+branch;
+   const stop=onValue(ref(db,location),snapshot=>{
+    if(stopped)return;
+    const raw=snapshot.val();
+    // Discard invalid Firebase branch shapes to prevent rendering exceptions.
+    const value=raw && typeof raw==='object'&&!Array.isArray(raw)?raw:{};
+    if(branch==='config')next.config=value;
+    else if(branch==='teams')next.teams=value;
+    else if(branch==='matches')next.matches=value;
+    else next.activeMatches=value;
+    received.add(branch);
+    publish();
+   },error=>fail(error));
+   off.push(stop);
+  }
+ };
  timeout=setTimeout(()=>{
   const missing=BRANCHES.filter(branch=>!received.has(branch));
-  if(missing.length)fail(new Error('Quá thời gian đồng bộ: '+missing.join(', ')+'. Không dùng số 0 thay cho dữ liệu chưa tải.'));
+  fail(new Error('Quá thời gian xác minh quyền hoặc đồng bộ: '+(missing.length?missing.join(', '):'hồ sơ tài khoản')+'. Không dùng số 0 thay cho dữ liệu chưa tải.'));
  },INITIAL_LOAD_TIMEOUT_MS);
 
- for(const branch of BRANCHES){
-  if(stopped)break;
-  const location=ROOTS[sport]+'/tournaments/'+tid+'/'+branch;
-  const stop=onValue(ref(db,location),snapshot=>{
-   if(stopped)return;
-   const raw=snapshot.val();
-   // Discard invalid Firebase branch shapes to prevent rendering exceptions.
-   const value=raw && typeof raw==='object'&&!Array.isArray(raw)?raw:{};
-   if(branch==='config')next.config=value;
-   else if(branch==='teams')next.teams=value;
-   else if(branch==='matches')next.matches=value;
-   else next.activeMatches=value;
-   received.add(branch);
-   publish();
-  },error=>fail(error));
-  off.push(stop);
- }
+ // TOPKEY's canonical policy is evaluated against the shared account profile
+ // before any tournament branch is subscribed. Realtime profile changes can
+ // revoke the view and dispose every active listener immediately.
+ const user=getAuth(db.app).currentUser;
+ if(!user||user.isAnonymous){fail(new Error('Cần đăng nhập TOPKEY trước khi mở dữ liệu giải.'));return cleanup}
+ const profileRef=ref(db,AUTH_ROOT+'/users/'+user.uid);
+ get(profileRef).then(snapshot=>{
+  if(stopped)return;
+  const profile=snapshot.val();
+  if(isBlocked(profile)||!canAccess(profile,sport)){
+   fail(new Error('Tài khoản chưa được cấp quyền hoặc không có quyền truy cập môn '+sport+'.'));
+   return;
+  }
+  startBranches();
+ }).catch(error=>fail(new Error('Không xác minh được hồ sơ quyền TOPKEY: '+(error instanceof Error?error.message:String(error)))));
+ const stopProfile=onValue(profileRef,snapshot=>{
+  if(stopped)return;
+  const profile=snapshot.val();
+  if(isBlocked(profile)||!canAccess(profile,sport)){
+   fail(new Error('Quyền truy cập môn '+sport+' đã bị thu hồi hoặc không còn hợp lệ.'));
+  }
+ },error=>fail(error));
+ off.push(stopProfile);
  return cleanup;
 }

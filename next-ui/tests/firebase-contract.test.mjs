@@ -16,7 +16,7 @@ test('show KPI only after all initial snapshots are received',()=>{
 });
 test('timeout and errors do not silently turn missing data into zeros',()=>{
  assert.match(source,/INITIAL_LOAD_TIMEOUT_MS=10_000/);
- assert.match(source,/fail\(new Error\('Quá thời gian đồng bộ:/);
+ assert.match(source,/fail\(new Error\('Quá thời gian xác minh quyền hoặc đồng bộ:/);
 });
 test('listeners are disposed after branch switch or permission failure',()=>{
  assert.match(source,/off\.forEach\(unsubscribe=>unsubscribe\(\)\)/);
@@ -28,4 +28,31 @@ test('operational links leave /next without inventing routes',()=>{
 test('all seven RTDB sport roots retain their schema paths',()=>{
  for(const sport of ['badminton','football','volleyball','running','handmade','shuttle','cooking'])
   assert.ok(source.includes(sport+":'topkey_"),sport);
+});
+
+test('verify canonical TOPKEY account profile and sport scope before tournament reads',()=>{
+ assert.match(source,/getAuth\(db\.app\)\.currentUser/);
+ assert.match(source,/AUTH_ROOT\+'\/users\/'\+user\.uid/);
+ assert.match(source,/isBlocked\(profile\)\|\|!canAccess\(profile,sport\)/);
+ assert.ok(source.indexOf('get(profileRef)')<source.indexOf('startBranches()'));
+});
+test('realtime account-profile changes revoke the workspace and dispose listeners',()=>{
+ assert.match(source,/onValue\(profileRef,snapshot=>/);
+ assert.match(source,/Quyền truy cập môn .* đã bị thu hồi/);
+ assert.match(source,/off\.forEach\(unsubscribe=>unsubscribe\(\)\)/);
+});
+
+const limitedBranch=readFileSync(new URL('../src/lib/shared/api/limited-branch.ts',import.meta.url),'utf8');
+test('finance and audit branch reads verify shared account and sport scope first',()=>{
+ assert.match(limitedBranch,/getAuth\(db\.app\)\.currentUser/);
+ assert.match(limitedBranch,/get\(profileRef\)/);
+ assert.match(limitedBranch,/isBlocked\(profile\)\|\|!canAccess\(profile,sport\)/);
+ assert.ok(limitedBranch.indexOf('get(profileRef)')<limitedBranch.indexOf('start();'));
+ assert.match(limitedBranch,/onValue\(profileRef,snapshot=>/);
+ assert.match(limitedBranch,/Quyền truy cập dữ liệu .* đã bị thu hồi/);
+});
+test('finance and audit subscriptions are disposed when access is revoked',()=>{
+ assert.match(limitedBranch,/branchStop\?\.\(\)/);
+ assert.match(limitedBranch,/profileStop\?\.\(\)/);
+ assert.match(limitedBranch,/const cleanup=\(\)=>/);
 });
