@@ -49,3 +49,9 @@ assert.ok(scheduleRuntime.includes("const ROOT = 'body';"), 'Dynamic contrast gu
 assert.ok(scheduleRuntime.indexOf('if (settingsClock)') < scheduleRuntime.indexOf('const settingsDarkSurface'), 'H249 must prioritize the light settings clock before dark-surface text overrides');
 assert.ok(scheduleRuntime.includes("node.style.setProperty('color',SAFE,'important')"), 'H249 must keep the settings clock dark on its white strip');
 console.log('H249 settings clock priority regression contract passed.');
+
+const overviewContrast=fs.readFileSync('topkey/sports/vnext/workspace-contrast-h234.css','utf8');
+assert.ok(overviewContrast.includes('html body #app-shell #page-overview .tk9-podium .tk9-medal'), 'H250 must set a readable foreground for podium medal glyphs on dark medal discs');
+assert.ok(overviewContrast.includes('-webkit-text-fill-color:#f8fbff!important'), 'H250 must override inherited WebKit text fill on medal glyphs');
+assert.ok(vhtml.includes('workspace-contrast-h234.css?v=h250-overview-podium-medals-20261127'), 'VNext must load H250 medal contrast fix with a fresh cache key');
+console.log('H250 overview podium medal WCAG AA regression contract passed.');
