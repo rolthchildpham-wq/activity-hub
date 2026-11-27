@@ -24,11 +24,11 @@ assert.ok(scheduleContrast.includes('html body #app-shell #page-schedule :is(b,s
 assert.ok(scheduleContrast.includes('-webkit-text-fill-color:#29465b!important'),'Schedule text must override WebKit/inline text fill');
 assert.ok(vhtml.includes('workspace-contrast-h234.css?v=h243-settings-contrast-20261127'),'VNext must load the cache-busted H243 settings contrast layer');
 const scheduleRuntime=fs.readFileSync('topkey/sports/vnext/workspace-contrast-runtime-h238.js','utf8');
-assert.ok(vhtml.includes('workspace-contrast-runtime-h238.js?v=h239-global-workspace-dynamic-aa-20261127'),'VNext must load the H237 schedule runtime guard');
-assert.ok(scheduleRuntime.includes(`node.style.setProperty('color',SAFE,'important')`),'H239 runtime must apply WCAG-safe foregrounds');
+assert.ok(vhtml.includes('workspace-contrast-runtime-h238.js?v=h244-global-document-aa-20261127'),'VNext must load the H237 schedule runtime guard');
+assert.ok(scheduleRuntime.includes(`node.style.setProperty('color',SAFE,'important')`),'H244 runtime must apply WCAG-safe foregrounds');
 assert.ok(scheduleRuntime.includes("const ROOT = 'body';"),'H243 runtime must cover every document-mounted workspace page');
-assert.ok(scheduleRuntime.includes('characterData:true'),'H239 runtime must observe text-node changes');
-assert.ok(scheduleRuntime.includes('new MutationObserver(schedule)'),'H239 runtime must track dynamic workspace content');
+assert.ok(scheduleRuntime.includes('characterData:true'),'H244 runtime must observe text-node changes');
+assert.ok(scheduleRuntime.includes('new MutationObserver(schedule)'),'H244 runtime must track dynamic workspace content');
 console.log('H239 global workspace contrast regression contract passed.');
 
 const settingsContrast=fs.readFileSync('topkey/sports/vnext/workspace-contrast-h234.css','utf8');
