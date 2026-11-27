@@ -86,3 +86,16 @@ body.tk-bi-hub #password-change-launch .muted,body.tk-bi-hub #system-admin-launc
 body.tk-bi-hub #password-change-launch .open,body.tk-bi-hub #system-admin-launch .open{display:inline-flex;align-items:center;justify-content:center;padding:12px 16px;border-radius:10px;color:#fff;text-decoration:none;font-weight:800}
 body.tk-bi-hub #password-change-launch .open{background:#245B78}
 body.tk-bi-hub #system-admin-launch .open{background:#51427A}
+
+/* Hub sport picker and header controls reimplemented in Canva components. */
+body.tk-bi-hub .cards.compact-sports{grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;margin:0 0 18px;padding:12px;border:1px solid var(--tk-line);border-radius:18px;background:#102B43}
+body.tk-bi-hub .cards.compact-sports .sport{min-height:84px;padding:12px 8px;align-items:center;justify-content:center;text-align:center;gap:6px;border-radius:13px;background:#173A55;box-shadow:none}
+body.tk-bi-hub .cards.compact-sports .sport .emoji{font-size:27px;line-height:1}
+body.tk-bi-hub .cards.compact-sports .sport h3{margin:0;font-size:13px;font-weight:800}
+body.tk-bi-hub .cards.compact-sports .sport p,body.tk-bi-hub .cards.compact-sports .sport .badge,body.tk-bi-hub .cards.compact-sports .sport .open{display:none!important}
+body.tk-bi-hub .cards.compact-sports .sport:hover{transform:translateY(-2px)}
+body.tk-bi-hub .sport-picker-note{grid-column:1/-1;color:#FFE1A6;font-size:12px;padding:0 4px 2px}
+body.tk-bi-hub .hub-bg-preview{height:130px;margin-top:8px;border:1px dashed var(--tk-line);border-radius:12px;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;color:var(--tk-muted)}
+body.tk-bi-hub .hub-header-toggle{display:none;width:40px;height:40px;padding:0;border:1px solid var(--tk-line);border-radius:10px;background:var(--tk-surface);color:#fff;font-size:22px;font-weight:800;line-height:1;align-items:center;justify-content:center;cursor:pointer}
+@media(max-width:1100px){body.tk-bi-hub .cards.compact-sports{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:640px){body.tk-bi-hub .cards.compact-sports{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:9px}body.tk-bi-hub .cards.compact-sports .sport{min-height:72px}body.tk-bi-hub .cards.compact-sports .sport .emoji{font-size:24px}body.tk-bi-hub .cards.compact-sports .sport h3{font-size:12px}body.tk-bi-hub .hub-header-toggle{display:inline-flex}}
