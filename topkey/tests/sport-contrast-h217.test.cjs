@@ -45,3 +45,7 @@ assert.ok(settingsContrast.includes('html body #page-settings #tk79-prize-editor
 assert.ok(vhtml.includes('workspace-contrast-h234.css?v=h247-prize-contrast-20261127'), 'VNext must load H245 cache-busted settings contrast rules');
 
 assert.ok(scheduleRuntime.includes("const ROOT = 'body';"), 'Dynamic contrast guard must cover legacy pages mounted outside #app-shell');
+
+assert.ok(scheduleRuntime.indexOf('if (settingsClock)') < scheduleRuntime.indexOf('const settingsDarkSurface'), 'H249 must prioritize the light settings clock before dark-surface text overrides');
+assert.ok(scheduleRuntime.includes("node.style.setProperty('color',SAFE,'important')"), 'H249 must keep the settings clock dark on its white strip');
+console.log('H249 settings clock priority regression contract passed.');
