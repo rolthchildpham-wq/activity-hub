@@ -25,5 +25,10 @@ console.log('H216 Hub readability contract passed: explicit foregrounds, control
 
 const sharedContrast=fs.readFileSync('topkey/sports/vnext/workspace-contrast-h234.css','utf8');
 for(const token of ['#29465b','#075c43','#124d83','#8b1f2d','tk12-status-badge.finished','#526d80'])assert.ok(sharedContrast.includes(token),'Missing shared contrast token: '+token);
-assert.ok(fs.readFileSync('topkey/sports/vnext/index.html','utf8').includes('workspace-contrast-h234.css?v=h234-workspace-contrast-20261127'),'All sports must load the shared contrast layer');
-console.log('H234 shared sport contrast contract passed.');
+const sportHtml=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
+const scheduleRuntime=fs.readFileSync('topkey/sports/vnext/schedule-contrast-runtime-h237.js','utf8');
+assert.ok(sportHtml.includes('workspace-contrast-h234.css?v=h237-schedule-aa-20261127'),'All VNext sports must load the cache-busted H237 schedule contrast layer');
+assert.ok(sportHtml.includes('schedule-contrast-runtime-h237.js?v=h237-schedule-aa-20261127'),'All VNext sports must load the H237 runtime guard');
+assert.ok(scheduleRuntime.includes("node.style.setProperty('color', color, 'important')"),'H237 must override inline important text colors');
+assert.ok(scheduleRuntime.includes('new MutationObserver(schedule)'),'H237 must re-apply contrast to dynamically rendered schedule rows');
+console.log('H237 shared schedule contrast runtime contract passed.');
