@@ -4,7 +4,8 @@ import { readFileSync } from 'node:fs';
 
 const config = readFileSync(new URL('../../topkey/sports/vnext/src/config.js', import.meta.url), 'utf8');
 const auth = readFileSync(new URL('../../topkey/sports/vnext/src/auth.js', import.meta.url), 'utf8');
-const firebase = readFileSync(new URL('../../topkey/sports/vnext/src/firebase.js', import.meta.url), 'utf8');
+const legacyFirebase = readFileSync(new URL('../../topkey/sports/vnext/src/firebase.js', import.meta.url), 'utf8');
+const firebaseAdapter = readFileSync(new URL('../src/lib/firebase.ts', import.meta.url), 'utf8');
 const entry = readFileSync(new URL('../../topkey/sports/vnext/index.html', import.meta.url), 'utf8');
 const domain = readFileSync(new URL('../src/lib/domain.ts', import.meta.url), 'utf8');
 
@@ -15,7 +16,7 @@ test('new UI sport catalog and RTDB adapter remain aligned with operational sour
     assert.ok(config.includes(key + ":{...common,key:'" + key + "'"), 'Missing operational config for ' + key);
     assert.ok(config.includes("root:'topkey_" + key + "_vnext_2026'"), 'Missing operational root for ' + key);
     assert.ok(domain.includes("key:'" + key + "'"), 'Missing UI catalog entry for ' + key);
-    assert.ok(firebase.includes(key + ":'topkey_" + key + "_vnext_2026'"), 'Missing UI RTDB adapter root for ' + key);
+    assert.ok(firebaseAdapter.includes(key + ":'topkey_" + key + "_vnext_2026'"), 'Missing UI RTDB adapter root for ' + key);
   }
 });
 
@@ -37,9 +38,9 @@ test('authentication remains delegated to shared TOPKEY auth and platform role p
 });
 
 test('operational runtime keeps its existing Firebase paths, offline queue and audit boundary', () => {
-  assert.ok(firebase.includes("return `${T.ROOT}/tournaments/${this.tid}${path ? '/' + path.replace(/^\\//, '') : ''}`"));
-  assert.ok(firebase.includes('queueMulti(updates'));
-  assert.ok(firebase.includes('flushQueue('));
-  assert.ok(firebase.includes('async audit('));
-  assert.ok(firebase.includes('listenAuthUsers('));
+  assert.ok(legacyFirebase.includes("return `${T.ROOT}/tournaments/${this.tid}${path ? '/' + path.replace(/^\\//, '') : ''}`"));
+  assert.ok(legacyFirebase.includes('queueMulti(updates'));
+  assert.ok(legacyFirebase.includes('flushQueue('));
+  assert.ok(legacyFirebase.includes('async audit('));
+  assert.ok(legacyFirebase.includes('listenAuthUsers('));
 });
