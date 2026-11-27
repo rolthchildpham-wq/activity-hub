@@ -399,7 +399,7 @@ jobs:
                     const effectiveBg=ownBg&&ownBg!=='rgba(0, 0, 0, 0)'?ownBg:bg;
                     const value=ratio(effectiveBg,getComputedStyle(el).color);samples++;
                     minContrast=Math.min(minContrast,value);
-                    if(value<4.5&&failures.length<12)failures.push({tag:el.tagName,className:String(el.className||''),text:el.textContent.trim().slice(0,60),bg:effectiveBg,fg:getComputedStyle(el).color,ratio:Number(value.toFixed(2))});
+                    if(value<4.5&&failures.length<12)failures.push({tag:el.tagName,className:String(el.className||''),text:el.textContent.trim().slice(0,60),bg:effectiveBg,fg:getComputedStyle(el).color,ratio:Number(value.toFixed(2)),inlineStyle:el.getAttribute('style'),parentStyle:el.parentElement?.getAttribute('style'),matchedSheets:[...document.styleSheets].map(sheet=>sheet.href).filter(Boolean)});
                   }
                 }
                 const contrastAudit={samples,minContrast:Number(minContrast.toFixed(2)),failures};
