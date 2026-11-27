@@ -551,6 +551,7 @@ jobs:
           node topkey/tests/hub-calendar-responsive-h220.test.cjs
           node topkey/tests/hub-navigation-semantics.test.cjs
           node topkey/tests/hub-dashboard-h219.test.cjs
+          node topkey/tests/hub-redesign-h240.test.cjs
           node topkey/tests/hub-readable-h216.test.cjs
           node topkey/tests/sport-contrast-h217.test.cjs
           node topkey/tests/sport-workspace-redesign-h218.test.cjs
