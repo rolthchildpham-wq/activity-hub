@@ -36,8 +36,9 @@ assert.ok(scheduleRuntime.includes('characterData:true'),'H245 must observe in-p
 assert.ok(scheduleRuntime.includes('if (!node.textContent.trim()) continue;'),'H245 must include text-bearing wrapper elements in contrast auditing');
 assert.ok(scheduleRuntime.includes('new MutationObserver(schedule)'),'H239 must observe dynamic workspace page changes');
 assert.ok(scheduleRuntime.includes("const settingsDarkSurface = node.closest('#page-settings')"),'H248 must protect dynamic dark settings surfaces from low-contrast inherited text');
-assert.ok(sportIdentity.includes('html[data-tk-sport="badminton"]'),'H247 must define a dedicated badminton sport identity');
-assert.ok(sportHtml.includes('sport-identities-h132.css?v=h247-badminton-identity-20261127'),'Shared sports workspace must load H247 identity stylesheet');
+const canvaSportUi=fs.readFileSync('topkey/sports/vnext/canva-sports-ui.css','utf8');
+assert.ok(canvaSportUi.includes('html[data-tk-sport="badminton"]'),'Canva UI must preserve the badminton sport identity');
+assert.ok(sportHtml.includes('canva-sports-ui.css?v=canva-sports-v1-20261127'),'Shared sports workspace must load the consolidated Canva sport UI');
 console.log('H244 global document contrast runtime contract passed.');
 
 assert.ok(scheduleRuntime.includes("const ROOT = 'body';"), 'Dynamic contrast guard must cover legacy pages mounted outside #app-shell');
