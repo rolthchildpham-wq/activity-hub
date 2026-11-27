@@ -30,5 +30,7 @@ const scheduleRuntime=fs.readFileSync('topkey/sports/vnext/workspace-contrast-ru
 assert.ok(sportHtml.includes('workspace-contrast-h234.css?v=h237-schedule-aa-20261127'),'All VNext sports must load the cache-busted H237 schedule contrast layer');
 assert.ok(sportHtml.includes('workspace-contrast-runtime-h238.js?v=h239-global-workspace-dynamic-aa-20261127'),'All VNext sports must load the H237 runtime guard');
 assert.ok(scheduleRuntime.includes(`node.style.setProperty('color',SAFE,'important')`),'H239 must apply WCAG-safe foregrounds to dynamic light surfaces');
-assert.ok(scheduleRuntime.includes("const ROOT = '#app-shell';"),'H239 must scan all workspace pages, including hidden pages before activation');\nassert.ok(scheduleRuntime.includes('characterData:true'),'H239 must observe in-place text-node updates');\nassert.ok(scheduleRuntime.includes('new MutationObserver(schedule)'),'H239 must observe dynamic workspace page changes');
+assert.ok(scheduleRuntime.includes("const ROOT = '#app-shell';"),'H239 must scan all workspace pages, including hidden pages before activation');
+assert.ok(scheduleRuntime.includes('characterData:true'),'H239 must observe in-place text-node updates');
+assert.ok(scheduleRuntime.includes('new MutationObserver(schedule)'),'H239 must observe dynamic workspace page changes');
 console.log('H239 global workspace contrast runtime contract passed.');
