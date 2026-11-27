@@ -23,7 +23,7 @@ console.log('H217 global sport contrast passed for VNext six-sport engine and Ba
 const scheduleContrast=fs.readFileSync('topkey/sports/vnext/workspace-contrast-h234.css','utf8');
 assert.ok(scheduleContrast.includes('html body #app-shell #page-schedule :is(b,span,small,p,label,li,td,th,strong,em)'),'Legacy schedule rows must receive explicit readable foregrounds without depending on page state classes');
 assert.ok(scheduleContrast.includes('-webkit-text-fill-color:#29465b!important'),'Schedule text must override WebKit/inline text fill');
-assert.ok(vhtml.includes('workspace-contrast-h234.css?v=h251-podium-medal-unconditional-20261127'),'VNext must load the cache-busted H243 settings contrast layer');
+assert.ok(!vhtml.includes('workspace-contrast-h234.css'),'Legacy H234 visual stylesheet must not load in VNext');
 const scheduleRuntime=fs.readFileSync('topkey/sports/vnext/workspace-contrast-runtime-h238.js','utf8');
 assert.ok(vhtml.includes('workspace-contrast-runtime-h238.js?v=h251-podium-medal-unconditional-aa-20261127'),'VNext must load the H251 unconditional podium runtime guard');
 assert.ok(scheduleRuntime.includes(`node.style.setProperty('color',SAFE,'important')`),'H244 runtime must apply WCAG-safe foregrounds');
