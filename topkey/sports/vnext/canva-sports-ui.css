@@ -28,3 +28,64 @@
 @media(max-width:700px){.topbar,.top{position:sticky;top:0}.brand{padding:10px 12px}.nav{padding:7px 10px 9px}.nav button,.nav a{min-height:42px;padding:8px 11px;font-size:12px}.shell,#app-shell{padding:12px 12px 28px}.g4,.g3,.g2,.form-grid{grid-template-columns:minmax(0,1fr)}.card,.panel,.subcard{padding:14px;border-radius:13px}.score-actions{grid-template-columns:repeat(2,minmax(0,1fr))}.court{min-height:250px}.player{padding:12px}.official-score{grid-template-columns:1fr}.official-score .vs{display:none}.team-picker,.scheduler-grid{grid-template-columns:1fr}.action-bar{width:100%}.action-bar .btn,.action-bar label.btn{flex:1 1 130px}.table-wrap{max-width:calc(100vw - 24px)}table{min-width:640px}.video-box{max-height:none}.caption{bottom:50px;font-size:12px}.modal{align-items:start;padding:10px}.modal-box{margin:auto}.checkin-row,.list-card{align-items:flex-start}.brand{flex-wrap:wrap}}
 @media(max-width:380px){.shell,#app-shell{padding-left:9px;padding-right:9px}.card,.panel{padding:12px}.btn{padding:8px 10px;font-size:12px}.score-head{gap:5px}.score-head>div{padding:9px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* Canva sport identity accents — one shared component language, subtle sport markers. */
+html[data-tk-sport]{--sport:#0AA6A6;--sport-strong:#173A55;--sport-soft:#DDF4F2;--sport-highlight:#73DAD5;--sport-court:#0B756E;--sport-outline:#8DDDD7}
+html[data-tk-sport="football"]{--sport:#16805E;--sport-strong:#104638;--sport-highlight:#73D2A3;--sport-court:#0B634A}
+html[data-tk-sport="volleyball"]{--sport:#B8792C;--sport-strong:#593B27;--sport-highlight:#F2C36D;--sport-court:#744923}
+html[data-tk-sport="running"]{--sport:#A23E60;--sport-strong:#54243E;--sport-highlight:#F1A5BF;--sport-court:#6E3055}
+html[data-tk-sport="handmade"]{--sport:#7654BA;--sport-strong:#44306D;--sport-highlight:#B99DEF;--sport-court:#57418D}
+html[data-tk-sport="shuttle"]{--sport:#087D90;--sport-strong:#155064;--sport-highlight:#80D9DC;--sport-court:#0F606F}
+html[data-tk-sport="cooking"]{--sport:#B74E3B;--sport-strong:#5D302B;--sport-highlight:#F8AB8E;--sport-court:#773B31}
+html[data-tk-sport="badminton"]{--sport:#087F8C;--sport-strong:#16465A;--sport-highlight:#79D9D3;--sport-court:#0F606F}
+html[data-tk-sport] #app-shell .topbar>.nav [data-tab]::after{content:none!important;display:none!important}
+html[data-tk-sport] #app-shell .topbar>.nav [data-tab]>:is(.tk141-nav-icon,.tk-h130-icon,.tk-nav-icon,.nav-icon,.icon){display:none!important}
+
+/* Live Studio, referee controls and public viewer are component styles, not a second skin. */
+#tk144-live-studio{width:100%;min-width:0;margin:0 0 14px;padding:clamp(10px,1.8vw,18px);border:1px solid var(--tk-line);border-radius:var(--tk-radius);background:#0A2237;color:var(--tk-ink)}
+#tk144-live-studio :is(.tk144-header,.tk144-toolbar){display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+#tk144-live-studio .tk144-header{justify-content:space-between;gap:12px}
+#tk144-live-studio .tk144-header h2{margin:0;color:#fff;font-size:clamp(18px,2.2vw,24px)}
+#tk144-live-studio .tk144-toolbar{justify-content:flex-end}
+#tk144-live-studio .tk144-workspace{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(280px,1fr);align-items:start;gap:12px;min-width:0}
+#tk144-live-studio :is(.tk144-video-pane,.tk144-official-pane){min-width:0}
+#tk144-live-studio :is(.tk144-video-pane,.tk144-official-pane)>.card{width:100%;margin:0;min-width:0;padding:clamp(10px,1.7vw,17px);box-shadow:none;background:var(--tk-surface)}
+#page-live:has(#tk144-live-studio)>.grid.g2{grid-template-columns:minmax(0,1fr)}
+#tk144-live-studio .tk144-pane-label{margin:0 0 7px;padding:8px 10px;border:1px solid var(--tk-line);border-radius:10px;background:var(--tk-slate);color:#E7F3F8;font-weight:700}
+#tk144-live-studio .tk144-official-pane.tk144-collapsed>.card{display:none!important}
+#tk144-live-studio .tk144-workspace:has(.tk144-official-pane.tk144-collapsed),#tk144-live-studio .tk144-workspace:has(.tk144-official-pane[hidden]){grid-template-columns:minmax(0,1fr)}
+#tk144-live-studio .tk144-video-pane .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+#tk144-live-studio .tk144-video-pane .action-bar{display:flex;flex-wrap:wrap;gap:7px}
+#tk144-live-studio .tk144-video-pane .action-bar button{flex:1 1 130px;min-height:43px}
+#tk144-live-studio .tk144-official-pane{position:relative;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding-bottom:calc(28px + env(safe-area-inset-bottom,0px))}
+#tk144-live-studio .tk144-official-pane>.card,#tk144-live-studio .tk144-official-pane #umpire-board{height:auto;max-height:none;min-height:0;overflow:visible}
+#tk144-live-studio .tk144-official-pane #set-actions,#tk144-live-studio .tk144-official-pane #single-actions{position:relative;z-index:1}
+#tk144-live-studio .tk144-toolbar select{min-width:175px;max-width:100%;padding:10px;color:#fff;background:#0A2237;border:1px solid #45647B;border-radius:9px}
+#tk144-live-studio .tk144-status{margin:9px 0;color:var(--tk-muted);font-size:13px}
+#tk144-live-studio .tk144-official-pane .btn{min-height:44px}
+#tk144-live-studio .tk156-referee-shortcuts{position:sticky;top:0;z-index:35;display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:9px;margin:0 0 8px;border:1px solid var(--tk-line);border-radius:10px;background:var(--tk-slate);box-shadow:0 4px 14px rgba(0,0,0,.24)}
+#tk144-live-studio .tk156-referee-shortcuts button{flex:1 1 112px;min-width:0;min-height:44px;padding:8px 9px;border:1px solid #52758D;border-radius:9px;background:#214B6C;color:#fff;font:700 13px/1.3 Inter,system-ui,sans-serif}
+#tk144-live-studio .tk156-referee-shortcuts button:disabled{opacity:.65;cursor:not-allowed}
+#tk144-live-studio .tk156-referee-help{width:100%;color:var(--tk-muted);font-size:12px;line-height:1.4}
+#tk144-live-studio .tk156-highlight{outline:3px solid #F4C85A!important;outline-offset:2px}
+#tk157-youtube-panel{grid-column:1/-1;display:grid;gap:10px;margin:8px 0;padding:14px;border:1px solid var(--tk-line);border-radius:12px;background:var(--tk-surface);color:var(--tk-ink)}
+#tk157-youtube-panel h3{margin:0;color:#fff;font-size:18px}
+#tk157-youtube-panel .tk157-hint{margin:0;color:var(--tk-muted);font-size:14px;line-height:1.45}
+#tk157-youtube-panel label{color:#E7F3F8;font-weight:700}
+#tk157-youtube-panel input{width:100%;min-width:0;padding:11px;border:1px solid #45647B;border-radius:9px;background:#0A2237;color:#fff}
+#tk157-youtube-panel .tk157-buttons{display:flex;flex-wrap:wrap;gap:8px}
+#tk157-youtube-panel .tk157-buttons :is(button,a){display:inline-flex;flex:1 1 150px;align-items:center;justify-content:center;min-height:44px;padding:9px 12px;border:1px solid #42627A;border-radius:9px;background:var(--tk-slate);color:#fff;font-weight:700;text-align:center;text-decoration:none}
+#tk157-youtube-panel #tk157-status{color:#D7EBF4;line-height:1.5}
+html.tk-public-boot body{background:var(--tk-navy);color:var(--tk-ink)}
+html.tk-public-boot #public-spectator{display:block!important;min-height:100vh;padding:clamp(12px,3vw,28px);color:var(--tk-ink)}
+html.tk-public-boot #public-spectator :is(h1,h2){color:#fff!important}
+html.tk-public-boot #public-spectator .tk137-message,html.tk-public-boot #public-spectator .tk137-item{margin:10px 0;padding:14px;border:1px solid var(--tk-line);border-radius:12px;background:var(--tk-surface);color:var(--tk-ink)}
+html.tk-public-boot #public-spectator .tk137-item{display:flex;flex-direction:column;gap:8px}
+html.tk-public-boot #public-spectator .tk137-item strong{color:#fff;font-size:clamp(15px,2vw,17px)}
+html.tk-public-boot #public-spectator .tk137-item small{color:var(--tk-muted);font-size:13px;line-height:1.55}
+html.tk-public-boot #public-spectator .tk137-result,html.tk-public-boot #public-spectator .tk143-score{display:block;color:#76E1D9;font-size:clamp(18px,4vw,28px);font-weight:800}
+html.tk-public-boot #public-spectator .tk143-media{width:100%;min-width:0}
+html.tk-public-boot #public-spectator .tk143-media :is(video,iframe){display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:10px;background:#061528}
+html.tk-public-boot #public-spectator .tk143-stream-note{padding:12px;border:1px solid #806A3D;border-radius:9px;background:#332C20;color:#FFE6AD;font-size:14px;line-height:1.55}
+html.tk-public-boot #public-spectator .grid.g2{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media(max-width:760px){#tk144-live-studio .tk144-workspace{grid-template-columns:minmax(0,1fr)}#tk144-live-studio .tk144-official-pane{max-height:none}html.tk-public-boot #public-spectator .grid.g2{grid-template-columns:minmax(0,1fr)}html.tk-public-boot #public-spectator .split{display:flex;flex-wrap:wrap;gap:10px}}
