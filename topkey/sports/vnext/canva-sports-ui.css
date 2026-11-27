@@ -232,3 +232,40 @@ html[data-tk-sport] #tk79-prize-list :is(input,button):focus-visible{outline:3px
 #page-overview:not(.hidden){display:grid!important}
 
 body.tk141-nav-collapsed #app-shell{grid-template-columns:0 minmax(0,1fr)!important}
+
+/* Sport-specific identity metadata and iconography, rethemed for the Canva navy shell. */
+html[data-tk-sport]{--sport-emoji:"🏆";--sport-strap:"TOPKEY SPORTS OPERATIONS";--sport-sub:"Lịch thi đấu · Đội/VĐV · Trọng tài · Kết quả"}
+html[data-tk-sport="badminton"]{--sport-emoji:"🏸";--sport-strap:"SÂN CẦU LÔNG · BADMINTON ARENA";--sport-sub:"Đội/đôi · Sân đấu · Set đấu · Trọng tài · Kết quả"}
+html[data-tk-sport="football"]{--sport-emoji:"⚽";--sport-strap:"SÂN CỎ · FOOTBALL OPERATIONS";--sport-sub:"Đội bóng · Sân đấu · Bàn thắng · Bảng xếp hạng"}
+html[data-tk-sport="volleyball"]{--sport-emoji:"🏐";--sport-strap:"SÂN ĐẤU · VOLLEYBALL ARENA";--sport-sub:"Đội bóng · Set đấu · Trọng tài · Kết quả"}
+html[data-tk-sport="running"]{--sport-emoji:"🏃";--sport-strap:"ĐƯỜNG CHẠY · RACE CONTROL";--sport-sub:"Vận động viên · Làn chạy · Thời gian · Thành tích"}
+html[data-tk-sport="handmade"]{--sport-emoji:"🧶";--sport-strap:"KHÔNG GIAN SÁNG TẠO · MAKERS STUDIO";--sport-sub:"Thí sinh · Tác phẩm · Giám khảo · Xếp hạng"}
+html[data-tk-sport="shuttle"]{--sport-emoji:"🪶";--sport-strap:"SÂN ĐÁ CẦU · SHUTTLECOCK";--sport-sub:"Nội dung đơn/đôi · Sân · Set đấu · Live"}
+html[data-tk-sport="cooking"]{--sport-emoji:"👨‍🍳";--sport-strap:"NHÀ BẾP THI ĐẤU · CULINARY STUDIO";--sport-sub:"Đội thi · Khu bếp · Giám khảo · Điểm số"}
+html[data-tk-sport] #app-shell .nav [data-tab]::before{display:inline-grid;place-items:center;content:"▦";min-width:20px;font-size:16px;line-height:1}
+html[data-tk-sport] #app-shell .nav [data-tab="overview"]::before{content:var(--sport-emoji)}
+html[data-tk-sport] #app-shell .nav [data-tab="control"]::before{content:"▤"}
+html[data-tk-sport] #app-shell .nav [data-tab="teams"]::before{content:"♙"}
+html[data-tk-sport] #app-shell .nav [data-tab="schedule"]::before{content:"▦"}
+html[data-tk-sport] #app-shell .nav [data-tab="umpire"]::before{content:"◈"}
+html[data-tk-sport] #app-shell .nav [data-tab="live"]::before{content:"●"}
+html[data-tk-sport] #app-shell .nav [data-tab="finance"]::before{content:"₫"}
+html[data-tk-sport] #app-shell .nav [data-tab="announcements"]::before{content:"◉"}
+html[data-tk-sport] #app-shell .nav [data-tab="audit"]::before{content:"≡"}
+html[data-tk-sport] #app-shell .nav [data-tab="health"]::before{content:"◷"}
+html[data-tk-sport] #app-shell .nav [data-tab="settings"]::before{content:"⚙"}
+html[data-tk-sport] #app-shell .nav [data-tab]{gap:8px}
+html[data-tk-sport] #app-shell #tk-h132-hero{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:108px;margin:0 0 16px;padding:18px 22px;border:1px solid rgba(10,166,166,.34);border-radius:17px;background:linear-gradient(113deg,var(--sport-strong),var(--sport));color:#fff;overflow:hidden;position:relative;box-shadow:0 10px 22px rgba(0,0,0,.18)}
+html[data-tk-sport] #app-shell #tk-h132-hero:after{content:var(--sport-emoji);position:absolute;right:22px;bottom:-38px;font-size:112px;opacity:.12;pointer-events:none}
+html[data-tk-sport] #app-shell #tk-h132-hero strong{display:block;position:relative;z-index:1;color:#fff;font-size:clamp(17px,2vw,21px);letter-spacing:-.3px}
+html[data-tk-sport] #app-shell #tk-h132-hero small{display:block;position:relative;z-index:1;margin-bottom:7px;color:#C9F6F2;font-size:10px;letter-spacing:1px;font-weight:800}
+html[data-tk-sport] #app-shell #tk-h132-hero p{position:relative;z-index:1;margin:7px 0 0;color:#E7F7F8;font-size:12px}
+html[data-tk-sport] #app-shell #tk-h132-hero .tk-h132-live{position:relative;z-index:1;padding:8px 12px;border:1px solid rgba(255,255,255,.3);border-radius:999px;background:rgba(255,255,255,.12);color:#fff;font-size:12px;font-weight:800;white-space:nowrap}
+html[data-tk-sport] body #app-shell #page-overview.hidden{display:none!important}
+html[data-tk-sport] body #app-shell #page-overview:not(.hidden){display:grid!important}
+@media(max-width:700px){
+ html[data-tk-sport] body #app-shell #page-overview>.grid.g4{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ html[data-tk-sport] #app-shell #tk-h132-hero{min-height:96px;padding:15px;gap:10px}
+ html[data-tk-sport] #app-shell #tk-h132-hero strong{font-size:16px}
+ html[data-tk-sport] #app-shell #tk-h132-hero .tk-h132-live{display:none}
+}
