@@ -102,7 +102,11 @@ jobs:
               navLinks:document.querySelectorAll(".tk210-nav a").length,
               overflow:document.documentElement.scrollWidth>innerWidth+2,
               h219:[...document.styleSheets].some(sheet=>sheet.href?.includes("hub-dashboard-reference-h219.css")),
-              eccDesign:[...document.styleSheets].some(sheet=>sheet.href?.includes("hub-ecc-design-system.css"))};
+              eccDesign:[...document.styleSheets].some(sheet=>sheet.href?.includes("hub-ecc-design-system.css")),
+              h240:[...document.styleSheets].some(sheet=>sheet.href?.includes("hub-redesign-h240.css")),
+              hubController:window.TopkeyHubWorkspaceNav?.version==="H240",
+              footerHidden:document.querySelector(".footer")?.hidden===true,
+              activeWorkspace:document.querySelector("main.wrap")?.dataset.activeWorkspace};
             const rgb=value=>value.match(/[\d.]+/g).slice(0,3).map(Number);
             const lum=value=>{const channels=rgb(value).map(v=>{v/=255;return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*channels[0]+.7152*channels[1]+.0722*channels[2]};
             const cardStyle=getComputedStyle(cards[0]),paragraphStyle=getComputedStyle(cards[0].querySelector("p"));
@@ -121,7 +125,7 @@ jobs:
             result.selectorMatches=document.querySelectorAll("html body.tk-bi-hub #topkey-sports.cards a.sport").length;
             result.cardInlineStyle=cards[0].getAttribute("style");result.cardBackgroundImage=cardStyle.backgroundImage;
             result.eccRuleCount=eccSheet?.cssRules?.length||0;result.eccRules=eccRules;
-            if(cards.length<8||!result.badmintonCard||result.overflow||!result.h219||!result.eccDesign||
+            if(cards.length<8||!result.badmintonCard||result.overflow||!result.h219||!result.eccDesign||!result.h240||!result.hubController||!result.footerHidden||result.activeWorkspace!=="topkey-home"||cardStyle.backgroundColor==="rgb(255, 255, 255)"||
               contrast<4.5||lastCardRight>innerWidth-8)
               throw new Error("ECC Hub visual contract failed: "+JSON.stringify(result));
             return JSON.stringify(result);
