@@ -37,7 +37,11 @@
         const fg=rgb(getComputedStyle(node).color);
         if (!fg) continue;
         const bg=effectiveBackground(node);
-        if (luminance(bg) < 0.72 || contrast(fg,bg) >= 4.5) continue;
+        // The settings live-clock <b> is injected by legacy code with a pale inline color.
+        // Keep it dark on the light settings surface, but preserve the intentionally dark prize editor.
+        const settingsClock = node.tagName === 'B' &&
+          node.closest('#page-settings') && !node.closest('#tk79-prize-editor');
+        if (!settingsClock && (luminance(bg) < 0.72 || contrast(fg,bg) >= 4.5)) continue;
         if (node.style.getPropertyValue('color') !== SAFE ||
             node.style.getPropertyPriority('color') !== 'important') {
           node.style.setProperty('color',SAFE,'important');
