@@ -22,5 +22,9 @@ console.log('H217 global sport contrast passed for VNext six-sport engine and Ba
 const scheduleContrast=fs.readFileSync('topkey/sports/vnext/workspace-contrast-h234.css','utf8');
 assert.ok(scheduleContrast.includes('html body #app-shell #page-schedule :is(b,span,small,p,label,li,td,th,strong,em)'),'Legacy schedule rows must receive explicit readable foregrounds without depending on page state classes');
 assert.ok(scheduleContrast.includes('-webkit-text-fill-color:#29465b!important'),'Schedule text must override WebKit/inline text fill');
-assert.ok(vhtml.includes('workspace-contrast-h234.css?v=h236-schedule-aa-20261127'),'VNext must load the cache-busted H236 schedule contrast fix');
-console.log('H236 legacy schedule AA contrast regression contract passed.');
+assert.ok(vhtml.includes('workspace-contrast-h234.css?v=h237-schedule-aa-20261127'),'VNext must load the cache-busted H237 schedule contrast layer');
+const scheduleRuntime=fs.readFileSync('topkey/sports/vnext/schedule-contrast-runtime-h237.js','utf8');
+assert.ok(vhtml.includes('schedule-contrast-runtime-h237.js?v=h237-schedule-aa-20261127'),'VNext must load the H237 schedule runtime guard');
+assert.ok(scheduleRuntime.includes("node.style.setProperty('color', color, 'important')'),'Runtime must override inline important foregrounds');
+assert.ok(scheduleRuntime.includes('new MutationObserver(schedule)'),'Runtime must track dynamic schedule rows');
+console.log('H237 legacy schedule AA contrast regression contract passed.');
