@@ -41,3 +41,18 @@ test('realtime account-profile changes revoke the workspace and dispose listener
  assert.match(source,/Quyền truy cập môn .* đã bị thu hồi/);
  assert.match(source,/off\.forEach\(unsubscribe=>unsubscribe\(\)\)/);
 });
+
+const limitedBranch=readFileSync(new URL('../src/lib/shared/api/limited-branch.ts',import.meta.url),'utf8');
+test('finance and audit branch reads verify shared account and sport scope first',()=>{
+ assert.match(limitedBranch,/getAuth\(db\.app\)\.currentUser/);
+ assert.match(limitedBranch,/get\(profileRef\)/);
+ assert.match(limitedBranch,/isBlocked\(profile\)\|\|!canAccess\(profile,sport\)/);
+ assert.ok(limitedBranch.indexOf('get(profileRef)')<limitedBranch.indexOf('start();'));
+ assert.match(limitedBranch,/onValue\(profileRef,snapshot=>/);
+ assert.match(limitedBranch,/Quyền truy cập dữ liệu .* đã bị thu hồi/);
+});
+test('finance and audit subscriptions are disposed when access is revoked',()=>{
+ assert.match(limitedBranch,/branchStop\?\.\(\)/);
+ assert.match(limitedBranch,/profileStop\?\.\(\)/);
+ assert.match(limitedBranch,/const cleanup=\(\)=>/);
+});
