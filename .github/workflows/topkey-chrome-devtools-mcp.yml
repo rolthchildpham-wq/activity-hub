@@ -104,7 +104,7 @@ jobs:
               canvaUi:[...document.styleSheets].some(sheet=>sheet.href?.includes("canva-ui-system.css")),
               legacyStyles:[...document.styleSheets].filter(sheet=>/upgrade|hub-|contrast|visual|dashboard-reference|ecc-design-system/i.test(sheet.href||"")).map(sheet=>sheet.href),
               hubController:window.TopkeyHubWorkspaceNav?.version==="H240",
-              footerHidden:document.querySelector(".footer")?.hidden===true,
+              footerHidden:(()=>{const footer=document.querySelector(".footer");return !footer||getComputedStyle(footer).display==="none"})(),
               activeWorkspace:document.querySelector("main.wrap")?.dataset.activeWorkspace};
             const rgb=value=>value.match(/[\d.]+/g).slice(0,3).map(Number);
             const lum=value=>{const channels=rgb(value).map(v=>{v/=255;return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*channels[0]+.7152*channels[1]+.0722*channels[2]};
