@@ -20,6 +20,6 @@ for(const dep of ['hub-auth-flow.js','executive-dashboard.js','hub-layout94.js',
 for(const selector of ['.tk-bi-hero','.exec-kpis','.exec-card','.cards.compact-sports','.tk-bi-footer']){
  assert.ok(css.includes(selector),'Missing BI component '+selector);
 }
-assert.match(css,/@media\(max-width:650px\)/);
+assert.match(css,/@media\(max-width:640px\)/);
 assert.match(css,/prefers-reduced-motion/);
 console.log('TOPKEY Hub BI: 7 sport links, role-gated dashboard, auth dependencies and responsive theme verified.');
