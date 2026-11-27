@@ -1,4 +1,4 @@
-/* H239: contrast guard for dynamically-rendered text on light workspace surfaces. */
+/* H245: contrast guard for dynamically-rendered text and text-bearing wrappers on light workspace surfaces. */
 (() => {
   'use strict';
   // Scan the full document: legacy pages can be mounted outside #app-shell during sport handoff.
@@ -33,7 +33,7 @@
     for (const root of document.querySelectorAll(ROOT)) {
       for (const node of root.querySelectorAll(TEXT)) {
         // Audit dynamic labels inside controls too; only recolor when their effective surface is light.
-        if (!Array.from(node.childNodes).some(n=>n.nodeType===3 && n.textContent.trim())) continue;
+        if (!node.textContent.trim()) continue;
         const fg=rgb(getComputedStyle(node).color);
         if (!fg) continue;
         const bg=effectiveBackground(node);
@@ -63,7 +63,7 @@
     attributeFilter:['class','style']
   });
   window.__TOPKEY_WORKSPACE_CONTRAST_H239={
-    version:'h244-global-document-aa-20261127',
+    version:'h245-wrapper-inclusive-aa-20261127',
     apply,
     disconnect:()=>observer.disconnect()
   };
