@@ -21,7 +21,8 @@ assert.ok(runtime.includes('h218-sports-redesign-20261124'),'release runtime mus
 assert.equal(rootBuild.cacheTag,release.cacheTag);
 assert.ok(vhtml.includes('release-runtime.js?v=h218-sports-redesign-20261124'),'VNext must load H218 runtime cache key');
 assert.ok(bhtml.includes('release-runtime.js?v=h218-sports-redesign-20261124'),'Badminton must load H218 runtime cache key');
-assert.ok(vhtml.includes('workspace-redesign-h218.css?v=h218-sports-redesign-20261124'),'VNext H218 stylesheet must load last');
+assert.ok(vhtml.includes('canva-sports-ui.css?v=canva-sports-v1-20261127'),'VNext must load the consolidated Canva sports UI');
+assert.ok(!vhtml.includes('workspace-redesign-h218.css'),'Legacy H218 stylesheet must not load in VNext');
 assert.ok(vhtml.includes('collapsible-panels-h141.js?v=h142-collapsible-groups-20261125'),'VNext must load nested collapsible function groups');
 assert.ok(bhtml.includes('collapsible-panels-h141.js?v=h142-collapsible-groups-20261125'),'Badminton must load nested collapsible function groups');
 assert.ok(collapsible.includes("panel.classList.contains('subcard')"),'Nested function-group cards must be collapsed by default');
