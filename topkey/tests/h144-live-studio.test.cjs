@@ -5,7 +5,7 @@ const fs=require('node:fs');
 const vm=require('node:vm');
 
 const js=fs.readFileSync('topkey/sports/vnext/src/live-studio-h144.js','utf8');
-const css=fs.readFileSync('topkey/sports/vnext/live-studio-h144.css','utf8');
+const css=fs.readFileSync('topkey/sports/vnext/canva-sports-ui.css','utf8');
 const html=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
 
 function harness({sport='volleyball',umpire=true}={}){
@@ -103,7 +103,7 @@ test('studio supports portrait, landscape, native fullscreen and exit',async()=>
 });
 test('VNext loads H144 and keeps source scoreboard and video IDs unique',()=>{
  assert.match(html,/live-studio-h144\.js\?v=h144-20261121/);
- assert.match(html,/live-studio-h144\.css\?v=h144-20261121/);
+ assert.ok(html.includes('canva-sports-ui.css?v=canva-sports-v1-20261127'));
  for(const id of ['umpire-board','live-video','stream-court','umpire-plus-a','umpire-plus-b'])
   assert.equal((html.match(new RegExp('id="'+id+'"','g'))||[]).length,1,id);
  assert.doesNotMatch(js,/queue(Set|Multi)|firebase\.database|\.ref\(/);
