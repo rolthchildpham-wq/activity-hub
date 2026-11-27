@@ -562,7 +562,7 @@
   "DIY / Handmade": {
     "vi": "DIY / Handmade",
     "en": "DIY / Handmade",
-    "zh": "手工制作"
+    "zh": "手工创作"
   },
   "⭐ HÔM NAY ·": {
     "vi": "⭐ HÔM NAY ·",
@@ -1078,5 +1078,205 @@
     "vi": "🏸 Cầu lông",
     "en": "🏸 Badminton",
     "zh": "🏸 羽毛球"
+  },
+  "Hệ thống quản lý thể thao &": {
+    "vi": "Hệ thống quản lý thể thao &",
+    "en": "Hệ thống quản lý thể thao &",
+    "zh": "体育与活动管理系统"
+  },
+  "hoạt động xã đoàn": {
+    "vi": "hoạt động xã đoàn",
+    "en": "hoạt động xã đoàn",
+    "zh": "社团活动"
+  },
+  "Trung tâm thể thao TOPKEY · VNext 2026": {
+    "vi": "Trung tâm thể thao TOPKEY · VNext 2026",
+    "en": "Trung tâm thể thao TOPKEY · VNext 2026",
+    "zh": "TOPKEY 体育中心 · VNext 2026"
+  },
+  "Trung tâm điều hành thể thao": {
+    "vi": "Trung tâm điều hành thể thao",
+    "en": "Trung tâm điều hành thể thao",
+    "zh": "体育运营管理中心"
+  },
+  "Quản trị câu lạc bộ, lịch giải, vận động viên, kết quả và tài chính trên một nền tảng thống nhất. Dữ liệu được tổng hợp từ các môn bạn có quyền truy cập.": {
+    "vi": "Quản trị câu lạc bộ, lịch giải, vận động viên, kết quả và tài chính trên một nền tảng thống nhất. Dữ liệu được tổng hợp từ các môn bạn có quyền truy cập.",
+    "en": "Quản trị câu lạc bộ, lịch giải, vận động viên, kết quả và tài chính trên một nền tảng thống nhất. Dữ liệu được tổng hợp từ các môn bạn có quyền truy cập.",
+    "zh": "在统一平台上管理俱乐部、赛事日程、运动员、比赛结果和财务。数据汇总自您有权访问的各个运动项目。"
+  },
+  "Khám phá bộ môn": {
+    "vi": "Khám phá bộ môn",
+    "en": "Khám phá bộ môn",
+    "zh": "浏览运动项目"
+  },
+  "Xem dashboard": {
+    "vi": "Xem dashboard",
+    "en": "Xem dashboard",
+    "zh": "查看管理仪表板"
+  },
+  "Bộ môn & giải đấu": {
+    "vi": "Bộ môn & giải đấu",
+    "en": "Bộ môn & giải đấu",
+    "zh": "运动项目与赛事"
+  },
+  "7 phân hệ · chọn môn để tiếp tục": {
+    "vi": "7 phân hệ · chọn môn để tiếp tục",
+    "en": "7 phân hệ · chọn môn để tiếp tục",
+    "zh": "7 个功能模块 · 选择项目以继续"
+  },
+  "Bóng đá": {
+    "vi": "Bóng đá",
+    "en": "Bóng đá",
+    "zh": "足球"
+  },
+  "Cầu lông": {
+    "vi": "Cầu lông",
+    "en": "Cầu lông",
+    "zh": "羽毛球"
+  },
+  "Bóng chuyền": {
+    "vi": "Bóng chuyền",
+    "en": "Bóng chuyền",
+    "zh": "排球"
+  },
+  "Chạy bộ": {
+    "vi": "Chạy bộ",
+    "en": "Chạy bộ",
+    "zh": "跑步"
+  },
+  "Cuộc thi Vlog 2026": {
+    "vi": "Cuộc thi Vlog 2026",
+    "en": "Cuộc thi Vlog 2026",
+    "zh": "2026 年视频博客比赛"
+  },
+  "Đá cầu": {
+    "vi": "Đá cầu",
+    "en": "Đá cầu",
+    "zh": "踢毽子"
+  },
+  "Nấu ăn": {
+    "vi": "Nấu ăn",
+    "en": "Nấu ăn",
+    "zh": "烹饪比赛"
+  },
+  "Đội, check-in, lịch vòng tròn, Smart Scheduler, sân/trọng tài, chấm bàn thắng, BXH, Live, tài chính và audit.": {
+    "vi": "Đội, check-in, lịch vòng tròn, Smart Scheduler, sân/trọng tài, chấm bàn thắng, BXH, Live, tài chính và audit.",
+    "en": "Đội, check-in, lịch vòng tròn, Smart Scheduler, sân/trọng tài, chấm bàn thắng, BXH, Live, tài chính và audit.",
+    "zh": "队伍、签到、循环赛程、智能排程、场地与裁判、进球记录、排行榜、实时直播、财务与审计。"
+  },
+  "Quản lý giải, đội và VĐV, lịch thi đấu, trọng tài, nhập tỷ số, bảng xếp hạng, Smart Scheduler, Live/BLV và tài chính.": {
+    "vi": "Quản lý giải, đội và VĐV, lịch thi đấu, trọng tài, nhập tỷ số, bảng xếp hạng, Smart Scheduler, Live/BLV và tài chính.",
+    "en": "Quản lý giải, đội và VĐV, lịch thi đấu, trọng tài, nhập tỷ số, bảng xếp hạng, Smart Scheduler, Live/BLV và tài chính.",
+    "zh": "管理赛事、队伍与运动员、比赛日程、裁判、比分录入、排行榜、智能排程、实时直播与解说及财务。"
+  },
+  "Best-of-5, set 25 điểm và set quyết định 15 điểm, sân/trọng tài, lịch thông minh, BXH, Live và vận hành giải.": {
+    "vi": "Best-of-5, set 25 điểm và set quyết định 15 điểm, sân/trọng tài, lịch thông minh, BXH, Live và vận hành giải.",
+    "en": "Best-of-5, set 25 điểm và set quyết định 15 điểm, sân/trọng tài, lịch thông minh, BXH, Live và vận hành giải.",
+    "zh": "五局三胜制，每局 25 分，决胜局 15 分；场地与裁判、智能赛程、排行榜、实时直播及赛事运营。"
+  },
+  "VĐV, cự ly, lượt chạy, làn/khu, nhập thời gian, xếp hạng thành tích, Smart Scheduler, QR đăng ký và Live.": {
+    "vi": "VĐV, cự ly, lượt chạy, làn/khu, nhập thời gian, xếp hạng thành tích, Smart Scheduler, QR đăng ký và Live.",
+    "en": "VĐV, cự ly, lượt chạy, làn/khu, nhập thời gian, xếp hạng thành tích, Smart Scheduler, QR đăng ký và Live.",
+    "zh": "运动员、赛程距离、跑次、跑道与区域、成绩录入、成绩排名、智能排程、二维码报名及实时直播。"
+  },
+  "Thí sinh/đội, khu trưng bày, lượt chấm, điểm giám khảo, xếp hạng, lịch, đăng ký QR, tài chính và audit.": {
+    "vi": "Thí sinh/đội, khu trưng bày, lượt chấm, điểm giám khảo, xếp hạng, lịch, đăng ký QR, tài chính và audit.",
+    "en": "Thí sinh/đội, khu trưng bày, lượt chấm, điểm giám khảo, xếp hạng, lịch, đăng ký QR, tài chính và audit.",
+    "zh": "参赛者与队伍、展示区、评审轮次、评委评分、排名、日程、二维码报名、财务与审计。"
+  },
+  "Xem bảng xếp hạng TikTok, điểm có trọng số và bài dự thi. Đồng bộ tự động chỉ hoạt động sau khi kết nối TikTok được cấu hình và cấp quyền.": {
+    "vi": "Xem bảng xếp hạng TikTok, điểm có trọng số và bài dự thi. Đồng bộ tự động chỉ hoạt động sau khi kết nối TikTok được cấu hình và cấp quyền.",
+    "en": "Xem bảng xếp hạng TikTok, điểm có trọng số và bài dự thi. Đồng bộ tự động chỉ hoạt động sau khi kết nối TikTok được cấu hình và cấp quyền.",
+    "zh": "查看 TikTok 排行榜、加权评分和参赛作品。配置并授权 TikTok 连接后，才会启用自动同步。"
+  },
+  "Đơn/đôi/mix, chấm set rally point, sân/trọng tài, BXH, Smart Scheduler nhiều đội, Live/BLV và finance.": {
+    "vi": "Đơn/đôi/mix, chấm set rally point, sân/trọng tài, BXH, Smart Scheduler nhiều đội, Live/BLV và finance.",
+    "en": "Đơn/đôi/mix, chấm set rally point, sân/trọng tài, BXH, Smart Scheduler nhiều đội, Live/BLV và finance.",
+    "zh": "单打、双打与混双；每球得分制、场地与裁判、排行榜、多队智能排程、实时直播与解说及财务。"
+  },
+  "Đội thi, bếp/khu thi, lượt chấm, điểm giám khảo, lịch thông minh, QR đăng ký, Live, tài chính và audit.": {
+    "vi": "Đội thi, bếp/khu thi, lượt chấm, điểm giám khảo, lịch thông minh, QR đăng ký, Live, tài chính và audit.",
+    "en": "Đội thi, bếp/khu thi, lượt chấm, điểm giám khảo, lịch thông minh, QR đăng ký, Live, tài chính và audit.",
+    "zh": "参赛队伍、厨房与比赛区域、评审轮次、评委评分、智能日程、二维码报名、实时直播、财务与审计。"
+  },
+  "Mở Football VNext →": {
+    "vi": "Mở Football VNext →",
+    "en": "Mở Football VNext →",
+    "zh": "打开足球 VNext →"
+  },
+  "Mở Cầu lông →": {
+    "vi": "Mở Cầu lông →",
+    "en": "Mở Cầu lông →",
+    "zh": "打开羽毛球 →"
+  },
+  "Mở Volleyball VNext →": {
+    "vi": "Mở Volleyball VNext →",
+    "en": "Mở Volleyball VNext →",
+    "zh": "打开排球 VNext →"
+  },
+  "Mở Running VNext →": {
+    "vi": "Mở Running VNext →",
+    "en": "Mở Running VNext →",
+    "zh": "打开跑步 VNext →"
+  },
+  "Mở Handmade VNext →": {
+    "vi": "Mở Handmade VNext →",
+    "en": "Mở Handmade VNext →",
+    "zh": "打开手工创作 VNext →"
+  },
+  "Mở Vlog 2026 →": {
+    "vi": "Mở Vlog 2026 →",
+    "en": "Mở Vlog 2026 →",
+    "zh": "打开 2026 视频博客比赛 →"
+  },
+  "Mở Shuttlecock VNext →": {
+    "vi": "Mở Shuttlecock VNext →",
+    "en": "Mở Shuttlecock VNext →",
+    "zh": "打开踢毽子 VNext →"
+  },
+  "Mở Cooking VNext →": {
+    "vi": "Mở Cooking VNext →",
+    "en": "Mở Cooking VNext →",
+    "zh": "打开烹饪比赛 VNext →"
+  },
+  "Thống kê": {
+    "vi": "Thống kê",
+    "en": "Thống kê",
+    "zh": "统计分析"
+  },
+  "Quản trị": {
+    "vi": "Quản trị",
+    "en": "Quản trị",
+    "zh": "系统管理"
+  },
+  "Giải đấu": {
+    "vi": "Giải đấu",
+    "en": "Giải đấu",
+    "zh": "赛事"
+  },
+  "Trang chủ": {
+    "vi": "Trang chủ",
+    "en": "Trang chủ",
+    "zh": "首页"
+  },
+  "Đổi mật khẩu tài khoản": {
+    "vi": "Đổi mật khẩu tài khoản",
+    "en": "Đổi mật khẩu tài khoản",
+    "zh": "修改账户密码"
+  },
+  "Cài đặt / Quản trị hệ thống · ADMIN": {
+    "vi": "Cài đặt / Quản trị hệ thống · ADMIN",
+    "en": "Cài đặt / Quản trị hệ thống · ADMIN",
+    "zh": "系统设置 / 管理 · ADMIN"
+  },
+  "Mở khu quản trị →": {
+    "vi": "Mở khu quản trị →",
+    "en": "Mở khu quản trị →",
+    "zh": "打开管理中心 →"
+  },
+  "Tài khoản Firebase Auth · Backup/Restore · Database Firewall · Vai trò tùy chỉnh · Phân quyền chi tiết. Khi mở sẽ yêu cầu đăng nhập ADMIN hoặc tài khoản được cấp quyền quản trị.": {
+    "vi": "Tài khoản Firebase Auth · Backup/Restore · Database Firewall · Vai trò tùy chỉnh · Phân quyền chi tiết. Khi mở sẽ yêu cầu đăng nhập ADMIN hoặc tài khoản được cấp quyền quản trị.",
+    "en": "Tài khoản Firebase Auth · Backup/Restore · Database Firewall · Vai trò tùy chỉnh · Phân quyền chi tiết. Khi mở sẽ yêu cầu đăng nhập ADMIN hoặc tài khoản được cấp quyền quản trị.",
+    "zh": "Firebase Auth 账户 · 备份/恢复 · 数据库防火墙 · 自定义角色 · 详细权限。打开时需要使用 ADMIN 或获授权的管理账户登录。"
   }
 }
