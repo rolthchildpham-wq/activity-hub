@@ -65,3 +65,24 @@ body.tk-bi-hub .exec-card :is(p,small,.muted){color:var(--tk-muted)}
  body.tk-bi-hub .tk210-nav a{flex:1;justify-content:center;min-height:46px;padding:8px 7px;font-size:11px}
  body.tk-bi-hub main.wrap{padding-bottom:calc(100px + env(safe-area-inset-bottom,0px))}
 }
+
+/* Hub launch panels and test-lab controls — migrated from inline style attributes. */
+body.tk-bi-hub .split{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+body.tk-bi-hub .testlab-panel,body.tk-bi-hub #password-change-launch,body.tk-bi-hub #system-admin-launch{margin-top:22px}
+body.tk-bi-hub .testlab-panel{border-color:#806A3D}
+body.tk-bi-hub #password-change-launch{border-color:#315F79}
+body.tk-bi-hub #system-admin-launch{border-color:#5B4B86}
+body.tk-bi-hub .status .pill:nth-child(4){border-color:#16805E;color:#9AE6B4}
+body.tk-bi-hub .testlab-panel .split{align-items:flex-start}
+body.tk-bi-hub .testlab-panel h2{margin-bottom:8px}
+body.tk-bi-hub .testlab-panel p{margin-bottom:0}
+body.tk-bi-hub .testlab-panel .split>.pill{border-color:#806A3D;color:#FFE1A6}
+body.tk-bi-hub .testlab-panel .feature-grid{margin-top:14px;grid-template-columns:1.1fr 1fr 1fr}
+body.tk-bi-hub .testlab-panel .feature-grid>div>div{margin-top:9px}
+body.tk-bi-hub #testlab-sport{width:100%;padding:11px;border-radius:10px;background:#0A2237;color:#F5FAFD;border:1px solid #45647B}
+body.tk-bi-hub #testlab-run{width:100%;margin-top:9px;padding:12px;border:1px solid #B18B3C;border-radius:10px;background:#806021;color:#FFF4D4;font-weight:800;cursor:pointer}
+body.tk-bi-hub #testlab-last{font-size:11px;margin-top:8px}
+body.tk-bi-hub #password-change-launch .muted,body.tk-bi-hub #system-admin-launch .muted{margin-bottom:0}
+body.tk-bi-hub #password-change-launch .open,body.tk-bi-hub #system-admin-launch .open{display:inline-flex;align-items:center;justify-content:center;padding:12px 16px;border-radius:10px;color:#fff;text-decoration:none;font-weight:800}
+body.tk-bi-hub #password-change-launch .open{background:#245B78}
+body.tk-bi-hub #system-admin-launch .open{background:#51427A}
