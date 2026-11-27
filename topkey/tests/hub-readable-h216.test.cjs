@@ -46,7 +46,8 @@ assert.ok(scheduleRuntime.includes("window.__TOPKEY_WORKSPACE_CONTRAST_H251={"),
 
 const canvaHubCss=fs.readFileSync('topkey/hub-canva-design-system-h251.css','utf8');
 assert.ok(canvaHubCss.includes('--tk-canva-navy:#0B1F33')&&canvaHubCss.includes('--tk-canva-slate:#173A55')&&canvaHubCss.includes('--tk-canva-teal:#0AA6A6'), 'Canva TOPKEY palette tokens must be present');
-assert.ok(html.includes('hub-canva-design-system-h251.css?v=canva-h251-20261127'), 'Hub must load Canva design system after H240 base');
+assert.ok(html.includes('canva-ui-system.css?v=canva-ui-v1-20261127'), 'Hub must load the new Canva design system');
+assert.ok(!html.includes('hub-canva-design-system-h251.css'), 'H251 overlay must no longer load');
 console.log('H251 Canva design-system integration contract passed.');
 console.log('H251 medal contrast runtime test passed.');
 
