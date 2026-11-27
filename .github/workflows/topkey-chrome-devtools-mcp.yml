@@ -236,9 +236,9 @@ jobs:
           tabs=(overview control teams schedule umpire live finance announcements audit health settings)
           for sport in "${sports[@]}"; do
             if [ "$sport" = "badminton" ]; then
-              route="/sports/vnext/badminton.html?testlab=1&v=h219-liberty-dashboard-20261125&__topkey_reload=h219"
+              route="/sports/vnext/badminton.html?testlab=1&tid=__testlab_u122_20261031_badminton_chromeqa&v=h219-liberty-dashboard-20261125&__topkey_reload=h219"
             else
-              route="/sports/vnext/index.html?sport=$sport&testlab=1&v=h219-liberty-dashboard-20261125&__topkey_reload=h219"
+              route="/sports/vnext/index.html?sport=$sport&testlab=1&tid=__testlab_u122_20261031_${sport}_chromeqa&v=h219-liberty-dashboard-20261125&__topkey_reload=h219"
             fi
             echo "===== $sport =====" | tee -a artifacts/chrome-devtools/sport-matrix.txt
             mcp_tool navigate_page 1 --url "$base$route" | tee "artifacts/chrome-devtools/$sport-navigation.txt"
