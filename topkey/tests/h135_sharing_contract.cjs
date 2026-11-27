@@ -14,7 +14,8 @@ assert.match(html,/id="page-settings"/,"settings page must exist");
 assert.match(css,/#page-settings/,"share style scoped to settings");
 assert.match(css,/input\[readonly\]/,"read-only share input must be legible");
 assert.match(css,/-webkit-text-fill-color/,"WebKit input text-fill must be explicit");
-assert.match(base,/--txt:/,"base design tokens must exist");
+assert.match(base,/--txt:/,"legacy base tokens remain available to non-VNext routes");
+assert.match(css,/#page-settings input\[readonly\]/,"readonly share field migrated into Canva stylesheet");
 assert.equal(db.rules[".write"],false,"global Firebase writes must be denied by default");
 for(const sport of sports){
  const key="topkey_"+sport+"_vnext_2026";
