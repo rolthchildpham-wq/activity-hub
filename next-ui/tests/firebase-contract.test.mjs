@@ -29,3 +29,15 @@ test('all seven RTDB sport roots retain their schema paths',()=>{
  for(const sport of ['badminton','football','volleyball','running','handmade','shuttle','cooking'])
   assert.ok(source.includes(sport+":'topkey_"),sport);
 });
+
+test('verify canonical TOPKEY account profile and sport scope before tournament reads',()=>{
+ assert.match(source,/getAuth\(db\.app\)\.currentUser/);
+ assert.match(source,/AUTH_ROOT\+'\/users\/'\+user\.uid/);
+ assert.match(source,/isBlocked\(profile\)\|\|!canAccess\(profile,sport\)/);
+ assert.ok(source.indexOf('get(profileRef)')<source.indexOf('startBranches()'));
+});
+test('realtime account-profile changes revoke the workspace and dispose listeners',()=>{
+ assert.match(source,/onValue\(profileRef,snapshot=>/);
+ assert.match(source,/Quyền truy cập môn .* đã bị thu hồi/);
+ assert.match(source,/off\.forEach\(unsubscribe=>unsubscribe\(\)\)/);
+});
