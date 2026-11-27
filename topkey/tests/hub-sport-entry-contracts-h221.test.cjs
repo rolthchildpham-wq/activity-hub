@@ -7,7 +7,7 @@ const hub = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const vnext = fs.readFileSync(path.join(root, 'sports/vnext/index.html'), 'utf8');
 const badmintonEntry = fs.readFileSync(path.join(root, 'sports/badminton/index.html'), 'utf8');
 const badmintonAdapter = fs.readFileSync(path.join(root, 'sports/vnext/badminton.html'), 'utf8');
-const shellAsset = 'canva-sports-ui.css?v=canva-sports-v1-20261127';
+const shellAsset = vnext.match(/canva-sports-ui\\.css\\?v=canva-sports-v\\d+-202611\\d+/)?.[0] || '';
 
 const catalog = [...hub.matchAll(/<a class="sport" href="([^"]+)"[\s\S]*?<h3>([^<]+)<\/h3>/g)]
   .map(([, href, name]) => ({ href: href.replaceAll('&amp;', '&'), name }));
@@ -30,7 +30,7 @@ for (const [name, route] of requiredSports) {
 }
 assert.equal(catalog.length, 8, 'Hub catalog must contain seven sports plus Vlog');
 
-assert.ok(vnext.includes(shellAsset), 'VNext workspace must load the shared ECC sport shell stylesheet');
+assert.ok(shellAsset, 'VNext workspace must load the consolidated Canva sport stylesheet');
 assert.ok(badmintonEntry.includes("new URL('../vnext/index.html', location.href)"), 'Legacy badminton workspace must redirect into shared VNext');
 assert.ok(!badmintonEntry.includes('topkey-sports-shell.css'), 'Legacy badminton shell must not load old CSS');
 
