@@ -1,7 +1,8 @@
 /* H239: contrast guard for dynamically-rendered text on light workspace surfaces. */
 (() => {
   'use strict';
-  const ROOT = '#app-shell';
+  // Scan the full document: legacy pages can be mounted outside #app-shell during sport handoff.
+  const ROOT = 'body';
   const TEXT = 'h1,h2,h3,h4,p,small,label,strong,b,span,em,li,td,th,time,div';
   const SAFE = '#29465b';
 
