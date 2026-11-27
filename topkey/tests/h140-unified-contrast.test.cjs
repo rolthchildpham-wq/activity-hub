@@ -31,13 +31,16 @@ test('native dropdowns, disabled states and keyboard focus are styled',()=>{
  assert.match(css,/color-scheme:light/);
  assert.equal((css.match(/\{/g)||[]).length,(css.match(/\}/g)||[]).length);
 });
-test('all three app entrypoints load H140 stylesheet in head',()=>{
- for(const path of ['index.html','sports/vnext/index.html','sports/badminton/index.html']){
-  const html=fs.readFileSync(base+path,'utf8');
-  const head=html.slice(0,html.indexOf('</head>'));
-  assert.match(head,/contrast-unified-h140\.css\?v=h140-contrast-20261121/);
-  assert.equal(head.match(/contrast-unified-h140\.css/g)?.length,1);
- }
+test('Hub and all seven sports use the consolidated Canva stylesheets',()=>{
+ const hub=fs.readFileSync(base+'index.html','utf8');
+ const sports=fs.readFileSync(base+'sports/vnext/index.html','utf8');
+ const legacyBadminton=fs.readFileSync(base+'sports/badminton/index.html','utf8');
+ assert.match(hub,/canva-ui-system\\.css\\?v=canva-ui-v1-20261127/);
+ assert.match(sports,/canva-sports-ui\\.css\\?v=canva-sports-v1-20261127/);
+ assert.doesNotMatch(hub,/hub-(?:redesign|canva-design-system)|contrast-unified-h140\\.css/);
+ assert.doesNotMatch(sports,/(?:upgrade\\d+|contrast-global-h217|workspace-redesign-h218|contrast-unified-h140)\\.css/);
+ assert.match(legacyBadminton,/query\\.set\\('sport', 'badminton'\\)/);
+ assert.match(legacyBadminton,/vnext\\/index\\.html/);
 });
 test('light overview is not treated as dark admin controls',()=>{
  assert.match(css,/#page-overview/);
