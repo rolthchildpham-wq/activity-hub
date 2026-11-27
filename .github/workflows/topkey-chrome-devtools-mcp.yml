@@ -265,6 +265,10 @@ jobs:
                 scripts:[...document.scripts].filter(s=>s.src).map(s=>({src:s.src,loaded:!!s.dataset.topkeyReady}))
               }));
               await A.__bootPromise?.catch(error=>{throw error});
+              // Strictly isolate UI QA from the linked production Firebase database.
+              // The admin fixture remains enabled, but every code path sees no writable DB.
+              if(T.Data)T.Data.db=null;
+              window.__TOPKEY_QA_FIREBASE_DISABLED=!T.Data?.db;
               T.Auth.can=()=>true;
               T.Auth.role=()=>"ADMIN";
               T.Auth.profile={role:"ADMIN",displayName:"Chrome QA fixture"};
