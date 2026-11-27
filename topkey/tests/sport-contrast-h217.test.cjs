@@ -28,6 +28,7 @@ assert.ok(vhtml.includes('workspace-contrast-runtime-h238.js?v=h245-wrapper-incl
 assert.ok(scheduleRuntime.includes(`node.style.setProperty('color',SAFE,'important')`),'H244 runtime must apply WCAG-safe foregrounds');
 assert.ok(scheduleRuntime.includes("const ROOT = 'body';"),'H243 runtime must cover every document-mounted workspace page');
 assert.ok(scheduleRuntime.includes('characterData:true'),'H245 runtime must inspect wrapper text content');
+assert.ok(scheduleRuntime.includes("const settingsClock = node.tagName === 'B'"),'H246 must force readable color on the legacy settings live-clock label');
 assert.ok(scheduleRuntime.includes('new MutationObserver(schedule)'),'H244 runtime must track dynamic workspace content');
 console.log('H239 global workspace contrast regression contract passed.');
 
