@@ -14,7 +14,7 @@ for (const tag of linkTags.filter(tag => /\brel=["']stylesheet["']/i.test(tag)))
  assert.ok(target.startsWith(root+path.sep),'stylesheet escapes Hub root: '+src);
  assert.ok(fs.existsSync(target),'missing stylesheet: '+src);
 }
-const expectedScripts=['release-runtime.js','hub-workspace-h240.js','upgrade30.js','upgrade53.js','executive-sport-insights.js','executive-dashboard.js','club-planning.js','hub-layout94.js','release-coordinator.js','hub-auth-flow.js','topkey-dynamic-i18n.js','hub-compact-h130.js','collapsible-panels-h141.js'];
+const expectedScripts=['release-runtime.js','hub-workspace-h240.js','upgrade30.js','upgrade53.js','executive-sport-insights.js','executive-dashboard.js','club-planning.js','hub-layout94.js','release-coordinator.js','hub-auth-flow.js','topkey-dynamic-i18n.js','collapsible-panels-h141.js'];
 assert.deepEqual(styles,['canva-ui-system.css'],'Hub must load only the consolidated Canva UI stylesheet');
 assert.deepEqual(scripts,expectedScripts,'Hub script order/inventory changed; review runtime dependencies before changing');
 assert.equal(new Set(styles).size,styles.length,'duplicate Hub stylesheet import');
