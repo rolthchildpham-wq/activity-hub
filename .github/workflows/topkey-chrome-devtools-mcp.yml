@@ -217,8 +217,20 @@ jobs:
         shell: bash
         run: |
           set -uo pipefail
-          mcp_tool(){ node topkey/tests/chrome-devtools-mcp-client.mjs call "$@"; }
           failed=0
+          mkdir -p artifacts/chrome-devtools
+          # A single failed MCP interaction must be recorded, not terminate the matrix.
+          # The outer GitHub bash shell enables errexit, so guard every client invocation.
+          mcp_tool(){
+            local status=0
+            if node topkey/tests/chrome-devtools-mcp-client.mjs call "$@"; then
+              return 0
+            else
+              status=$?
+              printf 'MCP_TOOL_ERROR status=%s command=%q args=%q\\n' "$status" "$1" "${*:2}" | tee -a artifacts/chrome-devtools/mcp-errors.txt >&2
+              return 0
+            fi
+          }
           base="http://127.0.0.1:4173"
           sports=(football volleyball running handmade shuttle cooking badminton)
           tabs=(overview control teams schedule umpire live finance announcements audit health settings)
