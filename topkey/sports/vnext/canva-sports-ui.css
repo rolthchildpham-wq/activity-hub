@@ -269,3 +269,7 @@ html[data-tk-sport] body #app-shell #page-overview:not(.hidden){display:grid!imp
  html[data-tk-sport] #app-shell #tk-h132-hero strong{font-size:16px}
  html[data-tk-sport] #app-shell #tk-h132-hero .tk-h132-live{display:none}
 }
+
+/* The live badge is a solid dark teal chip so small text remains WCAG AA. */
+html[data-tk-sport] body #app-shell:not(.hidden) #page-overview .card .tk227-badge{background:#0B4B4B!important;border:1px solid #0AA6A6!important;color:#F5FAFD!important}
+html[data-tk-sport] body #app-shell:not(.hidden) #page-overview .card .tk227-badge.live{background:#0B4B4B!important;color:#F5FAFD!important}
