@@ -231,3 +231,5 @@ html[data-tk-sport] #tk79-prize-list :is(input,button):focus-visible{outline:3px
 /* App.showTab() owns visibility; inactive pages must never occupy layout space. */
 #page-overview.hidden{display:none!important}
 #page-overview:not(.hidden){display:grid!important}
+
+body.tk141-nav-collapsed #app-shell{grid-template-columns:0 minmax(0,1fr)!important}
