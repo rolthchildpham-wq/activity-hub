@@ -54,7 +54,7 @@ console.log('H249 settings clock priority regression contract passed.');
 const overviewContrast=fs.readFileSync('topkey/sports/vnext/workspace-contrast-h234.css','utf8');
 assert.ok(overviewContrast.includes('html body #app-shell #page-overview .tk9-podium .tk9-medal'), 'H250 must set a readable foreground for podium medal glyphs on dark medal discs');
 assert.ok(overviewContrast.includes('-webkit-text-fill-color:#f8fbff!important'), 'H250 must override inherited WebKit text fill on medal glyphs');
-assert.ok(vhtml.includes('workspace-contrast-h234.css?v=h251-podium-medal-unconditional-20261127'), 'VNext must load H250 medal contrast fix with a fresh cache key');
+assert.ok(vhtml.includes('canva-sports-ui.css?v=canva-sports-v1-20261127'), 'VNext must use the consolidated Canva visual layer instead of legacy H250/H251 layers');
 console.log('H250 overview podium medal WCAG AA regression contract passed.');
 
 assert.ok(scheduleRuntime.includes("const podiumMedal = node.classList.contains('tk9-medal')"), 'H250 must detect podium medal text on dark discs');
