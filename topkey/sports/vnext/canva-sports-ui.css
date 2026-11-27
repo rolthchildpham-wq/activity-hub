@@ -106,3 +106,35 @@ html.tk-public-boot #login-screen,html.tk-public-boot #app-shell{display:none!im
 #tk152-panel{border:1px solid #527b99;border-radius:12px;padding:13px;margin:14px 0;background:#0d2940;color:#f5fbff;display:grid;gap:8px}#tk152-panel :is(select,input,textarea){background:#102f49;color:#fff;border:1px solid #7cacc9;border-radius:8px;padding:10px;width:100%;font:inherit;min-height:44px}#tk152-panel label{font-weight:600;color:#e1f1ff}#tk152-panel .tk152-buttons{display:flex;gap:8px;flex-wrap:wrap}#tk152-panel .tk152-buttons button{min-height:44px;flex:1 1 110px}#tk152-panel small{color:#d1e4f4}#tk152-panel :is(input,select,textarea,button):focus-visible{outline:3px solid #91e8f4;outline-offset:2px}
 
 html body #page-teams #tk9-registration-admin .tk9-card{color:#172b3d!important;background-color:#f7fafc!important}html body #page-teams #tk9-registration-admin .tk9-count{color:#172b3d!important;background-color:#eef4f8!important}html body #page-teams #tk9-registration-admin .tk9-card :is(b,span,small),html body #page-teams #tk9-registration-admin .tk9-count :is(b,span,small){color:#172b3d!important}
+
+/* VNext form, schedule and public-viewer layout — migrated from inline styles. */
+#login-form{margin-top:14px}
+#login-screen .btn[href="#spectator"]{text-align:center;text-decoration:none}
+#page-teams>.grid.g2,#page-schedule>.grid.g2{margin-top:14px}
+#page-teams>.card,#page-schedule>.card,#page-live>.card,#page-settings>.card{margin-top:14px}
+#page-teams .form-grid>.btn.ok,#page-schedule .form-grid>.btn.ok,#page-umpire .form-grid>.btn.ok{align-self:end}
+#courts-list{margin-top:12px}
+#page-teams .split>div:nth-child(2){flex:1}
+#umpire-board{margin-top:14px}
+#single-actions{margin-top:12px}
+#single-result-save{width:100%;margin-top:8px}
+#tk143-live-explainer{grid-column:span 2}
+#page-live .action-bar{margin-top:10px}
+#video-box{margin-top:12px}
+#finance-save-status,#match-rule-fields{grid-column:1/-1}
+#page-live>.split,#page-settings>.split{margin-top:12px}
+.public-register>div{max-width:1200px;margin:auto}
+.public-register .btn{text-decoration:none}
+.public-register .card{max-width:720px;margin:auto}
+html.tk-public-boot #login-screen,html.tk-public-boot #app-shell{display:none!important}
+html.tk-public-boot .public-register:not(.hidden),html.tk-public-boot #public-judge:not(.hidden){display:block!important}
+#tk152-panel{display:grid;gap:8px;margin:14px 0;padding:13px;border:1px solid var(--tk-line);border-radius:12px;background:var(--tk-surface);color:var(--tk-ink)}
+#tk152-panel :is(select,input,textarea){width:100%;min-height:44px;padding:10px;border:1px solid #45647B;border-radius:8px;background:#0A2237;color:#fff;font:inherit}
+#tk152-panel label{color:#E7F3F8;font-weight:700}
+#tk152-panel .tk152-buttons{display:flex;flex-wrap:wrap;gap:8px}
+#tk152-panel .tk152-buttons button{flex:1 1 110px;min-height:44px}
+#tk152-panel small{color:var(--tk-muted)}
+#tk152-panel :is(input,select,textarea,button):focus-visible{outline:3px solid #55D7D2;outline-offset:2px}
+html body #page-teams #tk9-registration-admin .tk9-card{color:#E7F3F8!important;background-color:#173A55!important}
+html body #page-teams #tk9-registration-admin .tk9-count{color:#E7F3F8!important;background-color:#214B6C!important}
+html body #page-teams #tk9-registration-admin .tk9-card :is(b,span,small),html body #page-teams #tk9-registration-admin .tk9-count :is(b,span,small){color:#E7F3F8!important}
