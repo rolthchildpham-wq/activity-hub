@@ -22,3 +22,8 @@ for(const [fg,bg] of [['#f7fbff','#14283a'],['#d8e5ef','#14283a'],['#ffffff','#0
 console.log('H216 WCAG AA color pairs passed.');
 
 console.log('H216 Hub readability contract passed: explicit foregrounds, controls, sport-card typography, 2-column mobile and narrow-phone fallback.');
+
+const sharedContrast=fs.readFileSync('topkey/sports/vnext/workspace-contrast-h234.css','utf8');
+for(const token of ['#29465b','#075c43','#124d83','#8b1f2d','tk12-status-badge.finished','#526d80'])assert.ok(sharedContrast.includes(token),'Missing shared contrast token: '+token);
+assert.ok(fs.readFileSync('topkey/sports/vnext/index.html','utf8').includes('workspace-contrast-h234.css?v=h234-workspace-contrast-20261127'),'All sports must load the shared contrast layer');
+console.log('H234 shared sport contrast contract passed.');
