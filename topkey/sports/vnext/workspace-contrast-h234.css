@@ -72,3 +72,11 @@ html body #app-shell #page-settings #tk79-prize-editor :is(h1,h2,h3,h4,p,small,l
   -webkit-text-fill-color:#f3f8fc!important;
   opacity:1!important;
 }
+
+/* H246: final source-order guard for the settings live timestamp, including legacy pages mounted outside #app-shell. */
+html body #page-settings b:not(button *):not(.btn *) {
+  color:#29465b!important;
+  -webkit-text-fill-color:#29465b!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}
