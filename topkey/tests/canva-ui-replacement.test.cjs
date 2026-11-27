@@ -24,7 +24,7 @@ for(const [name,css] of [['Hub',hubCss],['Sports',sportsCss]]){
  assert.equal(css.split('{').length,css.split('}').length,name+' CSS braces must balance');
  assert.ok(!css.includes('@import'),'No external font import may delay first paint');
 }
-for(const token of ['firebase-app-compat.js','firebase-auth-compat.js','firebase-database-compat.js'])assert.ok(sports.includes(token),'Firebase runtime dependency must be preserved: '+token);
+for(const token of ['../../topkey-platform-core.js','../../topkey-shared-auth.js','../../h108-auth-guard.js'])assert.ok(sports.includes(token),'Shared Firebase/auth runtime dependency must be preserved: '+token);
 for(const sport of ['football','volleyball','running','handmade','shuttle','cooking','badminton'])assert.ok(sports.includes("'"+sport+"'")||sports.includes('"'+sport+'"'),'VNext sport missing: '+sport);
 for(const tab of ['overview','control','teams','schedule','umpire','live','finance','announcements','audit','health','settings'])assert.ok(sports.includes('data-tab="'+tab+'"'),'VNext tab missing: '+tab);
 console.log('Canva UI replacement contract passed.');
