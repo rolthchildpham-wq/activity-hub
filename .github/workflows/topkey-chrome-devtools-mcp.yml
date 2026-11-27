@@ -278,7 +278,7 @@ jobs:
               document.querySelectorAll("#app-shell [data-tab]").forEach(button=>button.classList.remove("hidden"));
               A.renderAll?.();
               A.showTab("overview");
-              const sport=new URLSearchParams(location.search).get("sport")||(location.pathname.includes("/sports/badminton/")?"badminton":"");
+              const sport=new URLSearchParams(location.search).get("sport")||(/\\/badminton\\.html$/.test(location.pathname)||location.pathname.includes("/sports/badminton/")?"badminton":"");
               const gridColumns=grid=>{
                 const value=grid?getComputedStyle(grid).gridTemplateColumns:"";
                 const repeat=value.match(/^repeat\((\d+),/);
