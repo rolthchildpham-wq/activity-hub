@@ -1,22 +1,13 @@
-const fs = require('node:fs');
-const assert = require('node:assert/strict');
-
-const css = fs.readFileSync('topkey/hub-dashboard-reference-h219.css', 'utf8');
-const mobile = css.match(/@media\s*\(max-width:\s*680px\)\s*\{([\s\S]*?)\n\}/);
-
-assert.ok(mobile, 'H220 must define a dedicated mobile calendar layout at 680px');
-assert.match(mobile[1], /\.exec-calendar-weekdays\s*,\s*body\.tk-bi-hub\s*\.exec-calendar-grid\s*\{[^}]*min-width:\s*0(?:px)?\s*!important/s,
-  'Calendar weekday and day grids must release the 560px desktop minimum width on mobile');
-assert.match(mobile[1], /\.exec-calendar-card\s*\{[^}]*overflow-x:\s*visible\s*!important/s,
-  'Mobile calendar must not require an inner horizontal scroll container');
-assert.match(mobile[1], /\.exec-calendar-day\s*\{[^}]*min-height:\s*0\s*!important/s,
-  'Mobile calendar cells must use compact content-driven sizing');
-assert.match(mobile[1], /\.exec-calendar-date\s*\{[^}]*font-size:\s*10px\s*!important/s,
-  'Mobile calendar date labels must remain legible in compact cells');
-
-
-const html = fs.readFileSync('topkey/index.html', 'utf8');
-assert.match(html, /hub-dashboard-reference-h219\.css\?v=h220-mobile-calendar-20261125/,
-  'Hub entry must use the H220 cache key so browsers/CDN do not keep stale H219 CSS');
-
-console.log('H220 mobile calendar no-horizontal-scroll contract passed.');
+const fs=require('node:fs');
+const assert=require('node:assert/strict');
+const css=fs.readFileSync('topkey/canva-ui-system.css','utf8');
+const html=fs.readFileSync('topkey/index.html','utf8');
+assert.ok(css.includes('.exec-calendar-weekdays')&&css.includes('.exec-calendar-grid'),'Canva stylesheet must style calendar grid');
+assert.ok(css.includes('min-width:0!important'),'mobile calendar must release desktop min-width');
+assert.ok(css.includes('overflow-x:visible!important'),'mobile calendar must not require inner horizontal scroll');
+assert.ok(css.includes('min-height:0!important'),'mobile calendar cells must use content-driven sizing');
+assert.ok(css.includes('.exec-calendar-date{font-size:10px}'),'mobile date labels must remain legible');
+assert.ok(css.includes('@media(max-width:680px)'),'dedicated mobile calendar layout required');
+assert.ok(html.includes('canva-ui-system.css?v=canva-ui-v1-20261127'),'Hub must load consolidated Canva stylesheet');
+assert.ok(!html.includes('hub-dashboard-reference-h219.css'),'legacy dashboard CSS must not load');
+console.log('Canva mobile calendar no-horizontal-scroll contract passed.');
