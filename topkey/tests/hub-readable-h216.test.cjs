@@ -47,7 +47,7 @@ assert.ok(scheduleRuntime.includes("window.__TOPKEY_WORKSPACE_CONTRAST_H251={"),
 
 const canvaHubCss=fs.readFileSync('topkey/hub-canva-design-system-h251.css','utf8');
 assert.ok(canvaHubCss.includes('--tk-canva-navy:#0B1F33')&&canvaHubCss.includes('--tk-canva-slate:#173A55')&&canvaHubCss.includes('--tk-canva-teal:#0AA6A6'), 'Canva TOPKEY palette tokens must be present');
-assert.ok(topHtml.includes('hub-canva-design-system-h251.css?v=canva-h251-20261127'), 'Hub must load Canva design system after H240 base');
+assert.ok(html.includes('hub-canva-design-system-h251.css?v=canva-h251-20261127'), 'Hub must load Canva design system after H240 base');
 console.log('H251 Canva design-system integration contract passed.');
 
 assert.ok(scheduleRuntime.includes("const podiumMedal = node.classList.contains('tk9-medal');"), 'H251 runtime must force podium medal foreground without ancestor luminance dependency');
