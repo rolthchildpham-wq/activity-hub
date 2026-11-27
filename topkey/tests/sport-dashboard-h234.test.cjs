@@ -1,0 +1,10 @@
+const fs=require('node:fs');const assert=require('node:assert/strict');
+const dashboard=fs.readFileSync('topkey/sports/vnext/src/dashboard-live-h227.js','utf8');
+const config=fs.readFileSync('topkey/sports/vnext/src/config.js','utf8');
+const html=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
+assert.ok(dashboard.includes('sport.rules||T.DEFAULT_RULES||{}'),'Dashboard must use selected sport rule profile before shared defaults');
+assert.ok(dashboard.includes('...(cfg.rules||{})'),'Saved tournament rules must override sport defaults');
+assert.ok(dashboard.includes('Object.values(active).find(x=>x?.matchId===m.id)||active[m.id]||active[m.courtId]'),'Live score lookup must match current match id');
+assert.ok(config.includes("volleyball:{...common,key:'volleyball'")&&config.includes('bestOf:5,points:25,decidingPoints:15'),'Volleyball defaults must remain best-of-five, 25-point sets, deciding set 15');
+assert.ok(html.includes('dashboard-live-h227.js?v=h229-dashboard-retry-20261125'),'Shared dashboard runtime remains enabled');
+console.log('H234 selected-sport rules and match-scoped live score contract passed.');
