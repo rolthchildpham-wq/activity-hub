@@ -1,0 +1,4 @@
+/* H231: inactive Hub workspaces are hidden while their data and DOM remain intact. */
+body.tk-bi-hub .hub-workspace-hidden{display:none!important;visibility:hidden!important;pointer-events:none!important}
+body.tk-bi-hub .tk210-nav a[aria-current="page"]{background:#1d2d4d!important;color:#fff!important;border-color:#1d2d4d!important}
+body.tk-bi-hub .tk210-nav a:focus-visible{outline:3px solid #0b78a5!important;outline-offset:2px!important}
