@@ -52,3 +52,8 @@ console.log('H251 Canva design-system integration contract passed.');
 
 assert.ok(scheduleRuntime.includes("const podiumMedal = node.classList.contains('tk9-medal');"), 'H251 runtime must force podium medal foreground without ancestor luminance dependency');
 console.log('H251 medal contrast runtime test passed.');
+
+const canvaSportCss=fs.readFileSync('topkey/sports/vnext/canva-sports-design-system-h251.css','utf8');
+assert.ok(canvaSportCss.includes('--tk-ui-navy:#0B1F33')&&canvaSportCss.includes('--tk-ui-teal:#0AA6A6'), 'Canva sport design tokens must exist');
+assert.ok(sportHtml.includes('canva-sports-design-system-h251.css?v=canva-h251-20261127'), 'All seven sports must load Canva design-system stylesheet');
+console.log('Canva seven-sport workspace design-system integration passed.');
