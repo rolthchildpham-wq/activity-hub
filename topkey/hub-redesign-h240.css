@@ -104,3 +104,28 @@ body.tk-bi-hub .exec-insights-tab{background:#15364c!important;color:#e3f0f6!imp
 body.tk-bi-hub .exec-insights-tab[aria-pressed=true]{background:#087f78!important;color:#fff!important;border-color:#37d5c0!important}
 body.tk-bi-hub .exec-insights-table th{background:#0b5961!important;color:#fff!important}
 body.tk-bi-hub .exec-insights-table td{background:#102b40!important;color:#e4eef4!important}
+
+/* H240 final specificity pass: legacy H200/H219/ECC rules use highly-specific selectors. */
+html body.tk-bi-hub .wrap .tk-bi-hero{background:linear-gradient(115deg,#10364b 0%,#0d5961 62%,#087f78 100%)!important;color:#f4fbff!important;border:1px solid #28717a!important}
+html body.tk-bi-hub .wrap .tk-bi-hero :is(h2,p,.tk-bi-hero-kicker){color:inherit!important;-webkit-text-fill-color:currentColor!important}
+html body.tk-bi-hub .wrap .tk-bi-hero h2{color:#fff!important;-webkit-text-fill-color:#fff!important}
+html body.tk-bi-hub .wrap .tk-bi-hero p{color:#d7eaf0!important;-webkit-text-fill-color:#d7eaf0!important}
+html body.tk-bi-hub #topkey-sports.cards a.sport,html body.tk-bi-hub #topkey-sports.cards.compact-sports a.sport{background:linear-gradient(155deg,#12334a,#0e293e)!important;background-color:#12334a!important;color:#f1f7fb!important;border:1px solid #2a526a!important;box-shadow:0 8px 22px rgba(0,0,0,.16)!important}
+html body.tk-bi-hub #topkey-sports.cards a.sport h3,html body.tk-bi-hub #topkey-sports.cards.compact-sports a.sport h3{color:#f5fbff!important;-webkit-text-fill-color:#f5fbff!important}
+html body.tk-bi-hub #topkey-sports.cards a.sport p,html body.tk-bi-hub #topkey-sports.cards.compact-sports a.sport p{color:#bfd0dc!important;-webkit-text-fill-color:#bfd0dc!important}
+html body.tk-bi-hub #topkey-sports.cards a.sport .badge{background:#0b3c4a!important;color:#9ce8dc!important;-webkit-text-fill-color:#9ce8dc!important;border-color:#326578!important}
+html body.tk-bi-hub #topkey-sports.cards a.sport .open{background:#0d575d!important;color:#dffff9!important;-webkit-text-fill-color:#dffff9!important;border-color:#2c8d8a!important}
+html body.tk-bi-hub .wrap .panel,html body.tk-bi-hub .wrap .feature,html body.tk-bi-hub .wrap .exec-card,html body.tk-bi-hub .wrap .exec-kpi,html body.tk-bi-hub .wrap .exec-insights{background:#102a3e!important;color:#f2f8fc!important;border-color:#28506a!important}
+html body.tk-bi-hub .wrap .exec-insights-focus{background:#0d4b51!important;border:1px solid #247d7a!important;border-left:4px solid #39d8c2!important;color:#e8fffb!important}
+html body.tk-bi-hub .wrap .exec-insights-focus :is(strong,p){color:#e8fffb!important;-webkit-text-fill-color:#e8fffb!important}
+html body.tk-bi-hub .wrap .exec-insights-heading :is(h3,p),html body.tk-bi-hub .wrap .exec-insights-footnote{color:#bfd0dc!important;-webkit-text-fill-color:#bfd0dc!important}
+html body.tk-bi-hub .wrap .exec-insights-stat{background:#15364c!important;border-color:#2a6075!important}
+html body.tk-bi-hub .wrap .exec-insights-stat span{color:#bfd0dc!important;-webkit-text-fill-color:#bfd0dc!important}
+html body.tk-bi-hub .wrap .exec-insights-stat strong{color:#72e8d8!important;-webkit-text-fill-color:#72e8d8!important}
+html body.tk-bi-hub .wrap .exec-insights-tab{background:#15364c!important;color:#e3f0f6!important;border-color:#356078!important}
+html body.tk-bi-hub .wrap .exec-insights-tab[aria-pressed=true]{background:#087f78!important;color:#fff!important;border-color:#37d5c0!important}
+html body.tk-bi-hub .wrap .exec-insights-table th{background:#0b5961!important;color:#fff!important}
+html body.tk-bi-hub .wrap .exec-insights-table td{background:#102b40!important;color:#e4eef4!important}
+html body.tk-bi-hub .tk210-nav{background:linear-gradient(180deg,#0a2032,#081a29)!important;border-right:1px solid #28506a!important}
+html body.tk-bi-hub .tk210-nav a{background:transparent!important;color:#c6d6e1!important}
+html body.tk-bi-hub .tk210-nav a.active,html body.tk-bi-hub .tk210-nav a[aria-current=page]{background:linear-gradient(100deg,#0e827d,#116078)!important;color:#fff!important}
