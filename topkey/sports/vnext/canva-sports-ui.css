@@ -89,3 +89,6 @@ html.tk-public-boot #public-spectator .tk143-media :is(video,iframe){display:blo
 html.tk-public-boot #public-spectator .tk143-stream-note{padding:12px;border:1px solid #806A3D;border-radius:9px;background:#332C20;color:#FFE6AD;font-size:14px;line-height:1.55}
 html.tk-public-boot #public-spectator .grid.g2{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 @media(max-width:760px){#tk144-live-studio .tk144-workspace{grid-template-columns:minmax(0,1fr)}#tk144-live-studio .tk144-official-pane{max-height:none}html.tk-public-boot #public-spectator .grid.g2{grid-template-columns:minmax(0,1fr)}html.tk-public-boot #public-spectator .split{display:flex;flex-wrap:wrap;gap:10px}}
+
+#page-settings input[readonly],#page-settings textarea[readonly]{background:#173A55!important;color:#F5FAFD!important;border-color:#42627A!important;-webkit-text-fill-color:#F5FAFD!important}
+#page-settings input[readonly]::placeholder{color:#B8C9D6!important}
