@@ -235,13 +235,13 @@ body.tk141-nav-collapsed #app-shell{grid-template-columns:0 minmax(0,1fr)!import
 
 /* Sport-specific identity metadata and iconography, rethemed for the Canva navy shell. */
 html[data-tk-sport]{--sport-emoji:"🏆";--sport-strap:"TOPKEY SPORTS OPERATIONS";--sport-sub:"Lịch thi đấu · Đội/VĐV · Trọng tài · Kết quả"}
-html[data-tk-sport="badminton"]{--sport-emoji:"🏸";--sport-strap:"SÂN CẦU LÔNG · BADMINTON ARENA";--sport-sub:"Đội/đôi · Sân đấu · Set đấu · Trọng tài · Kết quả"}
-html[data-tk-sport="football"]{--sport-emoji:"⚽";--sport-strap:"SÂN CỎ · FOOTBALL OPERATIONS";--sport-sub:"Đội bóng · Sân đấu · Bàn thắng · Bảng xếp hạng"}
-html[data-tk-sport="volleyball"]{--sport-emoji:"🏐";--sport-strap:"SÂN ĐẤU · VOLLEYBALL ARENA";--sport-sub:"Đội bóng · Set đấu · Trọng tài · Kết quả"}
-html[data-tk-sport="running"]{--sport-emoji:"🏃";--sport-strap:"ĐƯỜNG CHẠY · RACE CONTROL";--sport-sub:"Vận động viên · Làn chạy · Thời gian · Thành tích"}
-html[data-tk-sport="handmade"]{--sport-emoji:"🧶";--sport-strap:"KHÔNG GIAN SÁNG TẠO · MAKERS STUDIO";--sport-sub:"Thí sinh · Tác phẩm · Giám khảo · Xếp hạng"}
-html[data-tk-sport="shuttle"]{--sport-emoji:"🪶";--sport-strap:"SÂN ĐÁ CẦU · SHUTTLECOCK";--sport-sub:"Nội dung đơn/đôi · Sân · Set đấu · Live"}
-html[data-tk-sport="cooking"]{--sport-emoji:"👨‍🍳";--sport-strap:"NHÀ BẾP THI ĐẤU · CULINARY STUDIO";--sport-sub:"Đội thi · Khu bếp · Giám khảo · Điểm số"}
+html[data-tk-sport="badminton"]{--sport-emoji:"🏸";--sport-strap:"BADMINTON ARENA";--sport-sub:"Đội/đôi · Sân đấu · Set đấu · Trọng tài · Kết quả"}
+html[data-tk-sport="football"]{--sport-emoji:"⚽";--sport-strap:"FOOTBALL OPERATIONS";--sport-sub:"Đội bóng · Sân đấu · Bàn thắng · Bảng xếp hạng"}
+html[data-tk-sport="volleyball"]{--sport-emoji:"🏐";--sport-strap:"VOLLEYBALL ARENA";--sport-sub:"Đội bóng · Set đấu · Trọng tài · Kết quả"}
+html[data-tk-sport="running"]{--sport-emoji:"🏃";--sport-strap:"RACE CONTROL";--sport-sub:"Vận động viên · Làn chạy · Thời gian · Thành tích"}
+html[data-tk-sport="handmade"]{--sport-emoji:"🧶";--sport-strap:"MAKERS STUDIO";--sport-sub:"Thí sinh · Tác phẩm · Giám khảo · Xếp hạng"}
+html[data-tk-sport="shuttle"]{--sport-emoji:"🪶";--sport-strap:"SHUTTLECOCK";--sport-sub:"Nội dung đơn/đôi · Sân · Set đấu · Live"}
+html[data-tk-sport="cooking"]{--sport-emoji:"👨‍🍳";--sport-strap:"CULINARY STUDIO";--sport-sub:"Đội thi · Khu bếp · Giám khảo · Điểm số"}
 html[data-tk-sport] #app-shell .nav [data-tab]::before{display:inline-grid;place-items:center;content:"▦";min-width:20px;font-size:16px;line-height:1}
 html[data-tk-sport] #app-shell .nav [data-tab="overview"]::before{content:var(--sport-emoji)}
 html[data-tk-sport] #app-shell .nav [data-tab="control"]::before{content:"▤"}
@@ -273,3 +273,6 @@ html[data-tk-sport] body #app-shell #page-overview:not(.hidden){display:grid!imp
 /* The live badge is a solid dark teal chip so small text remains WCAG AA. */
 html[data-tk-sport] body #app-shell:not(.hidden) #page-overview .card .tk227-badge{background:#0B4B4B!important;border:1px solid #0AA6A6!important;color:#F5FAFD!important}
 html[data-tk-sport] body #app-shell:not(.hidden) #page-overview .card .tk227-badge.live{background:#0B4B4B!important;color:#F5FAFD!important}
+
+html[data-tk-sport] #app-shell .topbar>.nav:before{content:var(--sport-strap);display:inline-flex;align-items:center;flex:none;padding:8px 10px;border:1px solid rgba(10,166,166,.35);border-radius:9px;background:#173A55;color:#D8F8F5;font-size:10px;letter-spacing:.07em;font-weight:850;white-space:nowrap}
+@media(max-width:700px){html[data-tk-sport] #app-shell .topbar>.nav:before{display:none}}
