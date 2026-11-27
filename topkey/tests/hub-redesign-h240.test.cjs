@@ -10,6 +10,8 @@ for(const token of ['--tk-bg:#071827','--tk-header:#0b2032','--tk-panel:#102a3e'
 }
 assert.ok(css.includes('body.tk-bi-hub .wrap{display:block!important'),'Main content must use normal flow, not fixed empty tracks');
 assert.ok(css.includes('body.tk-bi-hub .footer{display:none!important'),'Legacy footer spacer must not reserve empty vertical space');
+assert.ok(css.includes('html body.tk-bi-hub #topkey-sports.cards a.sport'),'H240 must override legacy high-specificity card skins');
+assert.ok(css.includes('html body.tk-bi-hub .wrap .exec-insights-focus'),'Dashboard focus card must use H240 contrast colors');
 assert.ok(css.includes('body.tk-bi-hub .hub-workspace-hidden{display:none!important'),'Inactive workspaces must leave layout flow');
 for(const id of ['topkey-home','topkey-sports','executive-dashboard','system-admin-launch'])assert.ok(js.includes("'"+id+"'"),'Missing workspace '+id);
 assert.ok(js.includes("['.tk-bi-hero','.tk-bi-section-heading','#topkey-sports']"),'Home must show meaningful content and quick-launch cards');
