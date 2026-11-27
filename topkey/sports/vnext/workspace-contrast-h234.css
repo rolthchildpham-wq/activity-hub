@@ -99,3 +99,9 @@ html body #page-settings b:not(#tk79-prize-editor b):not(button *):not(.btn *) {
   opacity:1!important;
   text-shadow:none!important;
 }
+
+/* H250: podium medal glyphs sit on a dark medal disc inside the light overview card. */
+html body #app-shell #page-overview .tk9-podium .tk9-medal {
+  color:#f8fbff!important;
+  -webkit-text-fill-color:#f8fbff!important;
+}
