@@ -5,7 +5,7 @@ const parent={closest:()=>null};
 const node=(text)=>{const n={nodeType:3,nodeValue:text,parentElement:parent,isConnected:true};nodes.push(n);return n};
 const body={nodeType:1};
 const document={readyState:'complete',body,createTreeWalker(root){let seq=0;return{nextNode(){return root===body?nodes[seq++]||null:null}}},addEventListener(k,fn){(callbacks[k]??=[]).push(fn)}};
-const fakeGlossary={'Đăng nhập':{en:'Sign in',zh:'登录',vi:'Đăng nhập'}};
+const fakeGlossary={'Đăng nhập':{en:'Sign in',zh:'登录',vi:'Đăng nhập'},'Trung tâm điều hành thể thao':{en:'Sports Operations Center',zh:'体育运营管理中心',vi:'Trung tâm điều hành thể thao'},'Quản trị câu lạc bộ, lịch giải, vận động viên, kết quả và tài chính trên một nền tảng thống nhất. Dữ liệu được tổng hợp từ các môn bạn có quyền truy cập.':{en:'Manage clubs, schedules, athletes, results and finance in one platform.',zh:'在统一平台上管理俱乐部、赛事日程、运动员、比赛结果和财务。数据汇总自您有权访问的各个运动项目。',vi:'Quản trị câu lạc bộ, lịch giải, vận động viên, kết quả và tài chính trên một nền tảng thống nhất. Dữ liệu được tổng hợp từ các môn bạn có quyền truy cập。'}};
 async function fakeFetch(url,opt){if(String(url).startsWith('/i18n/'))return{ok:true,json:async()=>fakeGlossary};
  if(url==='/api/topkey-translate'){requests++;const payload=JSON.parse(opt.body);return{ok:true,json:async()=>({ok:true,translations:payload.segments.map(s=>`${payload.target.toUpperCase()}:${s}`)})}}
  throw new Error('Unexpected URL '+url)
@@ -23,14 +23,15 @@ function check(name,truth){assert.ok(truth,name);console.log('PASS',name)}
  globalObj.TopkeyDynamicI18n.refresh();await new Promise(r=>setTimeout(r,600));
  check('dynamic athlete name translated for EN',player.nodeValue==='EN:Nguyễn Văn A');
  check('dictionary UI label translated',ui.nodeValue==='Sign in');
- check('Hub heading translated for Chinese',hubTitle.nodeValue==='ZH:Trung tâm điều hành thể thao' || hubTitle.nodeValue==='体育运营管理中心');
- check('Hub description translated for Chinese',hubDescription.nodeValue==='在统一平台上管理俱乐部、赛事日程、运动员、比赛结果和财务。数据汇总自您有权访问的各个运动项目。');
 
  const count=requests;globalObj.TopkeyDynamicI18n.refresh();await new Promise(r=>setTimeout(r,300));
  check('translation cached for repeated DOM refresh',requests===count);
  lang='zh';globalObj.dispatchEvent({type:'topkey:languagechange'});await new Promise(r=>setTimeout(r,650));
  check('athlete name retranslated for Chinese',player.nodeValue==='ZH:Nguyễn Văn A');
  check('static label switched to Chinese',ui.nodeValue==='登录');
+ check('Hub heading translated for Chinese',hubTitle.nodeValue==='体育运营管理中心');
+ check('Hub description translated for Chinese',hubDescription.nodeValue==='在统一平台上管理俱乐部、赛事日程、运动员、比赛结果和财务。数据汇总自您有权访问的各个运动项目。');
+
  check('no firebase records were mutated',true);
  console.log('TOTAL 6/6');
 })().catch(e=>{console.error(e);process.exitCode=1});
