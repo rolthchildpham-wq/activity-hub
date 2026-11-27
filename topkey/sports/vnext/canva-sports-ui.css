@@ -276,3 +276,15 @@ html[data-tk-sport] body #app-shell:not(.hidden) #page-overview .card .tk227-bad
 
 html[data-tk-sport] #app-shell .topbar>.nav:before{content:var(--sport-strap);display:inline-flex;align-items:center;flex:none;padding:8px 10px;border:1px solid rgba(10,166,166,.35);border-radius:9px;background:#173A55;color:#D8F8F5;font-size:10px;letter-spacing:.07em;font-weight:850;white-space:nowrap}
 @media(max-width:700px){html[data-tk-sport] #app-shell .topbar>.nav:before{display:none}}
+
+/* Full dark-surface contrast correction from real Chrome DevTools audit (all tabs / 7 sports). */
+html[data-tk-sport] #app-shell .pill{background:#0B4B4B!important;border-color:#0AA6A6!important;color:#F5FAFD!important}
+html[data-tk-sport] #app-shell .card b,
+html[data-tk-sport] #app-shell .card strong,
+html[data-tk-sport] #app-shell .card label,
+html[data-tk-sport] #app-shell .card code{color:#F5FAFD}
+html[data-tk-sport] #app-shell .card .muted,
+html[data-tk-sport] #app-shell .card small,
+html[data-tk-sport] #app-shell .card p{color:#B8C9D6}
+html[data-tk-sport] #app-shell .topbar .hub-link,
+html[data-tk-sport] #app-shell .topbar .hub-back{display:none!important}
