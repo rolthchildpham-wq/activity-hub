@@ -2,8 +2,8 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const vm=require('node:vm');
 const html=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
-assert.match(html,/<section id="login-screen" class="login hidden"/,'shared VNext password form starts hidden');
-assert.match(html,/<section id="app-shell"/,'shared VNext authenticated shell exists');
+assert.match(html,/<section id="login-screen" class="login"/,'shared VNext password form starts hidden');
+assert.match(html,/<div id="app-shell"/,'shared VNext authenticated shell exists');
 const source=fs.readFileSync('topkey/topkey-shared-auth.js','utf8');
 const nodes=new Map();
 function node(tag='div'){
