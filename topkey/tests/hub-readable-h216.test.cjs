@@ -2,7 +2,8 @@ const fs=require('node:fs');
 const assert=require('node:assert/strict');
 const html=fs.readFileSync('topkey/index.html','utf8');
 const css=fs.readFileSync('topkey/hub-contrast-readable-h216.css','utf8');
-assert.ok(html.includes('hub-contrast-readable-h216.css?v=h216-readable-20261124'),'Hub must load H216 cache key');
+assert.ok(html.includes('canva-ui-system.css?v=canva-ui-v1-20261127'),'Hub must load the consolidated Canva design system');
+assert.ok(!html.includes('hub-contrast-readable-h216.css'),'Legacy H216 stylesheet must no longer load');
 for(const token of ['#f7fbff','#d8e5ef','#102a43','#7897b0','font-size:13px','grid-template-columns:repeat(2,minmax(0,1fr))','@media(max-width:360px)','prefers-reduced-motion:reduce']){
  assert.ok(css.includes(token),'H216 missing readability/responsive contract: '+token);
 }
