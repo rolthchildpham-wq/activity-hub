@@ -1,4 +1,4 @@
-/* H249: contrast guard for dynamically-rendered text and text-bearing wrappers on light workspace surfaces. */
+/* H250: contrast guard for dynamically-rendered text and text-bearing wrappers on light workspace surfaces. */
 (() => {
   'use strict';
   // Scan the full document: legacy pages can be mounted outside #app-shell during sport handoff.
@@ -39,6 +39,13 @@
         const bg=effectiveBackground(node);
         // The settings live-clock <b> is injected by legacy code with a pale inline color.
         // Keep it dark on the light settings surface, but preserve the intentionally dark prize editor.
+        // Podium medals use a dark disc; override inherited/inline dark text on that disc.
+        const podiumMedal = node.classList.contains('tk9-medal') && luminance(bg) < 0.25;
+        if (podiumMedal) {
+          node.style.setProperty('color','#f8fbff','important');
+          node.style.setProperty('-webkit-text-fill-color','#f8fbff','important');
+          continue;
+        }
         // The legacy live clock sits on a white status strip inside settings.
         // Exempt it before the dark-surface rule so ancestor backgrounds cannot bleach it.
         const settingsClock = node.tagName === 'B' &&
@@ -80,8 +87,8 @@
     subtree:true,childList:true,attributes:true,characterData:true,
     attributeFilter:['class','style']
   });
-  window.__TOPKEY_WORKSPACE_CONTRAST_H248={
-    version:'h249-settings-clock-priority-aa-20261127',
+  window.__TOPKEY_WORKSPACE_CONTRAST_H250={
+    version:'h250-overview-podium-medals-aa-20261127',
     apply,
     disconnect:()=>observer.disconnect()
   };
