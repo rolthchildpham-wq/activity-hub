@@ -28,7 +28,7 @@ for(const token of ['#29465b','#075c43','#124d83','#8b1f2d','tk12-status-badge.f
 const sportHtml=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
 const scheduleRuntime=fs.readFileSync('topkey/sports/vnext/workspace-contrast-runtime-h238.js','utf8');
 const sportIdentity=fs.readFileSync('topkey/sports/vnext/sport-identities-h132.css','utf8');
-assert.ok(sportHtml.includes('workspace-contrast-h234.css?v=h251-podium-medal-unconditional-20261127'),'All VNext sports must load the cache-busted H251 schedule contrast layer');
+assert.ok(!sportHtml.includes('workspace-contrast-h234.css'),'Legacy H234 stylesheet must not load after Canva consolidation');
 assert.ok(sportHtml.includes('workspace-contrast-runtime-h238.js?v=h251-podium-medal-unconditional-aa-20261127'),'All VNext sports must load the H251 runtime guard');
 assert.ok(scheduleRuntime.includes(`node.style.setProperty('color',SAFE,'important')`),'H239 must apply WCAG-safe foregrounds to dynamic light surfaces');
 assert.ok(scheduleRuntime.includes("const ROOT = 'body';"),'H243 must scan the full document across legacy sport handoff roots');
@@ -54,5 +54,6 @@ console.log('H251 medal contrast runtime test passed.');
 
 const canvaSportCss=fs.readFileSync('topkey/sports/vnext/canva-sports-design-system-h251.css','utf8');
 assert.ok(canvaSportCss.includes('--tk-ui-navy:#0B1F33')&&canvaSportCss.includes('--tk-ui-teal:#0AA6A6'), 'Canva sport design tokens must exist');
-assert.ok(sportHtml.includes('canva-sports-design-system-h251.css?v=canva-h251-20261127'), 'All seven sports must load Canva design-system stylesheet');
+assert.ok(!sportHtml.includes('canva-sports-design-system-h251.css'), 'H251 overlay must not load after Canva consolidation');
+assert.ok(sportHtml.includes('canva-sports-ui.css?v=canva-sports-v1-20261127'), 'All seven sports must load the consolidated Canva design system');
 console.log('Canva seven-sport workspace design-system integration passed.');
