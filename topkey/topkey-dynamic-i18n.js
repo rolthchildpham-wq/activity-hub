@@ -3,7 +3,7 @@
  */
 (()=>{'use strict';
  if(window.TopkeyDynamicI18n?.installed)return;
- const KEY='topkey_ui_language_v1',VERSION=window.TopkeyRelease?.cacheTag||'H115';
+ const KEY='topkey_ui_language_v1',VERSION=(window.TopkeyRelease?.cacheTag||'H115')+'-hubzh-20261127';
  const readLanguage=()=>{let s='vi';try{s=localStorage.getItem(KEY)||window.TopkeyUpgrade28?.language||'vi'}catch{}return String(s).startsWith('zh')?'zh':String(s).startsWith('en')?'en':'vi'};
  let current=readLanguage(),pending=new Map(),cache=new Map(),observed=new WeakMap(),observer=null,scheduled=false,working=false,issues=0,provider='unknown';
  let glossary=Object.create(null),seq=0;
