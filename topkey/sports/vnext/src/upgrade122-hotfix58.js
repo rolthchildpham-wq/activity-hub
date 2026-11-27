@@ -214,6 +214,6 @@ function publicBootFix(){const h=location.hash;if(h==='#spectator'||h==='#regist
 window.addEventListener('hashchange',()=>setTimeout(publicBootFix,0));
 
 function hook(){style();stamp();publicBootFix();ensureStandingsRenderer();ensureRankingToolbar();renderStandings();patchPublicLinks();if(location.hash==='#spectator')renderPublicStandings();const baseAll=App.renderAll?.bind(App);if(baseAll&&!App.__h58All){App.__h58All=true;App.renderAll=function(...a){const r=baseAll(...a);stamp();ensureRankingToolbar();renderStandings();patchPublicLinks();return r}}const baseTab=App.showTab?.bind(App);if(baseTab&&!App.__h58Tab){App.__h58Tab=true;App.showTab=function(tab,...a){const r=baseTab(tab,...a);if(tab==='settings')setTimeout(patchPublicLinks,0);if(tab==='overview')setTimeout(()=>{ensureStandingsRenderer();ensureRankingToolbar();renderStandings()},0);return r}}}
-hook();window.TopkeyLifecycle?.bind(()=>{stamp();ensureStandingsRenderer();renderStandings();patchPublicLinks(),{settleTicks:6,settleEvery:300,debounceMs:60});window.__TOPKEY_H58_STATUS='installed';
+hook();window.TopkeyLifecycle?.bind(()=>{stamp();ensureStandingsRenderer();renderStandings();patchPublicLinks()},{settleTicks:6,settleEvery:300,debounceMs:60});window.__TOPKEY_H58_STATUS='installed';
 window.TopkeyUpgrade122Hotfix58={VERSION,CACHE_TAG,ranking,groupBuckets,renderStandings,ensureStandingsRenderer,renderPublicStandings,canonicalMatches,isAdministrativeLoss,reorderMatches,matchForScheduleRow,reportHtml,csvText};
 })();
