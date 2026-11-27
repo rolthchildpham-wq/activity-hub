@@ -89,3 +89,18 @@ body.tk-bi-hub .wrap{scroll-margin-top:84px!important}
 }
 @media(max-width:420px){body.tk-bi-hub #topkey-sports.cards,body.tk-bi-hub #topkey-sports.cards.compact-sports{grid-template-columns:1fr!important}body.tk-bi-hub .tk-bi-section-heading{align-items:flex-start!important;flex-direction:column!important}}
 @media(prefers-reduced-motion:reduce){body.tk-bi-hub *{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+/* Executive dashboard sub-surfaces: keep the full dashboard in the same dark contrast system. */
+body.tk-bi-hub .exec-insights{background:#102a3e!important;color:#f2f8fc!important;border-color:#28506a!important}
+body.tk-bi-hub .exec-insights :is(h3,strong){color:#f3fbff!important;-webkit-text-fill-color:#f3fbff!important}
+body.tk-bi-hub .exec-insights :is(p,.exec-insights-footnote){color:#bfd0dc!important;-webkit-text-fill-color:#bfd0dc!important}
+body.tk-bi-hub .exec-insights-heading p,body.tk-bi-hub .exec-insights-footnote{color:#bfd0dc!important;-webkit-text-fill-color:#bfd0dc!important}
+body.tk-bi-hub .exec-insights-focus{background:#0d4b51!important;border:1px solid #247d7a!important;border-left:4px solid #39d8c2!important;color:#e8fffb!important}
+body.tk-bi-hub .exec-insights-focus :is(strong,p){color:#e8fffb!important;-webkit-text-fill-color:#e8fffb!important}
+body.tk-bi-hub .exec-insights-stat{background:#15364c!important;border-color:#2a6075!important}
+body.tk-bi-hub .exec-insights-stat span{color:#bfd0dc!important;-webkit-text-fill-color:#bfd0dc!important}
+body.tk-bi-hub .exec-insights-stat strong{color:#72e8d8!important;-webkit-text-fill-color:#72e8d8!important}
+body.tk-bi-hub .exec-insights-tab{background:#15364c!important;color:#e3f0f6!important;border-color:#356078!important}
+body.tk-bi-hub .exec-insights-tab[aria-pressed=true]{background:#087f78!important;color:#fff!important;border-color:#37d5c0!important}
+body.tk-bi-hub .exec-insights-table th{background:#0b5961!important;color:#fff!important}
+body.tk-bi-hub .exec-insights-table td{background:#102b40!important;color:#e4eef4!important}
