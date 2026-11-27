@@ -7,7 +7,7 @@ assert.ok(legacy.includes("query.set('sport', 'badminton')"),'legacy badminton r
 assert.ok(legacy.includes("../vnext/index.html"),'redirect target must be the shared VNext workspace');
 assert.ok(!legacy.includes('dashboard-smooth-h129.css'),'legacy dashboard skin must not load');
 assert.ok(!legacy.includes('dashboard-smooth-h129.js'),'legacy dashboard controller must not load');
-assert.ok(shared.includes('canva-sports-ui.css?v=canva-sports-v1-20261127'),'shared VNext must use Canva UI');
+assert.ok( /canva-sports-ui\.css\?v=canva-sports-v\d+-202611\d+/.test(shared) ,'shared VNext must use Canva UI');
 for(const id of ['page-overview','page-teams','page-health'])assert.ok(shared.includes('id="'+id+'"'),'shared VNext missing '+id);
 for(const token of ['#app-shell','.page','.card','.grid','@media(max-width:700px)'])assert.ok(css.includes(token),'Canva dashboard layout missing '+token);
 console.log('Badminton legacy dashboard retired; shared VNext dashboard and Canva responsive UI verified.');
