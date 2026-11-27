@@ -7,7 +7,7 @@ const hub = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const vnext = fs.readFileSync(path.join(root, 'sports/vnext/index.html'), 'utf8');
 const badmintonEntry = fs.readFileSync(path.join(root, 'sports/badminton/index.html'), 'utf8');
 const badmintonAdapter = fs.readFileSync(path.join(root, 'sports/vnext/badminton.html'), 'utf8');
-const shellAsset = vnext.match(/canva-sports-ui\\.css\\?v=canva-sports-v\\d+-202611\\d+/)?.[0] || '';
+const shellAsset = vnext.match(/canva-sports-ui\.css\?v=canva-sports-v\d+-202611\d+/)?.[0] || '';
 
 const catalog = [...hub.matchAll(/<a class="sport" href="([^"]+)"[\s\S]*?<h3>([^<]+)<\/h3>/g)]
   .map(([, href, name]) => ({ href: href.replaceAll('&amp;', '&'), name }));
