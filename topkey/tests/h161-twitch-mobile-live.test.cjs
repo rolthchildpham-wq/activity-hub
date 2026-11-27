@@ -46,7 +46,7 @@ test('H161 source uses official embed and existing permission-aware stream flow'
  assert.match(source,/await app\.applyStream\(\)/);
  assert.doesNotMatch(source,/firebase\.database|queueSet\(|queueMulti\(|stream_key|streamKey/);
  assert.match(html,/twitch-mobile-live-h161\.js/);
- assert.match(html,/twitch-mobile-live-h161\.css/);
+ assert.ok(html.includes('canva-sports-ui.css?v=canva-sports-v1-20261127'));
 });
 test('H161 does not claim to mix local TOPKEY BLV into Twitch',()=>{
  assert.match(source,/không tự truyền vào Twitch/);
