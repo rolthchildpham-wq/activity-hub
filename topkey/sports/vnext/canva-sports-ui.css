@@ -288,3 +288,7 @@ html[data-tk-sport] #app-shell .card small,
 html[data-tk-sport] #app-shell .card p{color:#B8C9D6}
 html[data-tk-sport] #app-shell .topbar .hub-link,
 html[data-tk-sport] #app-shell .topbar .hub-back{display:none!important}
+
+/* Settings Firebase/security metadata is rendered inside nested dark cards; keep semantic emphasis readable against the navy surface. */
+html[data-tk-sport] body #app-shell:not(.hidden) #page-settings .card :is(b,strong,label,code){color:#F5FAFD!important;opacity:1!important}
+html[data-tk-sport] body #app-shell:not(.hidden) #page-settings .card :is(p,small,.muted,.note){color:#B8C9D6!important;opacity:1!important}
