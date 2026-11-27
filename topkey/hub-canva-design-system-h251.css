@@ -1,0 +1,28 @@
+/* TOPKEY Sports Hub — Canva design-system integration H251.
+   Design reference: DAHcGwe0HHY, pages 1–8. UI-only; no data/auth changes. */
+:root{--tk-canva-navy:#0B1F33;--tk-canva-slate:#173A55;--tk-canva-teal:#0AA6A6;--tk-canva-white:#FFFFFF;--tk-canva-text:#F5FAFD;--tk-canva-muted:#C2D1DC;--tk-canva-border:#31536C;--tk-canva-radius:16px;--tk-canva-radius-sm:10px;--tk-canva-shadow:0 14px 34px rgba(0,12,24,.22)}
+html,body.tk-bi-hub{background:var(--tk-canva-navy)!important;color:var(--tk-canva-text)}
+body.tk-bi-hub{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+body.tk-bi-hub .top{background:linear-gradient(115deg,var(--tk-canva-navy),#102d45)!important;border-bottom:1px solid rgba(10,166,166,.24);box-shadow:0 8px 26px rgba(0,0,0,.18)}
+body.tk-bi-hub .brand-title h1{letter-spacing:-.025em}
+body.tk-bi-hub .eyebrow,body.tk-bi-hub .tk-bi-hero p,body.tk-bi-hub .tk-bi-section-heading small{color:var(--tk-canva-muted)!important}
+body.tk-bi-hub .tk210-nav a{border-radius:12px;transition:background .18s ease,border-color .18s ease,color .18s ease}
+body.tk-bi-hub .tk210-nav a.active,body.tk-bi-hub .tk210-nav a[aria-current=page]{background:rgba(10,166,166,.16);border-color:rgba(10,166,166,.55);color:#eaffff}
+body.tk-bi-hub .tk-bi-hero{background:radial-gradient(ellipse at 88% 12%,rgba(10,166,166,.22),transparent 42%),linear-gradient(130deg,#173A55,#102a40 68%,#0B1F33)!important;border:1px solid rgba(10,166,166,.28);border-radius:22px;box-shadow:var(--tk-canva-shadow)}
+body.tk-bi-hub .tk-bi-hero h2{letter-spacing:-.035em;line-height:1.12}
+body.tk-bi-hub .tk-bi-link.primary,body.tk-bi-hub .sport .open{background:var(--tk-canva-teal)!important;color:#052b35!important;border:1px solid #39c6c6!important;font-weight:800}
+body.tk-bi-hub .tk-bi-link:not(.primary){background:rgba(255,255,255,.06);border:1px solid rgba(194,209,220,.3);color:#f5fafd}
+body.tk-bi-hub .cards{gap:16px}
+body.tk-bi-hub .sport{background:linear-gradient(160deg,#173A55,#102a40)!important;border:1px solid var(--tk-canva-border)!important;border-radius:18px;box-shadow:0 8px 22px rgba(0,0,0,.16);transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+body.tk-bi-hub .sport:hover{transform:translateY(-3px);border-color:var(--tk-canva-teal)!important;box-shadow:0 16px 30px rgba(0,0,0,.25)}
+body.tk-bi-hub .sport h3{color:#f7fbff!important;font-weight:800;letter-spacing:-.02em}
+body.tk-bi-hub .sport p{color:#c2d1dc!important;line-height:1.6}
+body.tk-bi-hub .sport .badge{background:rgba(10,166,166,.14);border-color:rgba(10,166,166,.42);color:#aaf2ed}
+body.tk-bi-hub .panel,body.tk-bi-hub .feature{border-radius:var(--tk-canva-radius);border-color:var(--tk-canva-border)}
+body.tk-bi-hub button,body.tk-bi-hub .btn,body.tk-bi-hub input,body.tk-bi-hub select,body.tk-bi-hub textarea{font:inherit}
+body.tk-bi-hub :focus-visible{outline:3px solid #5ce1dc!important;outline-offset:2px}
+body.tk-bi-hub img,body.tk-bi-hub svg,body.tk-bi-hub video{max-width:100%}
+body.tk-bi-hub main.wrap{min-width:0;overflow-x:clip}
+@media(max-width:760px){body.tk-bi-hub .top{padding-top:env(safe-area-inset-top)}body.tk-bi-hub .tk-bi-hero{border-radius:16px}body.tk-bi-hub .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}body.tk-bi-hub .sport{min-width:0;padding:14px}body.tk-bi-hub .sport h3{font-size:16px}body.tk-bi-hub .sport p{font-size:12px}}
+@media(max-width:390px){body.tk-bi-hub .cards{grid-template-columns:minmax(0,1fr)}}
+@media(prefers-reduced-motion:reduce){body.tk-bi-hub *,body.tk-bi-hub *::before,body.tk-bi-hub *::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
