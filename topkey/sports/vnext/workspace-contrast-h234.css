@@ -37,3 +37,16 @@ html body #app-shell #page-schedule .card :is(.muted,.note,.hint,.description){
  color:#405e72!important;
  -webkit-text-fill-color:#405e72!important;
 }
+
+
+/* H241 Volleyball settings: the live clock/status timestamp is an unclassed <b> on a white settings card. */
+html body #app-shell #page-settings .card :is(b,span,small,p,label,li,td,th,strong,em):not(button *):not(.btn *){
+  color:#29465b!important;
+  -webkit-text-fill-color:#29465b!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}
+html body #app-shell #page-settings .card :is(button,.btn) :is(b,span,small,strong){
+  color:inherit!important;
+  -webkit-text-fill-color:currentColor!important;
+}
