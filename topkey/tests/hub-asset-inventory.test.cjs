@@ -29,7 +29,8 @@ const expectedStyles = [
   'hub-dashboard-reference-h219.css',
   'hub-ecc-design-system.css',
   'hub-workspace-nav-h231.css',
-  'hub-redesign-h240.css'
+  'hub-redesign-h240.css',
+  'hub-canva-design-system-h251.css'
 ];
 const expectedScripts = [
   'release-runtime.js',
@@ -64,15 +65,17 @@ assert.deepEqual(styles, expectedStyles, 'Hub stylesheet order/inventory changed
 assert.deepEqual(scripts, expectedScripts, 'Hub script order/inventory changed; review runtime dependencies before changing');
 assert.equal(new Set(styles).size, styles.length, 'Duplicate Hub stylesheet import');
 assert.equal(new Set(scripts).size, scripts.length, 'Duplicate Hub script import');
-assert.equal(styles.at(-2), 'hub-workspace-nav-h231.css', 'Legacy workspace style layer must remain before H240');
-assert.equal(styles.at(-1), 'hub-redesign-h240.css', 'H240 must be the final Hub visual layer');
+assert.equal(styles.at(-3), 'hub-workspace-nav-h231.css', 'Legacy workspace style layer must remain before H240');
+assert.equal(styles.at(-2), 'hub-redesign-h240.css', 'H240 workspace architecture layer must remain before Canva visual tokens');
+assert.equal(styles.at(-1), 'hub-canva-design-system-h251.css', 'Canva design system must be the final Hub visual layer');
 assert.equal(scripts.includes('hub-workspace-nav-h231.js'), false, 'Legacy H231 controller must not compete with H240');
 
 console.log(JSON.stringify({
   status: 'PASS',
   stylesheetCount: styles.length,
   scriptCount: scripts.length,
-  finalDesignLayer: styles.at(-2),
-  finalWorkspaceLayer: styles.at(-1),
+  finalDesignLayer: styles.at(-1),
+  finalWorkspaceLayer: styles.at(-2),
+  finalCanvaLayer: styles.at(-1),
   policy: 'Inventory is intentionally frozen until each removal has parity evidence'
 }, null, 2));
