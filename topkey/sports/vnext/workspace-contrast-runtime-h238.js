@@ -31,7 +31,7 @@
   const apply = () => {
     for (const root of document.querySelectorAll(ROOT)) {
       for (const node of root.querySelectorAll(TEXT)) {
-        if (node.closest('button,.btn,[role="button"],input,select,textarea')) continue;
+        // Audit dynamic labels inside controls too; only recolor when their effective surface is light.
         if (!Array.from(node.childNodes).some(n=>n.nodeType===3 && n.textContent.trim())) continue;
         const fg=rgb(getComputedStyle(node).color);
         if (!fg) continue;
