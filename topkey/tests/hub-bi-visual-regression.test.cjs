@@ -10,7 +10,7 @@ assert.match(html,/canva-ui-system\.css\?v=canva-ui-v1-20261127/);
 assert.match(html,/class="tk-bi-hero"/);
 assert.match(html,/id="executive-dashboard"/);
 assert.match(html,/id="topkey-sports"/);
-assert.ok(html.indexOf('sports-hub-bi.css')>html.indexOf('hub-layout94.css'),'Theme CSS must load last');
+assert.ok(!html.includes('sports-hub-bi.css'),'Legacy BI stylesheet must not load');
 for(const sport of sports){
   assert.ok(html.includes('sport='+sport)||html.includes('sports/'+sport+'/index.html')||(sport==='badminton'&&html.includes('sports/vnext/badminton.html')),'Missing sport navigation: '+sport);
 }
