@@ -32,6 +32,7 @@ const expectedStyles = [
 ];
 const expectedScripts = [
   'release-runtime.js',
+  'hub-workspace-nav-h231.js',
   'upgrade30.js',
   'upgrade53.js',
   'executive-sport-insights.js',
