@@ -39,6 +39,13 @@
         const bg=effectiveBackground(node);
         // The settings live-clock <b> is injected by legacy code with a pale inline color.
         // Keep it dark on the light settings surface, but preserve the intentionally dark prize editor.
+        const settingsDarkSurface = node.closest('#page-settings') &&
+          luminance(bg) < 0.25 && !node.closest('button,.btn,input,select,textarea');
+        if (settingsDarkSurface) {
+          node.style.setProperty('color','#e4eef5','important');
+          node.style.setProperty('-webkit-text-fill-color','#e4eef5','important');
+          continue;
+        }
         const settingsClock = node.tagName === 'B' &&
           node.closest('#page-settings') && !node.closest('#tk79-prize-editor');
         if (!settingsClock && (luminance(bg) < 0.72 || contrast(fg,bg) >= 4.5)) continue;
@@ -66,8 +73,8 @@
     subtree:true,childList:true,attributes:true,characterData:true,
     attributeFilter:['class','style']
   });
-  window.__TOPKEY_WORKSPACE_CONTRAST_H245={
-    version:'h245-wrapper-inclusive-aa-20261127',
+  window.__TOPKEY_WORKSPACE_CONTRAST_H248={
+    version:'h248-settings-dark-surface-aa-20261127',
     apply,
     disconnect:()=>observer.disconnect()
   };
