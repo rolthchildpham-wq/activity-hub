@@ -124,3 +124,15 @@ body.tk-bi-hub #topkey-sports .sport h3{width:100%;max-width:100%;margin:0;font-
 body.tk-bi-hub #topkey-sports .sport p,body.tk-bi-hub #topkey-sports .sport .badge,body.tk-bi-hub #topkey-sports .sport .open{display:none!important}
 @media(max-width:1100px){body.tk-bi-hub #topkey-sports.cards,body.tk-bi-hub #topkey-sports.cards.compact-sports{display:flex;flex-wrap:nowrap;gap:8px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;padding-bottom:6px;scrollbar-width:thin}body.tk-bi-hub #topkey-sports.cards .sport{flex:0 0 clamp(110px,16vw,152px);width:auto;scroll-snap-align:start}}
 @media(max-width:650px){body.tk-bi-hub #topkey-sports.cards .sport{flex-basis:114px;min-height:64px;height:64px}body.tk-bi-hub #topkey-sports .sport .emoji{font-size:21px}body.tk-bi-hub #topkey-sports .sport h3{font-size:11px}}
+
+/* Executive dashboard runtime output — replace historical inline light-green alerts with Canva surfaces. */
+body.tk-bi-hub .exec-kpi{min-width:0;padding:14px;border:1px solid var(--tk-line);border-radius:14px;background:#102B43;color:var(--tk-ink)}
+body.tk-bi-hub .exec-kpi :is(b,strong,.value){color:#65DEDA;font-size:clamp(22px,2.5vw,32px);font-weight:850}
+body.tk-bi-hub .exec-kpi :is(label,small,.muted){color:var(--tk-muted)}
+body.tk-bi-hub .exec-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+body.tk-bi-hub .exec-bar{height:9px;margin-top:8px;border-radius:99px;background:#274A63;overflow:hidden}
+body.tk-bi-hub .exec-bar>i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#087D76,#55D0CB)}
+body.tk-bi-hub .exec-alert{margin-top:12px!important;padding:12px!important;border:1px solid rgba(10,166,166,.5)!important;border-radius:12px!important;background:#123A4B!important;color:#D8F8F5!important}
+body.tk-bi-hub .exec-meta{margin-top:10px!important;color:var(--tk-muted)!important;font-size:12px;line-height:1.5}
+body.tk-bi-hub .exec-card h3{margin:0 0 10px!important;color:#fff!important}
+@media(max-width:640px){body.tk-bi-hub .exec-grid{grid-template-columns:minmax(0,1fr)}}
