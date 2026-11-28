@@ -10,6 +10,8 @@ test('badminton enters the shared VNext workspace and shared runtime loader', ()
   const html = read('topkey/sports/vnext/index.html');
   assert.match(html, /\.\/production-loader\.js\?v=h218-sports-redesign-20261124/);
   assert.doesNotMatch(html, /\.\.\/badminton\/production-loader\.js/);
+  assert.match(html, /tài khoản và phân quyền Firebase của TOPKEY Sports Hub/);
+  assert.doesNotMatch(html, /Topkey Badminton VNext/);
   const legacyRoute = read('topkey/sports/badminton/index.html');
   assert.match(legacyRoute, /\.\.\/vnext\/index\.html/);
   assert.match(legacyRoute, /query\.set\('sport', 'badminton'\)/);
