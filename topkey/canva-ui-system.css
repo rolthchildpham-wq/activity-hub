@@ -297,3 +297,60 @@ body.tk-smooth-admin #app-shell .nav [data-tab]:has(> .tk-h130-icon)::before {
   display:none!important;
   content:none!important;
 }
+
+
+/* Mobile audit fixes: keep the eight sport launchers in-view and turn wide
+   executive tables into labelled cards instead of forcing sideways scrolling. */
+@media(max-width:650px){
+ body.tk-bi-hub .brand-title{min-width:0;max-width:100%}
+ body.tk-bi-hub .brand-title h1{font-size:12px;line-height:1.2;white-space:normal;overflow-wrap:anywhere}
+ body.tk-bi-hub #topkey-sports.cards,
+ body.tk-bi-hub #topkey-sports.cards.compact-sports{
+  display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  flex-wrap:initial!important;gap:8px!important;width:100%;min-width:0;
+  overflow:visible!important;padding:0!important
+ }
+ body.tk-bi-hub #topkey-sports.cards .sport,
+ body.tk-bi-hub #topkey-sports.cards.compact-sports .sport{
+  flex:none!important;width:auto!important;min-width:0!important;min-height:68px;height:68px;
+  padding:7px 3px;scroll-snap-align:none
+ }
+ body.tk-bi-hub #topkey-sports .sport .emoji{font-size:21px}
+ body.tk-bi-hub #topkey-sports .sport h3{font-size:10px;white-space:normal;overflow-wrap:anywhere}
+ body.tk-bi-hub .exec-table-wrap,
+ body.tk-bi-hub .exec-insights-tablewrap{overflow:visible!important;max-width:100%;min-width:0}
+ body.tk-bi-hub .exec-table,
+ body.tk-bi-hub .exec-insights-table{display:block;width:100%;min-width:0!important}
+ body.tk-bi-hub .exec-table thead,
+ body.tk-bi-hub .exec-insights-table thead{
+  position:absolute!important;width:1px!important;height:1px!important;padding:0!important;
+  margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;
+  white-space:nowrap!important;border:0!important
+ }
+ body.tk-bi-hub .exec-table tbody,
+ body.tk-bi-hub .exec-insights-table tbody{display:grid;gap:9px;width:100%;min-width:0}
+ body.tk-bi-hub .exec-table tbody tr,
+ body.tk-bi-hub .exec-insights-table tbody tr{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;
+  min-width:0;border:1px solid var(--tk-line);border-radius:12px;
+  background:#0A2237;overflow:hidden
+ }
+ body.tk-bi-hub .exec-table tbody td,
+ body.tk-bi-hub .exec-insights-table tbody td{
+  display:flex;flex-direction:column;gap:3px;min-width:0;
+  padding:9px 10px;border:0;border-bottom:1px solid rgba(184,201,214,.12);
+  color:var(--tk-ink);font-size:12px;line-height:1.35;overflow-wrap:anywhere
+ }
+ body.tk-bi-hub .exec-table tbody td::before,
+ body.tk-bi-hub .exec-insights-table tbody td::before{
+  content:attr(data-label);display:block;color:var(--tk-muted);
+  font-size:9px;line-height:1.25;font-weight:750;letter-spacing:.04em
+ }
+ body.tk-bi-hub .exec-table tbody td:first-child,
+ body.tk-bi-hub .exec-insights-table tbody td:first-child{grid-column:1/-1;background:#102B43}
+ body.tk-bi-hub .exec-grid .exec-card:nth-child(2) .exec-table tbody td:nth-child(2){grid-column:1/-1}
+ body.tk-bi-hub .exec-table tbody td[colspan],
+ body.tk-bi-hub .exec-insights-table tbody td[colspan]{grid-column:1/-1}
+ body.tk-bi-hub .exec-table tbody td:last-child,
+ body.tk-bi-hub .exec-insights-table tbody td:last-child{border-bottom:0}
+}
