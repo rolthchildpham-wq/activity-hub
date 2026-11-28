@@ -27,7 +27,9 @@ assert.ok(legacy.includes("new URL('../vnext/index.html', location.href)"),'Lega
 assert.ok(legacy.includes("query.set('sport', 'badminton')")&&legacy.includes('target.search = query.toString()'),'Legacy badminton route must preserve sport and query parameters');
 assert.ok(vnext.includes('dashboard-live-h227.js?v=h229-dashboard-retry-20261125'),'Shared VNext dashboard runtime must own badminton startup');
 assert.ok(loader.includes("params.get('sport') === 'badminton'"),'Badminton-only performance modules must be scoped to the badminton sport selection');
-assert.ok(loader.includes('waitForBadmintonApp()'),'Badminton performance modules must wait for shared App/Auth/Core initialization');
+assert.ok(loader.includes('waitForBadmintonApp()'),'Badminton performance modules must wait for shared App/Auth initialization');
+assert.ok(loader.includes('../badminton/src/core/data-runtime.js?v=u115-consolidated-runtime-20261031'),'Shared data runtime must load before performance modules that depend on TopkeyCoreDataRuntime115');
+assert.ok(loader.indexOf('../badminton/src/core/data-runtime.js?v=u115-consolidated-runtime-20261031') < loader.indexOf('../badminton/fast-start-h124.js?v=h126-startup-20261113'),'Data runtime must load before fast-start extension');
 for(const asset of ['fast-start-h124.js?v=h126-startup-20261113','dashboard-smooth-h129.js?v=h129-20261113','tab-perf-h133.js?v=h133-20261113','sidebar-collapse-h130.js?v=h130-20261113'])assert.ok(loader.includes(asset),'Missing shared-loader badminton runtime '+asset);
 (async()=>{
  // Only the visible authorized tab is rendered on the first Firebase login.
