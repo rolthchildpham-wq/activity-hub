@@ -21,7 +21,7 @@ test("Chrome MCP checkout is excluded from first-party source and regression sca
   for (const command of scanCommands) {
     assert.match(
       command,
-      /-name \.tools\s+-prune/,
+      /-name \.tools.*\) -prune/,
       `third-party MCP checkout must be pruned from scan: ${command.trim()}`,
     );
   }
