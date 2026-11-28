@@ -636,7 +636,7 @@ jobs:
           # Execute the complete Node regression suite as one TAP run.
           # node --test continues after individual assertion failures and emits
           # every failing subtest; this avoids serial 30s waits per test file.
-          mapfile -t test_files < <(find . -type d \\( -name node_modules -o -name vendor -o -name .git -o -name .next -o -name dist \\) -prune -o -type f \\( -name '*.test.cjs' -o -name '*.test.mjs' -o -name '*.test.js' \\) -print | sort)
+          mapfile -t test_files < <(find . -type d \( -name node_modules -o -name vendor -o -name .git -o -name .next -o -name dist \) -prune -o -type f \( -name '*.test.cjs' -o -name '*.test.mjs' -o -name '*.test.js' \) -print | sort)
           runnable_tests=()
           for file in "${test_files[@]}"; do
             case "$file" in
