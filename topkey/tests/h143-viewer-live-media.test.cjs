@@ -55,6 +55,7 @@ test('Viewer renders live score, player and updates score without restarting ifr
  assert.equal(player.tagName,'IFRAME');
  assert.match(player.src,/youtube-nocookie\.com\/embed\/dQw4w9WgXcQ/);
  h.update('activeMatches',{c1:{matchId:'m1',started:true,scoreA:3,scoreB:4}});
+ await h.flush();
  assert.match(card.children[2].textContent,/3 – 4/);
  assert.strictEqual(card.children[3].children[0],player,'score updates must not restart player');
 });
@@ -63,6 +64,7 @@ test('Viewer shows set score and never treats local-only camera as remote video'
  await h.flush();
  const card=h.nodes['spectator-live'].children[0];
  h.update('activeMatches',{c1:{matchId:'m1',started:true,setIndex:1,sets:[{a:25,b:17},{a:7,b:8}]}});
+ await h.flush();
  assert.match(card.children[2].textContent,/SET 2: 7 – 8/);
  assert.match(card.children[3].children[0].textContent,/Camera đang mở cục bộ/);
  assert.equal(h.created.filter(x=>x.tagName==='IFRAME').length,0);
