@@ -17,12 +17,19 @@ test('badminton enters the shared VNext workspace and shared runtime loader', ()
   assert.match(legacyRoute, /query\.set\('sport', 'badminton'\)/);
 });
 
-test('shared loader cannot fall back to the old badminton hotfix chain', () => {
+test('shared loader isolates legacy compatibility modules behind explicit feature groups', () => {
   const loader = read('topkey/sports/vnext/production-loader.js');
   assert.match(loader, /scope: 'shared-vnext'/);
   assert.match(loader, /SHARED_RUNTIME_FALLBACK = \['\.\.\/\.\.\/h114-runtime-fixes\.js'\]/);
-  assert.doesNotMatch(loader, /upgrade122-hotfix|testlab122|upgrade121/);
+  assert.match(loader, /const FEATURES = \{/);
+  assert.match(loader, /reports: \[/);
+  assert.match(loader, /badmintonPerformance: \[/);
+  assert.match(loader, /params\.get\('sport'\) === 'badminton'[\s\S]*?FEATURES\.badmintonPerformance/);
+  assert.match(loader, /params\.get\('testlab'\) === '1'[\s\S]*?loadFeature\('reports'\)/);
   assert.doesNotMatch(loader, /BADMINTON_RUNTIME/);
+  const html = read('topkey/sports/vnext/index.html');
+  assert.doesNotMatch(html, /upgrade122-hotfix|testlab122|upgrade121/);
+  assert.doesNotMatch(html, /\.\.\/badminton\/production-loader\.js/);
 });
 
 test('legacy loader is a compatibility bridge, not a second runtime', () => {
