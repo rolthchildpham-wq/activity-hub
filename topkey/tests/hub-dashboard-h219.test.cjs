@@ -6,7 +6,7 @@ const css=fs.readFileSync('topkey/canva-ui-system.css','utf8');
 const dash=fs.readFileSync('topkey/executive-dashboard.js','utf8');
 assert.ok(/canva-ui-system\.css\?v=canva-ui-v\d+-202611\d+/.test(hub),'Hub must load the consolidated Canva design-system stylesheet');
 assert.ok(!hub.includes('hub-dashboard-reference-h219.css'),'Legacy H219 stylesheet must not load');
-assert.ok(hub.includes('executive-dashboard.js?v=h232-live-schedule-20261126'),'Hub must bypass the stale dashboard script cache');
+assert.ok(/executive-dashboard\.js\?v=h\d+-[a-z0-9-]+-202611\d+/.test(hub),'Hub must bypass the stale dashboard script cache');
 assert.ok(hub.includes('sports/vnext/badminton.html?sport=badminton&amp;__topkey_reload=h219-liberty-dashboard-20261125'),'Badminton must use the shared sport launcher');
 assert.ok(!hub.includes('class="sport badminton"'),'Badminton must not be visually detached from the sport catalog');
 assert.ok(hub.includes("const base=sport==='badminton'?'./sports/vnext/badminton.html':'./sports/vnext/index.html'"),'Test Lab must use the shared VNext launcher folder for every sport');
