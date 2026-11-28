@@ -22,6 +22,7 @@
     ppt: ['../../vendor/pptxgen.bundle.js'],
     testlab: ['../../h114-testlab-acceptance.js?v=ppt-upload-20261111'],
     badmintonPerformance: [
+      '../badminton/src/core/data-runtime.js?v=u115-consolidated-runtime-20261031',
       '../badminton/upgrade122-hotfix5.js?v=h128-no-auto-reload-20261113',
       '../badminton/fast-start-h124.js?v=h126-startup-20261113',
       '../badminton/dashboard-smooth-h129.js?v=h129-20261113',
@@ -170,7 +171,7 @@
     return new Promise((resolve, reject) => {
       const check = () => {
         const T = window.Topkey;
-        if (T?.App && T?.Auth && window.TopkeyCoreDataRuntime115) return resolve(true);
+        if (T?.App && T?.Auth) return resolve(true);
         if (Date.now() - started >= timeout) return reject(new Error('Badminton shared app/auth/core initialization timed out'));
         setTimeout(check, 50);
       };
