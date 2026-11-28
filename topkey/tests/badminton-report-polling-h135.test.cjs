@@ -13,6 +13,6 @@ assert.ok(h55.includes("event.target?.closest?.('#tk51-ranking-explain-btn')"),'
 assert.ok(h55.includes('hookButton(); // bind before native button click fires'),'first click must work');
 assert.ok(loader.includes('upgrade122-hotfix55.js?v=h135-event-reports-20261113'));
 assert.ok(loader.includes('upgrade122-hotfix76.js?v=h135-event-reports-20261113'));
-assert.ok(html.includes('../badminton/production-loader.js?v=ppt-upload-20261111'),'shared VNext entry must load the preserved badminton runtime loader');
+assert.ok(html.includes('../badminton/production-loader.js?v=canva-vnext-runtime-20261128'),'shared VNext entry must load the preserved badminton runtime loader');
 assert.ok(legacy.includes("new URL('../vnext/index.html', location.href)"),'legacy route must redirect to shared VNext');
 console.log('H135 report polling removed, report hooks preserved and new assets wired.');
