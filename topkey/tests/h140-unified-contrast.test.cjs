@@ -11,7 +11,7 @@ test('WCAG AAA normal-text palette has at least 7:1 contrast',()=>{for(const [fg
 test('native dropdowns, disabled states and keyboard focus are styled',()=>{for(const token of ['#tk139-format','select option',':disabled',':focus-visible','color-scheme:dark','color-scheme:light'])assert.ok(css.includes(token));assert.equal(css.split('{').length,css.split('}').length)});
 test('Hub and all seven sports use the consolidated Canva stylesheets',()=>{
  const hub=fs.readFileSync(base+'index.html','utf8'),sports=fs.readFileSync(base+'sports/vnext/index.html','utf8'),legacy=fs.readFileSync(base+'sports/badminton/index.html','utf8');
- assert.ok(hub.includes('canva-ui-system.css?v=canva-ui-v1-20261127'));
+ assert.ok(/canva-ui-system\.css\?v=canva-ui-v\d+-202611\d+/.test(hub));
  assert.ok(/canva-sports-ui\.css\?v=canva-sports-v\d+-202611\d+/.test(sports));
  assert.ok(!hub.includes('hub-redesign-h240.css')&&!hub.includes('hub-canva-design-system-h251.css'));
  assert.ok(!sports.includes('upgrade9.css')&&!sports.includes('contrast-global-h217.css')&&!sports.includes('workspace-redesign-h218.css'));
