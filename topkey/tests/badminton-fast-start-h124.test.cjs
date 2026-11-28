@@ -25,6 +25,8 @@ assert.ok(context.window.TopkeyBadmintonFastStart124.installed);
 assert.ok(legacy.includes("new URL('../vnext/index.html', location.href)"),'Legacy badminton route must hand off to the shared workspace');
 assert.ok(legacy.includes("query.set('sport', 'badminton')")&&legacy.includes('target.search = query.toString()'),'Legacy badminton route must preserve sport and query parameters');
 assert.ok(vnext.includes('dashboard-live-h227.js?v=h229-dashboard-retry-20261125'),'Shared VNext dashboard runtime must own badminton startup');
+assert.ok(vnext.includes('tk-h124-badminton-performance-runtime'),'Badminton-only performance modules must load after the shared authenticated boot');
+for(const asset of ['fast-start-h124.js?v=h126-startup-20261113','dashboard-smooth-h129.js?v=h129-20261113','tab-perf-h133.js?v=h133-20261113','sidebar-collapse-h130.js?v=h130-20261113'])assert.ok(vnext.includes(asset),'Missing shared badminton runtime '+asset);
 (async()=>{
  // Only the visible authorized tab is rendered on the first Firebase login.
  app.renderAll();
