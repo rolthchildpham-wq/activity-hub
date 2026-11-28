@@ -8,6 +8,10 @@
     : SHARED_RUNTIME_FALLBACK;
   const FEATURES = {
     reports: [
+      '../badminton/upgrade122-hotfix55.js?v=h135-event-reports-20261113',
+      '../badminton/upgrade122-hotfix65.js?v=tourney-lifecycle-20261117-r1',
+      '../badminton/upgrade122-hotfix76.js?v=h135-event-reports-20261113',
+      '../badminton/upgrade122-hotfix80.js?v=tourney-lifecycle-20261117-r1',
       '../../h106-final-report-pdf.js',
       '../../vendor/jszip.min.js',
       '../../ppt-report-wizard.js?v=ppt-upload-20261111',
@@ -16,7 +20,14 @@
       '../../h113-finance-report.js'
     ],
     ppt: ['../../vendor/pptxgen.bundle.js'],
-    testlab: ['../../h114-testlab-acceptance.js?v=ppt-upload-20261111']
+    testlab: ['../../h114-testlab-acceptance.js?v=ppt-upload-20261111'],
+    badmintonPerformance: [
+      '../badminton/upgrade122-hotfix5.js?v=h128-no-auto-reload-20261113',
+      '../badminton/fast-start-h124.js?v=h126-startup-20261113',
+      '../badminton/dashboard-smooth-h129.js?v=h129-20261113',
+      '../badminton/tab-perf-h133.js?v=h133-20261113',
+      '../badminton/sidebar-collapse-h130.js?v=h130-20261113'
+    ]
   };
   const loaded = new Map();
   const featurePromises = new Map();
@@ -117,6 +128,7 @@
   async function loadOrdered(sources, options = {}) {
     const batchSize = Math.max(1, Number(options.batchSize || 4));
     const optional = options.optional === true;
+    const quietMs = Number.isFinite(Number(options.quietMs)) ? Math.max(0, Number(options.quietMs)) : 4000;
     for (let offset = 0; offset < sources.length; offset += batchSize) {
       const batch = sources.slice(offset, offset + batchSize);
       // Avoid preloading the next batch during active table/umpire navigation.
@@ -124,7 +136,7 @@
       for (const source of batch) {
         // Legacy extensions can run expensive top-level JS synchronously.
         // Wait until 4 seconds without clicks/tab changes before each script.
-        if (optional) await yieldToBrowser(4000);
+        if (optional) await yieldToBrowser(quietMs);
         try {
           await loadScript(source);
         } catch (error) {
@@ -132,7 +144,7 @@
           console.warn('TOPKEY optional runtime skipped', source, error);
         }
       }
-      if(optional) await yieldToBrowser(4000);
+      if(optional) await yieldToBrowser(quietMs);
       else await yieldToBrowser();
     }
     return true;
@@ -153,6 +165,19 @@
     return promise;
   }
 
+  function waitForBadmintonApp(timeout = 15000) {
+    const started = Date.now();
+    return new Promise((resolve, reject) => {
+      const check = () => {
+        const T = window.Topkey;
+        if (T?.App && T?.Auth && window.TopkeyCoreDataRuntime115) return resolve(true);
+        if (Date.now() - started >= timeout) return reject(new Error('Badminton shared app/auth/core initialization timed out'));
+        setTimeout(check, 50);
+      };
+      check();
+    });
+  }
+
   function scheduleRuntime() {
     if (!window.__TOPKEY_CORE_READY || !window.__TOPKEY_ADMIN_READY) return runtimePromise;
     if (runtimeScheduled) return runtimePromise;
@@ -160,8 +185,14 @@
     // Allow the verified application to settle before background extensions run.
     setTimeout(() => idle(() => loadRuntime().catch(error => console.warn('TOPKEY runtime staging failed', error))), 850);
     const params = new URLSearchParams(location.search);
+    if (params.get('sport') === 'badminton') {
+      idle(() => waitForBadmintonApp().then(() => loadOrdered(FEATURES.badmintonPerformance, {
+        batchSize: 2, optional: true, quietMs: 350
+      })).catch(error => console.error('TOPKEY badminton shared performance runtime', error)));
+    }
     if (params.get('testlab') === '1') {
-      idle(() => loadFeature('testlab').catch(error => console.warn('TOPKEY Test Lab extension unavailable', error)));
+      idle(() => Promise.all([loadFeature('testlab'), loadFeature('reports')])
+        .catch(error => console.warn('TOPKEY Test Lab/report extensions unavailable', error)));
     }
     return runtimePromise;
   }
@@ -200,6 +231,6 @@
     scheduleRuntime,
     featureFor,
     runtimeSources: Object.freeze([...DEFAULT_RUNTIME]),
-    featureSources: Object.freeze({ppt: Object.freeze([...FEATURES.ppt]), reports: Object.freeze([...FEATURES.reports]), testlab: Object.freeze([...FEATURES.testlab])})
+    featureSources: Object.freeze({ppt: Object.freeze([...FEATURES.ppt]), reports: Object.freeze([...FEATURES.reports]), testlab: Object.freeze([...FEATURES.testlab]), badmintonPerformance: Object.freeze([...FEATURES.badmintonPerformance])})
   });
 })();
