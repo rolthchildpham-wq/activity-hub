@@ -141,328 +141,57 @@ jobs:
             echo "### EdgeOne deploy hook submitted" >> "$GITHUB_STEP_SUMMARY"
             echo "EdgeOne must still finish its own production deployment; check EdgeOne build history to confirm." >> "$GITHUB_STEP_SUMMARY"
           fi
-      - name: Audit live EdgeOne dashboard version
-        shell: bash
-        run: |
-          set -euo pipefail
-          if ! curl --fail --silent --show-error --max-time 22 --location "https://topkey-activity-management.edgeone.dev/index.html" -o /tmp/topkey-edgeone-live.html; then
-            echo "::warning::Could not fetch live EdgeOne website; deployment status is unverified."
-            exit 0
-          fi
-          if grep -q 'sports-hub-bi.css' /tmp/topkey-edgeone-live.html; then
-            echo "Live EdgeOne HTML contains the redesigned Hub stylesheet." >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "::warning::Live EdgeOne is still serving the OLD Hub version; redeploy the latest GitHub main branch in EdgeOne Production."
-            echo "**Live EdgeOne is stale**: index.html does not contain sports-hub-bi.css." >> "$GITHUB_STEP_SUMMARY"
-          fi
-      - name: Audit live badminton fast-start assets
-        shell: bash
-        run: |
-          set -euo pipefail
-          ok=0
-          for attempt in 1 2 3 4 5 6; do
-            html_file=/tmp/topkey-badminton-live.html
-            js_file=/tmp/topkey-badminton-h124.js
-            if curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/index.html" -o "$html_file" 2>/dev/null &&
-               curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/fast-start-h124.js" -o "$js_file" 2>/dev/null &&
-               grep -Fq "fast-start-h124.js?v=h126-startup-20261113" "$html_file" &&
-               grep -Fq "topkey-shared-auth.js?v=h127-auth-visual-stability-20261113" "$html_file" &&
-               grep -Fq "perf-diagnostics-h125.js?v=h134-20261113" "$html_file" &&
-               grep -Fq "tab-perf-h133.js?v=h133-20261113" "$html_file" &&
-               grep -Fq "dashboard-smooth-h129.css?v=h129-20261113" "$html_file" &&
-               grep -Fq "sidebar-collapse-h130.css?v=h130-20261113" "$html_file" &&
-               grep -Fq "sidebar-collapse-h130.js?v=h130-20261113" "$html_file" &&
-               curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/sidebar-collapse-h130.js" -o /tmp/tk-sidebar-h130.js 2>/dev/null &&
-               grep -Fq "topkey_badminton_sidebar_collapsed_h130" /tmp/tk-sidebar-h130.js &&
-               grep -Fq "dashboard-smooth-h129.js?v=h129-20261113" "$html_file" &&
-               curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/dashboard-smooth-h129.js" -o /tmp/tk-dashboard-h129.js 2>/dev/null &&
-               grep -Fq "PERSISTENT_SHELL_SINGLE_VISIBLE_TAB_PAINT" /tmp/tk-dashboard-h129.js &&
-               grep -Fq "production-loader.js?v=tourney-lifecycle-20261117-r1" "$html_file" &&
-               curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/production-loader.js" -o /tmp/tk-loader-h135.js 2>/dev/null &&
-               grep -Fq "upgrade122-hotfix55.js?v=h135-event-reports-20261113" /tmp/tk-loader-h135.js &&
-               grep -Fq "upgrade122-hotfix76.js?v=h135-event-reports-20261113" /tmp/tk-loader-h135.js &&
-               curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/production-loader.js" -o /tmp/tk-loader-h128.js 2>/dev/null &&
-               grep -Fq "upgrade122-hotfix5.js?v=h128-no-auto-reload-20261113" /tmp/tk-loader-h128.js &&
-               curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/upgrade122-hotfix5.js" -o /tmp/tk-selfheal-h128.js 2>/dev/null &&
-               ! grep -q "location.replace(" /tmp/tk-selfheal-h128.js &&
-               grep -q "AFTER_LOGIN_HOUSEKEEPING_NONBLOCKING" "$js_file" &&
-               curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/perf-diagnostics-h125.js" -o /tmp/tk-perf-h125.js 2>/dev/null &&
-               grep -q 'TopkeyBadmintonPerf125' /tmp/tk-perf-h125.js; then
-              ok=1
-              break
-            fi
-            sleep 5
-          done
-          if [ "$ok" -eq 1 ]; then
-            echo "### Live Badminton H129 stable dashboard is available on EdgeOne." >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "::warning::Live Badminton H129 stable dashboard not verified. Confirm EdgeOne Production deployment and CDN propagation."
-            echo "### Live Badminton H129 stable dashboard not yet verified." >> "$GITHUB_STEP_SUMMARY"
-          fi
-      - name: Audit live H130 Hub compact assets
-        shell: bash
-        run: |
-          set -euo pipefail
-          ok=0
-          for attempt in 1 2 3 4 5 6; do
-            if curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/index.html" -o /tmp/tk-hub-h130.html 2>/dev/null &&
-               grep -Fq "hub-compact-h130.css?v=h130-20261113" /tmp/tk-hub-h130.html &&
-               grep -Fq "hub-compact-h130.js?v=h130-20261113" /tmp/tk-hub-h130.html &&
-               curl --fail --silent --show-error --max-time 15 --location "https://topkey-activity-management.edgeone.dev/hub-compact-h130.js" -o /tmp/tk-hub-js-h130.js 2>/dev/null &&
-               grep -Fq "Thiết kế bởi BacPham" /tmp/tk-hub-js-h130.js; then
-              ok=1
-              break
-            fi
-            sleep 5
-          done
-          if [ "$ok" -eq 1 ]; then
-            echo "### Live Hub compact H130 verified." >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "::warning::Live Hub H130 assets not verified. Confirm EdgeOne deployment and CDN propagation."
-          fi
-      - name: Audit live H132 six-sport dashboard and badminton no-flash boot
-        shell: bash
-        run: |
-          set -euo pipefail
-          good=0
-          for attempt in 1 2 3 4; do
-            if curl --fail --silent --show-error --max-time 12 --location "https://topkey-activity-management.edgeone.dev/sports/vnext/index.html?sport=football" -o /tmp/tk-h132-vnext.html 2>/dev/null &&
-               grep -Fq "sport-identities-h132.css?v=h132-20261113" /tmp/tk-h132-vnext.html &&
-               grep -Fq "tk132-sport-prepaint" /tmp/tk-h132-vnext.html &&
-               curl --fail --silent --show-error --max-time 12 --location "https://topkey-activity-management.edgeone.dev/sports/vnext/sport-identities-h132.css" -o /tmp/tk-h132-theme.css 2>/dev/null &&
-               grep -Fq 'data-tk-sport="cooking"' /tmp/tk-h132-theme.css &&
-               curl --fail --silent --show-error --max-time 12 --location "https://topkey-activity-management.edgeone.dev/sports/badminton/index.html" -o /tmp/tk-h132-badminton.html 2>/dev/null &&
-               grep -Fq '<body class="tk-smooth-admin">' /tmp/tk-h132-badminton.html; then
-              good=1
-              break
-            fi
-            sleep 5
-          done
-          if [ "$good" -eq 1 ]; then
-            echo "### Live H132 badminton first-paint and six-sport UI verified." >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "::warning::H132 not verified on EdgeOne live domain; GitHub success alone does not mean Production is active."
-            echo "### Live H132 deploy could not be confirmed." >> "$GITHUB_STEP_SUMMARY"
-          fi
-      - name: Audit live compact share-link entry
-        shell: bash
-        run: |
-          set -euo pipefail
-          found=0
-          for attempt in 1 2 3 4; do
-            if curl --fail --silent --show-error --location --max-time 12 "https://topkey-activity-management.edgeone.dev/l/" -o /tmp/tk-shortlinks-h136.html 2>/dev/null &&
-               grep -Fq "TopkeyShortRedirect" /tmp/tk-shortlinks-h136.html &&
-               curl --fail --silent --show-error --location --max-time 12 "https://topkey-activity-management.edgeone.dev/sports/vnext/index.html?sport=volleyball" -o /tmp/tk-vnext-shortlinks-h136.html 2>/dev/null &&
-               grep -Fq "h97-vnext.bundle.js?v=h136-short-share-20261114" /tmp/tk-vnext-shortlinks-h136.html; then
-              found=1
-              break
-            fi
-            sleep 5
-          done
-          if [ "$found" -eq 1 ]; then
-            echo "### H136 short public link route verified on EdgeOne." >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "::warning::H136 compact route not verified on EdgeOne. Confirm deployment and URL host."
-          fi
-      - name: Diagnose and verify live H210 Hub route
-        shell: bash
-        run: |
-          set -euo pipefail
-          base="https://topkey-activity-management.edgeone.dev"
-          found=""
-          html_file=/tmp/topkey-h210-live.html
-          for attempt in $(seq 1 18); do
-            code="$(curl --silent --show-error --max-time 20 --location --output "$html_file" --write-out '%{http_code}' "$base/?__h210_probe=$attempt" || true)"
-            title="$(grep -Eo '<title>[^<]+' "$html_file" 2>/dev/null | head -1 || true)"
-            has_nav=0; has_art=0; has_css=0
-            grep -Fq 'tk210-nav' "$html_file" 2>/dev/null && has_nav=1 || true
-            grep -Fq 'tk210-hero-art' "$html_file" 2>/dev/null && has_art=1 || true
-            grep -Fq 'hub-layout-h209.css?v=h210-reference-layout-20261124' "$html_file" 2>/dev/null && has_css=1 || true
-            echo "H210 live attempt=$attempt HTTP=$code title=${title:-unknown} nav=$has_nav hero=$has_art css=$has_css"
-            if [ "$code" = "200" ] && [ "$has_nav" = "1" ] && [ "$has_art" = "1" ] && [ "$has_css" = "1" ]; then
-              found=1
-              break
-            fi
-            sleep 10
-          done
-          if [ "$found" != "1" ]; then
-            echo "::error::EdgeOne root is reachable but has not served H210 markup after 180 seconds. Check EdgeOne Production deployment source/root directory and deployment history."
-            exit 1
-          fi
-          css_code="$(curl --silent --show-error --max-time 20 --location --output /tmp/topkey-h210-live.css --write-out '%{http_code}' "$base/hub-layout-h209.css?__h210_probe=1" || true)"
-          echo "H210 stylesheet HTTP=$css_code"
-          test "$css_code" = "200"
-          grep -Fq '.tk210-nav' /tmp/topkey-h210-live.css
-          grep -Fq '.tk210-hero-art' /tmp/topkey-h210-live.css
-          echo "### Live H210 Hub HTML and stylesheet verified." >> "$GITHUB_STEP_SUMMARY"
-      - name: Wait for the complete H218 production bundle
+      - name: Verify current Canva Hub and unified Sports VNext release on live EdgeOne
         shell: bash
         run: |
           set -euo pipefail
           base="https://topkey-activity-management.edgeone.dev"
           ok=0
           for attempt in $(seq 1 18); do
-            stamp="__h218_bundle=${attempt}_${GITHUB_RUN_ID}"
-            release_code="$(curl --silent --show-error --max-time 12 --location --output /tmp/tk-h218-release.json --write-out '%{http_code}' "$base/release.json?$stamp" || true)"
-            root_code="$(curl --silent --show-error --max-time 12 --location --output /tmp/tk-h218-root-build.json --write-out '%{http_code}' "$base/build.json?$stamp" || true)"
-            vnext_code="$(curl --silent --show-error --max-time 12 --location --output /tmp/tk-h218-vnext-build.json --write-out '%{http_code}' "$base/sports/vnext/build.json?$stamp" || true)"
-            badminton_code="$(curl --silent --show-error --max-time 12 --location --output /tmp/tk-h218-badminton-build.json --write-out '%{http_code}' "$base/sports/badminton/build.json?$stamp" || true)"
-            runtime_code="$(curl --silent --show-error --max-time 12 --location --output /tmp/tk-h218-runtime.js --write-out '%{http_code}' "$base/release-runtime.js?$stamp" || true)"
-            hub_code="$(curl --silent --show-error --max-time 12 --location --output /tmp/tk-h218-hub.html --write-out '%{http_code}' "$base/?$stamp" || true)"
-            vnext_html_code="$(curl --silent --show-error --max-time 12 --location --output /tmp/tk-h218-vnext.html --write-out '%{http_code}' "$base/sports/vnext/index.html?$stamp" || true)"
-            badminton_html_code="$(curl --silent --show-error --max-time 12 --location --output /tmp/tk-h218-badminton.html --write-out '%{http_code}' "$base/sports/badminton/index.html?$stamp" || true)"
-            vnext_css_code="$(curl --silent --show-error --max-time 12 --location --output /dev/null --write-out '%{http_code}' "$base/sports/vnext/workspace-redesign-h218.css?$stamp" || true)"
-            badminton_css_code="$(curl --silent --show-error --max-time 12 --location --output /dev/null --write-out '%{http_code}' "$base/sports/badminton/workspace-redesign-h218.css?$stamp" || true)"
-            echo "H218 bundle attempt=$attempt release=$release_code root=$root_code vnext=$vnext_code badminton=$badminton_code runtime=$runtime_code hub=$hub_code vnext_html=$vnext_html_code badminton_html=$badminton_html_code vnext_css=$vnext_css_code badminton_css=$badminton_css_code"
-            if [ "$release_code" = "200" ] && [ "$root_code" = "200" ] && [ "$vnext_code" = "200" ] && [ "$badminton_code" = "200" ] && [ "$runtime_code" = "200" ] && [ "$hub_code" = "200" ] && [ "$vnext_html_code" = "200" ] && [ "$badminton_html_code" = "200" ] && [ "$vnext_css_code" = "200" ] && [ "$badminton_css_code" = "200" ] &&
-               grep -Fq '"releaseId": "H218"' /tmp/tk-h218-release.json &&
-               grep -Fq '"cacheTag": "h218-sports-redesign-20261124"' /tmp/tk-h218-root-build.json &&
-               grep -Fq '"cacheTag": "h218-sports-redesign-20261124"' /tmp/tk-h218-vnext-build.json &&
-               grep -Fq '"cacheTag": "h218-sports-redesign-20261124"' /tmp/tk-h218-badminton-build.json &&
-               grep -Fq 'h218-sports-redesign-20261124' /tmp/tk-h218-runtime.js &&
-               grep -Fq 'workspace-redesign-h218.css?v=h218-sports-redesign-20261124' /tmp/tk-h218-vnext.html &&
-               grep -Fq 'workspace-redesign-h218.css?v=h218-sports-redesign-20261124' /tmp/tk-h218-badminton.html &&
-               grep -Fq 'release-runtime.js?v=h218-sports-redesign-20261124' /tmp/tk-h218-hub.html; then
+            stamp="__canva_release=${GITHUB_RUN_ID}-${attempt}"
+            root_code="$(curl --silent --show-error --max-time 15 --location --output /tmp/tk-live-hub.html --write-out '%{http_code}' "$base/index.html?$stamp" || true)"
+            vnext_code="$(curl --silent --show-error --max-time 15 --location --output /tmp/tk-live-vnext.html --write-out '%{http_code}' "$base/sports/vnext/index.html?sport=badminton&$stamp" || true)"
+            badminton_code="$(curl --silent --show-error --max-time 15 --location --output /tmp/tk-live-badminton-entry.html --write-out '%{http_code}' "$base/sports/vnext/badminton.html?sport=badminton&$stamp" || true)"
+            echo "Canva release attempt=$attempt root=$root_code vnext=$vnext_code badminton_entry=$badminton_code"
+            if [ "$root_code" = "200" ] && [ "$vnext_code" = "200" ] && [ "$badminton_code" = "200" ] &&
+              grep -Fq 'canva-ui-system.css?v=canva-ui-v5-20261128' /tmp/tk-live-hub.html &&
+              grep -Fq 'hub-workspace-h240.js?v=h240-single-workspace-20261127' /tmp/tk-live-hub.html &&
+              grep -Fq 'canva-sports-ui.css?v=canva-sports-v5-20261128' /tmp/tk-live-vnext.html &&
+              grep -Fq 'production-loader.js?v=h218-sports-redesign-20261124' /tmp/tk-live-vnext.html &&
+              grep -Fq 'workspace-contrast-runtime-h238.js' /tmp/tk-live-vnext.html; then
               ok=1
               break
             fi
             sleep 8
           done
           if [ "$ok" != "1" ]; then
-            echo "::error::The complete H218 release bundle did not propagate to EdgeOne. Check project root directory (topkey), deployment history and CDN propagation; do not run visual acceptance against a mixed release."
+            echo "::error::The current Canva Hub / unified Sports VNext HTML has not propagated to EdgeOne Production."
             exit 1
           fi
-          echo "### Complete H218 production bundle verified: Hub, all three manifests, runtime, both workspace HTML files and both CSS assets." >> "$GITHUB_STEP_SUMMARY"
-      - name: Verify H220 calendar stylesheet and cache key on live EdgeOne
-        shell: bash
-        run: |
-          set -euo pipefail
-          base="https://topkey-activity-management.edgeone.dev"
-          ok=0
-          for attempt in $(seq 1 18); do
-            stamp="__h220_probe=${attempt}_${GITHUB_RUN_ID}"
-            html_code="$(curl --silent --show-error --max-time 15 --location --output /tmp/tk-h220-hub.html --write-out '%{http_code}' "$base/?$stamp" || true)"
-            css_code="$(curl --silent --show-error --max-time 15 --location --output /tmp/tk-h220-calendar.css --write-out '%{http_code}' "$base/hub-dashboard-reference-h219.css?v=h220-mobile-calendar-20261125&$stamp" || true)"
-            echo "H220 live attempt=$attempt html=$html_code css=$css_code"
-            if [ "$html_code" = "200" ] && [ "$css_code" = "200" ] &&
-              grep -Fq 'hub-dashboard-reference-h219.css?v=h220-mobile-calendar-20261125' /tmp/tk-h220-hub.html &&
-              grep -Fq 'H220 — compact seven-column calendar on phones' /tmp/tk-h220-calendar.css &&
-              grep -Fq 'min-width:0!important' /tmp/tk-h220-calendar.css &&
-              grep -Fq 'overflow-x:visible!important' /tmp/tk-h220-calendar.css; then
-              ok=1
-              break
-            fi
-            sleep 8
+
+          for asset in canva-ui-system.css hub-workspace-h240.js; do
+            code="$(curl --silent --show-error --max-time 15 --location --output "/tmp/tk-$asset" --write-out '%{http_code}' "$base/$asset?__canva_asset=$GITHUB_RUN_ID" || true)"
+            echo "Hub asset $asset HTTP=$code bytes=$(wc -c < "/tmp/tk-$asset" 2>/dev/null || echo 0)"
+            test "$code" = "200"
+            test -s "/tmp/tk-$asset"
           done
-          if [ "$ok" != "1" ]; then
-            echo "::error::H220 calendar stylesheet/cache key has not propagated to EdgeOne. Do not claim the mobile calendar fix is live."
-            exit 1
-          fi
-          echo "### H220 live calendar stylesheet and cache key verified on EdgeOne." >> "$GITHUB_STEP_SUMMARY"
-      - name: Verify H228 dashboard tab isolation on live EdgeOne
-        shell: bash
-        run: |
-          set -euo pipefail
-          base="https://topkey-activity-management.edgeone.dev"
-          ok=0
-          for attempt in $(seq 1 18); do
-            stamp="__h230_probe=${attempt}_${GITHUB_RUN_ID}"
-            html_code="$(curl --silent --show-error --max-time 15 --location --output /tmp/tk-h230-vnext.html --write-out '%{http_code}' "$base/sports/vnext/index.html?sport=volleyball&$stamp" || true)"
-            css_code="$(curl --silent --show-error --max-time 15 --location --output /tmp/tk-h230-dashboard.css --write-out '%{http_code}' "$base/sports/vnext/dashboard-live-h227.css?v=h230-page-visibility-20261125&$stamp" || true)"
-            js_code="$(curl --silent --show-error --max-time 15 --location --output /tmp/tk-h230-dashboard.js --write-out '%{http_code}' "$base/sports/vnext/src/dashboard-live-h227.js?v=h229-dashboard-retry-20261125&$stamp" || true)"
-            echo "H230 live attempt=$attempt html=$html_code css=$css_code js=$js_code"
-            if [ "$html_code" = "200" ] && [ "$css_code" = "200" ] && [ "$js_code" = "200" ] &&
-              grep -Fq 'dashboard-live-h227.css?v=h230-page-visibility-20261125' /tmp/tk-h230-vnext.html &&
-              grep -Fq 'dashboard-live-h227.js?v=h229-dashboard-retry-20261125' /tmp/tk-h230-vnext.html &&
-              grep -Fq 'H230: page visibility is owned by App.showTab()' /tmp/tk-h230-dashboard.css &&
-              grep -Fq '__TOPKEY_H227_INSTALL_ERROR' /tmp/tk-h230-dashboard.js; then
-              ok=1
-              break
-            fi
-            sleep 8
+          for asset in canva-sports-ui.css production-loader.js; do
+            code="$(curl --silent --show-error --max-time 15 --location --output "/tmp/tk-vnext-$asset" --write-out '%{http_code}' "$base/sports/vnext/$asset?__canva_asset=$GITHUB_RUN_ID" || true)"
+            echo "VNext asset $asset HTTP=$code bytes=$(wc -c < "/tmp/tk-vnext-$asset" 2>/dev/null || echo 0)"
+            test "$code" = "200"
+            test -s "/tmp/tk-vnext-$asset"
           done
-          if [ "$ok" != "1" ]; then
-            echo "::error::H228/H229 dashboard tab-isolation assets have not propagated to EdgeOne. Do not claim the workspace-tab fix is live."
-            exit 1
-          fi
-          echo "### H228/H229 dashboard tab-isolation HTML, CSS and runtime verified on live EdgeOne." >> "$GITHUB_STEP_SUMMARY"
-      - name: Verify H232 live badminton, group standings, calendar and contrast assets
-        shell: bash
-        env:
-          EDGEONE_DEPLOY_HOOK: ${{ secrets.EDGEONE_DEPLOY_HOOK }}
-        run: |
-          set -euo pipefail
-          if [ -z "${EDGEONE_DEPLOY_HOOK}" ]; then
-            echo "::warning::H232 source is merged but no EdgeOne deploy hook is configured; live verification is skipped and production is NOT confirmed."
-            echo "### H232 production verification skipped — deploy hook is not configured." >> "$GITHUB_STEP_SUMMARY"
-            exit 0
-          fi
-          base="https://topkey-activity-management.edgeone.dev"
-          ok=0
-          for attempt in $(seq 1 18); do
-            root_code="$(curl --silent --show-error --max-time 15 --location --output /tmp/tk-h232-root.html --write-out '%{http_code}' "$base/index.html?__h232_probe=$GITHUB_RUN_ID-$attempt" || true)"
-            vnext_code="$(curl --silent --show-error --max-time 15 --location --output /tmp/tk-h232-vnext.html --write-out '%{http_code}' "$base/sports/vnext/index.html?sport=volleyball&__h232_probe=$GITHUB_RUN_ID-$attempt" || true)"
-            if [ "$root_code" = "200" ] && [ "$vnext_code" = "200" ] &&
-              grep -Fq 'executive-dashboard.js?v=h232-live-schedule-20261126' /tmp/tk-h232-root.html &&
-              grep -Fq 'src/config.js?v=h232-badminton-config-parity-20261126' /tmp/tk-h232-vnext.html &&
-              grep -Fq 'h97-vnext.bundle.js?v=h232-badminton-config-parity-20261126' /tmp/tk-h232-vnext.html &&
-              grep -Fq 'contrast-surfaces-h232.css?v=h232-surface-contrast-20261126' /tmp/tk-h232-vnext.html; then
-              curl --fail --silent --show-error --max-time 20 "$base/executive-dashboard.js?v=h232-live-schedule-20261126" -o /tmp/tk-h232-executive.js
-              curl --fail --silent --show-error --max-time 20 "$base/sports/vnext/h97-vnext.bundle.js?v=h232-badminton-config-parity-20261126" -o /tmp/tk-h232-vnext.js
-              curl --fail --silent --show-error --max-time 20 "$base/sports/vnext/contrast-surfaces-h232.css?v=h232-surface-contrast-20261126" -o /tmp/tk-h232-contrast.css
-              grep -Fq "db.ref(s.root+'/matches')" /tmp/tk-h232-executive.js
-              grep -Fq 'Lịch thi đấu và hoạt động các môn' /tmp/tk-h232-executive.js
-              grep -Fq 'BEST_OF_3_21_SWITCH_10' /tmp/tk-h232-vnext.js
-              grep -Fq 'tk-group-standings' /tmp/tk-h232-vnext.js
-              grep -Fq 'H232: restore readable ink on the light surfaces created by H218.' /tmp/tk-h232-contrast.css
-              ok=1
-              break
+
+          sports="badminton football volleyball running handmade shuttle cooking"
+          for sport in $sports; do
+            code="$(curl --silent --show-error --max-time 15 --location --output "/tmp/tk-sport-$sport.html" --write-out '%{http_code}' "$base/sports/vnext/index.html?sport=$sport&__canva_sport=$GITHUB_RUN_ID" || true)"
+            if [ "$code" != "200" ] || ! grep -Fq 'canva-sports-ui.css?v=canva-sports-v5-20261128' "/tmp/tk-sport-$sport.html"; then
+              echo "::error::Unified Canva workspace missing for sport=$sport HTTP=$code"
+              exit 1
             fi
-            echo "H232 live propagation attempt=$attempt root=$root_code vnext=$vnext_code"
-            sleep 8
+            echo "PASS unified sport=$sport HTTP=$code"
           done
-          if [ "$ok" != "1" ]; then
-            echo "::error::H232 live assets have not propagated to EdgeOne. Do not claim production is updated."
-            exit 1
-          fi
-          echo "### H232 production HTML, runtime bundle, active schedule calendar and contrast CSS verified on EdgeOne." >> "$GITHUB_STEP_SUMMARY"
-      - name: Verify H250 Hub redesign and sport contrast runtime on live EdgeOne
-        shell: bash
-        env:
-          EDGEONE_DEPLOY_HOOK: ${{ secrets.EDGEONE_DEPLOY_HOOK }}
-        run: |
-          set -euo pipefail
-          if [ -z "${EDGEONE_DEPLOY_HOOK}" ]; then
-            echo "::error::EDGEONE_DEPLOY_HOOK is missing; H250 cannot be confirmed on production."
-            exit 1
-          fi
-          base="https://topkey-activity-management.edgeone.dev"
-          ok=0
-          for attempt in $(seq 1 18); do
-            stamp="__h250_probe=${GITHUB_RUN_ID}-${attempt}"
-            root_code="$(curl --silent --show-error --max-time 15 --location --output /tmp/tk-h250-root.html --write-out '%{http_code}' "$base/index.html?$stamp" || true)"
-            sport_code="$(curl --silent --show-error --max-time 15 --location --output /tmp/tk-h250-sport.html --write-out '%{http_code}' "$base/sports/vnext/index.html?sport=badminton&$stamp" || true)"
-            css_code="$(curl --silent --show-error --max-time 15 --location --output /tmp/tk-h250-contrast.css --write-out '%{http_code}' "$base/sports/vnext/workspace-contrast-h234.css?v=h250-overview-podium-medals-20261127&$stamp" || true)"
-            runtime_code="$(curl --silent --show-error --max-time 15 --location --output /tmp/tk-h250-runtime.js --write-out '%{http_code}' "$base/sports/vnext/workspace-contrast-runtime-h238.js?v=h250-overview-podium-medals-aa-20261127&$stamp" || true)"
-            echo "H250 live attempt=$attempt root=$root_code sport=$sport_code css=$css_code runtime=$runtime_code"
-            if [ "$root_code" = "200" ] && [ "$sport_code" = "200" ] && [ "$css_code" = "200" ] && [ "$runtime_code" = "200" ] &&
-              grep -Fq 'hub-redesign-h240.css?v=h240-full-visual-system-20261127' /tmp/tk-h250-root.html &&
-              grep -Fq 'hub-workspace-h240.js?v=h240-single-workspace-20261127' /tmp/tk-h250-root.html &&
-              grep -Fq 'workspace-contrast-h234.css?v=h250-overview-podium-medals-20261127' /tmp/tk-h250-sport.html &&
-              grep -Fq 'workspace-contrast-runtime-h238.js?v=h250-overview-podium-medals-aa-20261127' /tmp/tk-h250-sport.html &&
-              grep -Fq 'H250: podium medal glyphs' /tmp/tk-h250-contrast.css &&
-              grep -Fq 'const podiumMedal = node.classList.contains' /tmp/tk-h250-runtime.js &&
-              grep -Fq 'window.__TOPKEY_WORKSPACE_CONTRAST_H250' /tmp/tk-h250-runtime.js; then
-              ok=1
-              break
-            fi
-            sleep 8
-          done
-          if [ "$ok" != "1" ]; then
-            echo "::error::H250 Hub redesign and contrast runtime have not propagated to EdgeOne Production. Do not claim deployment complete."
-            exit 1
-          fi
-          echo "### H250 production verified: Hub H240, podium WCAG AA CSS, runtime H250 and live sport workspace HTML/assets are serving from EdgeOne." >> "$GITHUB_STEP_SUMMARY"
+          echo "### Live EdgeOne Canva Hub + unified 7-sport VNext HTML/assets verified." >> "$GITHUB_STEP_SUMMARY"
       - name: Document EdgeOne release settings
         shell: bash
         env:
