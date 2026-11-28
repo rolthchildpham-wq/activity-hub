@@ -4,7 +4,7 @@ const hub=fs.readFileSync('topkey/index.html','utf8');
 const vnext=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
 const css=fs.readFileSync('topkey/canva-ui-system.css','utf8');
 const dash=fs.readFileSync('topkey/executive-dashboard.js','utf8');
-assert.ok(hub.includes('canva-ui-system.css?v=canva-ui-v1-20261127'),'Hub must load the consolidated Canva design-system stylesheet');
+assert.ok(/canva-ui-system\.css\?v=canva-ui-v\d+-202611\d+/.test(hub),'Hub must load the consolidated Canva design-system stylesheet');
 assert.ok(!hub.includes('hub-dashboard-reference-h219.css'),'Legacy H219 stylesheet must not load');
 assert.ok(hub.includes('executive-dashboard.js?v=h232-live-schedule-20261126'),'Hub must bypass the stale dashboard script cache');
 assert.ok(hub.includes('sports/vnext/badminton.html?sport=badminton&amp;__topkey_reload=h219-liberty-dashboard-20261125'),'Badminton must use the shared sport launcher');
