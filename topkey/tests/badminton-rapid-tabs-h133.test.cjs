@@ -4,12 +4,12 @@ const vm=require('node:vm');
 const code=fs.readFileSync('topkey/sports/badminton/tab-perf-h133.js','utf8');
 const legacy=fs.readFileSync('topkey/sports/badminton/index.html','utf8');
 const html=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
-const loader=fs.readFileSync('topkey/sports/badminton/production-loader.js','utf8');
+const loader=fs.readFileSync('topkey/sports/vnext/production-loader.js','utf8');
 assert.ok(legacy.includes("new URL('../vnext/index.html', location.href)"),'badminton must enter the shared VNext workspace');
 assert.ok(html.includes('dashboard-live-h227.js?v=h229-dashboard-retry-20261125'),'shared workspace must load the current dashboard runtime');
-assert.ok(html.includes('tab-perf-h133.js?v=h133-20261113'),'shared VNext badminton boot must restore H133 rapid-tab performance');
-assert.ok(html.includes('../badminton/production-loader.js?v=canva-vnext-runtime-20261128'),'shared VNext entry must load the preserved badminton runtime loader');
-assert.ok(loader.includes('await yieldToBrowser(4000)'));
+assert.ok(loader.includes('../badminton/tab-perf-h133.js?v=h133-20261113'),'shared loader must stage H133 only for the badminton sport');
+assert.ok(html.includes('./production-loader.js?v=h218-sports-redesign-20261124'),'shared VNext entry must load one shared loader');
+assert.ok(loader.includes('quietMs: 350'),'performance extensions must yield in short idle slices, not block tabs for four seconds');
 const frames=[],calls=[];
 let tab='overview';
 const app={get currentTab(){return tab},set currentTab(x){tab=x},

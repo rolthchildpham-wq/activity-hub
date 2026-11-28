@@ -1,6 +1,6 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const {JSDOM}=require('jsdom');
-const source=fs.readFileSync(path.join(__dirname,'../sports/badminton/production-loader.js'),'utf8');
+const source=fs.readFileSync(path.join(__dirname,'../sports/vnext/production-loader.js'),'utf8');
 const tick=()=>new Promise(r=>setTimeout(r,30));
 (async()=>{
  for(const order of ['auth-first','core-first']){
