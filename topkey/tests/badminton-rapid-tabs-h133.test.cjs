@@ -7,7 +7,7 @@ const html=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
 const loader=fs.readFileSync('topkey/sports/badminton/production-loader.js','utf8');
 assert.ok(legacy.includes("new URL('../vnext/index.html', location.href)"),'badminton must enter the shared VNext workspace');
 assert.ok(html.includes('dashboard-live-h227.js?v=h229-dashboard-retry-20261125'),'shared workspace must load the current dashboard runtime');
-assert.ok(html.includes('production-loader.js?v=tourney-lifecycle-20261117-r1'),'entry must load the current tournament-lifecycle runtime');
+assert.ok(html.includes('../badminton/production-loader.js?v=ppt-upload-20261111'),'shared VNext entry must load the preserved badminton runtime loader');
 assert.ok(loader.includes('await yieldToBrowser(4000)'));
 const frames=[],calls=[];
 let tab='overview';
