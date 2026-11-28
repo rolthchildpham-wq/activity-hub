@@ -24,7 +24,7 @@ function makeHarness(){
 }
 test('active VNext entry loads the roster recovery module, not the obsolete monolithic bundle',()=>{
  assert.match(html,/src\/roster-csv-recovery\.js\?v=20261117-roster-import-r1/);
- assert.doesNotMatch(html,/h97-vnext\.bundle\.js/);
+ assert.doesNotMatch(html,/<script[^>]+src=["'][^"']*h97-vnext\.bundle\.js/i,'the obsolete bundle must not be loaded as a direct script; shared bootstrap owns core loading');
  assert.ok(source.includes('function plan(')&&source.includes('function parseRoster('));
 });
 test('recovery planner restores an empty existing roster without changing team ID or match links',()=>{
