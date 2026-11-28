@@ -503,7 +503,7 @@ jobs:
             exit 1
           fi
 
-      - name: Production HTTP and asset checks
+      - name: Production HTTP and asset checks (collect every endpoint)
         id: production
         if: always()
         continue-on-error: true
@@ -511,8 +511,9 @@ jobs:
         env:
           MCP_BOOTSTRAP_OUTCOME: ${{ steps.mcp_bootstrap.outcome }}
         run: |
-          set -euo pipefail
+          set -uo pipefail
           mkdir -p artifacts/chrome-devtools
+          failed=0
           base="https://topkey-activity-management.edgeone.dev"
           paths=("/" "/sports/vnext/index.html?sport=football" "/sports/vnext/index.html?sport=volleyball" "/sports/vnext/badminton.html" "/sports/badminton/index.html" "/hub-dashboard-reference-h219.css" "/executive-dashboard.js?v=h232-live-schedule-20261126")
           for path in "${paths[@]}"; do
@@ -523,60 +524,70 @@ jobs:
               sleep 2
             done
             echo "$code $path" | tee -a artifacts/chrome-devtools/http-status.txt
-            test "$code" = "200"
+            if [ "$code" != "200" ]; then failed=1; fi
           done
-          # A PR build cannot expect the new release to be on production yet.
-          # Run this live-browser gate only after the EdgeOne Git-provider
-          # readiness/deploy workflow has completed for main.
-          curl --fail --silent --show-error --location "$base/sports/vnext/index.html?sport=volleyball&__topkey_probe=$GITHUB_RUN_ID" -o /tmp/topkey-live-index.html
-          if [ "$GITHUB_EVENT_NAME" = "workflow_run" ] && grep -Fq "workspace-contrast-runtime-h238.js?v=h251-podium-medal-unconditional-aa-20261127" /tmp/topkey-live-index.html 2>/dev/null; then
-            curl --fail --silent --show-error --location "$base/sports/vnext/index.html?sport=volleyball&__h248_probe=$GITHUB_RUN_ID" -o /tmp/topkey-h248-live.html
-            grep -Fq 'workspace-contrast-runtime-h238.js?v=h251-podium-medal-unconditional-aa-20261127' /tmp/topkey-h248-live.html
-            curl --fail --silent --show-error --location "$base/sports/vnext/workspace-contrast-runtime-h238.js?v=h251-podium-medal-unconditional-aa-20261127" -o /tmp/topkey-h248-live.js
-            grep -Fq 'h251-podium-medal-unconditional-aa-20261127' /tmp/topkey-h248-live.js
-            echo "200 H251 production runtime content verified" | tee -a artifacts/chrome-devtools/http-status.txt
 
-            # Verify the deployed production runtime in the real browser through
-            # the official Chrome DevTools MCP client. This fixture changes only
-            # transient DOM nodes; it never signs in or writes Firebase data.
-            if [ "$MCP_BOOTSTRAP_OUTCOME" = "success" ]; then
-              mcp_tool(){ node topkey/tests/chrome-devtools-mcp-client.mjs call "$@" 2>&1 | tee -a artifacts/chrome-devtools/mcp-tool-output.log; }
-              mcp_tool navigate_page 2 --url "$base/sports/vnext/index.html?sport=volleyball&__h248_live=$GITHUB_RUN_ID" | tee artifacts/chrome-devtools/h248-production-navigation.txt
-              sleep 2
-              mcp_tool evaluate_script 'async () => {
-                const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
-                for(let i=0;i<40&&!window.__TOPKEY_WORKSPACE_CONTRAST_H251;i++)await wait(100);
-                const runtime=window.__TOPKEY_WORKSPACE_CONTRAST_H251;
-                if(!runtime)throw new Error("H251 runtime not loaded on live EdgeOne");
-                const host=document.querySelector("#app-shell");
-                if(!host)throw new Error("Live sports workspace root unavailable");
-                const page=document.createElement("section");
-                page.className="page";
-                page.style.backgroundColor="rgb(255,255,255)";
-                const sample=document.createElement("span");
-                sample.textContent="H251 production contrast smoke test";
-                sample.style.color="rgb(181,211,232)";
-                page.appendChild(sample);
-                host.appendChild(page);
-                await wait(150);
-                const foreground=getComputedStyle(sample).color;
-                const background=getComputedStyle(page).backgroundColor;
-                const rgb=value=>String(value).match(/[0-9.]+/g).slice(0,3).map(Number);
-                const lum=value=>{const c=rgb(value).map(v=>{v/=255;return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*c[0]+.7152*c[1]+.0722*c[2]};
-                const ratio=(Math.max(lum(foreground),lum(background))+.05)/(Math.min(lum(foreground),lum(background))+.05);
-                page.remove();
-                const result={runtime:runtime.version,foreground,background,contrast:Number(ratio.toFixed(2))};
-                if(foreground!=="rgb(41, 70, 91)"||ratio<4.5)throw new Error("H251 live production contrast failed: "+JSON.stringify(result));
-                return JSON.stringify(result);
-              }' --pageId 2 --output-format=json | tee artifacts/chrome-devtools/h248-production-browser.json
+          if curl --fail --silent --show-error --location "$base/sports/vnext/index.html?sport=volleyball&__topkey_probe=$GITHUB_RUN_ID" -o /tmp/topkey-live-index.html; then
+            if [ "$GITHUB_EVENT_NAME" = "workflow_run" ] && grep -Fq "workspace-contrast-runtime-h238.js?v=h251-podium-medal-unconditional-aa-20261127" /tmp/topkey-live-index.html 2>/dev/null; then
+              if curl --fail --silent --show-error --location "$base/sports/vnext/index.html?sport=volleyball&__h248_probe=$GITHUB_RUN_ID" -o /tmp/topkey-h248-live.html &&
+                 grep -Fq 'workspace-contrast-runtime-h238.js?v=h251-podium-medal-unconditional-aa-20261127' /tmp/topkey-h248-live.html; then
+                echo "200 H251 production HTML verified" | tee -a artifacts/chrome-devtools/http-status.txt
+              else
+                echo "FAIL H251 production HTML content" | tee -a artifacts/chrome-devtools/http-status.txt
+                failed=1
+              fi
+              if curl --fail --silent --show-error --location "$base/sports/vnext/workspace-contrast-runtime-h238.js?v=h251-podium-medal-unconditional-aa-20261127" -o /tmp/topkey-h248-live.js &&
+                 grep -Fq 'h251-podium-medal-unconditional-aa-20261127' /tmp/topkey-h248-live.js; then
+                echo "200 H251 production runtime content verified" | tee -a artifacts/chrome-devtools/http-status.txt
+              else
+                echo "FAIL H251 production runtime content" | tee -a artifacts/chrome-devtools/http-status.txt
+                failed=1
+              fi
+
+              # Verify deployed production runtime only through official MCP.
+              if [ "$MCP_BOOTSTRAP_OUTCOME" = "success" ]; then
+                mcp_tool(){
+                  local status=0
+                  if node topkey/tests/chrome-devtools-mcp-client.mjs call "$@" 2>&1 | tee -a artifacts/chrome-devtools/mcp-tool-output.log; then return 0; else status=$?; printf 'MCP_TOOL_ERROR status=%s command=%q args=%q\\n' "$status" "$1" "${*:2}" | tee -a artifacts/chrome-devtools/mcp-errors.txt >&2; return 0; fi
+                }
+                mcp_tool navigate_page 2 --url "$base/sports/vnext/index.html?sport=volleyball&__h248_live=$GITHUB_RUN_ID" | tee artifacts/chrome-devtools/h248-production-navigation.txt
+                sleep 2
+                mcp_tool evaluate_script 'async () => {
+                  const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+                  for(let i=0;i<40&&!window.__TOPKEY_WORKSPACE_CONTRAST_H251;i++)await wait(100);
+                  const runtime=window.__TOPKEY_WORKSPACE_CONTRAST_H251;
+                  if(!runtime)throw new Error("H251 runtime not loaded on live EdgeOne");
+                  const host=document.querySelector("#app-shell");
+                  if(!host)throw new Error("Live sports workspace root unavailable");
+                  const page=document.createElement("section");
+                  page.className="page";page.style.backgroundColor="rgb(255,255,255)";
+                  const sample=document.createElement("span");sample.textContent="H251 production contrast smoke test";sample.style.color="rgb(181,211,232)";
+                  page.appendChild(sample);host.appendChild(page);await wait(150);
+                  const foreground=getComputedStyle(sample).color,background=getComputedStyle(page).backgroundColor;
+                  const rgb=value=>String(value).match(/[0-9.]+/g).slice(0,3).map(Number);
+                  const lum=value=>{const c=rgb(value).map(v=>{v/=255;return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*c[0]+.7152*c[1]+.0722*c[2]};
+                  const ratio=(Math.max(lum(foreground),lum(background))+.05)/(Math.min(lum(foreground),lum(background))+.05);
+                  page.remove();const result={runtime:runtime.version,foreground,background,contrast:Number(ratio.toFixed(2))};
+                  if(foreground!=="rgb(41, 70, 91)"||ratio<4.5)throw new Error("H251 live production contrast failed: "+JSON.stringify(result));
+                  return JSON.stringify(result);
+                }' --pageId 2 --output-format=json | tee artifacts/chrome-devtools/h248-production-browser.json
+                if grep -q 'Error:' artifacts/chrome-devtools/h248-production-browser.json || grep -q 'MCP_TOOL_ERROR' artifacts/chrome-devtools/mcp-errors.txt 2>/dev/null; then failed=1; fi
+              else
+                echo "FAIL H251 production browser verification blocked: MCP bootstrap unavailable." | tee -a artifacts/chrome-devtools/http-status.txt
+                failed=1
+              fi
             else
-              echo "::error::MCP bootstrap did not pass; live H251 browser verification is blocked."
-              exit 1
+              echo "H251 production browser verification deferred: current production HTML does not yet advertise the H251 runtime." | tee artifacts/chrome-devtools/h248-production-deferred.txt
             fi
           else
-            echo "H251 production browser verification deferred: the current production HTML does not yet advertise the H251 runtime." | tee artifacts/chrome-devtools/h248-production-deferred.txt
+            echo "FAIL production live VNext probe" | tee -a artifacts/chrome-devtools/http-status.txt
+            failed=1
           fi
 
+          if [ "$failed" -ne 0 ]; then
+            echo "Production HTTP/asset audit completed all endpoints and recorded one or more failures."
+            exit 1
+          fi
       - name: Run full source syntax and regression audit (collect every failure)
         id: regression
         if: always()
