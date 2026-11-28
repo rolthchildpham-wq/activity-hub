@@ -36,7 +36,12 @@ test('deep links rewrite only next workspace paths; old sports routes unaffected
  for(const item of expected)assert.ok(config.rewrites.some(r=>r.source===item.source&&r.destination===item.destination),`Missing rewrite ${item.source} -> ${item.destination}; found ${JSON.stringify(config.rewrites)}`);
  assert.ok(!config.rewrites.some(r=>r.source==='/*'),`Broad catch-all rewrite would hijack legacy routes: ${JSON.stringify(config.rewrites)}`);
  const legacy=readFileSync(join(staged,'sports/badminton/index.html'),'utf8');
- assert.ok(legacy.includes('TOPKEY BADMINTON'));
+ // The legacy badminton entry is intentionally a lightweight redirect shell
+ // into the shared VNext workspace, not the retired standalone app markup.
+ assert.match(legacy,/<title>TOPKEY Sports · Cầu lông<\/title>/);
+ assert.match(legacy,/query\.set\(['"]sport['"],\s*['"]badminton['"]\)/);
+ assert.match(legacy,/sports\/vnext\/index\.html/);
+ assert.match(legacy,/location\.replace\(target\.href\)/);
 });
 test('stage keeps existing EdgeOne headers unchanged',()=>{
  const original=JSON.parse(readFileSync(join(root,'topkey/edgeone.json'),'utf8'));
