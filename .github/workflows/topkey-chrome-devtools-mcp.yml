@@ -522,6 +522,62 @@ jobs:
           mkdir -p artifacts/chrome-devtools
           failed=0
           base="https://topkey-activity-management.edgeone.dev"
+          # Badminton production diagnostics are unconditional: do not defer them
+          # behind another sport's CSS/runtime marker. Probe every critical asset.
+          badminton_paths=(
+            "/sports/vnext/badminton.html?__topkey_probe=$GITHUB_RUN_ID"
+            "/sports/vnext/index.html?sport=badminton&__topkey_probe=$GITHUB_RUN_ID"
+            "/sports/badminton/production-loader.js?v=canva-vnext-runtime-20261128"
+            "/sports/badminton/fast-start-h124.js?v=h126-startup-20261113"
+            "/sports/badminton/dashboard-smooth-h129.js?v=h129-20261113"
+            "/sports/badminton/tab-perf-h133.js?v=h133-20261113"
+            "/sports/vnext/h97-vnext.bundle.js?v=h232-badminton-config-parity-20261126"
+            "/sports/vnext/canva-sports-ui.css?v=canva-sports-v5-20261128"
+          )
+          for path in "${badminton_paths[@]}"; do
+            code="$(curl --silent --show-error --location --connect-timeout 10 --max-time 30 -o /dev/null -w '%{http_code}' "$base$path" || true)"
+            echo "$code BADMINTON $path" | tee -a artifacts/chrome-devtools/badminton-production-http.txt
+            if [ "$code" != "200" ]; then failed=1; fi
+          done
+          if [ "$MCP_BOOTSTRAP_OUTCOME" = "success" ]; then
+            mcp_tool(){
+              local status=0
+              if node topkey/tests/chrome-devtools-mcp-client.mjs call "$@" 2>&1 | tee -a artifacts/chrome-devtools/mcp-tool-output.log; then return 0; else status=$?; printf 'MCP_TOOL_ERROR status=%s command=%q args=%q\\n' "$status" "$1" "${*:2}" | tee -a artifacts/chrome-devtools/mcp-errors.txt >&2; return 0; fi
+            }
+            mcp_tool navigate_page 2 --url "$base/sports/vnext/badminton.html?__topkey_probe=$GITHUB_RUN_ID" | tee artifacts/chrome-devtools/badminton-production-navigation.txt
+            sleep 4
+            mcp_tool evaluate_script 'async () => {
+              const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+              await wait(1200);
+              const result={
+                href:location.href,
+                sport:new URLSearchParams(location.search).get("sport"),
+                title:document.title,
+                readyState:document.readyState,
+                release:window.TopkeyRelease?.cacheTag||null,
+                platform:!!window.TopkeyPlatform,
+                badmintonLoader:!!window.TopkeyProductionLoader,
+                loginVisible:!!document.querySelector("#login-screen")&&!document.querySelector("#login-screen").classList.contains("hidden"),
+                loginForm:!!document.querySelector("#login-form"),
+                appShell:!!document.querySelector("#app-shell"),
+                css:[...document.styleSheets].map(x=>x.href).filter(Boolean).filter(x=>x.includes("canva-sports-ui.css")),
+                badResources:performance.getEntriesByType("resource").filter(x=>/badminton|h97-vnext|canva-sports-ui|firebase/i.test(x.name)&&(!x.responseEnd||x.transferSize===0&&x.duration>5000)).map(x=>({name:x.name,duration:Math.round(x.duration),transferSize:x.transferSize,responseEnd:x.responseEnd})),
+                longTasks:performance.getEntriesByType("longtask").map(x=>Math.round(x.duration)),
+                viewport:{width:innerWidth,scrollWidth:document.documentElement.scrollWidth},
+                inputs:[...document.querySelectorAll("#login-form input")].map(x=>({type:x.type,disabled:x.disabled,visible:!!x.getClientRects().length}))
+              };
+              const email=document.querySelector("#login-form input[type=email]");
+              if(email){email.focus();email.value="smoke-test@example.invalid";email.dispatchEvent(new Event("input",{bubbles:true}));result.inputResponsive=document.activeElement===email&&email.value==="smoke-test@example.invalid";email.value="";}
+              if(result.sport!=="badminton"||!result.platform||!result.badmintonLoader||!result.loginForm||!result.loginVisible||!result.inputResponsive||result.viewport.scrollWidth>result.viewport.width+2)
+                throw new Error("BADMINTON production startup contract failed: "+JSON.stringify(result));
+              return JSON.stringify(result);
+            }' --pageId 2 --output-format=json | tee artifacts/chrome-devtools/badminton-production-browser.json
+            if grep -q 'Error:' artifacts/chrome-devtools/badminton-production-browser.json || grep -q 'MCP_TOOL_ERROR' artifacts/chrome-devtools/mcp-errors.txt 2>/dev/null; then failed=1; fi
+            mcp_tool take_screenshot 2 --filePath artifacts/chrome-devtools/badminton-production-mobile-desktop.png
+          else
+            echo "FAIL badminton production browser verification blocked: official MCP bootstrap unavailable." | tee artifacts/chrome-devtools/badminton-production-http.txt
+            failed=1
+          fi
           paths=("/" "/sports/vnext/index.html?sport=football" "/sports/vnext/index.html?sport=volleyball" "/sports/vnext/badminton.html" "/sports/badminton/index.html" "/hub-dashboard-reference-h219.css" "/executive-dashboard.js?v=h232-live-schedule-20261126")
           for path in "${paths[@]}"; do
             code="000"
