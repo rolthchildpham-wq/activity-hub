@@ -89,8 +89,18 @@ jobs:
         continue-on-error: true
         shell: bash
         run: |
-          set -euo pipefail
-          mcp_tool(){ node topkey/tests/chrome-devtools-mcp-client.mjs call "$@" 2>&1 | tee -a artifacts/chrome-devtools/mcp-tool-output.log; }
+          set -uo pipefail
+          failed=0
+          mcp_tool(){
+            local status=0
+            if node topkey/tests/chrome-devtools-mcp-client.mjs call "$@" 2>&1 | tee -a artifacts/chrome-devtools/mcp-tool-output.log; then
+              return 0
+            else
+              status=$?
+              printf 'MCP_TOOL_ERROR status=%s command=%q args=%q\\n' "$status" "$1" "${*:2}" | tee -a artifacts/chrome-devtools/mcp-errors.txt >&2
+              return 0
+            fi
+          }
           base="http://127.0.0.1:4173"
           mcp_tool navigate_page 1 --url "$base/" | tee artifacts/chrome-devtools/hub-navigation.txt
           mcp_tool take_snapshot 1 --filePath artifacts/chrome-devtools/hub-desktop.txt >/dev/null
@@ -129,7 +139,7 @@ jobs:
               throw new Error("ECC Hub visual contract failed: "+JSON.stringify(result));
             return JSON.stringify(result);
           }' --pageId 1 --output-format=json | tee artifacts/chrome-devtools/hub-desktop.json
-          if grep -q 'Error:' artifacts/chrome-devtools/hub-desktop.json; then exit 1; fi
+          if grep -q 'Error:' artifacts/chrome-devtools/hub-desktop.json; then failed=1; fi
           mcp_tool evaluate_script 'async () => {
             const wait=ms=>new Promise(resolve=>setTimeout(resolve,120));
             document.querySelector("#tk28-language-options [data-lang=\"vi\"]")?.click();
@@ -165,7 +175,7 @@ jobs:
               throw new Error("Hub dashboard fixture/contrast incomplete: "+JSON.stringify(result));
             return JSON.stringify(result);
           }' --pageId 1 --output-format=json | tee artifacts/chrome-devtools/hub-dashboard-fixture.json
-          if grep -q 'Error:' artifacts/chrome-devtools/hub-dashboard-fixture.json; then exit 1; fi
+          if grep -q 'Error:' artifacts/chrome-devtools/hub-dashboard-fixture.json; then failed=1; fi
           mcp_tool take_screenshot 1 --filePath artifacts/chrome-devtools/hub-desktop.png
           mcp_tool take_snapshot 1 --filePath artifacts/chrome-devtools/hub-desktop-after-dashboard.txt >/dev/null
           mcp_tool evaluate_script '() => {document.querySelector("#executive-dashboard")?.scrollIntoView({block:"start"});return "dashboard-scrolled"}' --pageId 1
@@ -208,6 +218,10 @@ jobs:
           mcp_tool evaluate_script '() => {document.querySelector(".exec-calendar-card")?.scrollIntoView({block:"center"});return "calendar-mobile-scrolled"}' --pageId 1
           mcp_tool take_screenshot 1 --filePath artifacts/chrome-devtools/hub-calendar-mobile.png
           mcp_tool resize_page 1 1440 1000
+          if [ "$failed" -ne 0 ] || grep -R -q 'MCP_TOOL_ERROR' artifacts/chrome-devtools; then
+            echo "Hub UI checks completed with one or more recorded failures; see hub-desktop/dashboard/mobile artifacts."
+            exit 1
+          fi
 
       - name: Full UI fixture and interaction matrix – all 7 sports
         id: sports_ui
@@ -563,34 +577,72 @@ jobs:
             echo "H251 production browser verification deferred: the current production HTML does not yet advertise the H251 runtime." | tee artifacts/chrome-devtools/h248-production-deferred.txt
           fi
 
-      - name: Run regression tests
+      - name: Run full source syntax and regression audit (collect every failure)
         id: regression
         if: always()
         continue-on-error: true
+        shell: bash
         run: |
-          set -euo pipefail
-          node topkey/tests/hub-route-integrity.test.cjs
-          node topkey/tests/hub-sport-entry-contracts-h221.test.cjs
-          node topkey/tests/sport-shell-public-route-isolation-h222.test.cjs
-          node topkey/tests/hub-asset-inventory.test.cjs
-          node topkey/tests/canva-ui-replacement.test.cjs
-          node topkey/tests/hub-calendar-responsive-h220.test.cjs
-          node topkey/tests/hub-navigation-semantics.test.cjs
-          node topkey/tests/hub-dashboard-h219.test.cjs
-          node topkey/tests/hub-redesign-h240.test.cjs
-          node topkey/tests/h104-render-binding.test.cjs
-          node topkey/tests/hub-readable-h216.test.cjs
-          node topkey/tests/sport-contrast-h217.test.cjs
-          node topkey/tests/sport-workspace-redesign-h218.test.cjs
-          node topkey/tests/sport-workspaces-ux-h214.test.cjs
-          node topkey/tests/sport-themes-h132.test.cjs
-          node topkey/tests/badminton-dashboard-smooth-h129.test.cjs
-          node topkey/tests/hub-sidebar-full-patch-h130.test.cjs
-          node topkey/tests/short-public-links-h136.test.cjs
-          node topkey/tests/sports-group-standings.test.cjs
-          node topkey/sports/vnext/tests/badminton-indexeddb-v3-compat.test.cjs
-          node topkey/tests/executive-dashboard-live-calendar.test.cjs
+          set -uo pipefail
+          mkdir -p artifacts/chrome-devtools/regression
+          report="artifacts/chrome-devtools/regression/summary.tsv"
+          : > "$report"
+          total=0
+          passed=0
+          failed=0
+          skipped=0
+          run_check(){
+            local name="$1"; shift
+            local log="artifacts/chrome-devtools/regression/${name//[^A-Za-z0-9_.-]/_}.log"
+            total=$((total+1))
+            echo "===== START $name ====="
+            if timeout 30s "$@" >"$log" 2>&1; then
+              passed=$((passed+1))
+              printf 'PASS\t%s\t0\n' "$name" | tee -a "$report"
+              echo "PASS $name"
+            else
+              local code=$?
+              failed=$((failed+1))
+              printf 'FAIL\t%s\t%s\n' "$name" "$code" | tee -a "$report"
+              echo "FAIL $name (exit $code); continuing. Log: $log"
+              sed -n '1,100p' "$log"
+            fi
+          }
 
+          # Parse every first-party JS/CJS/MJS source file. Do not stop at the
+          # first syntax error; record each broken file and continue scanning.
+          while IFS= read -r file; do
+            run_check "syntax-$file" node --check "$file"
+          done < <(find topkey -type d \( -name node_modules -o -name vendor -o -name .git \) -prune -o -type f \( -name '*.js' -o -name '*.cjs' -o -name '*.mjs' \) -print | sort)
+
+          # Execute all standalone Node regression contracts in this directory.
+          # Firebase rules emulator tests run in the dedicated isolated Vlog gate;
+          # they are reported as a separately gated check rather than a false fail
+          # when this browser job has no emulator process.
+          while IFS= read -r file; do
+            case "$file" in
+              topkey/tests/vlog-rules-emulator.test.cjs)
+                skipped=$((skipped+1))
+                printf 'DEFERRED\t%s\tFirebase emulator gate\n' "$file" | tee -a "$report"
+                echo "DEFERRED $file (dedicated Firebase emulator workflow)"
+                ;;
+              *)
+                run_check "test-$file" node "$file"
+                ;;
+            esac
+          done < <(find topkey/tests -maxdepth 1 -type f \( -name '*.test.cjs' -o -name '*.test.mjs' -o -name '*.test.js' \) -print | sort)
+
+          # Compile every Python source without writing __pycache__ files.
+          while IFS= read -r file; do
+            run_check "python-$file" python3 -c 'import pathlib,sys; p=pathlib.Path(sys.argv[1]); compile(p.read_text(encoding="utf-8"),str(p),"exec")' "$file"
+          done < <(find topkey -type d \( -name node_modules -o -name vendor -o -name .git \) -prune -o -type f -name '*.py' -print | sort)
+
+          printf '\nTOTAL=%s PASS=%s FAIL=%s DEFERRED=%s\n' "$total" "$passed" "$failed" "$skipped" | tee artifacts/chrome-devtools/regression/totals.txt
+          if [ "$failed" -ne 0 ]; then
+            echo "Full regression audit found $failed failing checks; all discovered checks were still executed."
+            exit 1
+          fi
+          echo "All executable source and regression checks passed (emulator rules remain under dedicated gate)."
       - name: Upload Chrome DevTools evidence
         if: always()
         uses: actions/upload-artifact@v4
