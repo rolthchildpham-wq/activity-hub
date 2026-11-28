@@ -1,11 +1,18 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {existsSync,readFileSync} from 'node:fs';
+import {existsSync,readFileSync,mkdtempSync,rmSync} from 'node:fs';
 import {join,resolve} from 'node:path';
+import {tmpdir} from 'node:os';
+import {execFileSync} from 'node:child_process';
 
 const root=resolve(import.meta.dirname,'../..');
-const staged=join(root,'dist-edgeone');
+const staged=mkdtempSync(join(tmpdir(),'topkey-edgeone-stage-'));
 const configFile=join(staged,'edgeone.json');
+test.after(()=>rmSync(staged,{recursive:true,force:true}));
+
+// Recreate the artifact from this checkout/build instead of trusting a stale
+// dist-edgeone directory left by another workflow step or local cache.
+execFileSync(process.execPath,[join(root,'scripts/stage-edgeone-next.mjs'),staged],{cwd:root,stdio:'pipe'});
 
 test('legacy production entries are preserved by staging',()=>{
  for(const file of [
@@ -26,10 +33,15 @@ test('deep links rewrite only next workspace paths; old sports routes unaffected
   {source:'/next/sports',destination:'/next/index.html'},
   {source:'/next/sports/*',destination:'/next/index.html'}
  ];
- for(const item of expected)assert.ok(config.rewrites.some(r=>r.source===item.source&&r.destination===item.destination));
- assert.ok(!config.rewrites.some(r=>r.source==='/*'));
+ for(const item of expected)assert.ok(config.rewrites.some(r=>r.source===item.source&&r.destination===item.destination),`Missing rewrite ${item.source} -> ${item.destination}; found ${JSON.stringify(config.rewrites)}`);
+ assert.ok(!config.rewrites.some(r=>r.source==='/*'),`Broad catch-all rewrite would hijack legacy routes: ${JSON.stringify(config.rewrites)}`);
  const legacy=readFileSync(join(staged,'sports/badminton/index.html'),'utf8');
- assert.ok(legacy.includes('TOPKEY BADMINTON'));
+ // The legacy badminton entry is intentionally a lightweight redirect shell
+ // into the shared VNext workspace, not the retired standalone app markup.
+ assert.match(legacy,/<title>TOPKEY Sports · Cầu lông<\/title>/);
+ assert.match(legacy,/query\.set\(['"]sport['"],\s*['"]badminton['"]\)/);
+ assert.match(legacy,/\.\.\/vnext\/index\.html/);
+ assert.match(legacy,/location\.replace\(target\.href\)/);
 });
 test('stage keeps existing EdgeOne headers unchanged',()=>{
  const original=JSON.parse(readFileSync(join(root,'topkey/edgeone.json'),'utf8'));

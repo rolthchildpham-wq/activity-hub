@@ -1,13 +1,15 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
+const testModules=process.env.TOPKEY_TEST_NODE_MODULES;
+const {JSDOM}=require(testModules?path.join(testModules,'jsdom'):'jsdom');
 const root=path.join(__dirname,'..');
 const wizardSource=fs.readFileSync(path.join(root,'upgrade122-hotfix80.js'),'utf8');
 const reportSource=fs.readFileSync(path.join(root,'upgrade122-hotfix65.js'),'utf8');
 const archiveSource=fs.readFileSync(path.join(root,'src/upgrade9.js'),'utf8');
 const loader=fs.readFileSync(path.join(root,'production-loader.js'),'utf8');
-const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
-for(const name of ['upgrade122-hotfix65.js','upgrade122-hotfix80.js'])for(const file of [html,loader])assert(file.includes(name+'?v=tourney-lifecycle-20261117-r1'),'Cache version missing for '+name);
-assert(html.includes('production-loader.js?v=tourney-lifecycle-20261117-r1'));
+const html=fs.readFileSync(path.join(root,'../vnext/index.html'),'utf8');
+for(const name of ['upgrade122-hotfix65.js','upgrade122-hotfix80.js'])assert(loader.includes(name+'?v=tourney-lifecycle-20261117-r1'),'Cache version missing in active production loader for '+name);
+assert(html.includes('production-loader.js?v=canva-vnext-runtime-20261128'),'Shared VNext workspace must load the badminton production loader');
 const wizard=wizardSource.slice(wizardSource.indexOf('const DEFAULT_NEW_PRIZES='),wizardSource.indexOf('if(G&&!G.__tk79CreateTournament)'));
 const reportWrapper=reportSource.slice(reportSource.indexOf('const baseFinish=G.finishTournament?.bind(G);'),reportSource.indexOf('const maintain=()=>'));
 assert(wizard.startsWith('const DEFAULT_NEW_PRIZES=')&&wizard.includes('function showNewTournamentWizard()'));
@@ -37,22 +39,31 @@ function dbFactory(){
 async function wizardTest(){
  const db=dbFactory(),authRoot='auth',sport='badminton',rootPath='sportroot',indexKey=authRoot+'/tournamentIndex/'+sport;
  db.store[indexKey]={};
- const nodes={},added=[],writes=db.updates;
- const row={dataset:{id:'p1'},querySelector(sel){return {value:{'.n-name':'Giải Nhất','.n-qty':'1','.n-reward':'1000000','.n-note':'Mỗi giải'}[sel]||''}}};
- const $=id=>nodes[id]??(nodes[id]={value:'',disabled:false,children:[],textContent:'',querySelectorAll:sel=>sel==='.tk79-new-prize'?[row]:[],appendChild(node){this.children.push(node)},insertAdjacentHTML(){},remove(){}});
- $('tk79-new-title').value='Cầu lông 2027';$('tk79-new-location').value='Sân cầu lông Công ty Topkey';$('tk79-new-create').disabled=false;
+ const writes=db.updates;
+ const dom=new JSDOM('<!doctype html><html><head></head><body></body></html>',{url:'https://example.com/sports/badminton/index.html?v=1'});
+ const document=dom.window.document;
+ const $=id=>document.getElementById(id);
  let next='',redirects=0;
  const context={
-  T:{Auth:{role:()=> 'ADMIN'},Data:{db},ROOT:rootPath,DEFAULT_RULES:{},SCHEMA_VERSION:1,VERSION:'test'},App:{state:{config:{location:'Topkey'}}},
-  AUTH_ROOT:authRoot,SPORT:sport,S:{name:'Cầu lông',mode:'court',venueLabel:'Sân'},G:{randomToken:()=> 'testtoken'},
-  $ ,esc:x=>String(x),normalizePrize:x=>({...x,id:x.id||'p1'}),clone:x=>JSON.parse(JSON.stringify(x)),ensureCss(){},
-  U:{toast(){},},document:{body:{appendChild(){}},createElement:()=>({style:{},appendChild(node){added.push(node)},remove(){},set innerHTML(x){this.html=x},get innerHTML(){return this.html||''}})},
-  localStorage:{setItem(){}},window:{location:{href:'https://example.com/sports/badminton/index.html?v=1',assign:url=>{next=url;redirects++}}},
+  T:{Auth:{role:()=> 'ADMIN'},Data:{db},ROOT:rootPath,DEFAULT_RULES:{},SCHEMA_VERSION:1,VERSION:'test'},
+  App:{state:{config:{location:'Topkey'}}},AUTH_ROOT:authRoot,SPORT:sport,
+  S:{name:'Cầu lông',mode:'court',venueLabel:'Sân'},G:{randomToken:()=> 'testtoken'},
+  $,esc:x=>String(x),normalizePrize:x=>({...x,id:x.id||'p1'}),clone:x=>JSON.parse(JSON.stringify(x)),ensureCss(){},
+  U:{toast(){}},document,
+  localStorage:{setItem(){}},
+  window:{location:{href:'https://example.com/sports/badminton/index.html?v=1',assign:url=>{next=url;redirects++}}},
   URL,Date,Math,console
  };
  vm.createContext(context);
  vm.runInContext(wizard+';this.testWizard=showNewTournamentWizard;',context);
  context.testWizard();
+ $('tk79-new-title').value='Cầu lông 2027';
+ $('tk79-new-location').value='Sân cầu lông Công ty Topkey';
+ const firstPrize=$('tk79-new-prizes').querySelector('.tk79-new-prize');
+ firstPrize.querySelector('.n-name').value='Giải Nhất';
+ firstPrize.querySelector('.n-qty').value='1';
+ firstPrize.querySelector('.n-reward').value='1000000';
+ firstPrize.querySelector('.n-note').value='Mỗi giải';
  await $('tk79-new-create').onclick();
  assert.equal(db.updates.length,1,'Exactly one Firebase multi-update should create a tournament');
  const created=db.updates[0].val;
@@ -63,15 +74,17 @@ async function wizardTest(){
  assert(created[indexKey+'/'+tid]&&created[indexKey+'/'+tid].status==='ACTIVE');
  assert(next.includes('?tid='+tid),'Newly created tournament must open by tid');
  db.store[indexKey]={[tid]:created[indexKey+'/'+tid]};
- $('tk79-new-create').disabled=false;
+ $('tk79-new-tournament-modal').remove();
  context.testWizard();
+ $('tk79-new-title').value='Cầu lông 2027';
  await $('tk79-new-create').onclick();
  assert.equal(writes.length,1,'Retrying same title must not create a duplicate tournament');
  assert($('tk79-new-status').textContent.includes('đã có'),'Existing tournament must be reported');
- const open=$('tk79-new-status').children.find(x=>x.textContent==='Mở giải đã tạo');
+ const open=[...$('tk79-new-status').querySelectorAll('button')].find(x=>x.textContent==='Mở giải đã tạo');
  assert(open&&typeof open.onclick==='function');
  open.onclick();
  assert.equal(redirects,2);
+ dom.window.close();
 }
 async function closeTest({online=true,saveError=false,cancel=false}={}){
  const db=dbFactory(),tid='t_test2027',idx='auth/tournamentIndex/badminton/'+tid;

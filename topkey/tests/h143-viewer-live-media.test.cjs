@@ -37,7 +37,7 @@ function createHarness(stream={type:'EMBED',status:'LIVE',url:'https://www.youtu
  const document={getElementById:id=>nodes[id],documentElement:{classList:{add(){}}},head:elem('head'),createElement:elem};
  const sandbox={document,console,URLSearchParams,URL,setTimeout:()=>0,
   location:{search:'?sport=football&tid=main_2026',href:'https://example.com/'},
-  window:{requestAnimationFrame:cb=>{frames.push(cb);return frames.length},TopkeyPlatform:{loadFirebase:async()=>{}},
+  window:{requestAnimationFrame:cb=>{frames.push(cb);queueMicrotask(()=>cb(Date.now()));return frames.length},TopkeyPlatform:{loadFirebase:async()=>{}},
     Topkey:{FIREBASE_CONFIG:{apiKey:'mock'}},firebase:{database:()=>({ref:()=>ref})}}};
  vm.runInNewContext(src,sandbox,{timeout:2000});
  const flush=()=>new Promise(setImmediate);
@@ -55,6 +55,7 @@ test('Viewer renders live score, player and updates score without restarting ifr
  assert.equal(player.tagName,'IFRAME');
  assert.match(player.src,/youtube-nocookie\.com\/embed\/dQw4w9WgXcQ/);
  h.update('activeMatches',{c1:{matchId:'m1',started:true,scoreA:3,scoreB:4}});
+ await h.flush();
  assert.match(card.children[2].textContent,/3 – 4/);
  assert.strictEqual(card.children[3].children[0],player,'score updates must not restart player');
 });
@@ -63,6 +64,7 @@ test('Viewer shows set score and never treats local-only camera as remote video'
  await h.flush();
  const card=h.nodes['spectator-live'].children[0];
  h.update('activeMatches',{c1:{matchId:'m1',started:true,setIndex:1,sets:[{a:25,b:17},{a:7,b:8}]}});
+ await h.flush();
  assert.match(card.children[2].textContent,/SET 2: 7 – 8/);
  assert.match(card.children[3].children[0].textContent,/Camera đang mở cục bộ/);
  assert.equal(h.created.filter(x=>x.tagName==='IFRAME').length,0);
