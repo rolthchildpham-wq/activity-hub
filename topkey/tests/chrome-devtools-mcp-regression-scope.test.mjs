@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
-test("Chrome MCP checkout is excluded from first-party source and regression scans", () => {
+test("Vendored tools and generated staging output are excluded from source scans", () => {
   const workflow = readFileSync(
     new URL("../../.github/workflows/topkey-chrome-devtools-mcp.yml", import.meta.url),
     "utf8",
@@ -21,8 +21,8 @@ test("Chrome MCP checkout is excluded from first-party source and regression sca
   for (const command of scanCommands) {
     assert.match(
       command,
-      /-name \.tools.*\) -prune/,
-      `third-party MCP checkout must be pruned from scan: ${command.trim()}`,
+      /-name \.tools.*-name dist-edgeone.*\) -prune/,
+      `third-party MCP checkout and generated EdgeOne output must be pruned from scan: ${command.trim()}`,
     );
   }
 });
