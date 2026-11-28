@@ -195,3 +195,105 @@ body.tk-bi-hub .exec-card h3{margin:0 0 10px!important;color:#fff!important}
 @media(max-width:850px){.exec-insights-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.exec-insights{padding:14px}}
 @media(max-width:430px){.exec-insights-stat strong{font-size:19px}.exec-insights-heading h3{font-size:19px}.exec-insights-tab{padding:9px 11px}}
 @media(prefers-reduced-motion:reduce){.exec-insights-tab{scroll-behavior:auto}}
+
+
+/* Consolidated H141 accessible fold controls for Hub panels. */
+/* H141 — consistent collapse controls for authenticated sports and the Hub.
+   No content or interaction is removed from the DOM. */
+.tk141-nav-toggle,.tk141-panel-toggle {
+  appearance:none;
+  cursor:pointer;
+  color:#f5fbff!important;
+  background:#155a78!important;
+  border:1px solid #6bb7ca!important;
+  border-radius:9px;
+  padding:8px 12px;
+  font:700 12px/1.4 system-ui,sans-serif;
+  min-height:36px;
+}
+.tk141-nav-toggle:hover,.tk141-panel-toggle:hover{background:#176d88!important}
+.tk141-nav-toggle:focus-visible,.tk141-panel-toggle:focus-visible{
+  outline:3px solid #91e8f4!important;
+  outline-offset:3px;
+}
+.tk141-nav-toggle{margin-left:auto;flex:none;white-space:nowrap;z-index:85}
+.tk141-panel-toggle{
+  float:right;
+  margin:0 0 10px 12px;
+  position:relative;
+  z-index:2;
+}
+[data-tk141-foldable="1"]::after{content:"";display:block;clear:both}
+[data-tk141-foldable="1"].tk141-panel-folded>:not(.tk141-panel-toggle) {
+  display:none!important;
+}
+[data-tk141-foldable="1"].tk141-panel-folded {
+  min-height:0!important;
+  height:auto!important;
+  padding:12px 14px!important;
+}
+.tk141-nav-icon{display:inline-grid;place-items:center;width:21px;flex:none;margin-right:7px;font-size:16px}
+body.tk141-nav-collapsed #app-shell {
+  grid-template-columns:0 minmax(0,1fr)!important;
+}
+body.tk141-nav-collapsed #app-shell .topbar>.nav {
+  visibility:hidden!important;
+  opacity:0!important;
+  overflow:hidden!important;
+  pointer-events:none!important;
+  width:0!important;
+  min-width:0!important;
+  padding:0!important;
+  border:0!important;
+}
+body.tk141-nav-collapsed #app-shell>.shell {
+  grid-column:2!important;
+  width:100%!important;
+  min-width:0;
+}
+body.tk141-nav-collapsed #app-shell .nav [data-tab] {pointer-events:none}
+body.tk141-nav-collapsed #app-shell .nav .tk-h130-sidebar-toggle {display:none!important}
+body #app-shell .nav .tk-h130-sidebar-toggle{display:none!important}
+body.tk141-nav-collapsed.tk-h130-collapsed #app-shell{grid-template-columns:0 minmax(0,1fr)!important}
+/* Ensure the toggle is always visible in the white top header. */
+html[data-tk-sport] #app-shell .tk141-nav-toggle,
+body.tk-smooth-admin #app-shell .tk141-nav-toggle{background:#155a78!important;color:#fff!important}
+@media(max-width:700px){
+  body.tk141-nav-collapsed #app-shell {
+    display:block!important;
+    grid-template-columns:none!important;
+  }
+  body.tk141-nav-collapsed #app-shell .topbar>.nav {
+    display:none!important;
+  }
+  body:not(.tk141-nav-collapsed) #app-shell .topbar>.nav{
+    display:flex!important;
+    visibility:visible!important;
+    width:100%!important;
+    opacity:1!important;
+    pointer-events:auto!important;
+    overflow-x:auto;
+  }
+  #app-shell .topbar>.brand .tk141-nav-toggle{
+    position:relative;
+    margin:5px 0 0 auto;
+    min-width:105px;
+    min-height:42px;
+  }
+  .tk141-panel-toggle{min-height:40px}
+}
+@media(prefers-reduced-motion:reduce){
+  .tk141-nav-toggle,.tk141-panel-toggle{transition:none!important}
+}
+
+/* H145: one navigation glyph per tab.
+   VNext uses H132 pseudo-icon; badminton uses H130 inline icon. */
+html[data-tk-sport] #app-shell .nav [data-tab] > .tk141-nav-icon,
+body.tk-smooth-admin #app-shell .nav [data-tab] > .tk141-nav-icon {
+  display:none!important;
+}
+html[data-tk-sport] #app-shell .nav [data-tab]:has(> .tk-h130-icon)::before,
+body.tk-smooth-admin #app-shell .nav [data-tab]:has(> .tk-h130-icon)::before {
+  display:none!important;
+  content:none!important;
+}
