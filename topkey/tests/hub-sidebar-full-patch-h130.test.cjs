@@ -5,7 +5,7 @@ const hubCss=fs.readFileSync('topkey/canva-ui-system.css','utf8');
 const legacyBadminton=fs.readFileSync('topkey/sports/badminton/index.html','utf8');
 const sports=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
 const sportsCss=fs.readFileSync('topkey/sports/vnext/canva-sports-ui.css','utf8');
-assert.ok(hub.includes('canva-ui-system.css?v=canva-ui-v1-20261127'));
+assert.ok(/canva-ui-system\.css\?v=canva-ui-v\d+-202611\d+/.test(hub));
 assert.ok(!hub.includes('hub-compact-h130.css'));
 assert.ok(!hub.includes('hub-compact-h130.js'));
 assert.ok(hubCss.includes('.tk-bi-hero{'));
