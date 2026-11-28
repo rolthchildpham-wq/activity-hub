@@ -633,22 +633,40 @@ jobs:
             run_check "syntax-$file" node --check "$file"
           done < <(find . -type d \( -name node_modules -o -name vendor -o -name .git -o -name .next -o -name dist \) -prune -o -type f \( -name '*.js' -o -name '*.cjs' -o -name '*.mjs' \) -print | sort)
 
-          # Execute all standalone Node regression contracts in this directory.
-          # Firebase rules emulator tests run in the dedicated isolated Vlog gate;
-          # they are reported as a separately gated check rather than a false fail
-          # when this browser job has no emulator process.
-          while IFS= read -r file; do
+          # Execute the complete Node regression suite as one TAP run.
+          # node --test continues after individual assertion failures and emits
+          # every failing subtest; this avoids serial 30s waits per test file.
+          mapfile -t test_files < <(find . -type d \\( -name node_modules -o -name vendor -o -name .git -o -name .next -o -name dist \\) -prune -o -type f \\( -name '*.test.cjs' -o -name '*.test.mjs' -o -name '*.test.js' \\) -print | sort)
+          runnable_tests=()
+          for file in "${test_files[@]}"; do
             case "$file" in
               *rules-emulator*.test.cjs|*rules-emulator*.test.mjs|*rules-emulator*.test.js)
                 skipped=$((skipped+1))
-                printf 'DEFERRED\t%s\tFirebase emulator gate\n' "$file" | tee -a "$report"
-                echo "DEFERRED $file (dedicated Firebase emulator workflow)"
+                printf 'DEFERRED\\t%s\\tFirebase emulator gate\\n' "$file" | tee -a "$report"
                 ;;
-              *)
-                run_check "test-$file" node "$file"
-                ;;
+              *) runnable_tests+=("$file") ;;
             esac
-          done < <(find . -type d \( -name node_modules -o -name vendor -o -name .git -o -name .next -o -name dist \) -prune -o -type f \( -name '*.test.cjs' -o -name '*.test.mjs' -o -name '*.test.js' \) -print | sort)
+          done
+          total=$((total+1))
+          node_log="artifacts/chrome-devtools/regression/all-node-tests.tap"
+          echo "Running ${#runnable_tests[@]} Node test files in one failure-collecting TAP session."
+          if timeout 180s node --test --test-concurrency=8 "${runnable_tests[@]}" >"$node_log" 2>&1; then
+            node_failed=0
+          else
+            node_failed=$?
+          fi
+          node_passed=$(grep -c '^ok ' "$node_log" || true)
+          node_not_ok=$(grep -c '^not ok ' "$node_log" || true)
+          if [ "$node_failed" -eq 0 ]; then
+            passed=$((passed+1))
+            printf 'PASS\\tall-node-regression-tests (%s files; %s subtests)\\t0\\n' "${#runnable_tests[@]}" "$node_passed" | tee -a "$report"
+          else
+            failed=$((failed+1))
+            printf 'FAIL\\tall-node-regression-tests (%s files; %s failed subtests)\\t%s\\n' "${#runnable_tests[@]}" "$node_not_ok" "$node_failed" | tee -a "$report"
+            echo "Node regression suite returned $node_failed; all TAP failures are listed below."
+            grep -n -A8 -B2 '^not ok ' "$node_log" || true
+            tail -n 80 "$node_log"
+          fi
 
           # Compile every Python source without writing __pycache__ files.
           while IFS= read -r file; do
