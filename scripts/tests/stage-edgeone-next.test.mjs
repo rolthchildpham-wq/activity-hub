@@ -1,12 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {existsSync,readFileSync} from 'node:fs';
+import {existsSync,readFileSync,mkdtempSync,rmSync} from 'node:fs';
 import {join,resolve} from 'node:path';
+import {tmpdir} from 'node:os';
 import {execFileSync} from 'node:child_process';
 
 const root=resolve(import.meta.dirname,'../..');
-const staged=join(root,'dist-edgeone');
+const staged=mkdtempSync(join(tmpdir(),'topkey-edgeone-stage-'));
 const configFile=join(staged,'edgeone.json');
+test.after(()=>rmSync(staged,{recursive:true,force:true}));
 
 // Recreate the artifact from this checkout/build instead of trusting a stale
 // dist-edgeone directory left by another workflow step or local cache.
@@ -32,7 +34,7 @@ test('deep links rewrite only next workspace paths; old sports routes unaffected
   {source:'/next/sports/*',destination:'/next/index.html'}
  ];
  for(const item of expected)assert.ok(config.rewrites.some(r=>r.source===item.source&&r.destination===item.destination),`Missing rewrite ${item.source} -> ${item.destination}; found ${JSON.stringify(config.rewrites)}`);
- assert.ok(!config.rewrites.some(r=>r.source==='/*'));
+ assert.ok(!config.rewrites.some(r=>r.source==='/*'),`Broad catch-all rewrite would hijack legacy routes: ${JSON.stringify(config.rewrites)}`);
  const legacy=readFileSync(join(staged,'sports/badminton/index.html'),'utf8');
  assert.ok(legacy.includes('TOPKEY BADMINTON'));
 });
