@@ -136,3 +136,33 @@ body.tk-bi-hub .exec-alert{margin-top:12px!important;padding:12px!important;bord
 body.tk-bi-hub .exec-meta{margin-top:10px!important;color:var(--tk-muted)!important;font-size:12px;line-height:1.5}
 body.tk-bi-hub .exec-card h3{margin:0 0 10px!important;color:#fff!important}
 @media(max-width:640px){body.tk-bi-hub .exec-grid{grid-template-columns:minmax(0,1fr)}}
+
+
+/* Canva page 2: persistent desktop sidebar; compact bottom navigation on touch screens. */
+@media(min-width:901px){
+ body.tk-bi-hub{display:grid;grid-template-columns:264px minmax(0,1fr);align-items:start}
+ body.tk-bi-hub>.top{grid-column:1;grid-row:1;position:sticky;top:0;height:100dvh;min-height:100vh;overflow-y:auto;overflow-x:hidden;padding:20px 14px;border-bottom:0;border-right:1px solid rgba(10,166,166,.3)}
+ body.tk-bi-hub>.top .brand{display:flex;flex-direction:column;align-items:stretch;gap:18px;max-width:none;margin:0}
+ body.tk-bi-hub .brand-main{display:flex;flex-direction:column;align-items:stretch;gap:12px}
+ body.tk-bi-hub .brand-logo-wrap{width:100%;height:64px}
+ body.tk-bi-hub .brand-title{border:0;padding:0}
+ body.tk-bi-hub .tk210-nav{display:flex;flex-direction:column;align-items:stretch;gap:7px}
+ body.tk-bi-hub .tk210-nav a{width:100%;justify-content:flex-start}
+ body.tk-bi-hub .status{display:grid;grid-template-columns:1fr;grid-column:auto;margin-top:auto}
+ body.tk-bi-hub .tk210-avatar{align-self:flex-start}
+ body.tk-bi-hub main.wrap{grid-column:2;grid-row:1;width:100%;max-width:none;margin:0;padding:28px clamp(20px,3vw,48px) 56px}
+}
+@media(max-width:900px){
+ body.tk-bi-hub{display:block}
+ body.tk-bi-hub>.top{position:sticky;top:0;height:auto;min-height:0;padding:8px 12px;border-right:0}
+ body.tk-bi-hub .brand{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;max-width:none;padding:0}
+ body.tk-bi-hub .brand-main{gap:10px}
+ body.tk-bi-hub .brand-logo-wrap{width:42px;min-width:42px;height:42px;padding:4px}
+ body.tk-bi-hub .brand-title{border:0;padding:0}
+ body.tk-bi-hub .brand-title h1{font-size:13px}
+ body.tk-bi-hub .eyebrow,body.tk-bi-hub .status{display:none}
+ body.tk-bi-hub .tk210-nav{position:fixed;left:0;right:0;bottom:0;z-index:1200;display:flex;justify-content:space-around;gap:4px;padding:7px 8px calc(7px + env(safe-area-inset-bottom));background:rgba(11,31,51,.97);border-top:1px solid var(--tk-line);box-shadow:0 -8px 24px rgba(0,0,0,.28)}
+ body.tk-bi-hub .tk210-nav a{flex:1 1 0;min-width:0;justify-content:center;min-height:48px;padding:7px 4px;font-size:11px}
+ body.tk-bi-hub .tk210-avatar{width:36px;height:36px}
+ body.tk-bi-hub main.wrap{width:100%;padding:16px 12px calc(96px + env(safe-area-inset-bottom))}
+}
