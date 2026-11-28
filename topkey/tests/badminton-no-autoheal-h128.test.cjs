@@ -3,11 +3,13 @@ const fs=require('node:fs');
 const vm=require('node:vm');
 const js=fs.readFileSync('topkey/sports/badminton/upgrade122-hotfix5.js','utf8');
 const loader=fs.readFileSync('topkey/sports/badminton/production-loader.js','utf8');
-const html=fs.readFileSync('topkey/sports/badminton/index.html','utf8');
+const legacy=fs.readFileSync('topkey/sports/badminton/index.html','utf8');
+const html=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
 assert.ok(!js.includes('location.replace('),'obsolete H47 self-heal MUST NOT force page reload');
 assert.ok(js.includes('window.TopkeyRelease?.cacheTag'),'legacy code should honor current release');
 assert.ok(loader.includes('upgrade122-hotfix5.js?v=h128-no-auto-reload-20261113'),'new cache key needed to bypass stale SW script');
-assert.ok(html.includes('production-loader.js?v=tourney-lifecycle-20261117-r1'),'entry must load the current tournament-lifecycle runtime');
+assert.ok(html.includes('../badminton/production-loader.js?v=ppt-upload-20261111'),'shared VNext entry must load the preserved badminton runtime loader');
+assert.ok(legacy.includes("new URL('../vnext/index.html', location.href)"),'legacy route must redirect to shared VNext');
 let redirects=0,swCalls=0,cacheDeletes=0,fetches=0;
 const context={
  window:{TopkeyRelease:{version:'2026-h128',cacheTag:'h128'},addEventListener:()=>{}},
