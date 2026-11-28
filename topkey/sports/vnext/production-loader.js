@@ -8,10 +8,10 @@
     : SHARED_RUNTIME_FALLBACK;
   const FEATURES = {
     reports: [
-      '../badminton/upgrade122-hotfix79.js?v=h116-report-template-20261113',
       '../../h112-ppt-template.js?v=h112-sport-templates-20261113',
       '../badminton/upgrade122-hotfix55.js?v=h135-event-reports-20261113',
       '../badminton/upgrade122-hotfix65.js?v=tourney-lifecycle-20261117-r1',
+      '../badminton/upgrade122-hotfix79.js?v=h116-report-template-20261113',
       '../badminton/upgrade122-hotfix76.js?v=h135-event-reports-20261113',
       '../badminton/upgrade122-hotfix80.js?v=tourney-lifecycle-20261117-r1',
       '../../h106-final-report-pdf.js',
