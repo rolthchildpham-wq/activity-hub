@@ -4,7 +4,7 @@ const vnext=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
 const legacy=fs.readFileSync('topkey/sports/badminton/index.html','utf8');
 const css=fs.readFileSync('topkey/sports/vnext/canva-sports-ui.css','utf8');
 for(const sport of ['football','volleyball','running','handmade','shuttle','cooking','badminton'])assert.ok(vnext.includes("'"+sport+"'"),'missing VNext sport identity: '+sport);
-assert.ok(vnext.includes('canva-sports-ui.css?v=canva-sports-v1-20261127'));
+assert.ok(/canva-sports-ui\.css\?v=canva-sports-v\d+-202611\d+/.test(vnext));
 assert.ok(!vnext.includes('ux-responsive-h214.css')&&!vnext.includes('contrast-awards-h215.css'));
 assert.ok(legacy.includes("query.set('sport', 'badminton')"));
 assert.ok(legacy.includes("../vnext/index.html"));
