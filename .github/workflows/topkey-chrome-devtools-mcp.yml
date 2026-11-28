@@ -544,7 +544,7 @@ jobs:
               local status=0
               if node topkey/tests/chrome-devtools-mcp-client.mjs call "$@" 2>&1 | tee -a artifacts/chrome-devtools/mcp-tool-output.log; then return 0; else status=$?; printf 'MCP_TOOL_ERROR status=%s command=%q args=%q\\n' "$status" "$1" "${*:2}" | tee -a artifacts/chrome-devtools/mcp-errors.txt >&2; return 0; fi
             }
-            mcp_tool navigate_page 2 --url "$base/sports/vnext/badminton.html?__topkey_probe=$GITHUB_RUN_ID" | tee artifacts/chrome-devtools/badminton-production-navigation.txt
+            mcp_tool navigate_page 2 --url "$base/sports/vnext/badminton.html?testlab=1&tid=__testlab_badminton_production_probe&__topkey_probe=$GITHUB_RUN_ID" | tee artifacts/chrome-devtools/badminton-production-navigation.txt
             sleep 4
             mcp_tool evaluate_script 'async () => {
               const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
