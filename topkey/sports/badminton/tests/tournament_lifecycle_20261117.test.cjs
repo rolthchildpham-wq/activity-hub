@@ -7,9 +7,9 @@ const wizardSource=fs.readFileSync(path.join(root,'upgrade122-hotfix80.js'),'utf
 const reportSource=fs.readFileSync(path.join(root,'upgrade122-hotfix65.js'),'utf8');
 const archiveSource=fs.readFileSync(path.join(root,'src/upgrade9.js'),'utf8');
 const loader=fs.readFileSync(path.join(root,'production-loader.js'),'utf8');
-const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
-for(const name of ['upgrade122-hotfix65.js','upgrade122-hotfix80.js'])for(const file of [html,loader])assert(file.includes(name+'?v=tourney-lifecycle-20261117-r1'),'Cache version missing for '+name);
-assert(html.includes('production-loader.js?v=tourney-lifecycle-20261117-r1'));
+const html=fs.readFileSync(path.join(root,'../vnext/index.html'),'utf8');
+for(const name of ['upgrade122-hotfix65.js','upgrade122-hotfix80.js'])assert(loader.includes(name+'?v=tourney-lifecycle-20261117-r1'),'Cache version missing in active production loader for '+name);
+assert(html.includes('production-loader.js?v=canva-vnext-runtime-20261128'),'Shared VNext workspace must load the badminton production loader');
 const wizard=wizardSource.slice(wizardSource.indexOf('const DEFAULT_NEW_PRIZES='),wizardSource.indexOf('if(G&&!G.__tk79CreateTournament)'));
 const reportWrapper=reportSource.slice(reportSource.indexOf('const baseFinish=G.finishTournament?.bind(G);'),reportSource.indexOf('const maintain=()=>'));
 assert(wizard.startsWith('const DEFAULT_NEW_PRIZES=')&&wizard.includes('function showNewTournamentWizard()'));
