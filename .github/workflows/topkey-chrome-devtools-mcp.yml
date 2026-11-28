@@ -631,7 +631,7 @@ jobs:
           # first syntax error; record each broken file and continue scanning.
           while IFS= read -r file; do
             run_check "syntax-$file" node --check "$file"
-          done < <(find topkey -type d \( -name node_modules -o -name vendor -o -name .git \) -prune -o -type f \( -name '*.js' -o -name '*.cjs' -o -name '*.mjs' \) -print | sort)
+          done < <(find . -type d \( -name node_modules -o -name vendor -o -name .git -o -name .next -o -name dist \) -prune -o -type f \( -name '*.js' -o -name '*.cjs' -o -name '*.mjs' \) -print | sort)
 
           # Execute all standalone Node regression contracts in this directory.
           # Firebase rules emulator tests run in the dedicated isolated Vlog gate;
@@ -639,7 +639,7 @@ jobs:
           # when this browser job has no emulator process.
           while IFS= read -r file; do
             case "$file" in
-              topkey/tests/vlog-rules-emulator.test.cjs)
+              *rules-emulator*.test.cjs|*rules-emulator*.test.mjs|*rules-emulator*.test.js)
                 skipped=$((skipped+1))
                 printf 'DEFERRED\t%s\tFirebase emulator gate\n' "$file" | tee -a "$report"
                 echo "DEFERRED $file (dedicated Firebase emulator workflow)"
@@ -648,12 +648,12 @@ jobs:
                 run_check "test-$file" node "$file"
                 ;;
             esac
-          done < <(find topkey/tests -maxdepth 1 -type f \( -name '*.test.cjs' -o -name '*.test.mjs' -o -name '*.test.js' \) -print | sort)
+          done < <(find . -type d \( -name node_modules -o -name vendor -o -name .git -o -name .next -o -name dist \) -prune -o -type f \( -name '*.test.cjs' -o -name '*.test.mjs' -o -name '*.test.js' \) -print | sort)
 
           # Compile every Python source without writing __pycache__ files.
           while IFS= read -r file; do
             run_check "python-$file" python3 -c 'import pathlib,sys; p=pathlib.Path(sys.argv[1]); compile(p.read_text(encoding="utf-8"),str(p),"exec")' "$file"
-          done < <(find topkey -type d \( -name node_modules -o -name vendor -o -name .git \) -prune -o -type f -name '*.py' -print | sort)
+          done < <(find . -type d \( -name node_modules -o -name vendor -o -name .git -o -name .next -o -name dist \) -prune -o -type f -name '*.py' -print | sort)
 
           printf '\nTOTAL=%s PASS=%s FAIL=%s DEFERRED=%s\n' "$total" "$passed" "$failed" "$skipped" | tee artifacts/chrome-devtools/regression/totals.txt
           if [ "$failed" -ne 0 ]; then
