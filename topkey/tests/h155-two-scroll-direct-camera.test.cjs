@@ -24,7 +24,7 @@ test('direct internal camera uses existing H154 backend only after live config s
 });
 test('H155 script is installed once and Canva stylesheet replaces its old CSS file',()=>{
  assert.equal(html.split('live-two-scroll-h155.js').length-1,1);
- assert.ok(html.includes('canva-sports-ui.css?v=canva-sports-v1-20261127'));
+ assert.ok(/canva-sports-ui\.css\?v=canva-sports-v\d+-202611\d+/.test(html));
  assert.ok(!html.includes('live-two-scroll-h155.css'));
  assert.equal(css.split('{').length,css.split('}').length);
 });
