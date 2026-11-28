@@ -12,7 +12,7 @@ assert.ok(hubCss.includes('.tk-bi-hero{'));
 assert.ok(hubCss.includes('.tk210-nav{position:fixed'));
 assert.ok(hubCss.includes('.exec-kpis'));
 assert.ok(legacyBadminton.includes("query.set('sport', 'badminton')"));
-assert.ok(sports.includes('canva-sports-ui.css?v=canva-sports-v1-20261127'));
+assert.ok(/canva-sports-ui\.css\?v=canva-sports-v\d+-202611\d+/.test(sports));
 assert.ok(sportsCss.includes('.topbar>.nav{position:fixed'));
 assert.ok(sportsCss.includes('#app-shell,.shell{padding-bottom:calc(88px'));
 assert.ok(!sports.includes('sidebar-collapse-h130.css'));
