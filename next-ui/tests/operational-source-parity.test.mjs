@@ -27,7 +27,7 @@ test('sport rule modes and badminton match profiles stay in the operational conf
   for (const profile of ['BEST_OF_3_21_SWITCH_10', 'SETS_21_21_15_SWITCH_7', 'BEST_OF_3_15_SWITCH_7']) {
     assert.ok(config.includes(profile), 'Missing badminton format profile ' + profile);
   }
-  assert.ok(config.includes("engineAdapter:{kind:'legacy-badminton-domain'"));
+  assert.ok(config.includes("engineAdapter:{kind:'shared-vnext-domain'"));
 });
 
 test('authentication remains delegated to shared TOPKEY auth and platform role policy', () => {
