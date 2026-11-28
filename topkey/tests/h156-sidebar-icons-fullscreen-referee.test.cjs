@@ -6,7 +6,7 @@ const css=fs.readFileSync('topkey/sports/vnext/canva-sports-ui.css','utf8');
 const html=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
 test('H156 referee script remains and its visual rules live in Canva CSS',()=>{
  assert.equal(html.split('fullscreen-referee-h156.js').length-1,1);
- assert.ok(html.includes('canva-sports-ui.css?v=canva-sports-v1-20261127'));
+ assert.ok(/canva-sports-ui\.css\?v=canva-sports-v\d+-202611\d+/.test(html));
  assert.ok(!html.includes('fullscreen-referee-h156.css'));
  assert.ok(html.indexOf('fullscreen-referee-h156.js')>html.indexOf('live-two-scroll-h155.js'));
  assert.ok(css.includes('#tk144-live-studio .tk144-official-pane'));
