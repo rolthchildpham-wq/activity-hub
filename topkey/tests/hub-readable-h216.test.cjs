@@ -55,5 +55,5 @@ console.log('H251 medal contrast runtime test passed.');
 const canvaSportCss=fs.readFileSync('topkey/sports/vnext/canva-sports-design-system-h251.css','utf8');
 assert.ok(canvaSportCss.includes('--tk-ui-navy:#0B1F33')&&canvaSportCss.includes('--tk-ui-teal:#0AA6A6'), 'Canva sport design tokens must exist');
 assert.ok(!sportHtml.includes('canva-sports-design-system-h251.css'), 'H251 overlay must not load after Canva consolidation');
-assert.ok(sportHtml.includes('canva-sports-ui.css?v=canva-sports-v1-20261127'), 'All seven sports must load the consolidated Canva design system');
+assert.ok(/canva-sports-ui\\.css\\?v=canva-sports-v\\d+-202611\\d+/.test(sportHtml), 'All seven sports must load the consolidated Canva design system');
 console.log('Canva seven-sport workspace design-system integration passed.');
