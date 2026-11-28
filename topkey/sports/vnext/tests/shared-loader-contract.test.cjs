@@ -25,6 +25,7 @@ test('shared loader isolates legacy compatibility modules behind explicit featur
   assert.match(loader, /reports: \[/);
   assert.match(loader, /upgrade122-hotfix79\.js/);
   assert.match(loader, /h112-ppt-template\.js/);
+  assert.ok(loader.indexOf('upgrade122-hotfix65.js') < loader.indexOf('upgrade122-hotfix79.js'), 'Hotfix79 must load after its H65 dependency');
   const testlab = read('topkey/sports/vnext/src/testlab122.js');
   assert.match(testlab, /loadFeature\?\.\('reports'\)/);
   assert.match(testlab, /loadFeature\?\.\('testlab'\)/);
