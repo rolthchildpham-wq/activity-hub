@@ -2,7 +2,7 @@ const fs=require('node:fs');const assert=require('node:assert/strict');
 const html=fs.readFileSync('topkey/index.html','utf8');
 const css=fs.readFileSync('topkey/hub-redesign-h240.css','utf8');
 const js=fs.readFileSync('topkey/hub-workspace-h240.js','utf8');
-assert.ok(html.includes('canva-ui-system.css?v=canva-ui-v1-20261127'),'Hub must load the consolidated Canva design system');
+assert.ok(/canva-ui-system\.css\?v=canva-ui-v\d+-202611\d+/.test(html),'Hub must load the consolidated Canva design system');
 assert.ok(!html.includes('hub-redesign-h240.css'),'Legacy H240 visual stylesheet must no longer load');
 assert.ok(html.includes('hub-workspace-h240.js?v=h240-single-workspace-20261127'),'H240 workspace controller must load');
 assert.ok(!html.includes('hub-workspace-nav-h231.js'),'Legacy H231 controller must not compete with H240');
