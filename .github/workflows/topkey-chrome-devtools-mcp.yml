@@ -627,16 +627,30 @@ jobs:
             fi
           }
 
+          # The staging contract tests require the same real SvelteKit build
+          # and composed EdgeOne artifact as next-ui-validation; prepare them
+          # before the complete Node suite rather than treating absent outputs
+          # as product regressions.
+          run_check "edgeone-next-build-and-stage" bash -c '
+            set -euo pipefail
+            npm install --prefix next-ui --no-audit --no-fund
+            npm --prefix next-ui run check
+            npm --prefix next-ui run build
+            node scripts/stage-edgeone-next.mjs
+          '
+          run_check "install-isolated-jsdom" npm install --prefix /tmp/topkey-tests --no-audit --no-fund jsdom@26
+          export NODE_PATH="/tmp/topkey-tests/node_modules${NODE_PATH:+:$NODE_PATH}"
+
           # Parse every first-party JS/CJS/MJS source file. Do not stop at the
           # first syntax error; record each broken file and continue scanning.
           while IFS= read -r file; do
             run_check "syntax-$file" node --check "$file"
-          done < <(find . -type d \( -name node_modules -o -name vendor -o -name .git -o -name .next -o -name .tools -o -name dist \) -prune -o -type f \( -name '*.js' -o -name '*.cjs' -o -name '*.mjs' \) -print | sort)
+          done < <(find . -type d \( -name node_modules -o -name vendor -o -name .git -o -name .next -o -name .tools -o -name dist -o -name dist-edgeone \) -prune -o -type f \( -name '*.js' -o -name '*.cjs' -o -name '*.mjs' \) -print | sort)
 
           # Execute the complete Node regression suite as one TAP run.
           # node --test continues after individual assertion failures and emits
           # every failing subtest; this avoids serial 30s waits per test file.
-          mapfile -t test_files < <(find . -type d \( -name node_modules -o -name vendor -o -name .git -o -name .next -o -name .tools -o -name dist \) -prune -o -type f \( -name '*.test.cjs' -o -name '*.test.mjs' -o -name '*.test.js' \) -print | sort)
+          mapfile -t test_files < <(find . -type d \( -name node_modules -o -name vendor -o -name .git -o -name .next -o -name .tools -o -name dist -o -name dist-edgeone \) -prune -o -type f \( -name '*.test.cjs' -o -name '*.test.mjs' -o -name '*.test.js' \) -print | sort)
           runnable_tests=()
           for file in "${test_files[@]}"; do
             case "$file" in
@@ -671,7 +685,7 @@ jobs:
           # Compile every Python source without writing __pycache__ files.
           while IFS= read -r file; do
             run_check "python-$file" python3 -c 'import pathlib,sys; p=pathlib.Path(sys.argv[1]); compile(p.read_text(encoding="utf-8"),str(p),"exec")' "$file"
-          done < <(find . -type d \( -name node_modules -o -name vendor -o -name .git -o -name .next -o -name .tools -o -name dist \) -prune -o -type f -name '*.py' -print | sort)
+          done < <(find . -type d \( -name node_modules -o -name vendor -o -name .git -o -name .next -o -name .tools -o -name dist -o -name dist-edgeone \) -prune -o -type f -name '*.py' -print | sort)
 
           printf '\nTOTAL=%s PASS=%s FAIL=%s DEFERRED=%s\n' "$total" "$passed" "$failed" "$skipped" | tee artifacts/chrome-devtools/regression/totals.txt
           if [ "$failed" -ne 0 ]; then
