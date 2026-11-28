@@ -29,7 +29,7 @@ function harness(){
    }};
  vm.runInNewContext(source,sandbox,{timeout:1000});
  async function call(path,payload,token){
-  const req=Readable.from([JSON.stringify(payload)]);
+  const req=Readable.from([Buffer.from(JSON.stringify(payload))]);
   req.method='POST';req.url=path;req.socket={remoteAddress:'test-visitor'};
   req.headers={origin:'https://topkey-activity-management.edgeone.dev',
    ...(token?{authorization:'Bearer '+token}:{})};
