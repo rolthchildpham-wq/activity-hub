@@ -40,7 +40,7 @@ test('deep links rewrite only next workspace paths; old sports routes unaffected
  // into the shared VNext workspace, not the retired standalone app markup.
  assert.match(legacy,/<title>TOPKEY Sports · Cầu lông<\/title>/);
  assert.match(legacy,/query\.set\(['"]sport['"],\s*['"]badminton['"]\)/);
- assert.match(legacy,/sports\/vnext\/index\.html/);
+ assert.match(legacy,/\.\.\/vnext\/index\.html/);
  assert.match(legacy,/location\.replace\(target\.href\)/);
 });
 test('stage keeps existing EdgeOne headers unchanged',()=>{
