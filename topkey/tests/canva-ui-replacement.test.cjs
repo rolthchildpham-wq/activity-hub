@@ -18,6 +18,9 @@ assert.ok(hubCss.includes('body.tk-bi-hub .tk210-nav{position:fixed;left:0;right
 assert.ok(sportsCss.includes('#app-shell:not(.hidden){display:grid;grid-template-columns:252px minmax(0,1fr)'),'Sports VNext must use the Canva desktop sidebar layout');
 assert.ok(sportsCss.includes('#app-shell>.topbar .nav{display:flex;flex-direction:column'),'Sports desktop navigation must be vertical');
 assert.ok(sportsCss.includes('.topbar>.nav{position:fixed;left:0;right:0;bottom:0'),'Sports mobile navigation must dock to the bottom');
+assert.ok(hubCss.includes('.exec-insights{'),'Executive sport insights styles must be consolidated into Hub Canva CSS');
+for(const token of ['#tk144-live-studio .tk144-workspace','#tk144-live-studio .tk144-video-pane','#tk144-live-studio .tk144-official-pane','#tk144-live-studio:fullscreen .tk144-official-pane','.tk156-referee-shortcuts','#tk157-youtube-panel','#tk160-audio-panel','#tk161-panel','[data-tk141-foldable="1"].tk141-panel-folded','grid-template-columns:0 minmax(0,1fr)!important'])assert.ok(sportsCss.includes(token),'Consolidated sports feature styles missing: '+token);
+assert.ok(sports.includes('src/roster-csv-recovery.js?v=20261117-roster-import-r1'),'VNext roster recovery module must remain active');
 assert.match(sports,/canva-sports-ui\.css\?v=canva-sports-v\d+-202611\d+/);
 for(const [name,html] of [['Hub',hub],['Sports VNext',sports]]){
  const markup=html.replace(/<script\b[\s\S]*?<\/script>/gi,'');
