@@ -12,7 +12,7 @@ function harness(){
  })})};
  const mockAdmin={apps:[],credential:{applicationDefault:()=>({})},
   initializeApp(){this.apps.push({})},database:()=>db,
-  auth:()=>({verifyIdToken:async token=>{if(token!=='valid')throw Error('invalid');return {uid:'admin'}})}
+  auth:()=>({verifyIdToken:async token=>{if(token!=='valid')throw Error('invalid');return {uid:'admin'}}})
  };
  const fakeRequire=name=>name==='node:http'?{}:name==='node:url'?{URL}:name==='firebase-admin'?mockAdmin:require(name);
  fakeRequire.main=null;
