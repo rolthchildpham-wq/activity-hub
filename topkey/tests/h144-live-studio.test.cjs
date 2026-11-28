@@ -12,7 +12,7 @@ function harness({sport='volleyball',umpire=true}={}){
  const els=new Map(),created=[];
  class Element {
   constructor(tag='div',id=''){
-   this.tagName=tag.toUpperCase();this.id=id;this.children=[];this.parentNode=null;
+   this.tagName=tag.toUpperCase();this._id=id;Object.defineProperty(this,'id',{get:()=>this._id,set:value=>{this._id=value;if(value)els.set(value,this)}});this.children=[];this.parentNode=null;
    this.dataset={};this.hidden=false;this.listeners={};this.value='auto';this.textContent='';
    this.classList={values:new Set(),add:x=>this.classList.values.add(x),
      remove:x=>this.classList.values.delete(x),
