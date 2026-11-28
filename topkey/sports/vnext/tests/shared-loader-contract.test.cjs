@@ -23,6 +23,12 @@ test('shared loader isolates legacy compatibility modules behind explicit featur
   assert.match(loader, /SHARED_RUNTIME_FALLBACK = \['\.\.\/\.\.\/h114-runtime-fixes\.js'\]/);
   assert.match(loader, /const FEATURES = \{/);
   assert.match(loader, /reports: \[/);
+  assert.match(loader, /upgrade122-hotfix79\.js/);
+  assert.match(loader, /h112-ppt-template\.js/);
+  const testlab = read('topkey/sports/vnext/src/testlab122.js');
+  assert.match(testlab, /loadFeature\?\.\('reports'\)/);
+  assert.match(testlab, /loadFeature\?\.\('testlab'\)/);
+  assert.ok(testlab.indexOf("loadFeature?.('reports')") < testlab.indexOf("seed(qs.get('reset')"), 'Test Lab must load report features before generating its automatic report');
   assert.match(loader, /badmintonPerformance: \[/);
   assert.match(loader, /params\.get\('sport'\) === 'badminton'[\s\S]*?FEATURES\.badmintonPerformance/);
   assert.match(loader, /params\.get\('testlab'\) === '1'[\s\S]*?loadFeature\('reports'\)/);
