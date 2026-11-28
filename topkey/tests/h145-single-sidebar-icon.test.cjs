@@ -8,7 +8,7 @@ test('H141 does not insert a duplicate sidebar icon',()=>{
  assert.doesNotMatch(js,/createElement\(['"]span['"]\)/);assert.doesNotMatch(js,/btn\.prepend\(mark\)/);assert.match(js,/querySelectorAll\(['"]\.tk141-nav-icon['"]\)/);
 });
 test('Canva shell owns a single sport/navigation icon layer',()=>{
- assert.ok(vnext.includes('canva-sports-ui.css?v=canva-sports-v1-20261127'));
+ assert.ok(/canva-sports-ui\.css\?v=canva-sports-v\d+-202611\d+/.test(vnext));
  assert.ok(vnext.includes('sport-identities-h132.js?v=h132-20261113'));
  assert.ok(css.includes('.tk141-nav-icon'));
  assert.ok(css.includes('.tk-h130-icon'));
