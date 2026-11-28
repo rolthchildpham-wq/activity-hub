@@ -6,6 +6,7 @@ const vm=require('node:vm');
 const src=fs.readFileSync('topkey/sports/vnext/src/public-viewer-h137.js','utf8');
 const app=fs.readFileSync('topkey/sports/vnext/src/app.js','utf8');
 const runtime=fs.readFileSync('topkey/sports/vnext/src/live-state-h143.js','utf8');
+const bootstrap=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
 const html=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
 
 function createHarness(stream={type:'EMBED',status:'LIVE',url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'}){
@@ -23,7 +24,9 @@ function createHarness(stream={type:'EMBED',status:'LIVE',url:'https://www.youtu
  }
  for(const id of ['public-spectator','spectator-schedule','spectator-live','spectator-title','login-screen','app-shell'])nodes[id]=elem();
  const liveCard=elem();liveCard.className='card';liveCard.appendChild(nodes['spectator-live']);
- nodes['public-spectator'].querySelector=()=>({after(){}});
+ const viewerGrid=elem();viewerGrid.className='grid g2';
+ const viewerHeader=elem();viewerHeader.className='split';
+ nodes['public-spectator'].querySelector=selector=>selector==='.grid.g2'?viewerGrid:selector==='.split'?viewerHeader:null;
  const data={
   matches:{m1:{id:'m1',code:'M001',teamAId:'t1',teamBId:'t2',status:'LIVE',courtId:'c1'}},
   teams:{t1:{name:'Đội Xanh'},t2:{name:'Đội Đỏ'}},
