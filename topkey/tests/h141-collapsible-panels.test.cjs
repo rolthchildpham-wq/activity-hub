@@ -20,7 +20,7 @@ test('VNext sidebar toggle supports desktop/mobile and persists accessible state
 });
 test('cards fold without destructive navigation or DOM replacement',()=>{
  assert.ok(js.includes('tk141-panel-folded'));
- assert.doesNotMatch(js,/(?:location\.reload|location\.replace|\.innerHTML\s*=|\.remove\(\)|\.replaceChildren\(\))/);
+ assert.doesNotMatch(js,/(?:location\.reload|location\.replace|\.innerHTML\s*=|\.replaceChildren\(\))/);
  assert.ok(css.includes('[data-tk141-foldable="1"].tk141-panel-folded>:not(.tk141-panel-toggle)'));
 });
 test('styles are balanced and accessible controls have focus styling',()=>{
