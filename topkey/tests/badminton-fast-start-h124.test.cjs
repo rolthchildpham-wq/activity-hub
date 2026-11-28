@@ -1,7 +1,8 @@
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const vm=require('node:vm');
-const html=fs.readFileSync('topkey/sports/badminton/index.html','utf8');
+const legacy=fs.readFileSync('topkey/sports/badminton/index.html','utf8');
+const vnext=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
 const source=fs.readFileSync('topkey/sports/badminton/fast-start-h124.js','utf8');
 const events=[];
 const scheduled=[];
@@ -21,7 +22,9 @@ const auth={
 const context={window:{Topkey:{App:app,Auth:auth,Data:{auth:{currentUser:{uid:'user-a'}}}}},requestIdleCallback:fn=>scheduled.push(fn),setTimeout:fn=>scheduled.push(fn),console};
 vm.runInNewContext(source,context);
 assert.ok(context.window.TopkeyBadmintonFastStart124.installed);
-assert.ok(html.includes("await loadScript('./fast-start-h124.js?v=h126-startup-20261113',7000);await loadScript('./dashboard-smooth-h129.js?v=h129-20261113',7000);await loadScript('./tab-perf-h133.js?v=h133-20261113',7000);await loadScript('./sidebar-collapse-h130.js?v=h130-20261113',7000);state.core=true"));
+assert.ok(legacy.includes("new URL('../vnext/index.html', location.href)"),'Legacy badminton route must hand off to the shared workspace');
+assert.ok(legacy.includes("query.set('sport', 'badminton')")&&legacy.includes('target.search = query.toString()'),'Legacy badminton route must preserve sport and query parameters');
+assert.ok(vnext.includes('dashboard-live-h227.js?v=h229-dashboard-retry-20261125'),'Shared VNext dashboard runtime must own badminton startup');
 (async()=>{
  // Only the visible authorized tab is rendered on the first Firebase login.
  app.renderAll();
