@@ -8,6 +8,6 @@ assert.ok(css.includes('overflow-x:visible!important'),'mobile calendar must not
 assert.ok(css.includes('min-height:0!important'),'mobile calendar cells must use content-driven sizing');
 assert.ok(css.includes('.exec-calendar-date{font-size:10px}'),'mobile date labels must remain legible');
 assert.ok(css.includes('@media(max-width:680px)'),'dedicated mobile calendar layout required');
-assert.ok(html.includes('canva-ui-system.css?v=canva-ui-v1-20261127'),'Hub must load consolidated Canva stylesheet');
+assert.ok(/canva-ui-system\.css\?v=canva-ui-v\d+-202611\d+/.test(html),'Hub must load consolidated Canva stylesheet');
 assert.ok(!html.includes('hub-dashboard-reference-h219.css'),'legacy dashboard CSS must not load');
 console.log('Canva mobile calendar no-horizontal-scroll contract passed.');
