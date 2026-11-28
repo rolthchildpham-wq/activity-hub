@@ -397,6 +397,12 @@ jobs:
                 result.badmintonProfileCount=T.SPORT?.profile?.matchFormatProfiles?.length||0;
                 result.badmintonRuleFields=document.getElementById("match-rule-fields")?.innerHTML||"";
                 result.badmintonCoreScripts=[...document.scripts].filter(script=>script.src.includes("config.js")||script.src.includes("h97-vnext.bundle.js")).map(script=>script.src);
+                result.sharedLoaderScope=window.TopkeyProductionLoader?.scope||null;
+                result.releaseId=window.TopkeyRuntimeContract?.releaseId||null;
+                result.releaseCacheTag=window.TopkeyRuntimeContract?.cacheTag||null;
+                result.dataSchemaVersion=window.TopkeyRuntimeContract?.dataSchemaVersion??T.SCHEMA_VERSION??null;
+                if(result.sharedLoaderScope!=="shared-vnext"||result.releaseId!==window.TopkeyRelease?.releaseId||result.dataSchemaVersion!==3)
+                  throw new Error("Badminton release/schema contract mismatch: "+JSON.stringify(result));
                 if(!profileSelect||profileSelect.options.length!==3||location.pathname!=="/sports/vnext/index.html")
                   throw new Error("Badminton shared workspace/format selector failed: "+JSON.stringify(result));
               }
