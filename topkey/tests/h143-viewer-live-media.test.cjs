@@ -18,7 +18,7 @@ function createHarness(stream={type:'EMBED',status:'LIVE',url:'https://www.youtu
    replaceChildren(...items){this.children=[];this.append(...items)},
    remove(){if(this.parent)this.parent.children=this.parent.children.filter(i=>i!==this)},
    querySelector:()=>null,
-   closest(selector){let node=this;while(node){if(selector==='.card'&&String(node.className||'').split(/\\s+/).includes('card'))return node;node=node.parent||null;}return null;}};
+   closest(selector){let node=this;while(node){if(selector==='.card'&&String(node.className||'').split(/\s+/).includes('card'))return node;node=node.parent||null;}return null;}};
   created.push(x);return x;
  }
  for(const id of ['public-spectator','spectator-schedule','spectator-live','spectator-title','login-screen','app-shell'])nodes[id]=elem();
