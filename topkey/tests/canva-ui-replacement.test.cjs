@@ -11,6 +11,13 @@ function styles(html){
 }
 assert.deepEqual(styles(hub).map(x=>x.split('?')[0]),['./canva-ui-system.css']);
 assert.deepEqual(styles(sports).map(x=>x.split('?')[0]),['./canva-sports-ui.css']);
+assert.match(hub,/canva-ui-system\.css\?v=canva-ui-v\d+-202611\d+/);
+assert.ok(hubCss.includes('grid-template-columns:264px minmax(0,1fr)'),'Hub must use the Canva desktop sidebar layout');
+assert.ok(hubCss.includes('body.tk-bi-hub .tk210-nav{display:flex;flex-direction:column'),'Hub desktop navigation must be vertical');
+assert.ok(hubCss.includes('body.tk-bi-hub .tk210-nav{position:fixed;left:0;right:0;bottom:0'),'Hub mobile navigation must dock to the bottom');
+assert.ok(sportsCss.includes('#app-shell:not(.hidden){display:grid;grid-template-columns:252px minmax(0,1fr)'),'Sports VNext must use the Canva desktop sidebar layout');
+assert.ok(sportsCss.includes('#app-shell>.topbar .nav{display:flex;flex-direction:column'),'Sports desktop navigation must be vertical');
+assert.ok(sportsCss.includes('.topbar>.nav{position:fixed;left:0;right:0;bottom:0'),'Sports mobile navigation must dock to the bottom');
 assert.match(sports,/canva-sports-ui\.css\?v=canva-sports-v\d+-202611\d+/);
 for(const [name,html] of [['Hub',hub],['Sports VNext',sports]]){
  const markup=html.replace(/<script\b[\s\S]*?<\/script>/gi,'');
