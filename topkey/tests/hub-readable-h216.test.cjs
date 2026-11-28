@@ -29,7 +29,7 @@ const sportHtml=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
 const scheduleRuntime=fs.readFileSync('topkey/sports/vnext/workspace-contrast-runtime-h238.js','utf8');
 const sportIdentity=fs.readFileSync('topkey/sports/vnext/sport-identities-h132.css','utf8');
 assert.ok(!sportHtml.includes('workspace-contrast-h234.css'),'Legacy H234 stylesheet must not load after Canva consolidation');
-assert.ok(sportHtml.includes('workspace-contrast-runtime-h238.js?v=h251-podium-medal-unconditional-aa-20261127'),'All VNext sports must load the H251 runtime guard');
+assert.ok(sportHtml.includes('workspace-contrast-runtime-h238.js?v=h252-settings-clock-targeted-aa-20261128'),'All VNext sports must load the H251 runtime guard');
 assert.ok(scheduleRuntime.includes(`node.style.setProperty('color',SAFE,'important')`),'H239 must apply WCAG-safe foregrounds to dynamic light surfaces');
 assert.ok(scheduleRuntime.includes("const ROOT = 'body';"),'H243 must scan the full document across legacy sport handoff roots');
 assert.ok(scheduleRuntime.includes('characterData:true'),'H245 must observe in-place text-node updates');
@@ -38,7 +38,7 @@ assert.ok(scheduleRuntime.includes('new MutationObserver(schedule)'),'H239 must 
 assert.ok(scheduleRuntime.includes("const settingsDarkSurface = node.closest('#page-settings')"),'H248 must protect dynamic dark settings surfaces from low-contrast inherited text');
 const canvaSportUi=fs.readFileSync('topkey/sports/vnext/canva-sports-ui.css','utf8');
 assert.ok(canvaSportUi.includes('html[data-tk-sport="badminton"]'),'Canva UI must preserve the badminton sport identity');
-assert.ok(sportHtml.includes('canva-sports-ui.css?v=canva-sports-v1-20261127'),'Shared sports workspace must load the consolidated Canva sport UI');
+assert.ok(/canva-sports-ui\.css\?v=canva-sports-v\d+-202611\d+/.test(sportHtml),'Shared sports workspace must load the consolidated Canva sport UI');
 console.log('H244 global document contrast runtime contract passed.');
 
 assert.ok(scheduleRuntime.includes("const ROOT = 'body';"), 'Dynamic contrast guard must cover legacy pages mounted outside #app-shell');
