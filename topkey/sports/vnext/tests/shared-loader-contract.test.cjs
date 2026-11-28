@@ -37,7 +37,7 @@ test('release version is shared while badminton data schema remains version 3', 
   assert.equal(release.releaseId, 'H218');
   assert.equal(release.badminton, release.vnext);
   assert.match(config, /badminton:\{\.\.\.common,key:'badminton',schemaVersion:3/);
-  assert.match(config, /kind:'shared-vnext-domain',entry:'\.\/index\.html\\?sport=badminton',workspace:'shared-vnext'/);
+  assert.match(config, /kind:'shared-vnext-domain',entry:'\.\/index\.html\?sport=badminton',workspace:'shared-vnext'/);
   assert.doesNotMatch(config, /legacy-badminton-domain|preserveExistingEngine|\.\.\/badminton\/index\.html/);
   const bundle = read('topkey/sports/vnext/h97-vnext.bundle.js');
   assert.match(bundle, /kind:'shared-vnext-domain'/);
