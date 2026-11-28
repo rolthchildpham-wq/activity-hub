@@ -611,10 +611,12 @@ jobs:
           skipped=0
           run_check(){
             local name="$1"; shift
+            local timeout_seconds=30
+            if [[ "${1:-}" =~ ^[0-9]+$ ]]; then timeout_seconds="$1"; shift; fi
             local log="artifacts/chrome-devtools/regression/${name//[^A-Za-z0-9_.-]/_}.log"
             total=$((total+1))
             echo "===== START $name ====="
-            if timeout 30s "$@" >"$log" 2>&1; then
+            if timeout "${timeout_seconds}s" "$@" >"$log" 2>&1; then
               passed=$((passed+1))
               printf 'PASS\t%s\t0\n' "$name" | tee -a "$report"
               echo "PASS $name"
@@ -631,7 +633,7 @@ jobs:
           # and composed EdgeOne artifact as next-ui-validation; prepare them
           # before the complete Node suite rather than treating absent outputs
           # as product regressions.
-          run_check "edgeone-next-build-and-stage" bash -c '
+          run_check "edgeone-next-build-and-stage" 180 bash -c '
             set -euo pipefail
             cd next-ui
             npm install --no-audit --no-fund
