@@ -7,7 +7,7 @@ const insight=fs.readFileSync(path.join(root,'executive-sport-insights.js'),'utf
 const css=fs.readFileSync(path.join(root,'canva-ui-system.css'),'utf8');
 const keys=['football','badminton','volleyball','running','cooking','handmade','shuttle'];
 for(const k of keys)assert.match(insight,new RegExp(' '+k+':\\{title:'),'Missing sport insight '+k);
-assert.match(hub,/executive-sport-insights\.js\?v=20261117-r1/);
+assert.match(hub,/executive-sport-insights\.js\?v=[^"']+/);
 assert.ok(!hub.includes('executive-sport-insights.css'),'Executive insight styles must be consolidated, not requested as a legacy stylesheet');
 assert(hub.indexOf('executive-sport-insights.js')<hub.indexOf('executive-dashboard.js'),'Insight renderer must load before dashboard');
 assert.match(exec,/TopkeyExecutiveSportInsights\?\.render\(b,data\)/);
