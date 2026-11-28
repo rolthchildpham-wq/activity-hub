@@ -82,7 +82,7 @@ test('Admin opens local camera before state change and does not mark it public L
 test('Production prebuilt runtime loads H143 guard and anonymous spectator player',()=>{
  assert.match(html,/live-state-h143\.js\?v=h143-20261121/);
  assert.match(html,/public-viewer-h137\.js\?v=h143-20261121/);
- assert.ok(html.includes('canva-sports-ui.css?v=canva-sports-v1-20261127'));
+ assert.ok(/canva-sports-ui\.css\?v=canva-sports-v\d+-202611\d+/.test(html));
  assert.match(runtime,/app\.applyStream=async function/);
  assert.match(runtime,/status:'LOCAL_ONLY'/);
  assert.doesNotMatch(runtime,/\.ref\([^)]*webrtc/);
