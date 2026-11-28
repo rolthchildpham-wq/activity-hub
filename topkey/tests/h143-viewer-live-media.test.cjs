@@ -10,7 +10,7 @@ const bootstrap=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
 const html=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
 
 function createHarness(stream={type:'EMBED',status:'LIVE',url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'}){
- const nodes={},callbacks={},created=[];
+ const nodes={},callbacks={},created=[],frames=[];
  function elem(tag='div'){
   const x={tagName:tag.toUpperCase(),children:[],textContent:'',className:'',style:{},parent:null,
    classList:{add(){},remove(){},toggle(){}},setAttribute(){},after(){},
@@ -37,7 +37,7 @@ function createHarness(stream={type:'EMBED',status:'LIVE',url:'https://www.youtu
  const document={getElementById:id=>nodes[id],documentElement:{classList:{add(){}}},head:elem('head'),createElement:elem};
  const sandbox={document,console,URLSearchParams,URL,setTimeout:()=>0,
   location:{search:'?sport=football&tid=main_2026',href:'https://example.com/'},
-  window:{requestAnimationFrame:cb=>cb(),TopkeyPlatform:{loadFirebase:async()=>{}},
+  window:{requestAnimationFrame:cb=>{frames.push(cb);return frames.length},TopkeyPlatform:{loadFirebase:async()=>{}},
     Topkey:{FIREBASE_CONFIG:{apiKey:'mock'}},firebase:{database:()=>({ref:()=>ref})}}};
  vm.runInNewContext(src,sandbox,{timeout:2000});
  const flush=()=>new Promise(setImmediate);
