@@ -138,6 +138,34 @@ body.tk-bi-hub .exec-card h3{margin:0 0 10px!important;color:#fff!important}
 @media(max-width:640px){body.tk-bi-hub .exec-grid{grid-template-columns:minmax(0,1fr)}}
 
 
+
+/* Executive sport insights migrated into the single Canva stylesheet (no legacy CSS request). */
+body.tk-bi-hub .exec-insights{min-width:0;margin:0 0 18px;padding:18px;border:1px solid var(--tk-line);border-radius:16px;background:linear-gradient(140deg,#102B43,#0B1F33);color:var(--tk-ink)}
+body.tk-bi-hub .exec-insights-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
+body.tk-bi-hub .exec-insights-heading h3{margin:2px 0 6px;color:#F5FAFD;font-size:22px;letter-spacing:-.02em}
+body.tk-bi-hub .exec-insights-heading p{margin:0 0 15px;color:var(--tk-muted);font-size:12px}
+body.tk-bi-hub .exec-eyebrow{color:#73D8D4;font-size:10px;font-weight:800;letter-spacing:.15em}
+body.tk-bi-hub .exec-insights-tabs{display:flex;gap:7px;overflow-x:auto;padding:0 0 10px;scrollbar-width:thin}
+body.tk-bi-hub .exec-insights-tab{flex:0 0 auto;white-space:nowrap;border:1px solid #45647B;border-radius:999px;padding:9px 13px;background:#173A55;color:#D4E4EE;font-size:12px;font-weight:700;cursor:pointer}
+body.tk-bi-hub .exec-insights-tab:hover,body.tk-bi-hub .exec-insights-tab:focus-visible{border-color:#55D7D2;color:#fff}
+body.tk-bi-hub .exec-insights-tab[aria-pressed="true"]{border-color:#55D7D2;background:#0AA6A6;color:#052B35;box-shadow:0 0 0 1px rgba(10,166,166,.35)}
+body.tk-bi-hub .exec-insights-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+body.tk-bi-hub .exec-insights-stat{min-width:0;padding:14px;border:1px solid var(--tk-line);border-radius:12px;background:#0A2237}
+body.tk-bi-hub .exec-insights-stat span{display:block;margin-bottom:6px;color:#B8C9D6;font-size:11px}
+body.tk-bi-hub .exec-insights-stat strong{color:#F5FAFD;font-size:23px;font-weight:800;overflow-wrap:anywhere}
+body.tk-bi-hub .exec-insights-focus{margin:12px 0;padding:13px 15px;border-left:3px solid #0AA6A6;border-radius:12px;background:#123A4B;color:#F5FAFD}
+body.tk-bi-hub .exec-insights-focus strong{color:#8BEADD;font-size:13px}
+body.tk-bi-hub .exec-insights-focus p{margin:5px 0 0;color:#D5E6EF;font-size:12px;line-height:1.5}
+body.tk-bi-hub .exec-insights-tablewrap{overflow:auto;border:1px solid var(--tk-line);border-radius:12px}
+body.tk-bi-hub .exec-insights-table{width:100%;min-width:590px;border-collapse:collapse}
+body.tk-bi-hub .exec-insights-table th,body.tk-bi-hub .exec-insights-table td{padding:11px 13px;border-bottom:1px solid #31536C;text-align:left;font-size:12px}
+body.tk-bi-hub .exec-insights-table th{position:sticky;top:0;background:#173A55;color:#D9F0F4;font-size:11px}
+body.tk-bi-hub .exec-insights-table td{color:#E7F3F8}
+body.tk-bi-hub .exec-insights-table tr:last-child td{border-bottom:0}
+body.tk-bi-hub .exec-insights-footnote{margin:12px 0 0;color:#B8C9D6;font-size:11px}
+@media(max-width:850px){body.tk-bi-hub .exec-insights-stats{grid-template-columns:repeat(2,minmax(0,1fr))}body.tk-bi-hub .exec-insights{padding:14px}}
+@media(max-width:430px){body.tk-bi-hub .exec-insights-stat strong{font-size:19px}body.tk-bi-hub .exec-insights-heading h3{font-size:19px}body.tk-bi-hub .exec-insights-tab{padding:9px 11px}}
+
 /* Canva page 2: persistent desktop sidebar; compact bottom navigation on touch screens. */
 @media(min-width:901px){
  body.tk-bi-hub{display:grid;grid-template-columns:264px minmax(0,1fr);align-items:start}
