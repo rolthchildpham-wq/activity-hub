@@ -633,9 +633,12 @@ jobs:
           # as product regressions.
           run_check "edgeone-next-build-and-stage" bash -c '
             set -euo pipefail
-            npm install --prefix next-ui --no-audit --no-fund
-            npm --prefix next-ui run check
-            npm --prefix next-ui run build
+            cd next-ui
+            npm install --no-audit --no-fund
+            npx svelte-kit sync
+            npm run check
+            npm run build
+            cd ..
             node scripts/stage-edgeone-next.mjs
           '
           run_check "install-isolated-jsdom" npm install --prefix /tmp/topkey-tests --no-audit --no-fund jsdom@26
