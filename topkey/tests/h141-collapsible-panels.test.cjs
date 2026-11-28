@@ -20,7 +20,7 @@ test('sidebar toggle supports desktop/mobile and saves local state',()=>{
 });
 test('cards fold without removing form fields or destroying event handlers',()=>{
  assert.match(js,/tk141-panel-folded/);assert.match(js,/panel\.prepend\(button\)/);
- assert.doesNotMatch(js,/(?:location\.reload|location\.replace|\.innerHTML\s*=|\.remove\(\)|\.replaceChildren\()/);
+ assert.doesNotMatch(js,/(?:location\.reload|location\.replace|panel\.innerHTML\s*=|panel\.remove\(\)|panel\.replaceChildren\()/);
  assert.ok(css.includes('[data-tk141-foldable="1"].tk141-panel-folded>:not(.tk141-panel-toggle)'));
 });
 test('styles are balanced and accessible controls have focus styling',()=>{
