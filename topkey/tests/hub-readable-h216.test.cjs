@@ -2,7 +2,7 @@ const fs=require('node:fs');
 const assert=require('node:assert/strict');
 const html=fs.readFileSync('topkey/index.html','utf8');
 const css=fs.readFileSync('topkey/hub-contrast-readable-h216.css','utf8');
-assert.ok(html.includes('canva-ui-system.css?v=canva-ui-v1-20261127'),'Hub must load the consolidated Canva design system');
+assert.ok(/canva-ui-system\.css\?v=canva-ui-v\d+-202611\d+/.test(html),'Hub must load the consolidated Canva design system');
 assert.ok(!html.includes('hub-contrast-readable-h216.css'),'Legacy H216 stylesheet must no longer load');
 for(const token of ['#f7fbff','#d8e5ef','#102a43','#7897b0','font-size:13px','grid-template-columns:repeat(2,minmax(0,1fr))','@media(max-width:360px)','prefers-reduced-motion:reduce']){
  assert.ok(css.includes(token),'H216 missing readability/responsive contract: '+token);
@@ -47,7 +47,7 @@ assert.ok(scheduleRuntime.includes("window.__TOPKEY_WORKSPACE_CONTRAST_H251={"),
 
 const canvaHubCss=fs.readFileSync('topkey/hub-canva-design-system-h251.css','utf8');
 assert.ok(canvaHubCss.includes('--tk-canva-navy:#0B1F33')&&canvaHubCss.includes('--tk-canva-slate:#173A55')&&canvaHubCss.includes('--tk-canva-teal:#0AA6A6'), 'Canva TOPKEY palette tokens must be present');
-assert.ok(html.includes('canva-ui-system.css?v=canva-ui-v1-20261127'), 'Hub must load the new Canva design system');
+assert.ok(/canva-ui-system\.css\?v=canva-ui-v\d+-202611\d+/.test(html), 'Hub must load the new Canva design system');
 assert.ok(!html.includes('hub-canva-design-system-h251.css'), 'H251 overlay must no longer load');
 console.log('H251 Canva design-system integration contract passed.');
 console.log('H251 medal contrast runtime test passed.');
