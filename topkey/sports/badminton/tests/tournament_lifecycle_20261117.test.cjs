@@ -1,6 +1,7 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
-const {JSDOM}=require('jsdom');
+const testModules=process.env.TOPKEY_TEST_NODE_MODULES;
+const {JSDOM}=require(testModules?path.join(testModules,'jsdom'):'jsdom');
 const root=path.join(__dirname,'..');
 const wizardSource=fs.readFileSync(path.join(root,'upgrade122-hotfix80.js'),'utf8');
 const reportSource=fs.readFileSync(path.join(root,'upgrade122-hotfix65.js'),'utf8');
