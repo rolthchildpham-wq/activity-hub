@@ -4,7 +4,7 @@ const vhtml=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
 const bhtml=fs.readFileSync('topkey/sports/badminton/index.html','utf8');
 const vcss=fs.readFileSync('topkey/sports/vnext/contrast-global-h217.css','utf8');
 const bcss=fs.readFileSync('topkey/sports/badminton/contrast-global-h217.css','utf8');
-assert.ok(/canva-sports-ui\\.css\\?v=canva-sports-v\\d+-202611\\d+/.test(vhtml),'VNext must load the consolidated Canva sports UI');
+assert.ok(/canva-sports-ui\.css\?v=canva-sports-v\d+-202611\d+/.test(vhtml),'VNext must load the consolidated Canva sports UI');
 assert.ok(!vhtml.includes('contrast-global-h217.css'),'Legacy H217 visual stylesheet must not load in VNext');
 assert.ok(bhtml.includes("query.set('sport', 'badminton')"),'Legacy badminton route must hand off to shared VNext workspace');
 for(const [name,css] of [['VNext',vcss],['Badminton',bcss]]){
@@ -49,12 +49,12 @@ assert.ok(scheduleRuntime.includes("const ROOT = 'body';"), 'Dynamic contrast gu
 
 assert.ok(!scheduleRuntime.includes('settingsClock') && scheduleRuntime.includes('luminance(bg) < 0.72'), 'H252 must choose dark text only for light surfaces and light text for dark settings surfaces');
 assert.ok(scheduleRuntime.includes("node.style.setProperty('color',SAFE,'important')"), 'H252 must retain dark foreground for text on light settings surfaces');
-console.log('H249 settings clock priority regression contract passed.');
+console.log('H252 settings surface contrast regression contract passed.');
 
 const overviewContrast=fs.readFileSync('topkey/sports/vnext/workspace-contrast-h234.css','utf8');
 assert.ok(overviewContrast.includes('html body #app-shell #page-overview .tk9-podium .tk9-medal'), 'H250 must set a readable foreground for podium medal glyphs on dark medal discs');
 assert.ok(overviewContrast.includes('-webkit-text-fill-color:#f8fbff!important'), 'H250 must override inherited WebKit text fill on medal glyphs');
-assert.ok(vhtml.includes('canva-sports-ui.css?v=canva-sports-v1-20261127'), 'VNext must use the consolidated Canva visual layer instead of legacy H250/H251 layers');
+assert.ok(/canva-sports-ui\.css\?v=canva-sports-v\d+-202611\d+/.test(vhtml), 'VNext must use the consolidated Canva visual layer instead of legacy H250/H251 layers');
 console.log('H250 overview podium medal WCAG AA regression contract passed.');
 
 assert.ok(scheduleRuntime.includes("const podiumMedal = node.classList.contains('tk9-medal')"), 'H250 must detect podium medal text on dark discs');
