@@ -36,7 +36,7 @@ function render(host,data){
  const tableWrap=el('div','exec-insights-tablewrap'),table=el('table','exec-insights-table'),thead=el('thead'),tr=el('tr');
  for(const col of ['Giải đấu','Năm','Hồ sơ','Trận / lượt chấm','Số dư'])tr.appendChild(el('th',null,col));thead.appendChild(tr);table.appendChild(thead);
  const tbody=el('tbody');
- for(const event of events.slice(0,12)){const row=el('tr');for(const x of [event.title,event.year,event.teams,event.matches,fmt(event.balance)+' ₫'])row.appendChild(el('td',null,String(x??'—')));tbody.appendChild(row);}
+ for(const event of events.slice(0,12)){const row=el('tr');for(const [label,x] of [['Giải đấu',event.title],['Năm',event.year],['Hồ sơ',event.teams],['Trận / lượt chấm',event.matches],['Số dư',fmt(event.balance)+' ₫']]){const cell=el('td',null,String(x??'—'));cell.setAttribute('data-label',label);row.appendChild(cell)}tbody.appendChild(row);}
  if(!events.length){const row=el('tr'),cell=el('td',null,'Chưa có giải được ghi nhận trong snapshot điều hành.');cell.colSpan=5;row.appendChild(cell);tbody.appendChild(row);}
  table.appendChild(tbody);tableWrap.appendChild(table);
  const last=el('p','exec-insights-footnote','Dữ liệu tổng hợp theo snapshot điều hành · Không tự suy diễn điểm, thời gian hoặc thống kê kỹ thuật chưa được lưu.');
