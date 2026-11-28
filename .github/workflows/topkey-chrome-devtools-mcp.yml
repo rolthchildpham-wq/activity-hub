@@ -643,6 +643,7 @@ jobs:
           '
           run_check "install-isolated-jsdom" npm install --prefix /tmp/topkey-tests --no-audit --no-fund jsdom@26
           export NODE_PATH="/tmp/topkey-tests/node_modules${NODE_PATH:+:$NODE_PATH}"
+          export TOPKEY_TEST_NODE_MODULES=/tmp/topkey-tests/node_modules
 
           # Parse every first-party JS/CJS/MJS source file. Do not stop at the
           # first syntax error; record each broken file and continue scanning.
