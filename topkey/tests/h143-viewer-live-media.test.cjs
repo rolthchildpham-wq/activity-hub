@@ -17,10 +17,12 @@ function createHarness(stream={type:'EMBED',status:'LIVE',url:'https://www.youtu
    appendChild(item){item.parent=this;this.children.push(item)},
    replaceChildren(...items){this.children=[];this.append(...items)},
    remove(){if(this.parent)this.parent.children=this.parent.children.filter(i=>i!==this)},
-   querySelector:()=>null};
+   querySelector:()=>null,
+   closest(selector){let node=this;while(node){if(selector==='.card'&&String(node.className||'').split(/\\s+/).includes('card'))return node;node=node.parent||null;}return null;}};
   created.push(x);return x;
  }
  for(const id of ['public-spectator','spectator-schedule','spectator-live','spectator-title','login-screen','app-shell'])nodes[id]=elem();
+ const liveCard=elem();liveCard.className='card';liveCard.appendChild(nodes['spectator-live']);
  nodes['public-spectator'].querySelector=()=>({after(){}});
  const data={
   matches:{m1:{id:'m1',code:'M001',teamAId:'t1',teamBId:'t2',status:'LIVE',courtId:'c1'}},
