@@ -2,10 +2,15 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {existsSync,readFileSync} from 'node:fs';
 import {join,resolve} from 'node:path';
+import {execFileSync} from 'node:child_process';
 
 const root=resolve(import.meta.dirname,'../..');
 const staged=join(root,'dist-edgeone');
 const configFile=join(staged,'edgeone.json');
+
+// Recreate the artifact from this checkout/build instead of trusting a stale
+// dist-edgeone directory left by another workflow step or local cache.
+execFileSync(process.execPath,[join(root,'scripts/stage-edgeone-next.mjs'),staged],{cwd:root,stdio:'pipe'});
 
 test('legacy production entries are preserved by staging',()=>{
  for(const file of [
@@ -26,7 +31,7 @@ test('deep links rewrite only next workspace paths; old sports routes unaffected
   {source:'/next/sports',destination:'/next/index.html'},
   {source:'/next/sports/*',destination:'/next/index.html'}
  ];
- for(const item of expected)assert.ok(config.rewrites.some(r=>r.source===item.source&&r.destination===item.destination));
+ for(const item of expected)assert.ok(config.rewrites.some(r=>r.source===item.source&&r.destination===item.destination),`Missing rewrite ${item.source} -> ${item.destination}; found ${JSON.stringify(config.rewrites)}`);
  assert.ok(!config.rewrites.some(r=>r.source==='/*'));
  const legacy=readFileSync(join(staged,'sports/badminton/index.html'),'utf8');
  assert.ok(legacy.includes('TOPKEY BADMINTON'));
