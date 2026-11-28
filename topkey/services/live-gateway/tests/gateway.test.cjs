@@ -41,7 +41,7 @@ function harness(){
  }
  return {call,requests,api:module.exports};
 }
-const request={sport:'volleyball',tid:'test_demo',court:'c1',mode:'publish',sdp:'v=0\r\na=offer-padding-for-sdp\r\n'};
+const request={sport:'volleyball',tid:'test_demo',court:'c1',mode:'publish',sdp:'v=0\r\na=offer-padding-for-sdp-12345678901234567890\r\n'};
 test('public spectator can WHEP-play an explicitly LIVE stream',async()=>{
  const h=harness();
  const r=await h.call('/api/rtc/offer',{...request,mode:'play'});
