@@ -50,9 +50,8 @@ assert.match(config, /badminton:\{[\s\S]*?root:'topkey_badminton_vnext_2026'/,
   'Badminton must use its existing Firebase VNext root');
 assert.match(config, /legacyEngineRoot:'topkey_badminton_vnext_2026'/,
   'Legacy badminton data root must remain unchanged');
-assert.match(config, /preserveExistingEngine:true/,
-
-  'The retained badminton domain engine must be declared as preserved');
+assert.match(config, /engineAdapter:\{kind:'shared-vnext-domain',entry:'\.\/index\.html\?sport=badminton',workspace:'shared-vnext'\}/,
+  'Badminton domain must execute inside the shared VNext engine, not a standalone adapter');
 for (const format of ['BEST_OF_3_21_SWITCH_10','SETS_21_21_15_SWITCH_7','BEST_OF_3_15_SWITCH_7']) {
   assert.ok(config.includes(format), 'Missing badminton format profile ' + format);
 }
@@ -71,6 +70,6 @@ console.log(JSON.stringify({
   catalogEntries: catalog.length,
   sportEntries: requiredSports.length - 1,
   sharedShellStylesheet: shellAsset,
-  badmintonEngine: 'legacy engine source retained; shared VNext entry enabled',
+  badmintonEngine: 'shared VNext domain engine with preserved Firebase schema/root',
   queryAndHashForwarding: 'verified'
 }, null, 2));
