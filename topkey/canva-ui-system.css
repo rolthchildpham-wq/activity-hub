@@ -1,0 +1,384 @@
+/* TOPKEY Canva UI v2 — Canva Hub dashboard/sidebar layout and responsive navigation.
+   Source: Canva design DAHcGwe0HHY. UI-only: preserve app markup, routes and data APIs. */
+:root{color-scheme:dark;--tk-navy:#0B1F33;--tk-slate:#173A55;--tk-teal:#0AA6A6;--tk-white:#fff;--tk-ink:#F5FAFD;--tk-muted:#B8C9D6;--tk-line:#31536C;--tk-surface:#102B43;--tk-surface-2:#143650;--tk-radius:16px;--tk-shadow:0 12px 32px rgba(0,0,0,.22);--tk-space-1:4px;--tk-space-2:8px;--tk-space-3:12px;--tk-space-4:16px;--tk-space-6:24px;--tk-space-8:32px;--tk-space-10:40px}
+*,*::before,*::after{box-sizing:border-box}html{min-width:320px;scroll-behavior:smooth;background:var(--tk-navy)}body.tk-bi-hub{margin:0;min-height:100vh;background:var(--tk-navy);color:var(--tk-ink);font:400 15px/1.55 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}body.tk-bi-hub a{color:inherit}body.tk-bi-hub button,body.tk-bi-hub input,body.tk-bi-hub select,body.tk-bi-hub textarea{font:inherit}body.tk-bi-hub :focus-visible{outline:3px solid #55D7D2;outline-offset:3px}body.tk-bi-hub img,body.tk-bi-hub svg,body.tk-bi-hub video{max-width:100%;height:auto}
+body.tk-bi-hub .top{position:sticky;top:0;z-index:50;padding:14px clamp(16px,3vw,40px);background:rgba(11,31,51,.96);border-bottom:1px solid rgba(10,166,166,.3);box-shadow:0 8px 24px rgba(0,0,0,.18);backdrop-filter:blur(14px)}
+body.tk-bi-hub .brand{max-width:1480px;margin:auto;display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:20px}
+body.tk-bi-hub .brand-main{display:flex;align-items:center;gap:18px;min-width:0}
+body.tk-bi-hub .brand-logo-wrap{width:168px;min-width:120px;height:58px;display:flex;align-items:center;justify-content:center;padding:6px 10px;background:#fff;border-radius:12px;overflow:hidden}
+body.tk-bi-hub .brand-logo{width:100%;height:100%;object-fit:contain}
+body.tk-bi-hub .brand-title{min-width:0;border-left:1px solid rgba(184,201,214,.3);padding-left:18px}
+body.tk-bi-hub .brand-title h1{margin:0;font-size:clamp(17px,1.7vw,24px);font-weight:800;line-height:1.2;letter-spacing:-.035em;text-transform:none}
+body.tk-bi-hub .hub-title-line{display:inline}
+body.tk-bi-hub .eyebrow{margin-top:5px;color:#8ED9D6;font-size:11px;font-weight:700;letter-spacing:.08em}
+body.tk-bi-hub .tk210-nav{display:flex;align-items:center;gap:6px;min-width:0}
+body.tk-bi-hub .tk210-nav a{display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:9px 13px;border:1px solid transparent;border-radius:10px;color:var(--tk-muted);text-decoration:none;font-size:13px;font-weight:700;white-space:nowrap}
+body.tk-bi-hub .tk210-nav a:hover,body.tk-bi-hub .tk210-nav a.active,body.tk-bi-hub .tk210-nav a[aria-current=page]{background:rgba(10,166,166,.14);border-color:rgba(10,166,166,.4);color:#fff}
+body.tk-bi-hub .tk210-avatar{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--tk-teal);color:#062c37;font-weight:800;text-decoration:none}
+body.tk-bi-hub .status{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px}
+body.tk-bi-hub .pill{display:inline-flex;align-items:center;min-height:25px;padding:4px 9px;border:1px solid rgba(10,166,166,.35);border-radius:999px;background:rgba(10,166,166,.1);color:#B8F0ED;font-size:11px;font-weight:700}
+body.tk-bi-hub main.wrap{width:min(1480px,100%);margin:0 auto;padding:28px clamp(16px,3vw,40px) 56px;min-width:0;overflow-x:clip}
+body.tk-bi-hub .tk-bi-hero{position:relative;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(180px,.8fr);align-items:center;gap:24px;min-height:230px;padding:clamp(24px,4vw,48px);overflow:hidden;border:1px solid rgba(10,166,166,.28);border-radius:22px;background:linear-gradient(120deg,#173A55,#102B43 65%,#0B1F33);box-shadow:var(--tk-shadow)}
+body.tk-bi-hub .tk-bi-hero-kicker{color:#73D8D4;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+body.tk-bi-hub .tk-bi-hero h2{max-width:720px;margin:8px 0 12px;font-size:clamp(27px,3.6vw,46px);line-height:1.08;letter-spacing:-.045em}
+body.tk-bi-hub .tk-bi-hero p{max-width:680px;margin:0;color:var(--tk-muted);font-size:15px}
+body.tk-bi-hub .tk-bi-hero-cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+body.tk-bi-hub .tk-bi-link{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 16px;border:1px solid var(--tk-line);border-radius:10px;background:rgba(255,255,255,.05);color:#fff;text-decoration:none;font-weight:700}
+body.tk-bi-hub .tk-bi-link.primary,body.tk-bi-hub .sport .open{background:var(--tk-teal);border:1px solid #32C6C3;color:#052B35;font-weight:800}
+body.tk-bi-hub .tk210-hero-art{display:flex;align-items:center;justify-content:center;gap:12px;min-height:140px;position:relative}
+body.tk-bi-hub .tk210-athlete{display:grid;place-items:center;width:64px;height:64px;border:1px solid rgba(10,166,166,.35);border-radius:18px;background:rgba(10,166,166,.12);font-size:30px}
+body.tk-bi-hub .tk-bi-section-heading{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:30px 0 14px}
+body.tk-bi-hub .tk-bi-section-heading h2{margin:0;font-size:22px;letter-spacing:-.03em}
+body.tk-bi-hub .tk-bi-section-heading small{color:var(--tk-muted)}
+body.tk-bi-hub .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:0}
+body.tk-bi-hub .sport{position:relative;display:flex;flex-direction:column;min-width:0;min-height:230px;padding:22px;border:1px solid var(--tk-line);border-radius:var(--tk-radius);background:linear-gradient(145deg,#173A55,#102B43);box-shadow:0 8px 22px rgba(0,0,0,.15);text-decoration:none;transition:transform .16s ease,border-color .16s ease}
+body.tk-bi-hub .sport:hover{transform:translateY(-2px);border-color:var(--tk-teal);box-shadow:var(--tk-shadow)}
+body.tk-bi-hub .sport .emoji{font-size:34px;line-height:1.2}
+body.tk-bi-hub .sport h3{margin:14px 0 7px;color:#fff;font-size:19px;font-weight:800;letter-spacing:-.025em}
+body.tk-bi-hub .sport p{margin:0 0 18px;color:#C2D1DC;line-height:1.55;font-size:13px}
+body.tk-bi-hub .sport .open{display:inline-flex;align-items:center;justify-content:center;min-height:38px;margin-top:auto;padding:8px 12px;border-radius:9px;text-decoration:none;font-size:12px}
+body.tk-bi-hub .sport .badge{position:absolute;right:12px;top:12px;max-width:60%;padding:5px 8px;border:1px solid rgba(10,166,166,.4);border-radius:999px;background:rgba(10,166,166,.12);color:#B8F0ED;font-size:9px;font-weight:800}
+body.tk-bi-hub .panel,body.tk-bi-hub .feature{border:1px solid var(--tk-line);border-radius:var(--tk-radius);background:var(--tk-surface);box-shadow:var(--tk-shadow)}
+body.tk-bi-hub .feature-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+body.tk-bi-hub :is(button,.btn){min-height:40px;border:1px solid var(--tk-line);border-radius:10px;padding:9px 13px;background:var(--tk-slate);color:#fff;font-weight:700;cursor:pointer}
+body.tk-bi-hub :is(button,.btn):hover{border-color:var(--tk-teal);filter:brightness(1.08)}
+body.tk-bi-hub :is(input,select,textarea){min-width:0;max-width:100%;border:1px solid #45647B;border-radius:9px;padding:10px 12px;background:#0A2237;color:#fff}
+body.tk-bi-hub table{width:100%;border-collapse:collapse}body.tk-bi-hub th,body.tk-bi-hub td{padding:11px 12px;border-bottom:1px solid rgba(184,201,214,.16);text-align:left}body.tk-bi-hub th{background:#173A55;color:#E5F2F8;font-size:12px}
+body.tk-bi-hub .hidden,body.tk-bi-hub .hub-workspace-hidden{display:none!important}body.tk-bi-hub .footer{display:none!important}
+@media(max-width:1000px){body.tk-bi-hub .brand{grid-template-columns:minmax(0,1fr) auto}body.tk-bi-hub .tk210-nav{grid-column:1/-1;grid-row:2;overflow:auto;padding-bottom:2px}body.tk-bi-hub .status{grid-column:1/-1;grid-row:3}body.tk-bi-hub .cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){body.tk-bi-hub .top{position:relative;padding:12px 14px}body.tk-bi-hub .brand{grid-template-columns:minmax(0,1fr) auto;gap:10px}body.tk-bi-hub .brand-main{gap:10px}body.tk-bi-hub .brand-logo-wrap{width:86px;min-width:86px;height:42px;padding:4px}body.tk-bi-hub .brand-title{padding-left:10px}body.tk-bi-hub .brand-title h1{font-size:14px}body.tk-bi-hub .eyebrow{font-size:9px;letter-spacing:.02em}body.tk-bi-hub .tk210-nav{gap:4px;margin:0 -2px}body.tk-bi-hub .tk210-nav a{min-height:40px;padding:8px 10px;font-size:12px}body.tk-bi-hub .tk210-nav a span{display:inline}body.tk-bi-hub .status{display:none}body.tk-bi-hub main.wrap{padding:16px 14px 36px}body.tk-bi-hub .tk-bi-hero{grid-template-columns:1fr;min-height:0;padding:22px;border-radius:16px}body.tk-bi-hub .tk210-hero-art{min-height:60px;justify-content:flex-start}body.tk-bi-hub .tk210-athlete{width:46px;height:46px;font-size:22px}body.tk-bi-hub .tk-bi-hero h2{font-size:28px}body.tk-bi-hub .tk-bi-hero p{font-size:13px}body.tk-bi-hub .tk-bi-section-heading{align-items:flex-start;flex-direction:column;margin:22px 0 12px}body.tk-bi-hub .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}body.tk-bi-hub .sport{padding:14px;min-height:190px;border-radius:13px}body.tk-bi-hub .sport h3{font-size:15px;margin:10px 0 6px}body.tk-bi-hub .sport p{font-size:11px;line-height:1.45}body.tk-bi-hub .sport .badge{position:static;align-self:flex-start;max-width:100%;margin-bottom:8px;font-size:8px}body.tk-bi-hub .feature-grid{grid-template-columns:1fr}}
+@media(max-width:370px){body.tk-bi-hub .cards{grid-template-columns:1fr}body.tk-bi-hub .brand-title h1{font-size:12px}body.tk-bi-hub .tk210-nav a{padding:7px 8px}}
+@media(prefers-reduced-motion:reduce){body.tk-bi-hub *,body.tk-bi-hub *:before,body.tk-bi-hub *:after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* Executive dashboard components share the same Canva card and grid primitives. */
+body.tk-bi-hub .exec-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+body.tk-bi-hub .exec-card,body.tk-bi-hub .exec-insights-focus,body.tk-bi-hub .tk-bi-footer{min-width:0;padding:16px;border:1px solid var(--tk-line);border-radius:var(--tk-radius);background:var(--tk-surface);color:var(--tk-ink);box-shadow:0 8px 24px rgba(0,0,0,.14)}
+body.tk-bi-hub .cards.compact-sports{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+body.tk-bi-hub .exec-card :is(h2,h3,strong){color:#fff}
+body.tk-bi-hub .exec-card :is(p,small,.muted){color:var(--tk-muted)}
+@media(max-width:900px){body.tk-bi-hub .exec-kpis,body.tk-bi-hub .cards.compact-sports{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){body.tk-bi-hub .exec-kpis,body.tk-bi-hub .cards.compact-sports{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* Canva mobile shell: persistent bottom navigation and safe-area spacing. */
+@media(max-width:640px){
+ body.tk-bi-hub .tk210-nav{position:fixed;left:0;right:0;bottom:0;z-index:1200;display:flex;justify-content:space-around;gap:4px;padding:8px 8px calc(8px + env(safe-area-inset-bottom,0px));border-top:1px solid rgba(10,166,166,.32);background:rgba(11,31,51,.97);box-shadow:0 -8px 24px rgba(0,0,0,.28);backdrop-filter:blur(14px)}
+ body.tk-bi-hub .tk210-nav a{flex:1;justify-content:center;min-height:46px;padding:8px 7px;font-size:11px}
+ body.tk-bi-hub main.wrap{padding-bottom:calc(100px + env(safe-area-inset-bottom,0px))}
+}
+
+/* Hub launch panels and test-lab controls — migrated from inline style attributes. */
+body.tk-bi-hub .split{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+body.tk-bi-hub .testlab-panel,body.tk-bi-hub #password-change-launch,body.tk-bi-hub #system-admin-launch{margin-top:22px}
+body.tk-bi-hub .testlab-panel{border-color:#806A3D}
+body.tk-bi-hub #password-change-launch{border-color:#315F79}
+body.tk-bi-hub #system-admin-launch{border-color:#5B4B86}
+body.tk-bi-hub .status .pill:nth-child(4){border-color:#16805E;color:#9AE6B4}
+body.tk-bi-hub .testlab-panel .split{align-items:flex-start}
+body.tk-bi-hub .testlab-panel h2{margin-bottom:8px}
+body.tk-bi-hub .testlab-panel p{margin-bottom:0}
+body.tk-bi-hub .testlab-panel .split>.pill{border-color:#806A3D;color:#FFE1A6}
+body.tk-bi-hub .testlab-panel .feature-grid{margin-top:14px;grid-template-columns:1.1fr 1fr 1fr}
+body.tk-bi-hub .testlab-panel .feature-grid>div>div{margin-top:9px}
+body.tk-bi-hub #testlab-sport{width:100%;padding:11px;border-radius:10px;background:#0A2237;color:#F5FAFD;border:1px solid #45647B}
+body.tk-bi-hub #testlab-run{width:100%;margin-top:9px;padding:12px;border:1px solid #B18B3C;border-radius:10px;background:#806021;color:#FFF4D4;font-weight:800;cursor:pointer}
+body.tk-bi-hub #testlab-last{font-size:11px;margin-top:8px}
+body.tk-bi-hub #password-change-launch .muted,body.tk-bi-hub #system-admin-launch .muted{margin-bottom:0}
+body.tk-bi-hub #password-change-launch .open,body.tk-bi-hub #system-admin-launch .open{display:inline-flex;align-items:center;justify-content:center;padding:12px 16px;border-radius:10px;color:#fff;text-decoration:none;font-weight:800}
+body.tk-bi-hub #password-change-launch .open{background:#245B78}
+body.tk-bi-hub #system-admin-launch .open{background:#51427A}
+
+/* Hub sport picker and header controls reimplemented in Canva components. */
+body.tk-bi-hub .cards.compact-sports{grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;margin:0 0 18px;padding:12px;border:1px solid var(--tk-line);border-radius:18px;background:#102B43}
+body.tk-bi-hub .cards.compact-sports .sport{min-height:84px;padding:12px 8px;align-items:center;justify-content:center;text-align:center;gap:6px;border-radius:13px;background:#173A55;box-shadow:none}
+body.tk-bi-hub .cards.compact-sports .sport .emoji{font-size:27px;line-height:1}
+body.tk-bi-hub .cards.compact-sports .sport h3{margin:0;font-size:13px;font-weight:800}
+body.tk-bi-hub .cards.compact-sports .sport p,body.tk-bi-hub .cards.compact-sports .sport .badge,body.tk-bi-hub .cards.compact-sports .sport .open{display:none!important}
+body.tk-bi-hub .cards.compact-sports .sport:hover{transform:translateY(-2px)}
+body.tk-bi-hub .sport-picker-note{grid-column:1/-1;color:#FFE1A6;font-size:12px;padding:0 4px 2px}
+body.tk-bi-hub .hub-bg-preview{height:130px;margin-top:8px;border:1px dashed var(--tk-line);border-radius:12px;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;color:var(--tk-muted)}
+body.tk-bi-hub .hub-header-toggle{display:none;width:40px;height:40px;padding:0;border:1px solid var(--tk-line);border-radius:10px;background:var(--tk-surface);color:#fff;font-size:22px;font-weight:800;line-height:1;align-items:center;justify-content:center;cursor:pointer}
+@media(max-width:1100px){body.tk-bi-hub .cards.compact-sports{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:640px){body.tk-bi-hub .cards.compact-sports{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:9px}body.tk-bi-hub .cards.compact-sports .sport{min-height:72px}body.tk-bi-hub .cards.compact-sports .sport .emoji{font-size:24px}body.tk-bi-hub .cards.compact-sports .sport h3{font-size:12px}body.tk-bi-hub .hub-header-toggle{display:inline-flex}}
+
+/* Executive calendar and schedule cards — responsive, contained, no viewport-wide overflow. */
+body.tk-bi-hub .exec-calendar-card{min-width:0;overflow:visible;border:1px solid var(--tk-line);border-radius:16px;background:var(--tk-surface);color:var(--tk-ink);padding:16px}
+body.tk-bi-hub .exec-calendar-weekdays,body.tk-bi-hub .exec-calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;min-width:0;width:100%}
+body.tk-bi-hub .exec-calendar-weekdays>*{min-width:0;text-align:center;color:var(--tk-muted);font-size:11px;font-weight:800}
+body.tk-bi-hub .exec-calendar-day{display:flex;flex-direction:column;gap:4px;min-width:0;min-height:72px;padding:7px;border:1px solid var(--tk-line);border-radius:9px;background:#0A2237;overflow-wrap:anywhere}
+body.tk-bi-hub .exec-calendar-day.is-today{border-color:var(--tk-teal);background:#123A4B}
+body.tk-bi-hub .exec-calendar-date{font-size:12px;font-weight:800;color:#fff}
+body.tk-bi-hub .exec-calendar-event{min-width:0;padding:3px 5px;border-radius:5px;background:rgba(10,166,166,.14);color:#B8F0ED;font-size:10px;line-height:1.3;overflow-wrap:anywhere}
+body.tk-bi-hub .exec-calendar-day :is(span,small){min-width:0;overflow-wrap:anywhere}
+@media(max-width:680px){
+ body.tk-bi-hub .exec-calendar-weekdays,body.tk-bi-hub .exec-calendar-grid{min-width:0!important;gap:3px}
+ body.tk-bi-hub .exec-calendar-card{overflow-x:visible!important;padding:9px}
+ body.tk-bi-hub .exec-calendar-day{min-height:0!important;padding:4px;gap:3px}
+ body.tk-bi-hub .exec-calendar-date{font-size:10px}
+ body.tk-bi-hub .exec-calendar-event{font-size:9px;padding:2px}
+}
+
+/* Compact seven-sport launcher: single row on desktop, contained horizontal rail on smaller screens. */
+body.tk-bi-hub #topkey-sports.cards,body.tk-bi-hub #topkey-sports.cards.compact-sports{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:10px;width:100%;max-width:100%;min-width:0;margin:0 0 14px;padding:0;overflow:visible}
+body.tk-bi-hub #topkey-sports.cards .sport,body.tk-bi-hub #topkey-sports.cards.compact-sports .sport{min-width:0;min-height:78px;height:78px;padding:9px 5px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border-radius:12px}
+body.tk-bi-hub #topkey-sports .sport .emoji{font-size:24px;line-height:1;margin:0}
+body.tk-bi-hub #topkey-sports .sport h3{width:100%;max-width:100%;margin:0;font-size:clamp(10px,.8vw,12px);line-height:1.22;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.tk-bi-hub #topkey-sports .sport p,body.tk-bi-hub #topkey-sports .sport .badge,body.tk-bi-hub #topkey-sports .sport .open{display:none!important}
+@media(max-width:1100px){body.tk-bi-hub #topkey-sports.cards,body.tk-bi-hub #topkey-sports.cards.compact-sports{display:flex;flex-wrap:nowrap;gap:8px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;padding-bottom:6px;scrollbar-width:thin}body.tk-bi-hub #topkey-sports.cards .sport{flex:0 0 clamp(110px,16vw,152px);width:auto;scroll-snap-align:start}}
+@media(max-width:650px){body.tk-bi-hub #topkey-sports.cards .sport{flex-basis:114px;min-height:64px;height:64px}body.tk-bi-hub #topkey-sports .sport .emoji{font-size:21px}body.tk-bi-hub #topkey-sports .sport h3{font-size:11px}}
+
+/* Executive dashboard runtime output — replace historical inline light-green alerts with Canva surfaces. */
+body.tk-bi-hub .exec-kpi{min-width:0;padding:14px;border:1px solid var(--tk-line);border-radius:14px;background:#102B43;color:var(--tk-ink)}
+body.tk-bi-hub .exec-kpi :is(b,strong,.value){color:#65DEDA;font-size:clamp(22px,2.5vw,32px);font-weight:850}
+body.tk-bi-hub .exec-kpi :is(label,small,.muted){color:var(--tk-muted)}
+body.tk-bi-hub .exec-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+body.tk-bi-hub .exec-bar{height:9px;margin-top:8px;border-radius:99px;background:#274A63;overflow:hidden}
+body.tk-bi-hub .exec-bar>i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#087D76,#55D0CB)}
+body.tk-bi-hub .exec-alert{margin-top:12px!important;padding:12px!important;border:1px solid rgba(10,166,166,.5)!important;border-radius:12px!important;background:#123A4B!important;color:#D8F8F5!important}
+body.tk-bi-hub .exec-meta{margin-top:10px!important;color:var(--tk-muted)!important;font-size:12px;line-height:1.5}
+body.tk-bi-hub .exec-card h3{margin:0 0 10px!important;color:#fff!important}
+@media(max-width:640px){body.tk-bi-hub .exec-grid{grid-template-columns:minmax(0,1fr)}}
+
+
+
+/* Executive sport insights migrated into the single Canva stylesheet (no legacy CSS request). */
+body.tk-bi-hub .exec-insights{min-width:0;margin:0 0 18px;padding:18px;border:1px solid var(--tk-line);border-radius:16px;background:linear-gradient(140deg,#102B43,#0B1F33);color:var(--tk-ink)}
+body.tk-bi-hub .exec-insights-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
+body.tk-bi-hub .exec-insights-heading h3{margin:2px 0 6px;color:#F5FAFD;font-size:22px;letter-spacing:-.02em}
+body.tk-bi-hub .exec-insights-heading p{margin:0 0 15px;color:var(--tk-muted);font-size:12px}
+body.tk-bi-hub .exec-eyebrow{color:#73D8D4;font-size:10px;font-weight:800;letter-spacing:.15em}
+body.tk-bi-hub .exec-insights-tabs{display:flex;gap:7px;overflow-x:auto;padding:0 0 10px;scrollbar-width:thin}
+body.tk-bi-hub .exec-insights-tab{flex:0 0 auto;white-space:nowrap;border:1px solid #45647B;border-radius:999px;padding:9px 13px;background:#173A55;color:#D4E4EE;font-size:12px;font-weight:700;cursor:pointer}
+body.tk-bi-hub .exec-insights-tab:hover,body.tk-bi-hub .exec-insights-tab:focus-visible{border-color:#55D7D2;color:#fff}
+body.tk-bi-hub .exec-insights-tab[aria-pressed="true"]{border-color:#55D7D2;background:#0AA6A6;color:#052B35;box-shadow:0 0 0 1px rgba(10,166,166,.35)}
+body.tk-bi-hub .exec-insights-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+body.tk-bi-hub .exec-insights-stat{min-width:0;padding:14px;border:1px solid var(--tk-line);border-radius:12px;background:#0A2237}
+body.tk-bi-hub .exec-insights-stat span{display:block;margin-bottom:6px;color:#B8C9D6;font-size:11px}
+body.tk-bi-hub .exec-insights-stat strong{color:#F5FAFD;font-size:23px;font-weight:800;overflow-wrap:anywhere}
+body.tk-bi-hub .exec-insights-focus{margin:12px 0;padding:13px 15px;border-left:3px solid #0AA6A6;border-radius:12px;background:#123A4B;color:#F5FAFD}
+body.tk-bi-hub .exec-insights-focus strong{color:#8BEADD;font-size:13px}
+body.tk-bi-hub .exec-insights-focus p{margin:5px 0 0;color:#D5E6EF;font-size:12px;line-height:1.5}
+body.tk-bi-hub .exec-insights-tablewrap{overflow:auto;border:1px solid var(--tk-line);border-radius:12px}
+body.tk-bi-hub .exec-insights-table{width:100%;min-width:590px;border-collapse:collapse}
+body.tk-bi-hub .exec-insights-table th,body.tk-bi-hub .exec-insights-table td{padding:11px 13px;border-bottom:1px solid #31536C;text-align:left;font-size:12px}
+body.tk-bi-hub .exec-insights-table th{position:sticky;top:0;background:#173A55;color:#D9F0F4;font-size:11px}
+body.tk-bi-hub .exec-insights-table td{color:#E7F3F8}
+body.tk-bi-hub .exec-insights-table tr:last-child td{border-bottom:0}
+body.tk-bi-hub .exec-insights-footnote{margin:12px 0 0;color:#B8C9D6;font-size:11px}
+@media(max-width:850px){body.tk-bi-hub .exec-insights-stats{grid-template-columns:repeat(2,minmax(0,1fr))}body.tk-bi-hub .exec-insights{padding:14px}}
+@media(max-width:430px){body.tk-bi-hub .exec-insights-stat strong{font-size:19px}body.tk-bi-hub .exec-insights-heading h3{font-size:19px}body.tk-bi-hub .exec-insights-tab{padding:9px 11px}}
+
+/* Canva page 2: persistent desktop sidebar; compact bottom navigation on touch screens. */
+@media(min-width:901px){
+ body.tk-bi-hub{display:grid;grid-template-columns:264px minmax(0,1fr);align-items:start}
+ body.tk-bi-hub>.top{grid-column:1;grid-row:1;position:sticky;top:0;height:100dvh;min-height:100vh;overflow-y:auto;overflow-x:hidden;padding:20px 14px;border-bottom:0;border-right:1px solid rgba(10,166,166,.3)}
+ body.tk-bi-hub>.top .brand{display:flex;flex-direction:column;align-items:stretch;gap:18px;max-width:none;margin:0}
+ body.tk-bi-hub .brand-main{display:flex;flex-direction:column;align-items:stretch;gap:12px}
+ body.tk-bi-hub .brand-logo-wrap{width:100%;height:64px}
+ body.tk-bi-hub .brand-title{border:0;padding:0}
+ body.tk-bi-hub .tk210-nav{display:flex;flex-direction:column;align-items:stretch;gap:7px}
+ body.tk-bi-hub .tk210-nav a{width:100%;justify-content:flex-start}
+ body.tk-bi-hub .status{display:grid;grid-template-columns:1fr;grid-column:auto;margin-top:auto}
+ body.tk-bi-hub .tk210-avatar{align-self:flex-start}
+ body.tk-bi-hub main.wrap{grid-column:2;grid-row:1;width:100%;max-width:none;margin:0;padding:28px clamp(20px,3vw,48px) 56px}
+}
+@media(max-width:900px){
+ body.tk-bi-hub{display:block}
+ body.tk-bi-hub>.top{position:sticky;top:0;height:auto;min-height:0;padding:8px 12px;border-right:0}
+ body.tk-bi-hub .brand{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;max-width:none;padding:0}
+ body.tk-bi-hub .brand-main{gap:10px}
+ body.tk-bi-hub .brand-logo-wrap{width:42px;min-width:42px;height:42px;padding:4px}
+ body.tk-bi-hub .brand-title{border:0;padding:0}
+ body.tk-bi-hub .brand-title h1{font-size:13px}
+ body.tk-bi-hub .eyebrow,body.tk-bi-hub .status{display:none}
+ body.tk-bi-hub .tk210-nav{position:fixed;left:0;right:0;bottom:0;z-index:1200;display:flex;justify-content:space-around;gap:4px;padding:7px 8px calc(7px + env(safe-area-inset-bottom));background:rgba(11,31,51,.97);border-top:1px solid var(--tk-line);box-shadow:0 -8px 24px rgba(0,0,0,.28)}
+ body.tk-bi-hub .tk210-nav a{flex:1 1 0;min-width:0;justify-content:center;min-height:48px;padding:7px 4px;font-size:11px}
+ body.tk-bi-hub .tk210-avatar{width:36px;height:36px}
+ body.tk-bi-hub main.wrap{width:100%;padding:16px 12px calc(96px + env(safe-area-inset-bottom))}
+}
+
+
+/* Canva dashboard analytics component styles consolidated from executive insights. */
+.exec-insights{margin:0 0 18px;padding:18px;border:1px solid #244765;background:linear-gradient(140deg,#0c2942,#0a1d31);border-radius:16px;color:#ecf7ff}
+.exec-insights-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.exec-insights-heading h3{font-size:22px;margin:2px 0 6px;letter-spacing:-.02em;color:#f0fbff}
+.exec-insights-heading p{font-size:12px;margin:0 0 15px;color:#a5bfd5}
+.exec-eyebrow{font-size:10px;letter-spacing:.15em;font-weight:800;color:#55ded4}
+.exec-insights-tabs{display:flex;gap:7px;overflow-x:auto;padding:0 0 10px;scrollbar-width:thin}
+.exec-insights-tab{border:1px solid #375774;white-space:nowrap;background:#112d47;color:#bad4e6;border-radius:999px;padding:9px 13px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;flex-shrink:0}
+.exec-insights-tab:hover,.exec-insights-tab:focus-visible{border-color:#5ddfd6;color:#fff}
+.exec-insights-tab[aria-pressed="true"]{background:#14b8a6;color:#05283a;border-color:#5de7da;box-shadow:0 0 0 1px #16a6a366}
+.exec-insights-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.exec-insights-stat{border:1px solid #2b4d67;background:#081b2e;border-radius:12px;padding:14px;min-width:0}
+.exec-insights-stat span{color:#93b2c8;font-size:11px;display:block;margin-bottom:6px}
+.exec-insights-stat strong{font-size:23px;font-weight:800;color:#f5fdff;overflow-wrap:anywhere}
+.exec-insights-focus{margin:12px 0;padding:13px 15px;border-radius:12px;background:#0d3548;border-left:3px solid #2dd4bf}
+.exec-insights-focus strong{color:#8beadd;font-size:13px}
+.exec-insights-focus p{color:#b3c9d9;font-size:12px;line-height:1.5;margin:5px 0 0}
+.exec-insights-tablewrap{overflow:auto;border-radius:12px;border:1px solid #31506a}
+.exec-insights-table{width:100%;border-collapse:collapse;min-width:590px}
+.exec-insights-table th,.exec-insights-table td{text-align:left;padding:11px 13px;font-size:12px;border-bottom:1px solid #213e54}
+.exec-insights-table th{background:#16364e;color:#a8dce8;font-size:11px;position:sticky;top:0}
+.exec-insights-table td{color:#e4eef5}
+.exec-insights-table tr:last-child td{border-bottom:0}
+.exec-insights-footnote{font-size:11px;color:#7fa5bc;margin:12px 0 0}
+@media(max-width:850px){.exec-insights-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.exec-insights{padding:14px}}
+@media(max-width:430px){.exec-insights-stat strong{font-size:19px}.exec-insights-heading h3{font-size:19px}.exec-insights-tab{padding:9px 11px}}
+@media(prefers-reduced-motion:reduce){.exec-insights-tab{scroll-behavior:auto}}
+
+
+/* Consolidated H141 accessible fold controls for Hub panels. */
+/* H141 — consistent collapse controls for authenticated sports and the Hub.
+   No content or interaction is removed from the DOM. */
+.tk141-nav-toggle,.tk141-panel-toggle {
+  appearance:none;
+  cursor:pointer;
+  color:#f5fbff!important;
+  background:#155a78!important;
+  border:1px solid #6bb7ca!important;
+  border-radius:9px;
+  padding:8px 12px;
+  font:700 12px/1.4 system-ui,sans-serif;
+  min-height:36px;
+}
+.tk141-nav-toggle:hover,.tk141-panel-toggle:hover{background:#176d88!important}
+.tk141-nav-toggle:focus-visible,.tk141-panel-toggle:focus-visible{
+  outline:3px solid #91e8f4!important;
+  outline-offset:3px;
+}
+.tk141-nav-toggle{margin-left:auto;flex:none;white-space:nowrap;z-index:85}
+.tk141-panel-toggle{
+  float:right;
+  margin:0 0 10px 12px;
+  position:relative;
+  z-index:2;
+}
+[data-tk141-foldable="1"]::after{content:"";display:block;clear:both}
+[data-tk141-foldable="1"].tk141-panel-folded>:not(.tk141-panel-toggle) {
+  display:none!important;
+}
+[data-tk141-foldable="1"].tk141-panel-folded {
+  min-height:0!important;
+  height:auto!important;
+  padding:12px 14px!important;
+}
+.tk141-nav-icon{display:inline-grid;place-items:center;width:21px;flex:none;margin-right:7px;font-size:16px}
+body.tk141-nav-collapsed #app-shell {
+  grid-template-columns:0 minmax(0,1fr)!important;
+}
+body.tk141-nav-collapsed #app-shell .topbar>.nav {
+  visibility:hidden!important;
+  opacity:0!important;
+  overflow:hidden!important;
+  pointer-events:none!important;
+  width:0!important;
+  min-width:0!important;
+  padding:0!important;
+  border:0!important;
+}
+body.tk141-nav-collapsed #app-shell>.shell {
+  grid-column:2!important;
+  width:100%!important;
+  min-width:0;
+}
+body.tk141-nav-collapsed #app-shell .nav [data-tab] {pointer-events:none}
+body.tk141-nav-collapsed #app-shell .nav .tk-h130-sidebar-toggle {display:none!important}
+body #app-shell .nav .tk-h130-sidebar-toggle{display:none!important}
+body.tk141-nav-collapsed.tk-h130-collapsed #app-shell{grid-template-columns:0 minmax(0,1fr)!important}
+/* Ensure the toggle is always visible in the white top header. */
+html[data-tk-sport] #app-shell .tk141-nav-toggle,
+body.tk-smooth-admin #app-shell .tk141-nav-toggle{background:#155a78!important;color:#fff!important}
+@media(max-width:700px){
+  body.tk141-nav-collapsed #app-shell {
+    display:block!important;
+    grid-template-columns:none!important;
+  }
+  body.tk141-nav-collapsed #app-shell .topbar>.nav {
+    display:none!important;
+  }
+  body:not(.tk141-nav-collapsed) #app-shell .topbar>.nav{
+    display:flex!important;
+    visibility:visible!important;
+    width:100%!important;
+    opacity:1!important;
+    pointer-events:auto!important;
+    overflow-x:auto;
+  }
+  #app-shell .topbar>.brand .tk141-nav-toggle{
+    position:relative;
+    margin:5px 0 0 auto;
+    min-width:105px;
+    min-height:42px;
+  }
+  .tk141-panel-toggle{min-height:40px}
+}
+@media(prefers-reduced-motion:reduce){
+  .tk141-nav-toggle,.tk141-panel-toggle{transition:none!important}
+}
+
+/* H145: one navigation glyph per tab.
+   VNext uses H132 pseudo-icon; badminton uses H130 inline icon. */
+html[data-tk-sport] #app-shell .nav [data-tab] > .tk141-nav-icon,
+body.tk-smooth-admin #app-shell .nav [data-tab] > .tk141-nav-icon {
+  display:none!important;
+}
+html[data-tk-sport] #app-shell .nav [data-tab]:has(> .tk-h130-icon)::before,
+body.tk-smooth-admin #app-shell .nav [data-tab]:has(> .tk-h130-icon)::before {
+  display:none!important;
+  content:none!important;
+}
+
+
+/* Mobile audit fixes: keep the eight sport launchers in-view and turn wide
+   executive tables into labelled cards instead of forcing sideways scrolling. */
+@media(max-width:650px){
+ body.tk-bi-hub .brand-title{min-width:0;max-width:100%}
+ body.tk-bi-hub .brand-title h1{font-size:12px;line-height:1.2;white-space:normal;overflow-wrap:anywhere}
+ body.tk-bi-hub #topkey-sports.cards,
+ body.tk-bi-hub #topkey-sports.cards.compact-sports{
+  display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  flex-wrap:initial!important;gap:8px!important;width:100%;min-width:0;
+  overflow:visible!important;padding:0!important
+ }
+ body.tk-bi-hub #topkey-sports.cards .sport,
+ body.tk-bi-hub #topkey-sports.cards.compact-sports .sport{
+  flex:none!important;width:auto!important;min-width:0!important;min-height:68px;height:68px;
+  padding:7px 3px;scroll-snap-align:none
+ }
+ body.tk-bi-hub #topkey-sports .sport .emoji{font-size:21px}
+ body.tk-bi-hub #topkey-sports .sport h3{font-size:10px;white-space:normal;overflow-wrap:anywhere}
+ body.tk-bi-hub .exec-table-wrap,
+ body.tk-bi-hub .exec-insights-tablewrap{overflow:visible!important;max-width:100%;min-width:0}
+ body.tk-bi-hub .exec-table,
+ body.tk-bi-hub .exec-insights-table{display:block;width:100%;min-width:0!important}
+ body.tk-bi-hub .exec-table thead,
+ body.tk-bi-hub .exec-insights-table thead{
+  position:absolute!important;width:1px!important;height:1px!important;padding:0!important;
+  margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;
+  white-space:nowrap!important;border:0!important
+ }
+ body.tk-bi-hub .exec-table tbody,
+ body.tk-bi-hub .exec-insights-table tbody{display:grid;gap:9px;width:100%;min-width:0}
+ body.tk-bi-hub .exec-table tbody tr,
+ body.tk-bi-hub .exec-insights-table tbody tr{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;
+  min-width:0;border:1px solid var(--tk-line);border-radius:12px;
+  background:#0A2237;overflow:hidden
+ }
+ body.tk-bi-hub .exec-table tbody td,
+ body.tk-bi-hub .exec-insights-table tbody td{
+  display:flex;flex-direction:column;gap:3px;min-width:0;
+  padding:9px 10px;border:0;border-bottom:1px solid rgba(184,201,214,.12);
+  color:var(--tk-ink);font-size:12px;line-height:1.35;overflow-wrap:anywhere
+ }
+ body.tk-bi-hub .exec-table tbody td::before,
+ body.tk-bi-hub .exec-insights-table tbody td::before{
+  content:attr(data-label);display:block;color:var(--tk-muted);
+  font-size:9px;line-height:1.25;font-weight:750;letter-spacing:.04em
+ }
+ body.tk-bi-hub .exec-table tbody td:first-child,
+ body.tk-bi-hub .exec-insights-table tbody td:first-child{grid-column:1/-1;background:#102B43}
+ body.tk-bi-hub .exec-grid .exec-card:nth-child(2) .exec-table tbody td:nth-child(2){grid-column:1/-1}
+ body.tk-bi-hub .exec-table tbody td[colspan],
+ body.tk-bi-hub .exec-insights-table tbody td[colspan]{grid-column:1/-1}
+ body.tk-bi-hub .exec-table tbody td:last-child,
+ body.tk-bi-hub .exec-insights-table tbody td:last-child{border-bottom:0}
+}

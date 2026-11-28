@@ -5,14 +5,14 @@ const fs=require('node:fs');
 const vm=require('node:vm');
 
 const js=fs.readFileSync('topkey/sports/vnext/src/live-studio-h144.js','utf8');
-const css=fs.readFileSync('topkey/sports/vnext/live-studio-h144.css','utf8');
+const css=fs.readFileSync('topkey/sports/vnext/canva-sports-ui.css','utf8');
 const html=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
 
 function harness({sport='volleyball',umpire=true}={}){
- const els=new Map();
+ const els=new Map(),created=[];
  class Element {
   constructor(tag='div',id=''){
-   this.tagName=tag.toUpperCase();this.id=id;this.children=[];this.parentNode=null;
+   this.tagName=tag.toUpperCase();this._id=id;Object.defineProperty(this,'id',{get:()=>this._id,set:value=>{this._id=value;if(value)els.set(value,this)}});this.children=[];this.parentNode=null;
    this.dataset={};this.hidden=false;this.listeners={};this.value='auto';this.textContent='';
    this.classList={values:new Set(),add:x=>this.classList.values.add(x),
      remove:x=>this.classList.values.delete(x),
@@ -44,7 +44,7 @@ function harness({sport='volleyball',umpire=true}={}){
   closest(selector){return selector==='.card'?this.parentNode:null}
   requestFullscreen=async()=>{document.fullscreenElement=this};
  }
- const get=id=>{if(!els.has(id))els.set(id,new Element('div',id));return els.get(id)};
+ const get=id=>{if(els.has(id))return els.get(id);const existing=created.find(x=>x.id===id);if(existing)return existing;const node=new Element('div',id);els.set(id,node);return node};
  const live=get('page-live'),grid=new Element();grid.className='grid';live.appendChild(grid);
  const videoCard=new Element();videoCard.className='card';grid.appendChild(videoCard);
  videoCard.appendChild(get('video-box'));
@@ -58,7 +58,7 @@ function harness({sport='volleyball',umpire=true}={}){
   renderLiveScore(){renderCount++}};
  const document={readyState:'complete',fullscreenElement:null,
   getElementById:get,
-  createElement:tag=>new Element(tag),
+  createElement:tag=>{const node=new Element(tag);created.push(node);return node},
   createComment:()=>new Element('comment'),
   addEventListener(){},
   exitFullscreen:async()=>{document.fullscreenElement=null}};
@@ -103,7 +103,7 @@ test('studio supports portrait, landscape, native fullscreen and exit',async()=>
 });
 test('VNext loads H144 and keeps source scoreboard and video IDs unique',()=>{
  assert.match(html,/live-studio-h144\.js\?v=h144-20261121/);
- assert.match(html,/live-studio-h144\.css\?v=h144-20261121/);
+ assert.ok(/canva-sports-ui\.css\?v=canva-sports-v\d+-202611\d+/.test(html));
  for(const id of ['umpire-board','live-video','stream-court','umpire-plus-a','umpire-plus-b'])
   assert.equal((html.match(new RegExp('id="'+id+'"','g'))||[]).length,1,id);
  assert.doesNotMatch(js,/queue(Set|Multi)|firebase\.database|\.ref\(/);

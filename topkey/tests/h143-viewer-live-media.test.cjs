@@ -6,10 +6,11 @@ const vm=require('node:vm');
 const src=fs.readFileSync('topkey/sports/vnext/src/public-viewer-h137.js','utf8');
 const app=fs.readFileSync('topkey/sports/vnext/src/app.js','utf8');
 const runtime=fs.readFileSync('topkey/sports/vnext/src/live-state-h143.js','utf8');
+const bootstrap=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
 const html=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
 
 function createHarness(stream={type:'EMBED',status:'LIVE',url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'}){
- const nodes={},callbacks={},created=[];
+ const nodes={},callbacks={},created=[],frames=[];
  function elem(tag='div'){
   const x={tagName:tag.toUpperCase(),children:[],textContent:'',className:'',style:{},parent:null,
    classList:{add(){},remove(){},toggle(){}},setAttribute(){},after(){},
@@ -17,11 +18,15 @@ function createHarness(stream={type:'EMBED',status:'LIVE',url:'https://www.youtu
    appendChild(item){item.parent=this;this.children.push(item)},
    replaceChildren(...items){this.children=[];this.append(...items)},
    remove(){if(this.parent)this.parent.children=this.parent.children.filter(i=>i!==this)},
-   querySelector:()=>null};
+   querySelector:()=>null,
+   closest(selector){let node=this;while(node){if(selector==='.card'&&String(node.className||'').split(/\s+/).includes('card'))return node;node=node.parent||null;}return null;}};
   created.push(x);return x;
  }
  for(const id of ['public-spectator','spectator-schedule','spectator-live','spectator-title','login-screen','app-shell'])nodes[id]=elem();
- nodes['public-spectator'].querySelector=()=>({after(){}});
+ const liveCard=elem();liveCard.className='card';liveCard.appendChild(nodes['spectator-live']);
+ const viewerGrid=elem();viewerGrid.className='grid g2';
+ const viewerHeader=elem();viewerHeader.className='split';
+ nodes['public-spectator'].querySelector=selector=>selector==='.grid.g2'?viewerGrid:selector==='.split'?viewerHeader:null;
  const data={
   matches:{m1:{id:'m1',code:'M001',teamAId:'t1',teamBId:'t2',status:'LIVE',courtId:'c1'}},
   teams:{t1:{name:'Đội Xanh'},t2:{name:'Đội Đỏ'}},
@@ -32,7 +37,7 @@ function createHarness(stream={type:'EMBED',status:'LIVE',url:'https://www.youtu
  const document={getElementById:id=>nodes[id],documentElement:{classList:{add(){}}},head:elem('head'),createElement:elem};
  const sandbox={document,console,URLSearchParams,URL,setTimeout:()=>0,
   location:{search:'?sport=football&tid=main_2026',href:'https://example.com/'},
-  window:{requestAnimationFrame:cb=>cb(),TopkeyPlatform:{loadFirebase:async()=>{}},
+  window:{requestAnimationFrame:cb=>{frames.push(cb);return frames.length},TopkeyPlatform:{loadFirebase:async()=>{}},
     Topkey:{FIREBASE_CONFIG:{apiKey:'mock'}},firebase:{database:()=>({ref:()=>ref})}}};
  vm.runInNewContext(src,sandbox,{timeout:2000});
  const flush=()=>new Promise(setImmediate);
@@ -81,8 +86,8 @@ test('Admin opens local camera before state change and does not mark it public L
 
 test('Production prebuilt runtime loads H143 guard and anonymous spectator player',()=>{
  assert.match(html,/live-state-h143\.js\?v=h143-20261121/);
- assert.match(html,/public-viewer-h137\.js\?v=h143-20261121/);
- assert.match(html,/public-viewer-h137\.css\?v=h143-20261121/);
+ assert.match(bootstrap,/window\.__TOPKEY_VNEXT_BOOT=load\("\.\/src\/public-viewer-h137\.js\?v=h174-20261121"\)/,'public viewer is conditionally loaded only for the public spectator route');
+ assert.ok(/canva-sports-ui\.css\?v=canva-sports-v\d+-202611\d+/.test(html));
  assert.match(runtime,/app\.applyStream=async function/);
  assert.match(runtime,/status:'LOCAL_ONLY'/);
  assert.doesNotMatch(runtime,/\.ref\([^)]*webrtc/);

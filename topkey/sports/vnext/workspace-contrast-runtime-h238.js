@@ -37,22 +37,12 @@
         const fg=rgb(getComputedStyle(node).color);
         if (!fg) continue;
         const bg=effectiveBackground(node);
-        // The settings live-clock <b> is injected by legacy code with a pale inline color.
-        // Keep it dark on the light settings surface, but preserve the intentionally dark prize editor.
+        // Correct contrast from each node's actual nearest opaque surface.
         // Podium medals use a dark disc; override inherited/inline dark text on that disc.
         const podiumMedal = node.classList.contains('tk9-medal');
         if (podiumMedal) {
           node.style.setProperty('color','#f8fbff','important');
           node.style.setProperty('-webkit-text-fill-color','#f8fbff','important');
-          continue;
-        }
-        // The legacy live clock sits on a white status strip inside settings.
-        // Exempt it before the dark-surface rule so ancestor backgrounds cannot bleach it.
-        const settingsClock = node.tagName === 'B' &&
-          node.closest('#page-settings') && !node.closest('#tk79-prize-editor');
-        if (settingsClock) {
-          node.style.setProperty('color',SAFE,'important');
-          node.style.setProperty('-webkit-text-fill-color',SAFE,'important');
           continue;
         }
         const settingsDarkSurface = node.closest('#page-settings') &&
@@ -62,7 +52,7 @@
           node.style.setProperty('-webkit-text-fill-color','#e4eef5','important');
           continue;
         }
-        if (!settingsClock && (luminance(bg) < 0.72 || contrast(fg,bg) >= 4.5)) continue;
+        if (luminance(bg) < 0.72 || contrast(fg,bg) >= 4.5) continue;
         if (node.style.getPropertyValue('color') !== SAFE ||
             node.style.getPropertyPriority('color') !== 'important') {
           node.style.setProperty('color',SAFE,'important');
@@ -88,7 +78,7 @@
     attributeFilter:['class','style']
   });
   window.__TOPKEY_WORKSPACE_CONTRAST_H251={
-    version:'h251-podium-medal-unconditional-aa-20261127',
+    version:'h252-settings-clock-targeted-aa-20261128',
     apply,
     disconnect:()=>observer.disconnect()
   };

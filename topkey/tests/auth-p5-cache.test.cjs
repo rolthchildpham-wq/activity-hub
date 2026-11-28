@@ -1,15 +1,19 @@
 "use strict";
-const fs=require("node:fs"), assert=require("node:assert/strict");
-for(const sport of ["badminton","vnext"]){
- const html=fs.readFileSync("topkey/sports/"+sport+"/index.html","utf8");
- const sw=fs.readFileSync("topkey/sports/"+sport+"/sw.js","utf8");
- const match=html.match(/topkey-shared-auth\.js\?v=([\w-]+)/);
- assert.ok(match,sport+" HTML missing auth asset");
- const version=match[1];
- assert.ok(sw.includes("topkey-shared-auth.js?v="+version),sport+" SW must use same auth version as HTML; HTML "+version);
- assert.ok(sw.includes("topkey-h136-"+sport+"-shell"),sport+" SW cache must rotate to H136");
- const library="../../vendor/qrcode.min.js?v=h136-20261114";
- assert.ok(html.includes(library),sport+" must load local QR library");
- assert.ok(sw.includes(library),sport+" must precache local QR library");
-}
-console.log("PASS H136 auth assets match service worker + QR vendor cache");
+const fs=require("node:fs"),assert=require("node:assert/strict");
+const html=fs.readFileSync("topkey/sports/vnext/index.html","utf8");
+const sw=fs.readFileSync("topkey/sports/vnext/sw.js","utf8");
+const legacy=fs.readFileSync("topkey/sports/badminton/index.html","utf8");
+const legacySw=fs.readFileSync("topkey/sports/badminton/sw.js","utf8");
+const marker="topkey-shared-auth.js?v=";
+const start=html.indexOf(marker);
+assert.ok(start>=0,"shared VNext HTML missing auth asset");
+const version=html.slice(start+marker.length).split('"')[0].split("'")[0];
+assert.ok(sw.includes("topkey-shared-auth.js?v="+version),"VNext SW must use same auth version as HTML; HTML "+version);
+assert.ok(sw.includes("topkey-canva-v1-vnext-shell"),"VNext SW cache key must remain release-aware");
+const library="../../vendor/qrcode.min.js?v=h136-20261114";
+assert.ok(html.includes(library),"VNext must load local QR library");
+assert.ok(sw.includes(library),"VNext must precache local QR library");
+assert.ok(legacy.includes("query.set('sport', 'badminton')"),"legacy badminton route must hand off to VNext");
+assert.ok(legacySw.includes("topkey-canva-v1-badminton-redirect-shell"),"legacy badminton SW must rotate to redirect shell");
+assert.ok(legacySw.includes("./index.html"),"legacy badminton SW must cache redirect entrypoint");
+console.log("PASS shared VNext auth assets, QR vendor cache and legacy badminton redirect shell");

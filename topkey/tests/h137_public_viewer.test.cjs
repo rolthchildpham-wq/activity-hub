@@ -2,10 +2,11 @@
 const assert=require("node:assert/strict"),fs=require("node:fs"),vm=require("node:vm");
 const html=fs.readFileSync("topkey/sports/vnext/index.html","utf8");
 const publicJs=fs.readFileSync("topkey/sports/vnext/src/public-viewer-h137.js","utf8");
-const styles=fs.readFileSync("topkey/sports/vnext/public-viewer-h137.css","utf8");
+const styles=fs.readFileSync("topkey/sports/vnext/canva-sports-ui.css","utf8");
 assert.ok(html.includes('window.__TOPKEY_PUBLIC_ROUTE==="spectator"'));
 assert.ok(html.includes('src/public-viewer-h137.js?v=h174-20261121'));
-assert.ok(html.includes('public-viewer-h137.css?v=h173-20261121'));
+assert.ok( /canva-sports-ui\.css\?v=canva-sports-v\d+-202611\d+/.test(html) );
+assert.ok(!html.includes('public-viewer-h137.css'));
 assert.ok(publicJs.includes('{auth:false}'));
 assert.ok(!publicJs.includes("queueSet("));
 assert.ok(!publicJs.includes("ref.set("));

@@ -1,0 +1,1548 @@
+/* TOPKEY Sports VNext — Canva design-system v3 with desktop sidebar and mobile bottom navigation. */
+:root{color-scheme:dark;--tk-navy:#0B1F33;--tk-slate:#173A55;--tk-teal:#0AA6A6;--tk-white:#fff;--tk-ink:#F5FAFD;--tk-muted:#B8C9D6;--tk-line:#31536C;--tk-surface:#102B43;--tk-surface-2:#143650;--tk-radius:16px;--tk-shadow:0 12px 32px rgba(0,0,0,.22)}
+*,*::before,*::after{box-sizing:border-box}html{min-width:320px;background:var(--tk-navy)}body{margin:0;min-height:100vh;background:var(--tk-navy);color:var(--tk-ink);font:400 14px/1.5 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}button,input,select,textarea{font:inherit}button{cursor:pointer}a{color:inherit}.hidden{display:none!important}:focus-visible{outline:3px solid #55D7D2!important;outline-offset:2px}
+#login-screen,.login{min-height:100svh;display:grid;place-items:center;padding:24px;background:radial-gradient(ellipse at top right,rgba(10,166,166,.15),transparent 42%),var(--tk-navy)}
+#app-shell,.shell{width:min(1600px,100%);margin:0 auto;padding:20px clamp(12px,2vw,28px) 40px}
+.topbar,.top{position:sticky;top:0;z-index:60;background:rgba(11,31,51,.96);border-bottom:1px solid rgba(10,166,166,.28);backdrop-filter:blur(14px)}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 18px;max-width:1600px;margin:auto}.brand h1{margin:0;font-size:clamp(16px,2vw,22px);font-weight:800;letter-spacing:-.03em}.brand small{color:var(--tk-muted)}
+.nav{display:flex;gap:6px;overflow-x:auto;overscroll-behavior-x:contain;padding:8px 14px 10px;scrollbar-width:thin}.nav button,.nav a{flex:0 0 auto;min-height:42px;padding:9px 13px;border:1px solid transparent;border-radius:10px;background:transparent;color:var(--tk-muted);font-weight:700;white-space:nowrap}.nav button.active,.nav a.active,.nav button[aria-current=page]{background:rgba(10,166,166,.14);border-color:rgba(10,166,166,.4);color:#fff}
+.page{min-width:0;animation:tkFade .16s ease}@keyframes tkFade{from{opacity:.65}to{opacity:1}}
+.grid{display:grid;gap:16px;min-width:0}.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card,.panel,.subcard,.control-card,.court-card,.list-card,.checkin-row{min-width:0;padding:18px;border:1px solid var(--tk-line);border-radius:var(--tk-radius);background:var(--tk-surface);box-shadow:0 8px 24px rgba(0,0,0,.14)}
+.card h2,.card h3{margin:0 0 12px;color:#fff;letter-spacing:-.025em}.card h2{font-size:20px}.card h3{font-size:16px}.muted,.note{color:var(--tk-muted)}.note{font-size:12px}
+.kpi strong{display:block;color:#55D0CB;font-size:clamp(25px,3vw,36px);font-weight:800;letter-spacing:-.04em}
+.btn,button.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:42px;padding:9px 14px;border:1px solid #42627A;border-radius:10px;background:var(--tk-slate);color:#fff;font-weight:700;line-height:1.2}.btn:hover{border-color:var(--tk-teal);filter:brightness(1.08)}.btn.ok{background:#087D76;border-color:#0AA6A6}.btn.primary{background:var(--tk-teal);border-color:#32C6C3;color:#062B35}.btn.danger{background:#8D344B;border-color:#C35B73}.btn.warn{background:#806021;border-color:#B18B3C}.btn.mini{min-height:34px;padding:6px 10px;font-size:12px}
+.form-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.field{display:flex;flex-direction:column;gap:6px;min-width:0}.field label{color:#C9D9E3;font-size:12px;font-weight:700}.field :is(input,select,textarea),input,select,textarea{min-width:0;max-width:100%;border:1px solid #45647B;border-radius:9px;padding:10px 12px;background:#0A2237;color:#fff}.field textarea{min-height:88px;resize:vertical}input[type=checkbox],input[type=radio]{accent-color:var(--tk-teal)}
+.table-wrap{max-width:100%;overflow:auto;border:1px solid var(--tk-line);border-radius:12px;overscroll-behavior-x:contain}table{width:100%;border-collapse:collapse}th,td{padding:11px 12px;border-bottom:1px solid rgba(184,201,214,.16);text-align:left;font-size:13px}th{position:sticky;top:0;background:#173A55;color:#E7F3F8;font-weight:800;white-space:nowrap}td{color:#E6EEF3}tr:hover td{background:rgba(10,166,166,.045)}
+.pill{display:inline-flex;align-items:center;min-height:24px;padding:4px 9px;border:1px solid rgba(10,166,166,.38);border-radius:999px;background:rgba(10,166,166,.1);color:#B8F0ED;font-size:11px;font-weight:700}
+.control-card strong{font-size:26px;color:#55D0CB}.checkin-row,.list-card{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0}
+.court{display:grid;grid-template-columns:1fr 4px 1fr;min-height:330px;overflow:hidden;border:4px solid #fff;border-radius:16px;background:#07866F}.court-half{display:flex;flex-direction:column;justify-content:space-around;gap:10px;padding:16px;text-align:center}.court-half b{color:#fff}.net{background:repeating-linear-gradient(#fff 0 4px,transparent 4px 8px)}.player{padding:18px;border-radius:12px;background:#075844;color:#fff;font-weight:900}.player.serving{background:#F4C85A;color:#142B38;box-shadow:0 0 0 3px #FFE39A}
+.score-head{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;margin-bottom:12px;text-align:center}.score-head>div{padding:14px;border:1px solid var(--tk-line);border-radius:14px;background:#0A2237}.score-head strong{display:block;color:#65DEDA;font-size:clamp(34px,6vw,52px);line-height:1.1}.score-actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:12px}
+.official-board{display:grid;gap:14px}.official-score{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;text-align:center}.official-score .side{padding:18px;border:1px solid var(--tk-line);border-radius:16px;background:#0A2237}.official-score strong{display:block;color:#65DEDA;font-size:clamp(40px,7vw,60px)}.official-score .vs{color:#F0C96B;font-weight:900}.single-result{max-width:620px;margin:auto}.result-input{font-size:28px!important;text-align:center}
+.video-box{position:relative;width:100%;max-height:calc(100svh - 220px);aspect-ratio:16/9;margin:auto;overflow:hidden;border-radius:16px;background:#02080E}.video-box video,.video-box iframe{width:100%;height:100%;border:0;object-fit:contain}.video-box.pseudo-full{position:fixed;inset:0;z-index:9999;width:100vw;height:100svh;max-height:none;aspect-ratio:auto;border-radius:0;background:#000}.live-score{position:absolute;left:12px;bottom:12px;max-width:calc(100% - 24px);padding:9px 12px;border-radius:10px;background:rgba(2,8,14,.88);color:#F5D36D;font-weight:900}.caption{position:absolute;left:50%;bottom:58px;max-width:85%;transform:translateX(-50%);padding:8px 14px;border-radius:10px;background:rgba(0,0,0,.82);text-align:center}
+.modal{position:fixed;inset:0;z-index:10001;display:grid;place-items:center;overflow:auto;padding:16px;background:rgba(2,12,21,.78)}.modal-box{width:min(560px,100%);max-height:min(90svh,900px);overflow:auto;padding:20px;border:1px solid #45647B;border-radius:18px;background:#102B43;box-shadow:var(--tk-shadow)}.modal-box.wide{width:min(820px,100%)}
+.empty{padding:36px;text-align:center;border-radius:14px;background:#0A2237;color:var(--tk-muted)}.split{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.action-bar,.action-group,.court-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.login-tabs{display:grid;gap:12px}.subcard{background:#0D2940}.scheduler-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}.scheduler-grid .check-option,.team-pick,.rule-chip,.radio-row{display:flex;align-items:center;gap:9px;min-width:0;padding:10px;border:1px solid var(--tk-line);border-radius:10px;background:#0A2237}.team-picker{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;max-height:260px;overflow:auto;padding:10px;border:1px solid var(--tk-line);border-radius:12px;background:#0A2237}.team-pick span{min-width:0;overflow-wrap:anywhere}.rule-list{display:grid;gap:7px;max-height:220px;overflow:auto}.schedule-preview,.delete-preview{max-height:360px;overflow:auto;margin-top:12px;padding:12px;border:1px solid var(--tk-line);border-radius:12px;background:#0A2237}.schedule-preview .preview-ok,.delete-good{color:#76DDAD}.schedule-preview .preview-warn,.delete-protect{color:#F2CB71}.delete-danger{color:#FF9BAD;font-weight:800}.danger-check{display:flex;gap:10px;margin-top:14px;padding:12px;border:1px solid #C35B73;border-radius:12px;background:#3C2130}.danger-check small{color:#F2B8C4}
+.table-actions{display:flex;gap:6px;flex-wrap:wrap;min-width:160px}.qr{width:max-content;padding:8px;border-radius:8px;background:#fff}.toast-box{position:fixed;right:14px;bottom:14px;z-index:10000;display:grid;gap:8px}.toast{max-width:min(360px,calc(100vw - 28px));padding:11px 14px;border:1px solid var(--tk-line);border-radius:10px;background:var(--tk-slate)}.toast.ok{background:#075D55}.toast.err{background:#7D2C45}.audio-overlay{position:fixed;inset:0;z-index:9000;display:grid;place-items:center;padding:24px;background:rgba(2,12,21,.94);text-align:center}.public-register{position:fixed;inset:0;z-index:11000;overflow:auto;padding:24px;background:var(--tk-navy)}.security-banner{padding:12px;border:1px solid #B18B3C;border-radius:12px;background:#493B1F;color:#FFE4A1}.health-good{color:#76DDAD}.health-bad{color:#FF9BAD}
+@media(max-width:1050px){.g4,.g3{grid-template-columns:repeat(2,minmax(0,1fr))}.form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.scheduler-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.topbar,.top{position:sticky;top:0}.brand{padding:10px 12px}.nav{padding:7px 10px 9px}.nav button,.nav a{min-height:42px;padding:8px 11px;font-size:12px}.shell,#app-shell{padding:12px 12px 28px}.g4,.g3,.g2,.form-grid{grid-template-columns:minmax(0,1fr)}.card,.panel,.subcard{padding:14px;border-radius:13px}.score-actions{grid-template-columns:repeat(2,minmax(0,1fr))}.court{min-height:250px}.player{padding:12px}.official-score{grid-template-columns:1fr}.official-score .vs{display:none}.team-picker,.scheduler-grid{grid-template-columns:1fr}.action-bar{width:100%}.action-bar .btn,.action-bar label.btn{flex:1 1 130px}.table-wrap{max-width:calc(100vw - 24px)}table{min-width:640px}.video-box{max-height:none}.caption{bottom:50px;font-size:12px}.modal{align-items:start;padding:10px}.modal-box{margin:auto}.checkin-row,.list-card{align-items:flex-start}.brand{flex-wrap:wrap}}
+@media(max-width:380px){.shell,#app-shell{padding-left:9px;padding-right:9px}.card,.panel{padding:12px}.btn{padding:8px 10px;font-size:12px}.score-head{gap:5px}.score-head>div{padding:9px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* Canva sport identity accents — one shared component language, subtle sport markers. */
+html[data-tk-sport]{--sport:#0AA6A6;--sport-strong:#173A55;--sport-soft:#DDF4F2;--sport-highlight:#73DAD5;--sport-court:#0B756E;--sport-outline:#8DDDD7}
+html[data-tk-sport="football"]{--sport:#16805E;--sport-strong:#104638;--sport-highlight:#73D2A3;--sport-court:#0B634A}
+html[data-tk-sport="volleyball"]{--sport:#B8792C;--sport-strong:#593B27;--sport-highlight:#F2C36D;--sport-court:#744923}
+html[data-tk-sport="running"]{--sport:#A23E60;--sport-strong:#54243E;--sport-highlight:#F1A5BF;--sport-court:#6E3055}
+html[data-tk-sport="handmade"]{--sport:#7654BA;--sport-strong:#44306D;--sport-highlight:#B99DEF;--sport-court:#57418D}
+html[data-tk-sport="shuttle"]{--sport:#087D90;--sport-strong:#155064;--sport-highlight:#80D9DC;--sport-court:#0F606F}
+html[data-tk-sport="cooking"]{--sport:#B74E3B;--sport-strong:#5D302B;--sport-highlight:#F8AB8E;--sport-court:#773B31}
+html[data-tk-sport="badminton"]{--sport:#087F8C;--sport-strong:#16465A;--sport-highlight:#79D9D3;--sport-court:#0F606F}
+html[data-tk-sport] #app-shell .topbar>.nav [data-tab]::after{content:none!important;display:none!important}
+html[data-tk-sport] #app-shell .topbar>.nav [data-tab]>:is(.tk141-nav-icon,.tk-h130-icon,.tk-nav-icon,.nav-icon,.icon){display:none!important}
+
+/* Live Studio, referee controls and public viewer are component styles, not a second skin. */
+#tk144-live-studio{width:100%;min-width:0;margin:0 0 14px;padding:clamp(10px,1.8vw,18px);border:1px solid var(--tk-line);border-radius:var(--tk-radius);background:#0A2237;color:var(--tk-ink)}
+#tk144-live-studio :is(.tk144-header,.tk144-toolbar){display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+#tk144-live-studio .tk144-header{justify-content:space-between;gap:12px}
+#tk144-live-studio .tk144-header h2{margin:0;color:#fff;font-size:clamp(18px,2.2vw,24px)}
+#tk144-live-studio .tk144-toolbar{justify-content:flex-end}
+#tk144-live-studio .tk144-workspace{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(280px,1fr);align-items:start;gap:12px;min-width:0}
+#tk144-live-studio :is(.tk144-video-pane,.tk144-official-pane){min-width:0}
+#tk144-live-studio :is(.tk144-video-pane,.tk144-official-pane)>.card{width:100%;margin:0;min-width:0;padding:clamp(10px,1.7vw,17px);box-shadow:none;background:var(--tk-surface)}
+#page-live:has(#tk144-live-studio)>.grid.g2{grid-template-columns:minmax(0,1fr)}
+#tk144-live-studio .tk144-pane-label{margin:0 0 7px;padding:8px 10px;border:1px solid var(--tk-line);border-radius:10px;background:var(--tk-slate);color:#E7F3F8;font-weight:700}
+#tk144-live-studio .tk144-official-pane.tk144-collapsed>.card{display:none!important}
+#tk144-live-studio .tk144-workspace:has(.tk144-official-pane.tk144-collapsed),#tk144-live-studio .tk144-workspace:has(.tk144-official-pane[hidden]){grid-template-columns:minmax(0,1fr)}
+#tk144-live-studio .tk144-video-pane .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+#tk144-live-studio .tk144-video-pane .action-bar{display:flex;flex-wrap:wrap;gap:7px}
+#tk144-live-studio .tk144-video-pane .action-bar button{flex:1 1 130px;min-height:43px}
+#tk144-live-studio .tk144-official-pane{position:relative;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding-bottom:calc(28px + env(safe-area-inset-bottom,0px))}
+#tk144-live-studio .tk144-official-pane>.card,#tk144-live-studio .tk144-official-pane #umpire-board{height:auto;max-height:none;min-height:0;overflow:visible}
+#tk144-live-studio .tk144-official-pane #set-actions,#tk144-live-studio .tk144-official-pane #single-actions{position:relative;z-index:1}
+#tk144-live-studio .tk144-toolbar select{min-width:175px;max-width:100%;padding:10px;color:#fff;background:#0A2237;border:1px solid #45647B;border-radius:9px}
+#tk144-live-studio .tk144-status{margin:9px 0;color:var(--tk-muted);font-size:13px}
+#tk144-live-studio .tk144-official-pane .btn{min-height:44px}
+#tk144-live-studio .tk156-referee-shortcuts{position:sticky;top:0;z-index:35;display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:9px;margin:0 0 8px;border:1px solid var(--tk-line);border-radius:10px;background:var(--tk-slate);box-shadow:0 4px 14px rgba(0,0,0,.24)}
+#tk144-live-studio .tk156-referee-shortcuts button{flex:1 1 112px;min-width:0;min-height:44px;padding:8px 9px;border:1px solid #52758D;border-radius:9px;background:#214B6C;color:#fff;font:700 13px/1.3 Inter,system-ui,sans-serif}
+#tk144-live-studio .tk156-referee-shortcuts button:disabled{opacity:.65;cursor:not-allowed}
+#tk144-live-studio .tk156-referee-help{width:100%;color:var(--tk-muted);font-size:12px;line-height:1.4}
+#tk144-live-studio .tk156-highlight{outline:3px solid #F4C85A!important;outline-offset:2px}
+#tk157-youtube-panel{grid-column:1/-1;display:grid;gap:10px;margin:8px 0;padding:14px;border:1px solid var(--tk-line);border-radius:12px;background:var(--tk-surface);color:var(--tk-ink)}
+#tk157-youtube-panel h3{margin:0;color:#fff;font-size:18px}
+#tk157-youtube-panel .tk157-hint{margin:0;color:var(--tk-muted);font-size:14px;line-height:1.45}
+#tk157-youtube-panel label{color:#E7F3F8;font-weight:700}
+#tk157-youtube-panel input{width:100%;min-width:0;padding:11px;border:1px solid #45647B;border-radius:9px;background:#0A2237;color:#fff}
+#tk157-youtube-panel .tk157-buttons{display:flex;flex-wrap:wrap;gap:8px}
+#tk157-youtube-panel .tk157-buttons :is(button,a){display:inline-flex;flex:1 1 150px;align-items:center;justify-content:center;min-height:44px;padding:9px 12px;border:1px solid #42627A;border-radius:9px;background:var(--tk-slate);color:#fff;font-weight:700;text-align:center;text-decoration:none}
+#tk157-youtube-panel #tk157-status{color:#D7EBF4;line-height:1.5}
+html.tk-public-boot body{background:var(--tk-navy);color:var(--tk-ink)}
+html.tk-public-boot #public-spectator{display:block!important;min-height:100vh;padding:clamp(12px,3vw,28px);color:var(--tk-ink)}
+html.tk-public-boot #public-spectator :is(h1,h2){color:#fff!important}
+html.tk-public-boot #public-spectator .tk137-message,html.tk-public-boot #public-spectator .tk137-item{margin:10px 0;padding:14px;border:1px solid var(--tk-line);border-radius:12px;background:var(--tk-surface);color:var(--tk-ink)}
+html.tk-public-boot #public-spectator .tk137-item{display:flex;flex-direction:column;gap:8px}
+html.tk-public-boot #public-spectator .tk137-item strong{color:#fff;font-size:clamp(15px,2vw,17px)}
+html.tk-public-boot #public-spectator .tk137-item small{color:var(--tk-muted);font-size:13px;line-height:1.55}
+html.tk-public-boot #public-spectator .tk137-result,html.tk-public-boot #public-spectator .tk143-score{display:block;color:#76E1D9;font-size:clamp(18px,4vw,28px);font-weight:800}
+html.tk-public-boot #public-spectator .tk143-media{width:100%;min-width:0}
+html.tk-public-boot #public-spectator .tk143-media :is(video,iframe){display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:10px;background:#061528}
+html.tk-public-boot #public-spectator .tk143-stream-note{padding:12px;border:1px solid #806A3D;border-radius:9px;background:#332C20;color:#FFE6AD;font-size:14px;line-height:1.55}
+html.tk-public-boot #public-spectator .grid.g2{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media(max-width:760px){#tk144-live-studio .tk144-workspace{grid-template-columns:minmax(0,1fr)}#tk144-live-studio .tk144-official-pane{max-height:none}html.tk-public-boot #public-spectator .grid.g2{grid-template-columns:minmax(0,1fr)}html.tk-public-boot #public-spectator .split{display:flex;flex-wrap:wrap;gap:10px}}
+
+#page-settings input[readonly],#page-settings textarea[readonly]{background:#173A55!important;color:#F5FAFD!important;border-color:#42627A!important;-webkit-text-fill-color:#F5FAFD!important}
+#page-settings input[readonly]::placeholder{color:#B8C9D6!important}
+
+/* Canva mobile shell: persistent bottom navigation and safe-area spacing. */
+@media(max-width:700px){
+ .topbar>.nav{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:1200;display:flex;justify-content:flex-start;gap:5px;padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));border-top:1px solid rgba(10,166,166,.32);background:rgba(11,31,51,.97);box-shadow:0 -8px 24px rgba(0,0,0,.28);backdrop-filter:blur(14px)}
+ .topbar>.nav button,.topbar>.nav a{flex:1 0 auto;min-width:68px;min-height:46px;justify-content:center;padding:8px 9px;font-size:11px}
+ #app-shell,.shell{padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))}
+}
+
+/* Migrated VNext critical preboot, test-lab and registration styles from inline blocks. */
+html.tk-public-boot #login-screen,html.tk-public-boot #app-shell{display:none!important}html.tk-public-boot .public-register:not(.hidden),html.tk-public-boot #public-judge:not(.hidden){display:block!important}
+
+#tk152-panel{border:1px solid #527b99;border-radius:12px;padding:13px;margin:14px 0;background:#0d2940;color:#f5fbff;display:grid;gap:8px}#tk152-panel :is(select,input,textarea){background:#102f49;color:#fff;border:1px solid #7cacc9;border-radius:8px;padding:10px;width:100%;font:inherit;min-height:44px}#tk152-panel label{font-weight:600;color:#e1f1ff}#tk152-panel .tk152-buttons{display:flex;gap:8px;flex-wrap:wrap}#tk152-panel .tk152-buttons button{min-height:44px;flex:1 1 110px}#tk152-panel small{color:#d1e4f4}#tk152-panel :is(input,select,textarea,button):focus-visible{outline:3px solid #91e8f4;outline-offset:2px}
+
+html body #page-teams #tk9-registration-admin .tk9-card{color:#172b3d!important;background-color:#f7fafc!important}html body #page-teams #tk9-registration-admin .tk9-count{color:#172b3d!important;background-color:#eef4f8!important}html body #page-teams #tk9-registration-admin .tk9-card :is(b,span,small),html body #page-teams #tk9-registration-admin .tk9-count :is(b,span,small){color:#172b3d!important}
+
+/* VNext form, schedule and public-viewer layout — migrated from inline styles. */
+#login-form{margin-top:14px}
+#login-screen .btn[href="#spectator"]{text-align:center;text-decoration:none}
+#page-teams>.grid.g2,#page-schedule>.grid.g2{margin-top:14px}
+#page-teams>.card,#page-schedule>.card,#page-live>.card,#page-settings>.card{margin-top:14px}
+#page-teams .form-grid>.btn.ok,#page-schedule .form-grid>.btn.ok,#page-umpire .form-grid>.btn.ok{align-self:end}
+#courts-list{margin-top:12px}
+#page-teams .split>div:nth-child(2){flex:1}
+#umpire-board{margin-top:14px}
+#single-actions{margin-top:12px}
+#single-result-save{width:100%;margin-top:8px}
+#tk143-live-explainer{grid-column:span 2}
+#page-live .action-bar{margin-top:10px}
+#video-box{margin-top:12px}
+#finance-save-status,#match-rule-fields{grid-column:1/-1}
+#page-live>.split,#page-settings>.split{margin-top:12px}
+.public-register>div{max-width:1200px;margin:auto}
+.public-register .btn{text-decoration:none}
+.public-register .card{max-width:720px;margin:auto}
+html.tk-public-boot #login-screen,html.tk-public-boot #app-shell{display:none!important}
+html.tk-public-boot .public-register:not(.hidden),html.tk-public-boot #public-judge:not(.hidden){display:block!important}
+#tk152-panel{display:grid;gap:8px;margin:14px 0;padding:13px;border:1px solid var(--tk-line);border-radius:12px;background:var(--tk-surface);color:var(--tk-ink)}
+#tk152-panel :is(select,input,textarea){width:100%;min-height:44px;padding:10px;border:1px solid #45647B;border-radius:8px;background:#0A2237;color:#fff;font:inherit}
+#tk152-panel label{color:#E7F3F8;font-weight:700}
+#tk152-panel .tk152-buttons{display:flex;flex-wrap:wrap;gap:8px}
+#tk152-panel .tk152-buttons button{flex:1 1 110px;min-height:44px}
+#tk152-panel small{color:var(--tk-muted)}
+#tk152-panel :is(input,select,textarea,button):focus-visible{outline:3px solid #55D7D2;outline-offset:2px}
+html body #page-teams #tk9-registration-admin .tk9-card{color:#E7F3F8!important;background-color:#173A55!important}
+html body #page-teams #tk9-registration-admin .tk9-count{color:#E7F3F8!important;background-color:#214B6C!important}
+html body #page-teams #tk9-registration-admin .tk9-card :is(b,span,small),html body #page-teams #tk9-registration-admin .tk9-count :is(b,span,small){color:#E7F3F8!important}
+
+/* Collapsible panels and navigation controls — behavior remains in H141 runtime. */
+.tk141-nav-toggle,.tk141-panel-toggle{appearance:none;cursor:pointer;color:#F5FAFD;background:#173A55;border:1px solid #42627A;border-radius:9px;padding:8px 12px;font:700 12px/1.4 Inter,system-ui,sans-serif;min-height:40px}
+.tk141-nav-toggle:hover,.tk141-panel-toggle:hover{background:#214B6C;border-color:var(--tk-teal)}
+.tk141-nav-toggle:focus-visible,.tk141-panel-toggle:focus-visible{outline:3px solid #55D7D2;outline-offset:3px}
+.tk141-nav-toggle{margin-left:auto;flex:none;white-space:nowrap;z-index:85}
+.tk141-panel-toggle{float:right;margin:0 0 10px 12px;position:relative;z-index:2}
+[data-tk141-foldable="1"]::after{content:"";display:block;clear:both}
+[data-tk141-foldable="1"].tk141-panel-folded>:not(.tk141-panel-toggle){display:none!important}
+[data-tk141-foldable="1"].tk141-panel-folded{min-height:0!important;height:auto!important;padding:12px 14px!important}
+.tk141-nav-icon{display:inline-grid;place-items:center;width:21px;flex:none;margin-right:7px;font-size:16px}
+html[data-tk-sport] #app-shell .nav [data-tab]>.tk141-nav-icon{display:none!important}
+body.tk141-nav-collapsed #app-shell .topbar>.nav{visibility:hidden!important;opacity:0!important;overflow:hidden!important;pointer-events:none!important;width:0!important;min-width:0!important;padding:0!important;border:0!important}
+body.tk141-nav-collapsed #app-shell .nav [data-tab]{pointer-events:none}
+body.tk141-nav-collapsed #app-shell .tk141-nav-toggle{display:inline-flex!important}
+@media(max-width:700px){body.tk141-nav-collapsed #app-shell .topbar>.nav{display:none!important}.tk141-panel-toggle{min-height:42px}}
+@media(prefers-reduced-motion:reduce){.tk141-nav-toggle,.tk141-panel-toggle{transition:none!important}}
+
+/* Dashboard overview cards and live match board. */
+html[data-tk-sport] body #app-shell:not(.hidden) #page-overview{display:grid!important;gap:16px!important;align-content:start;min-width:0}
+html[data-tk-sport] body #app-shell:not(.hidden) #page-overview>.grid{min-width:0;gap:14px;margin:0}
+html[data-tk-sport] body #app-shell:not(.hidden) #page-overview .card{background:var(--tk-surface)!important;background-color:var(--tk-surface)!important;color:var(--tk-ink)!important;border:1px solid var(--tk-line)!important;border-radius:16px!important;box-shadow:0 8px 24px rgba(0,0,0,.14)!important}
+html[data-tk-sport] body #app-shell:not(.hidden) #page-overview .card :is(h2,h3,h4,strong,b,th){color:#fff!important;opacity:1!important;text-shadow:none!important}
+html[data-tk-sport] body #app-shell:not(.hidden) #page-overview .card :is(p,small,.muted,.note,label,td,span){color:var(--tk-muted);opacity:1;text-shadow:none}
+html[data-tk-sport] body #app-shell:not(.hidden) #page-overview .table-wrap{width:100%;max-width:100%;overflow-x:auto;background:var(--tk-surface);border:1px solid var(--tk-line);border-radius:12px}
+html[data-tk-sport] body #app-shell:not(.hidden) #page-overview table{width:100%;min-width:0;table-layout:auto;border-collapse:separate;border-spacing:0}
+html[data-tk-sport] body #app-shell:not(.hidden) #page-overview table th{background:#173A55;color:#E7F3F8;font-weight:800;white-space:normal}
+html[data-tk-sport] body #app-shell:not(.hidden) #page-overview table td{background:#102B43;color:#E6EEF3;white-space:normal;overflow-wrap:anywhere}
+html[data-tk-sport] body #app-shell:not(.hidden) #page-overview table tr:nth-child(even) td{background:#143650}
+html[data-tk-sport] body #app-shell:not(.hidden) #page-overview .tk227-board{display:grid;gap:14px;padding:18px;min-width:0}
+html[data-tk-sport] body #app-shell:not(.hidden) #page-overview .tk227-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+html[data-tk-sport] body #app-shell:not(.hidden) #page-overview .tk227-head h2{margin:0;color:#fff;font-size:clamp(18px,2vw,23px)}
+html[data-tk-sport] body #app-shell:not(.hidden) #page-overview .tk227-sub{margin:4px 0 0;color:var(--tk-muted);font-size:13px}
+html[data-tk-sport] body #app-shell:not(.hidden) #page-overview .tk227-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:99px;background:rgba(10,166,166,.14);color:#B8F0ED;border:1px solid rgba(10,166,166,.4);font-size:12px;font-weight:800}
+html[data-tk-sport] body #app-shell:not(.hidden) #page-overview .tk227-live-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));gap:10px}
+html[data-tk-sport] body #app-shell:not(.hidden) #page-overview .tk227-match{display:grid;gap:9px;padding:13px;border:1px solid var(--tk-line);border-radius:12px;background:#0A2237;min-width:0}
+html[data-tk-sport] body #app-shell:not(.hidden) #page-overview .tk227-match.is-live{background:#123A4B;border-color:var(--tk-teal)}
+html[data-tk-sport] body #app-shell:not(.hidden) #page-overview .tk227-match-top{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}
+html[data-tk-sport] body #app-shell:not(.hidden) #page-overview .tk227-status{font-size:11px;font-weight:800;color:#B8F0ED}
+html[data-tk-sport] body #app-shell:not(.hidden) #page-overview .tk227-rule{color:var(--tk-muted);font-size:12px}
+
+/* Prize editor uses the same dark form controls and contained responsive rows. */
+html[data-tk-sport] #tk79-prize-editor{display:block;width:100%;max-width:100%;min-width:0;box-sizing:border-box;grid-column:1/-1;overflow:hidden;border:1px solid var(--tk-line);border-radius:16px;padding:14px;background:var(--tk-surface);color:var(--tk-ink)}
+html[data-tk-sport] #tk79-prize-editor :is(b,strong){color:#fff}
+html[data-tk-sport] #tk79-prize-editor .muted{color:var(--tk-muted);opacity:1}
+html[data-tk-sport] #tk79-prize-list{width:100%;max-width:100%;min-width:0;display:grid;gap:9px}
+html[data-tk-sport] #tk79-prize-list .tk79-prize-row{display:grid;width:100%;max-width:100%;min-width:0;grid-template-columns:minmax(0,1fr) 86px minmax(0,1.2fr) minmax(0,1fr) auto;gap:10px;align-items:end;border:1px solid var(--tk-line);border-radius:12px;padding:12px;background:#143650;box-sizing:border-box}
+html[data-tk-sport] #tk79-prize-list .tk79-prize-row .field{min-width:0;max-width:100%;gap:6px}
+html[data-tk-sport] #tk79-prize-list .tk79-prize-row .field label{color:#E7F3F8;font-size:12px;font-weight:750;line-height:1.35}
+html[data-tk-sport] #tk79-prize-list .tk79-prize-row .field input{width:100%;min-width:0;max-width:100%;min-height:46px;color:#F5FAFD;background:#0A2237;border:1px solid #45647B;border-radius:10px;padding:10px 12px;opacity:1}
+html[data-tk-sport] #tk79-prize-list .tk79-prize-row .field input::placeholder{color:#B8C9D6;opacity:1}
+html[data-tk-sport] #tk79-prize-list .tk79-prize-row .tk79-p-del{min-height:44px;white-space:nowrap}
+html[data-tk-sport] #tk79-prize-editor :is(button,.btn){min-height:44px;opacity:1}
+html[data-tk-sport] #tk79-prize-editor .btn.ok{background:#087D76;color:#fff;border-color:#0AA6A6}
+html[data-tk-sport] #tk79-prize-editor .btn.danger{background:#8D344B;color:#fff;border-color:#C35B73}
+html[data-tk-sport] #tk79-prize-list :is(input,button):focus-visible{outline:3px solid #55D7D2;outline-offset:2px}
+@media(max-width:760px){html[data-tk-sport] #tk79-prize-list .tk79-prize-row{grid-template-columns:minmax(0,1fr) 88px;gap:9px;padding:10px}}
+@media(max-width:420px){html[data-tk-sport] #tk79-prize-list .tk79-prize-row{grid-template-columns:minmax(0,1fr)}html[data-tk-sport] #app-shell .page .form-grid{grid-template-columns:minmax(0,1fr)}}
+
+/* Live Studio independent panes, fullscreen orientation, audio and Twitch controls. */
+#tk144-live-studio{--tk155-pane-height:clamp(420px,calc(100dvh - 215px),940px)}
+#tk144-live-studio .tk144-workspace{align-items:stretch;min-height:0;overflow:visible}
+#tk144-live-studio .tk144-video-pane,#tk144-live-studio .tk144-official-pane{box-sizing:border-box;height:var(--tk155-pane-height);max-height:var(--tk155-pane-height);min-height:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#42627A #102B43;border:1px solid var(--tk-line);border-radius:13px;padding:5px}
+#tk144-live-studio .tk144-video-pane:focus-visible,#tk144-live-studio .tk144-official-pane:focus-visible{outline:3px solid #55D7D2;outline-offset:2px}
+#tk144-live-studio .tk144-video-pane>.card,#tk144-live-studio .tk144-official-pane>.card{height:auto!important;max-height:none!important;overflow:visible!important}
+#tk144-live-studio:fullscreen,#tk144-live-studio.tk144-pseudo-fullscreen{display:flex!important;flex-direction:column!important;overflow:hidden!important}
+#tk144-live-studio:fullscreen .tk144-workspace,#tk144-live-studio.tk144-pseudo-fullscreen .tk144-workspace{flex:1 1 auto;height:0;min-height:0;overflow:hidden}
+#tk144-live-studio:fullscreen :is(.tk144-video-pane,.tk144-official-pane),#tk144-live-studio.tk144-pseudo-fullscreen :is(.tk144-video-pane,.tk144-official-pane){height:100%;max-height:100%;min-height:0}
+#tk144-live-studio .tk144-pane-scroll-label{display:inline-block;margin:0 0 6px;padding:4px 8px;background:#173A55;color:#E7F3F8;border-radius:7px;font-size:12px}
+#tk144-live-studio[data-orientation="landscape"]:fullscreen .tk144-workspace,#tk144-live-studio[data-orientation="landscape"].tk144-pseudo-fullscreen .tk144-workspace{grid-template-columns:minmax(0,1.2fr) minmax(280px,1fr)!important;grid-template-rows:minmax(0,1fr)!important}
+#tk144-live-studio[data-orientation="portrait"]:fullscreen .tk144-workspace,#tk144-live-studio[data-orientation="portrait"].tk144-pseudo-fullscreen .tk144-workspace{grid-template-columns:minmax(0,1fr)!important;grid-template-rows:minmax(0,1fr) minmax(0,1fr)!important}
+@media(max-width:900px){#tk144-live-studio .tk144-video-pane,#tk144-live-studio .tk144-official-pane{height:clamp(280px,47dvh,650px);max-height:clamp(280px,47dvh,650px)}#tk144-live-studio:fullscreen .tk144-workspace,#tk144-live-studio.tk144-pseudo-fullscreen .tk144-workspace{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) minmax(0,1fr)}}
+@media(orientation:landscape) and (max-height:650px){#tk144-live-studio:fullscreen .tk144-workspace,#tk144-live-studio.tk144-pseudo-fullscreen .tk144-workspace{grid-template-columns:minmax(0,1.2fr) minmax(280px,1fr)!important;grid-template-rows:minmax(0,1fr)!important}}
+#tk160-audio-panel{display:grid;gap:8px;margin:10px 0;padding:10px;border:1px solid var(--tk-line);border-radius:10px;background:var(--tk-surface);color:var(--tk-ink)}
+#tk160-audio-panel .tk160-audio-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#tk160-audio-panel .tk160-audio-row button{flex:1 1 155px;min-height:44px}
+#tk160-audio-panel small{line-height:1.5;color:var(--tk-muted)}
+#tk160-audio-panel button:focus-visible{outline:3px solid #55D7D2;outline-offset:2px}
+#tk161-panel{grid-column:1/-1;display:grid;gap:10px;margin:8px 0;padding:14px;border:1px solid var(--tk-line);border-radius:12px;background:var(--tk-surface);color:var(--tk-ink)}
+#tk161-panel h3{margin:0;font-size:18px;color:#fff}
+#tk161-panel p,#tk161-panel small{margin:0;line-height:1.5;color:var(--tk-muted)}
+#tk161-panel label{font-weight:700;color:#fff}
+#tk161-panel input{width:100%;min-width:0;padding:11px;background:#0A2237;color:#fff;border:1px solid #45647B;border-radius:9px;font:inherit}
+#tk161-panel .tk161-actions{display:flex;flex-wrap:wrap;gap:8px}
+#tk161-panel .tk161-actions :is(a,button){min-height:44px;display:inline-flex;justify-content:center;align-items:center;flex:1 1 180px;padding:9px 13px;border:1px solid #42627A;border-radius:9px;background:#173A55;color:#fff;font:700 14px/1.3 Inter,system-ui,sans-serif;text-align:center;text-decoration:none;cursor:pointer}
+#tk161-panel :is(a,button,input):focus-visible{outline:3px solid #55D7D2;outline-offset:2px}
+#spectator-live .tk143-media iframe[src^="https://player.twitch.tv/"]{width:100%;min-height:300px;aspect-ratio:16/9}
+#spectator-live .tk161-twitch-fallback{display:block;margin:8px 0;color:#B8F0ED;font-weight:700;text-decoration:underline}
+#spectator-live .tk161-twitch-fallback:focus-visible{outline:3px solid #55D7D2;outline-offset:2px}
+
+/* App.showTab() owns visibility; inactive pages must never occupy layout space. */
+#page-overview.hidden{display:none!important}
+#page-overview:not(.hidden){display:grid!important}
+
+body.tk141-nav-collapsed #app-shell{grid-template-columns:0 minmax(0,1fr)!important}
+
+/* Sport-specific identity metadata and iconography, rethemed for the Canva navy shell. */
+html[data-tk-sport]{--sport-emoji:"🏆";--sport-strap:"TOPKEY SPORTS OPERATIONS";--sport-sub:"Lịch thi đấu · Đội/VĐV · Trọng tài · Kết quả"}
+html[data-tk-sport="badminton"]{--sport-emoji:"🏸";--sport-strap:"BADMINTON ARENA";--sport-sub:"Đội/đôi · Sân đấu · Set đấu · Trọng tài · Kết quả"}
+html[data-tk-sport="football"]{--sport-emoji:"⚽";--sport-strap:"FOOTBALL OPERATIONS";--sport-sub:"Đội bóng · Sân đấu · Bàn thắng · Bảng xếp hạng"}
+html[data-tk-sport="volleyball"]{--sport-emoji:"🏐";--sport-strap:"VOLLEYBALL ARENA";--sport-sub:"Đội bóng · Set đấu · Trọng tài · Kết quả"}
+html[data-tk-sport="running"]{--sport-emoji:"🏃";--sport-strap:"RACE CONTROL";--sport-sub:"Vận động viên · Làn chạy · Thời gian · Thành tích"}
+html[data-tk-sport="handmade"]{--sport-emoji:"🧶";--sport-strap:"MAKERS STUDIO";--sport-sub:"Thí sinh · Tác phẩm · Giám khảo · Xếp hạng"}
+html[data-tk-sport="shuttle"]{--sport-emoji:"🪶";--sport-strap:"SHUTTLECOCK";--sport-sub:"Nội dung đơn/đôi · Sân · Set đấu · Live"}
+html[data-tk-sport="cooking"]{--sport-emoji:"👨‍🍳";--sport-strap:"CULINARY STUDIO";--sport-sub:"Đội thi · Khu bếp · Giám khảo · Điểm số"}
+html[data-tk-sport] #app-shell .nav [data-tab]::before{display:inline-grid;place-items:center;content:"▦";min-width:20px;font-size:16px;line-height:1}
+html[data-tk-sport] #app-shell .nav [data-tab="overview"]::before{content:var(--sport-emoji)}
+html[data-tk-sport] #app-shell .nav [data-tab="control"]::before{content:"▤"}
+html[data-tk-sport] #app-shell .nav [data-tab="teams"]::before{content:"♙"}
+html[data-tk-sport] #app-shell .nav [data-tab="schedule"]::before{content:"▦"}
+html[data-tk-sport] #app-shell .nav [data-tab="umpire"]::before{content:"◈"}
+html[data-tk-sport] #app-shell .nav [data-tab="live"]::before{content:"●"}
+html[data-tk-sport] #app-shell .nav [data-tab="finance"]::before{content:"₫"}
+html[data-tk-sport] #app-shell .nav [data-tab="announcements"]::before{content:"◉"}
+html[data-tk-sport] #app-shell .nav [data-tab="audit"]::before{content:"≡"}
+html[data-tk-sport] #app-shell .nav [data-tab="health"]::before{content:"◷"}
+html[data-tk-sport] #app-shell .nav [data-tab="settings"]::before{content:"⚙"}
+html[data-tk-sport] #app-shell .nav [data-tab]{gap:8px}
+html[data-tk-sport] #app-shell #tk-h132-hero{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:108px;margin:0 0 16px;padding:18px 22px;border:1px solid rgba(10,166,166,.34);border-radius:17px;background:linear-gradient(113deg,var(--sport-strong),var(--sport));color:#fff;overflow:hidden;position:relative;box-shadow:0 10px 22px rgba(0,0,0,.18)}
+html[data-tk-sport] #app-shell #tk-h132-hero:after{content:var(--sport-emoji);position:absolute;right:22px;bottom:-38px;font-size:112px;opacity:.12;pointer-events:none}
+html[data-tk-sport] #app-shell #tk-h132-hero strong{display:block;position:relative;z-index:1;color:#fff;font-size:clamp(17px,2vw,21px);letter-spacing:-.3px}
+html[data-tk-sport] #app-shell #tk-h132-hero small{display:block;position:relative;z-index:1;margin-bottom:7px;color:#C9F6F2;font-size:10px;letter-spacing:1px;font-weight:800}
+html[data-tk-sport] #app-shell #tk-h132-hero p{position:relative;z-index:1;margin:7px 0 0;color:#E7F7F8;font-size:12px}
+html[data-tk-sport] #app-shell #tk-h132-hero .tk-h132-live{position:relative;z-index:1;padding:8px 12px;border:1px solid rgba(255,255,255,.3);border-radius:999px;background:rgba(255,255,255,.12);color:#fff;font-size:12px;font-weight:800;white-space:nowrap}
+html[data-tk-sport] body #app-shell #page-overview.hidden{display:none!important}
+html[data-tk-sport] body #app-shell #page-overview:not(.hidden){display:grid!important}
+@media(max-width:700px){
+ html[data-tk-sport] body #app-shell #page-overview>.grid.g4{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ html[data-tk-sport] #app-shell #tk-h132-hero{min-height:96px;padding:15px;gap:10px}
+ html[data-tk-sport] #app-shell #tk-h132-hero strong{font-size:16px}
+ html[data-tk-sport] #app-shell #tk-h132-hero .tk-h132-live{display:none}
+}
+
+/* The live badge is a solid dark teal chip so small text remains WCAG AA. */
+html[data-tk-sport] body #app-shell:not(.hidden) #page-overview .card .tk227-badge{background:#0B4B4B!important;border:1px solid #0AA6A6!important;color:#F5FAFD!important}
+html[data-tk-sport] body #app-shell:not(.hidden) #page-overview .card .tk227-badge.live{background:#0B4B4B!important;color:#F5FAFD!important}
+
+html[data-tk-sport] #app-shell .topbar>.nav:before{content:var(--sport-strap);display:inline-flex;align-items:center;flex:none;padding:8px 10px;border:1px solid rgba(10,166,166,.35);border-radius:9px;background:#173A55;color:#D8F8F5;font-size:10px;letter-spacing:.07em;font-weight:850;white-space:nowrap}
+@media(max-width:700px){html[data-tk-sport] #app-shell .topbar>.nav:before{display:none}}
+
+/* Full dark-surface contrast correction from real Chrome DevTools audit (all tabs / 7 sports). */
+html[data-tk-sport] #app-shell .pill{background:#0B4B4B!important;border-color:#0AA6A6!important;color:#F5FAFD!important}
+html[data-tk-sport] #app-shell .card b,
+html[data-tk-sport] #app-shell .card strong,
+html[data-tk-sport] #app-shell .card label,
+html[data-tk-sport] #app-shell .card code{color:#F5FAFD}
+html[data-tk-sport] #app-shell .card .muted,
+html[data-tk-sport] #app-shell .card small,
+html[data-tk-sport] #app-shell .card p{color:#B8C9D6}
+html[data-tk-sport] #app-shell .topbar .hub-link,
+html[data-tk-sport] #app-shell .topbar .hub-back{display:none!important}
+
+/* Settings Firebase/security metadata is rendered inside nested dark cards; keep semantic emphasis readable against the navy surface. */
+html[data-tk-sport] body #app-shell:not(.hidden) #page-settings .card :is(b,strong,label,code){color:#F5FAFD!important;opacity:1!important}
+html[data-tk-sport] body #app-shell:not(.hidden) #page-settings .card :is(p,small,.muted,.note){color:#B8C9D6!important;opacity:1!important}
+
+/* Chrome MCP audit: settings metadata also appears in nested .subcard surfaces,
+   not only .card. Keep semantic emphasis readable across every sport workspace. */
+html[data-tk-sport] body #app-shell:not(.hidden) #page-settings :is(b,strong,label,code){
+  color:#F5FAFD!important;
+  opacity:1!important;
+}
+html[data-tk-sport] body #app-shell:not(.hidden) #page-settings :is(p,small,.muted,.note){
+  color:#B8C9D6!important;
+  opacity:1!important;
+}
+
+
+
+/* Explicit fullscreen pane selectors keep both score and video independently scrollable. */
+#tk144-live-studio:fullscreen .tk144-official-pane,
+#tk144-live-studio.tk144-pseudo-fullscreen .tk144-official-pane{
+ height:100%;max-height:100%;min-height:0;overflow-y:auto;overflow-x:hidden;
+}
+#tk144-live-studio:fullscreen .tk144-video-pane,
+#tk144-live-studio.tk144-pseudo-fullscreen .tk144-video-pane{
+ height:100%;max-height:100%;min-height:0;overflow-y:auto;overflow-x:hidden;
+}
+
+
+
+/* Migrated into the consolidated Canva sports system from topkey/sports/vnext/live-studio-h144.css; no extra stylesheet request. */
+/* H144 Live Studio: football and volleyball. No affect on public viewer or badminton. */
+#tk144-live-studio {
+  --tk144-border:#456c91;
+  --tk144-panel:#10253d;
+  width:100%;
+  color:#f5fbff;
+  border:1px solid var(--tk144-border);
+  border-radius:18px;
+  background:#091b30;
+  padding:clamp(10px,1.8vw,18px);
+  margin:0 0 14px;
+  min-width:0;
+}
+#tk144-live-studio :is(.tk144-header,.tk144-toolbar) {
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:8px;
+}
+#tk144-live-studio .tk144-header {justify-content:space-between;gap:12px}
+#tk144-live-studio .tk144-header h2 {font-size:clamp(18px,2.2vw,24px);margin:0;color:#f5fbff}
+#tk144-live-studio .tk144-toolbar {justify-content:flex-end}
+#tk144-live-studio .tk144-toolbar select {
+  min-width:175px;
+  max-width:100%;
+  padding:10px;
+  color:#f5fbff;
+  background:#102d4c;
+  border:1px solid #8ab1d1;
+  border-radius:9px;
+  font-size:14px;
+  color-scheme:dark;
+}
+#tk144-live-studio .tk144-toolbar button{min-height:42px}
+#tk144-live-studio :is(button,select):focus-visible{
+  outline:3px solid #8ceaff;
+  outline-offset:3px;
+}
+#tk144-live-studio .tk144-status {font-size:13px;line-height:1.4;color:#c2d8ee;margin:9px 0}
+#tk144-live-studio .tk144-workspace {
+  display:grid;
+  grid-template-columns:minmax(0,1.25fr) minmax(310px,1fr);
+  align-items:start;
+  gap:12px;
+  min-width:0;
+}
+#tk144-live-studio :is(.tk144-video-pane,.tk144-official-pane){min-width:0}
+#tk144-live-studio .tk144-video-pane>.card,
+#tk144-live-studio .tk144-official-pane>.card {
+  width:100%;margin:0;min-width:0;
+  box-shadow:none;
+  background:var(--tk144-panel);
+  padding:clamp(10px,1.7vw,17px);
+}
+#page-live:has(#tk144-live-studio) > .grid.g2 {grid-template-columns:minmax(0,1fr)}
+#tk144-live-studio .tk144-pane-label {
+  margin:0 0 7px;padding:8px 10px;background:#14314f;
+  border:1px solid #345f80;border-radius:10px;
+  font-weight:700;color:#d7edff;
+}
+#tk144-live-studio .tk144-official-pane.tk144-collapsed>.card {display:none!important}
+#tk144-live-studio .tk144-workspace:has(.tk144-official-pane.tk144-collapsed),
+#tk144-live-studio .tk144-workspace:has(.tk144-official-pane[hidden]) {
+  grid-template-columns:minmax(0,1fr);
+}
+#tk144-live-studio .tk144-video-pane .form-grid {
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+#tk144-live-studio .tk144-video-pane .action-bar {
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+#tk144-live-studio .tk144-video-pane .action-bar button {
+  flex:1 1 130px;min-height:43px;
+}
+#tk144-live-studio .tk144-video-pane .video-box{
+  width:100%;aspect-ratio:16/9;min-height:180px;
+}
+#tk144-live-studio .tk144-video-pane .video-box :is(video,iframe){
+  width:100%;height:100%;object-fit:contain;
+}
+#tk144-live-studio .tk144-official-pane .official-score strong{font-size:clamp(28px,4vw,54px)}
+#tk144-live-studio .tk144-official-pane .score-actions{
+  display:flex;flex-wrap:wrap;gap:7px;
+}
+#tk144-live-studio .tk144-official-pane .score-actions button{
+  flex:1 1 110px;min-height:43px;
+}
+#tk144-live-studio .tk144-official-pane .form-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+#tk144-live-studio .tk144-official-pane .field{min-width:0}
+#tk144-live-studio .tk144-official-pane .field select {max-width:100%}
+#tk144-live-studio #tk144-exit-fullscreen[hidden],
+#tk144-live-studio #tk144-enter-fullscreen[hidden] {display:none!important}
+#tk144-live-studio:fullscreen,
+#tk144-live-studio.tk144-pseudo-fullscreen {
+  position:fixed!important;
+  inset:0!important;
+  z-index:100000!important;
+  width:100vw!important;
+  height:100dvh!important;
+  max-width:none!important;
+  max-height:none!important;
+  margin:0!important;
+  overflow:auto!important;
+  border-radius:0!important;
+  padding:clamp(8px,1.4vw,18px)!important;
+  background:#071629!important;
+}
+#tk144-live-studio:fullscreen .tk144-workspace,
+#tk144-live-studio.tk144-pseudo-fullscreen .tk144-workspace{
+  min-height:0;
+}
+#tk144-live-studio:fullscreen .tk144-video-pane .video-box,
+#tk144-live-studio.tk144-pseudo-fullscreen .tk144-video-pane .video-box{
+  max-height:58dvh;min-height:0;
+}
+#tk144-live-studio[data-orientation="portrait"]:fullscreen .tk144-workspace,
+#tk144-live-studio[data-orientation="portrait"].tk144-pseudo-fullscreen .tk144-workspace{
+  grid-template-columns:minmax(0,1fr);
+}
+#tk144-live-studio[data-orientation="landscape"]:fullscreen .tk144-workspace,
+#tk144-live-studio[data-orientation="landscape"].tk144-pseudo-fullscreen .tk144-workspace{
+  grid-template-columns:minmax(0,1.25fr) minmax(270px,1fr);
+}
+@media(max-width:900px){
+  #tk144-live-studio .tk144-workspace{grid-template-columns:minmax(0,1fr)}
+  #tk144-live-studio .tk144-header {align-items:flex-start}
+  #tk144-live-studio .tk144-toolbar {justify-content:flex-start;width:100%}
+  #tk144-live-studio .tk144-toolbar>* {flex:1 1 150px;min-width:0}
+  #tk144-live-studio .tk144-official-pane .official-score{grid-template-columns:1fr auto 1fr}
+  #tk144-live-studio .tk144-official-pane .official-score .vs{display:block}
+}
+@media(max-width:700px){
+  #tk144-live-studio .tk144-video-pane .form-grid,
+  #tk144-live-studio .tk144-official-pane .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #tk144-live-studio .tk144-official-pane .score-actions button{flex-basis:calc(50% - 7px);min-height:48px}
+  #tk144-live-studio .tk144-video-pane .video-box{aspect-ratio:9/14}
+  #tk144-live-studio[data-orientation="portrait"]:fullscreen .tk144-video-pane .video-box,
+  #tk144-live-studio[data-orientation="portrait"].tk144-pseudo-fullscreen .tk144-video-pane .video-box{
+    aspect-ratio:9/11;max-height:38dvh;
+  }
+  #tk144-live-studio:fullscreen .tk144-header h2,
+  #tk144-live-studio.tk144-pseudo-fullscreen .tk144-header h2{font-size:16px}
+}
+@media(orientation:landscape) and (max-height:600px) {
+  #tk144-live-studio:fullscreen .tk144-workspace,
+  #tk144-live-studio.tk144-pseudo-fullscreen .tk144-workspace{
+    grid-template-columns:minmax(0,1.3fr) minmax(290px,1fr);
+  }
+  #tk144-live-studio:fullscreen .tk144-video-pane .video-box,
+  #tk144-live-studio.tk144-pseudo-fullscreen .tk144-video-pane .video-box{
+    aspect-ratio:16/9;max-height:48dvh;
+  }
+  #tk144-live-studio .tk144-official-pane .score-actions button{
+    padding:7px;min-height:38px;
+  }
+}
+@media(prefers-reduced-motion:reduce) {
+  #tk144-live-studio *{scroll-behavior:auto!important;transition:none!important}
+}
+
+
+/* Migrated into the consolidated Canva sports system from topkey/sports/vnext/live-two-scroll-h155.css; no extra stylesheet request. */
+/* H155 — Independent scrolling for Live camera and referee board.
+ * Scoped to H144 Studio only; preserves existing DOM and event handlers.
+ */
+#tk144-live-studio {
+  --tk155-pane-height:clamp(420px,calc(100dvh - 215px),940px);
+}
+#tk144-live-studio .tk144-workspace{
+  align-items:stretch;
+  min-height:0;
+}
+#tk144-live-studio .tk144-video-pane,
+#tk144-live-studio .tk144-official-pane{
+  box-sizing:border-box;
+  height:var(--tk155-pane-height);
+  max-height:var(--tk155-pane-height);
+  min-height:0;
+  overflow-x:hidden;
+  overflow-y:auto;
+  overscroll-behavior-y:contain;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;
+  scrollbar-color:#78a9c8 #10253d;
+  border:1px solid #456c91;
+  border-radius:13px;
+  padding:5px;
+}
+#tk144-live-studio .tk144-video-pane:focus-visible,
+#tk144-live-studio .tk144-official-pane:focus-visible{
+  outline:3px solid #8ceaff;
+  outline-offset:2px;
+}
+#tk144-live-studio .tk144-video-pane::-webkit-scrollbar,
+#tk144-live-studio .tk144-official-pane::-webkit-scrollbar{width:10px}
+#tk144-live-studio .tk144-video-pane::-webkit-scrollbar-thumb,
+#tk144-live-studio .tk144-official-pane::-webkit-scrollbar-thumb{
+  border-radius:10px;
+  border:2px solid #10253d;
+  background:#78a9c8;
+}
+#tk144-live-studio #tk144-official-pane>.tk144-pane-label{
+  position:sticky;
+  top:0;
+  z-index:5;
+}
+#tk144-live-studio .tk144-video-pane>.card,
+#tk144-live-studio .tk144-official-pane>.card{
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+}
+#tk144-live-studio:fullscreen,
+#tk144-live-studio.tk144-pseudo-fullscreen{
+  display:flex!important;
+  flex-direction:column!important;
+  overflow:hidden!important;
+}
+#tk144-live-studio:fullscreen .tk144-workspace,
+#tk144-live-studio.tk144-pseudo-fullscreen .tk144-workspace{
+  flex:1 1 auto;
+  height:0;
+  min-height:0;
+}
+#tk144-live-studio:fullscreen :is(.tk144-video-pane,.tk144-official-pane),
+#tk144-live-studio.tk144-pseudo-fullscreen :is(.tk144-video-pane,.tk144-official-pane){
+  height:100%;
+  max-height:100%;
+  min-height:0;
+}
+#tk144-live-studio .tk144-pane-scroll-label{
+  display:inline-block;
+  margin:0 0 6px;
+  padding:4px 8px;
+  background:#153650;
+  color:#e5f4ff;
+  border-radius:7px;
+  font-size:12px;
+}
+@media(max-width:900px){
+  /* Stacked panes should each retain independent touch scrolling. */
+  #tk144-live-studio .tk144-video-pane,
+  #tk144-live-studio .tk144-official-pane{
+    height:clamp(280px,47dvh,650px);
+    max-height:clamp(280px,47dvh,650px);
+  }
+  #tk144-live-studio:fullscreen .tk144-workspace,
+  #tk144-live-studio.tk144-pseudo-fullscreen .tk144-workspace{
+    display:grid;
+    grid-template-columns:minmax(0,1fr);
+    grid-template-rows:minmax(0,1fr) minmax(0,1fr);
+  }
+  #tk144-live-studio:fullscreen :is(.tk144-video-pane,.tk144-official-pane),
+  #tk144-live-studio.tk144-pseudo-fullscreen :is(.tk144-video-pane,.tk144-official-pane){
+    height:100%;
+    max-height:100%;
+  }
+}
+@media(orientation:landscape) and (max-height:650px){
+  #tk144-live-studio:fullscreen .tk144-workspace,
+  #tk144-live-studio.tk144-pseudo-fullscreen .tk144-workspace{
+    grid-template-columns:minmax(0,1.2fr) minmax(280px,1fr)!important;
+    grid-template-rows:minmax(0,1fr)!important;
+  }
+}
+#tk144-live-studio[data-orientation="landscape"]:fullscreen .tk144-workspace,
+#tk144-live-studio[data-orientation="landscape"].tk144-pseudo-fullscreen .tk144-workspace{
+  grid-template-columns:minmax(0,1.2fr) minmax(280px,1fr)!important;
+  grid-template-rows:minmax(0,1fr)!important;
+}
+#tk144-live-studio[data-orientation="portrait"]:fullscreen .tk144-workspace,
+#tk144-live-studio[data-orientation="portrait"].tk144-pseudo-fullscreen .tk144-workspace{
+  grid-template-columns:minmax(0,1fr)!important;
+  grid-template-rows:minmax(0,1fr) minmax(0,1fr)!important;
+}
+#tk144-live-studio .tk155-camera-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:8px 0;
+}
+#tk144-live-studio #tk155-camera-direct{
+  min-height:44px;
+  color:#fff!important;
+  background:#087b61!important;
+  border:1px solid #52c5a6!important;
+  border-radius:9px;
+  font-weight:700;
+  cursor:pointer;
+  padding:9px 13px;
+}
+#tk144-live-studio #tk155-camera-direct:disabled{
+  background:#30475c!important;
+  cursor:not-allowed;
+}
+#tk144-live-studio .tk155-camera-state{
+  color:#dcecff;
+  font-size:13px;
+  line-height:1.4;
+}
+
+
+/* Migrated into the consolidated Canva sports system from topkey/sports/vnext/fullscreen-referee-h156.css; no extra stylesheet request. */
+/* H156 — deterministic one-icon navigation and accessible fullscreen referee actions.
+ * Cosmetic only; no scoring handlers, auth, tournament data or RTDB changes.
+ */
+html[data-tk-sport] #app-shell .topbar>.nav [data-tab]::after {
+  content:none!important;
+  display:none!important;
+}
+/* H132 ::before is the single canonical sport icon; H156 removes JS duplicates. */
+html[data-tk-sport] #app-shell .topbar>.nav [data-tab] > :is(.tk141-nav-icon,.tk-h130-icon,.tk-nav-icon,.nav-icon,.icon) {
+  display:none!important;
+}
+#tk144-live-studio .tk144-workspace {
+  min-height:0!important;
+  overflow:visible!important;
+}
+#tk144-live-studio .tk144-official-pane {
+  position:relative;
+  min-height:0!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  padding-bottom:calc(28px + env(safe-area-inset-bottom,0px))!important;
+}
+#tk144-live-studio .tk144-official-pane > .card {
+  min-height:0!important;
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+}
+#tk144-live-studio .tk144-official-pane #umpire-board {
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+  min-height:0!important;
+}
+#tk144-live-studio .tk144-official-pane #set-actions,
+#tk144-live-studio .tk144-official-pane #single-actions {
+  position:relative;
+  z-index:1;
+}
+/* Sticky shortcuts reveal existing buttons in the original referee DOM.
+   They NEVER execute a score/penalty by themselves. */
+#tk144-live-studio .tk156-referee-shortcuts {
+  position:sticky;
+  top:0;
+  z-index:35;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex-wrap:wrap;
+  padding:9px;
+  margin:0 0 8px;
+  border:1px solid #6996b6;
+  border-radius:10px;
+  background:#0b2945;
+  box-shadow:0 4px 14px rgba(0,0,0,.4);
+}
+#tk144-live-studio .tk156-referee-shortcuts button {
+  flex:1 1 112px;
+  min-width:0;
+  min-height:44px;
+  padding:8px 9px;
+  border:1px solid #81b3d5;
+  border-radius:9px;
+  background:#214b6c;
+  color:#fff;
+  font:700 13px/1.3 system-ui,sans-serif;
+  cursor:pointer;
+}
+#tk144-live-studio .tk156-referee-shortcuts button:disabled {
+  opacity:.75;
+  cursor:not-allowed;
+}
+#tk144-live-studio .tk156-referee-shortcuts button:focus-visible {
+  outline:3px solid #9af3ff;
+  outline-offset:2px;
+}
+#tk144-live-studio .tk156-referee-help {
+  width:100%;
+  font-size:12px;
+  color:#d7edff;
+  line-height:1.4;
+}
+#tk144-live-studio .tk156-highlight {
+  outline:3px solid #ffd166!important;
+  outline-offset:4px;
+  scroll-margin-top:95px;
+}
+#tk144-live-studio .tk144-official-pane :is(button,select,input) {
+  scroll-margin-top:110px;
+}
+#tk144-live-studio:fullscreen .tk144-workspace,
+#tk144-live-studio.tk144-pseudo-fullscreen .tk144-workspace {
+  min-height:0!important;
+  overflow:hidden!important;
+}
+#tk144-live-studio:fullscreen .tk144-official-pane,
+#tk144-live-studio.tk144-pseudo-fullscreen .tk144-official-pane {
+  height:100%!important;
+  max-height:100%!important;
+  overflow-y:auto!important;
+}
+@media(max-width:900px) {
+  #tk144-live-studio .tk156-referee-shortcuts {
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    scrollbar-width:thin;
+  }
+  #tk144-live-studio .tk156-referee-shortcuts button {
+    flex:0 0 auto;
+    white-space:nowrap;
+  }
+  #tk144-live-studio .tk156-referee-help {
+    display:none;
+  }
+}
+
+
+/* Migrated into the consolidated Canva sports system from topkey/sports/vnext/commentary-audio-h160.css; no extra stylesheet request. */
+/* H160 audio recovery controls do not alter Live/Viewer layout or scoring. */
+#tk160-audio-panel{background:#112b43;border:1px solid #6da1c4;border-radius:10px;padding:10px;margin:10px 0;color:#e9f7ff;display:grid;gap:8px}
+#tk160-audio-panel .tk160-audio-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#tk160-audio-panel .tk160-audio-row button{flex:1 1 155px;min-height:44px}
+#tk160-audio-panel small{line-height:1.5;color:#d7ecff}
+#tk160-audio-panel button:focus-visible{outline:3px solid #86eafb;outline-offset:2px}
+
+
+/* Migrated into the consolidated Canva sports system from topkey/sports/vnext/youtube-live-h157.css; no extra stylesheet request. */
+/* H157 YouTube Live integration: display-only styles, respects existing dark panels. */
+#tk157-youtube-panel{grid-column:1/-1;background:#10283f;border:1px solid #6292b8;color:#eaf6ff;border-radius:12px;padding:14px;margin:8px 0;display:grid;gap:10px}
+#tk157-youtube-panel h3{margin:0;color:#fff;font-size:18px}
+#tk157-youtube-panel .tk157-hint{margin:0;color:#d4e8fa;line-height:1.45;font-size:14px}
+#tk157-youtube-panel label{color:#eaf6ff;font-weight:650}
+#tk157-youtube-panel input{width:100%;min-width:0;padding:11px;border:1px solid #85b5d5;border-radius:9px;background:#0c2238;color:#fff;font:inherit;color-scheme:dark}
+#tk157-youtube-panel .tk157-buttons{display:flex;flex-wrap:wrap;gap:8px}
+#tk157-youtube-panel .tk157-buttons :is(button,a){cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex:1 1 150px;min-height:44px;padding:9px 12px;color:#fff;background:#175b8d;border:1px solid #80bcdf;border-radius:9px;font:650 14px/1.4 system-ui;text-decoration:none;text-align:center}
+#tk157-youtube-panel .tk157-buttons :is(button,a):hover{background:#2073ad}
+#tk157-youtube-panel :is(input,button,a):focus-visible{outline:3px solid #8ceaff;outline-offset:2px}
+#tk157-youtube-panel #tk157-status{color:#dcf0ff;line-height:1.5}
+
+
+/* Migrated into the consolidated Canva sports system from topkey/sports/vnext/twitch-mobile-live-h161.css; no extra stylesheet request. */
+/* H161 official Twitch mobile-to-Viewer source controls. */
+#tk161-panel{grid-column:1/-1;display:grid;gap:10px;background:#102b43;border:1px solid #6fa7c6;border-radius:12px;padding:14px;color:#e9f6ff}
+#tk161-panel h3{margin:0;font-size:18px;color:#fff}
+#tk161-panel p,#tk161-panel small{margin:0;line-height:1.5;color:#d8eafa}
+#tk161-panel label{font-weight:700;color:#fff}
+#tk161-panel input{width:100%;min-width:0;padding:11px;background:#081b31;color:#fff;border:1px solid #91b5cd;border-radius:9px;font:inherit}
+#tk161-panel .tk161-actions{display:flex;flex-wrap:wrap;gap:8px}
+#tk161-panel .tk161-actions :is(a,button){min-height:44px;display:inline-flex;justify-content:center;align-items:center;flex:1 1 180px;padding:9px 13px;border:1px solid #81b4d7;border-radius:9px;background:#175681;color:#fff;font:700 14px/1.3 system-ui;text-align:center;text-decoration:none;cursor:pointer}
+#tk161-panel :is(a,button,input):focus-visible{outline:3px solid #84f5ff;outline-offset:2px}
+#spectator-live .tk143-media iframe[src^="https://player.twitch.tv/"]{width:100%;min-height:300px;aspect-ratio:16/9}
+
+#spectator-live .tk161-twitch-fallback{display:block;margin:8px 0;color:#c5eafa;font-weight:700;text-decoration:underline}
+#spectator-live .tk161-twitch-fallback:focus-visible{outline:3px solid #85eeff;outline-offset:2px}
+
+
+/* Migrated into the consolidated Canva sports system from topkey/sports/vnext/public-viewer-h137.css; no extra stylesheet request. */
+/* H137 lightweight spectator mobile layout */
+html.tk-public-boot body{background:#071426;color:#eff7ff}
+html.tk-public-boot #public-spectator{display:block!important;min-height:100vh;padding:clamp(12px,3vw,28px);color:#eff7ff}
+html.tk-public-boot #public-spectator>.card{max-width:100%}
+html.tk-public-boot #public-spectator h1,
+html.tk-public-boot #public-spectator h2{color:#f5faff!important;opacity:1}
+html.tk-public-boot #public-spectator .tk137-message{margin:12px 0;padding:12px 15px;border:1px solid #42769a;border-radius:10px;background:#102a44;color:#d7ebff;font-size:14px;line-height:1.5}
+html.tk-public-boot #public-spectator .tk137-error{border-color:#bf7979;background:#4d202d;color:#ffe7e7}
+html.tk-public-boot #public-spectator .tk137-item{display:flex;flex-direction:column;gap:8px;margin:9px 0;padding:14px 16px;border:1px solid #335575;border-radius:12px;background:#0e2742;color:#f3faff}
+html.tk-public-boot #public-spectator .tk137-item strong{font-size:clamp(15px,2vw,17px);line-height:1.45;font-weight:750;color:#f7fbff}
+html.tk-public-boot #public-spectator .tk137-item small{font-size:13px;color:#caddf0;line-height:1.55}
+html.tk-public-boot #public-spectator .grid.g2{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+@media(max-width:760px){html.tk-public-boot #public-spectator .grid.g2{grid-template-columns:minmax(0,1fr)}html.tk-public-boot #public-spectator .split{display:flex;flex-wrap:wrap;gap:10px}}
+
+/* H143: stable public scoreboard and playable remote stream panel. */
+html.tk-public-boot #public-spectator .tk143-live{gap:10px}
+html.tk-public-boot #public-spectator .tk143-score{font-size:clamp(22px,5vw,34px);letter-spacing:.02em;color:#b5fbda}
+html.tk-public-boot #public-spectator .tk143-media{width:100%;min-width:0}
+html.tk-public-boot #public-spectator .tk143-media :is(video,iframe){display:block;width:100%;aspect-ratio:16/9;background:#061528;border:0;border-radius:10px}
+html.tk-public-boot #public-spectator .tk143-stream-note{font-size:14px;line-height:1.55;color:#ffebbd;background:#1f3145;border:1px solid #7a7480;padding:12px;border-radius:9px}
+/* H137 result summaries: compact, readable match scores on public schedule cards. */
+html.tk-public-boot #public-spectator .tk137-result{display:block;margin-top:3px;font-size:clamp(16px,4vw,22px);font-weight:800;letter-spacing:.02em;color:#b5fbda;line-height:1.4;overflow-wrap:anywhere}
+/* H170 public viewer standings */
+html.tk-public-boot #public-spectator .tk137-standings{margin-top:18px;padding:14px;border:1px solid #335575;border-radius:14px;background:#102a44;color:#f3faff}
+html.tk-public-boot #public-spectator .tk137-standings h2{margin:0 0 10px;font-size:clamp(20px,5vw,28px)}
+html.tk-public-boot #public-spectator .tk137-rank-row{display:grid;grid-template-columns:30px minmax(0,1fr);gap:8px;padding:11px 8px;border-bottom:1px solid #31516d}
+html.tk-public-boot #public-spectator .tk137-rank-name{font-weight:750;overflow-wrap:anywhere}
+html.tk-public-boot #public-spectator .tk137-rank-row small{grid-column:2;color:#b9cfe2;font-size:12px;line-height:1.5}
+
+
+/* Migrated into the consolidated Canva sports system from topkey/collapsible-panels-h141.css; no extra stylesheet request. */
+/* H141 — consistent collapse controls for authenticated sports and the Hub.
+   No content or interaction is removed from the DOM. */
+.tk141-nav-toggle,.tk141-panel-toggle {
+  appearance:none;
+  cursor:pointer;
+  color:#f5fbff!important;
+  background:#155a78!important;
+  border:1px solid #6bb7ca!important;
+  border-radius:9px;
+  padding:8px 12px;
+  font:700 12px/1.4 system-ui,sans-serif;
+  min-height:36px;
+}
+.tk141-nav-toggle:hover,.tk141-panel-toggle:hover{background:#176d88!important}
+.tk141-nav-toggle:focus-visible,.tk141-panel-toggle:focus-visible{
+  outline:3px solid #91e8f4!important;
+  outline-offset:3px;
+}
+.tk141-nav-toggle{margin-left:auto;flex:none;white-space:nowrap;z-index:85}
+.tk141-panel-toggle{
+  float:right;
+  margin:0 0 10px 12px;
+  position:relative;
+  z-index:2;
+}
+[data-tk141-foldable="1"]::after{content:"";display:block;clear:both}
+[data-tk141-foldable="1"].tk141-panel-folded>:not(.tk141-panel-toggle) {
+  display:none!important;
+}
+[data-tk141-foldable="1"].tk141-panel-folded {
+  min-height:0!important;
+  height:auto!important;
+  padding:12px 14px!important;
+}
+.tk141-nav-icon{display:inline-grid;place-items:center;width:21px;flex:none;margin-right:7px;font-size:16px}
+body.tk141-nav-collapsed #app-shell {
+  grid-template-columns:0 minmax(0,1fr)!important;
+}
+body.tk141-nav-collapsed #app-shell .topbar>.nav {
+  visibility:hidden!important;
+  opacity:0!important;
+  overflow:hidden!important;
+  pointer-events:none!important;
+  width:0!important;
+  min-width:0!important;
+  padding:0!important;
+  border:0!important;
+}
+body.tk141-nav-collapsed #app-shell>.shell {
+  grid-column:2!important;
+  width:100%!important;
+  min-width:0;
+}
+body.tk141-nav-collapsed #app-shell .nav [data-tab] {pointer-events:none}
+body.tk141-nav-collapsed #app-shell .nav .tk-h130-sidebar-toggle {display:none!important}
+body #app-shell .nav .tk-h130-sidebar-toggle{display:none!important}
+body.tk141-nav-collapsed.tk-h130-collapsed #app-shell{grid-template-columns:0 minmax(0,1fr)!important}
+/* Ensure the toggle is always visible in the white top header. */
+html[data-tk-sport] #app-shell .tk141-nav-toggle,
+body.tk-smooth-admin #app-shell .tk141-nav-toggle{background:#155a78!important;color:#fff!important}
+@media(max-width:700px){
+  body.tk141-nav-collapsed #app-shell {
+    display:block!important;
+    grid-template-columns:none!important;
+  }
+  body.tk141-nav-collapsed #app-shell .topbar>.nav {
+    display:none!important;
+  }
+  body:not(.tk141-nav-collapsed) #app-shell .topbar>.nav{
+    display:flex!important;
+    visibility:visible!important;
+    width:100%!important;
+    opacity:1!important;
+    pointer-events:auto!important;
+    overflow-x:auto;
+  }
+  #app-shell .topbar>.brand .tk141-nav-toggle{
+    position:relative;
+    margin:5px 0 0 auto;
+    min-width:105px;
+    min-height:42px;
+  }
+  .tk141-panel-toggle{min-height:40px}
+}
+@media(prefers-reduced-motion:reduce){
+  .tk141-nav-toggle,.tk141-panel-toggle{transition:none!important}
+}
+
+/* H145: one navigation glyph per tab.
+   VNext uses H132 pseudo-icon; badminton uses H130 inline icon. */
+html[data-tk-sport] #app-shell .nav [data-tab] > .tk141-nav-icon,
+body.tk-smooth-admin #app-shell .nav [data-tab] > .tk141-nav-icon {
+  display:none!important;
+}
+html[data-tk-sport] #app-shell .nav [data-tab]:has(> .tk-h130-icon)::before,
+body.tk-smooth-admin #app-shell .nav [data-tab]:has(> .tk-h130-icon)::before {
+  display:none!important;
+  content:none!important;
+}
+
+
+/* Canva pages 3–7: persistent workspace sidebar on desktop; mobile keeps bottom tabs. */
+@media(min-width:701px){
+ #app-shell:not(.hidden){display:grid;grid-template-columns:252px minmax(0,1fr);align-items:start;width:100%;max-width:none;margin:0;padding:0}
+ #app-shell>.topbar{grid-column:1;grid-row:1;position:sticky;top:0;align-self:start;display:flex;flex-direction:column;width:252px;height:100dvh;min-height:100vh;overflow-y:auto;overflow-x:hidden;padding:0;border-bottom:0;border-right:1px solid rgba(10,166,166,.3);backdrop-filter:none}
+ #app-shell>.topbar>.brand{display:flex;flex-direction:column;align-items:stretch;gap:18px;padding:20px 14px;margin:0}
+ #app-shell>.topbar>.brand>div:first-child{width:100%}
+ #app-shell>.topbar .home-row{align-items:flex-start}
+ #app-shell>.topbar .brand h1{font-size:17px}
+ #app-shell>.topbar .brand small{display:block;margin-top:6px}
+ #app-shell>.topbar .nav{display:flex;flex-direction:column;align-items:stretch;overflow-y:auto;overflow-x:hidden;padding:0 12px 18px;gap:6px}
+ #app-shell>.topbar .nav button{width:100%;min-width:0;text-align:left;justify-content:flex-start}
+ #app-shell>.topbar .nav:before{white-space:normal;line-height:1.35;margin-bottom:6px}
+ #app-shell>.shell{grid-column:2;grid-row:1;width:100%;max-width:none;margin:0;padding:26px clamp(18px,2.4vw,38px) 48px}
+}
+@media(max-width:700px){
+ #app-shell:not(.hidden){display:block;width:100%;padding:0}
+ #app-shell>.topbar{width:100%;height:auto;min-height:0}
+ #app-shell>.topbar>.brand{padding:10px 12px}
+ #app-shell>.shell{padding:12px 12px calc(88px + env(safe-area-inset-bottom,0px))}
+}
+
+
+/* Canva component migration: preserve Live Studio, referee, media and public-viewer
+   component behavior in the single VNext stylesheet (no legacy CSS requests). */
+
+/* Consolidated from live-studio-h144.css */
+/* H144 Live Studio: football and volleyball. No affect on public viewer or badminton. */
+#tk144-live-studio {
+  --tk144-border:#456c91;
+  --tk144-panel:#10253d;
+  width:100%;
+  color:#f5fbff;
+  border:1px solid var(--tk144-border);
+  border-radius:18px;
+  background:#091b30;
+  padding:clamp(10px,1.8vw,18px);
+  margin:0 0 14px;
+  min-width:0;
+}
+#tk144-live-studio :is(.tk144-header,.tk144-toolbar) {
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:8px;
+}
+#tk144-live-studio .tk144-header {justify-content:space-between;gap:12px}
+#tk144-live-studio .tk144-header h2 {font-size:clamp(18px,2.2vw,24px);margin:0;color:#f5fbff}
+#tk144-live-studio .tk144-toolbar {justify-content:flex-end}
+#tk144-live-studio .tk144-toolbar select {
+  min-width:175px;
+  max-width:100%;
+  padding:10px;
+  color:#f5fbff;
+  background:#102d4c;
+  border:1px solid #8ab1d1;
+  border-radius:9px;
+  font-size:14px;
+  color-scheme:dark;
+}
+#tk144-live-studio .tk144-toolbar button{min-height:42px}
+#tk144-live-studio :is(button,select):focus-visible{
+  outline:3px solid #8ceaff;
+  outline-offset:3px;
+}
+#tk144-live-studio .tk144-status {font-size:13px;line-height:1.4;color:#c2d8ee;margin:9px 0}
+#tk144-live-studio .tk144-workspace {
+  display:grid;
+  grid-template-columns:minmax(0,1.25fr) minmax(310px,1fr);
+  align-items:start;
+  gap:12px;
+  min-width:0;
+}
+#tk144-live-studio :is(.tk144-video-pane,.tk144-official-pane){min-width:0}
+#tk144-live-studio .tk144-video-pane>.card,
+#tk144-live-studio .tk144-official-pane>.card {
+  width:100%;margin:0;min-width:0;
+  box-shadow:none;
+  background:var(--tk144-panel);
+  padding:clamp(10px,1.7vw,17px);
+}
+#page-live:has(#tk144-live-studio) > .grid.g2 {grid-template-columns:minmax(0,1fr)}
+#tk144-live-studio .tk144-pane-label {
+  margin:0 0 7px;padding:8px 10px;background:#14314f;
+  border:1px solid #345f80;border-radius:10px;
+  font-weight:700;color:#d7edff;
+}
+#tk144-live-studio .tk144-official-pane.tk144-collapsed>.card {display:none!important}
+#tk144-live-studio .tk144-workspace:has(.tk144-official-pane.tk144-collapsed),
+#tk144-live-studio .tk144-workspace:has(.tk144-official-pane[hidden]) {
+  grid-template-columns:minmax(0,1fr);
+}
+#tk144-live-studio .tk144-video-pane .form-grid {
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+#tk144-live-studio .tk144-video-pane .action-bar {
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+#tk144-live-studio .tk144-video-pane .action-bar button {
+  flex:1 1 130px;min-height:43px;
+}
+#tk144-live-studio .tk144-video-pane .video-box{
+  width:100%;aspect-ratio:16/9;min-height:180px;
+}
+#tk144-live-studio .tk144-video-pane .video-box :is(video,iframe){
+  width:100%;height:100%;object-fit:contain;
+}
+#tk144-live-studio .tk144-official-pane .official-score strong{font-size:clamp(28px,4vw,54px)}
+#tk144-live-studio .tk144-official-pane .score-actions{
+  display:flex;flex-wrap:wrap;gap:7px;
+}
+#tk144-live-studio .tk144-official-pane .score-actions button{
+  flex:1 1 110px;min-height:43px;
+}
+#tk144-live-studio .tk144-official-pane .form-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+#tk144-live-studio .tk144-official-pane .field{min-width:0}
+#tk144-live-studio .tk144-official-pane .field select {max-width:100%}
+#tk144-live-studio #tk144-exit-fullscreen[hidden],
+#tk144-live-studio #tk144-enter-fullscreen[hidden] {display:none!important}
+#tk144-live-studio:fullscreen,
+#tk144-live-studio.tk144-pseudo-fullscreen {
+  position:fixed!important;
+  inset:0!important;
+  z-index:100000!important;
+  width:100vw!important;
+  height:100dvh!important;
+  max-width:none!important;
+  max-height:none!important;
+  margin:0!important;
+  overflow:auto!important;
+  border-radius:0!important;
+  padding:clamp(8px,1.4vw,18px)!important;
+  background:#071629!important;
+}
+#tk144-live-studio:fullscreen .tk144-workspace,
+#tk144-live-studio.tk144-pseudo-fullscreen .tk144-workspace{
+  min-height:0;
+}
+#tk144-live-studio:fullscreen .tk144-video-pane .video-box,
+#tk144-live-studio.tk144-pseudo-fullscreen .tk144-video-pane .video-box{
+  max-height:58dvh;min-height:0;
+}
+#tk144-live-studio[data-orientation="portrait"]:fullscreen .tk144-workspace,
+#tk144-live-studio[data-orientation="portrait"].tk144-pseudo-fullscreen .tk144-workspace{
+  grid-template-columns:minmax(0,1fr);
+}
+#tk144-live-studio[data-orientation="landscape"]:fullscreen .tk144-workspace,
+#tk144-live-studio[data-orientation="landscape"].tk144-pseudo-fullscreen .tk144-workspace{
+  grid-template-columns:minmax(0,1.25fr) minmax(270px,1fr);
+}
+@media(max-width:900px){
+  #tk144-live-studio .tk144-workspace{grid-template-columns:minmax(0,1fr)}
+  #tk144-live-studio .tk144-header {align-items:flex-start}
+  #tk144-live-studio .tk144-toolbar {justify-content:flex-start;width:100%}
+  #tk144-live-studio .tk144-toolbar>* {flex:1 1 150px;min-width:0}
+  #tk144-live-studio .tk144-official-pane .official-score{grid-template-columns:1fr auto 1fr}
+  #tk144-live-studio .tk144-official-pane .official-score .vs{display:block}
+}
+@media(max-width:700px){
+  #tk144-live-studio .tk144-video-pane .form-grid,
+  #tk144-live-studio .tk144-official-pane .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #tk144-live-studio .tk144-official-pane .score-actions button{flex-basis:calc(50% - 7px);min-height:48px}
+  #tk144-live-studio .tk144-video-pane .video-box{aspect-ratio:9/14}
+  #tk144-live-studio[data-orientation="portrait"]:fullscreen .tk144-video-pane .video-box,
+  #tk144-live-studio[data-orientation="portrait"].tk144-pseudo-fullscreen .tk144-video-pane .video-box{
+    aspect-ratio:9/11;max-height:38dvh;
+  }
+  #tk144-live-studio:fullscreen .tk144-header h2,
+  #tk144-live-studio.tk144-pseudo-fullscreen .tk144-header h2{font-size:16px}
+}
+@media(orientation:landscape) and (max-height:600px) {
+  #tk144-live-studio:fullscreen .tk144-workspace,
+  #tk144-live-studio.tk144-pseudo-fullscreen .tk144-workspace{
+    grid-template-columns:minmax(0,1.3fr) minmax(290px,1fr);
+  }
+  #tk144-live-studio:fullscreen .tk144-video-pane .video-box,
+  #tk144-live-studio.tk144-pseudo-fullscreen .tk144-video-pane .video-box{
+    aspect-ratio:16/9;max-height:48dvh;
+  }
+  #tk144-live-studio .tk144-official-pane .score-actions button{
+    padding:7px;min-height:38px;
+  }
+}
+@media(prefers-reduced-motion:reduce) {
+  #tk144-live-studio *{scroll-behavior:auto!important;transition:none!important}
+}
+
+
+/* Consolidated from live-two-scroll-h155.css */
+/* H155 — Independent scrolling for Live camera and referee board.
+ * Scoped to H144 Studio only; preserves existing DOM and event handlers.
+ */
+#tk144-live-studio {
+  --tk155-pane-height:clamp(420px,calc(100dvh - 215px),940px);
+}
+#tk144-live-studio .tk144-workspace{
+  align-items:stretch;
+  min-height:0;
+}
+#tk144-live-studio .tk144-video-pane,
+#tk144-live-studio .tk144-official-pane{
+  box-sizing:border-box;
+  height:var(--tk155-pane-height);
+  max-height:var(--tk155-pane-height);
+  min-height:0;
+  overflow-x:hidden;
+  overflow-y:auto;
+  overscroll-behavior-y:contain;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;
+  scrollbar-color:#78a9c8 #10253d;
+  border:1px solid #456c91;
+  border-radius:13px;
+  padding:5px;
+}
+#tk144-live-studio .tk144-video-pane:focus-visible,
+#tk144-live-studio .tk144-official-pane:focus-visible{
+  outline:3px solid #8ceaff;
+  outline-offset:2px;
+}
+#tk144-live-studio .tk144-video-pane::-webkit-scrollbar,
+#tk144-live-studio .tk144-official-pane::-webkit-scrollbar{width:10px}
+#tk144-live-studio .tk144-video-pane::-webkit-scrollbar-thumb,
+#tk144-live-studio .tk144-official-pane::-webkit-scrollbar-thumb{
+  border-radius:10px;
+  border:2px solid #10253d;
+  background:#78a9c8;
+}
+#tk144-live-studio #tk144-official-pane>.tk144-pane-label{
+  position:sticky;
+  top:0;
+  z-index:5;
+}
+#tk144-live-studio .tk144-video-pane>.card,
+#tk144-live-studio .tk144-official-pane>.card{
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+}
+#tk144-live-studio:fullscreen,
+#tk144-live-studio.tk144-pseudo-fullscreen{
+  display:flex!important;
+  flex-direction:column!important;
+  overflow:hidden!important;
+}
+#tk144-live-studio:fullscreen .tk144-workspace,
+#tk144-live-studio.tk144-pseudo-fullscreen .tk144-workspace{
+  flex:1 1 auto;
+  height:0;
+  min-height:0;
+}
+#tk144-live-studio:fullscreen :is(.tk144-video-pane,.tk144-official-pane),
+#tk144-live-studio.tk144-pseudo-fullscreen :is(.tk144-video-pane,.tk144-official-pane){
+  height:100%;
+  max-height:100%;
+  min-height:0;
+}
+#tk144-live-studio .tk144-pane-scroll-label{
+  display:inline-block;
+  margin:0 0 6px;
+  padding:4px 8px;
+  background:#153650;
+  color:#e5f4ff;
+  border-radius:7px;
+  font-size:12px;
+}
+@media(max-width:900px){
+  /* Stacked panes should each retain independent touch scrolling. */
+  #tk144-live-studio .tk144-video-pane,
+  #tk144-live-studio .tk144-official-pane{
+    height:clamp(280px,47dvh,650px);
+    max-height:clamp(280px,47dvh,650px);
+  }
+  #tk144-live-studio:fullscreen .tk144-workspace,
+  #tk144-live-studio.tk144-pseudo-fullscreen .tk144-workspace{
+    display:grid;
+    grid-template-columns:minmax(0,1fr);
+    grid-template-rows:minmax(0,1fr) minmax(0,1fr);
+  }
+  #tk144-live-studio:fullscreen :is(.tk144-video-pane,.tk144-official-pane),
+  #tk144-live-studio.tk144-pseudo-fullscreen :is(.tk144-video-pane,.tk144-official-pane){
+    height:100%;
+    max-height:100%;
+  }
+}
+@media(orientation:landscape) and (max-height:650px){
+  #tk144-live-studio:fullscreen .tk144-workspace,
+  #tk144-live-studio.tk144-pseudo-fullscreen .tk144-workspace{
+    grid-template-columns:minmax(0,1.2fr) minmax(280px,1fr)!important;
+    grid-template-rows:minmax(0,1fr)!important;
+  }
+}
+#tk144-live-studio[data-orientation="landscape"]:fullscreen .tk144-workspace,
+#tk144-live-studio[data-orientation="landscape"].tk144-pseudo-fullscreen .tk144-workspace{
+  grid-template-columns:minmax(0,1.2fr) minmax(280px,1fr)!important;
+  grid-template-rows:minmax(0,1fr)!important;
+}
+#tk144-live-studio[data-orientation="portrait"]:fullscreen .tk144-workspace,
+#tk144-live-studio[data-orientation="portrait"].tk144-pseudo-fullscreen .tk144-workspace{
+  grid-template-columns:minmax(0,1fr)!important;
+  grid-template-rows:minmax(0,1fr) minmax(0,1fr)!important;
+}
+#tk144-live-studio .tk155-camera-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:8px 0;
+}
+#tk144-live-studio #tk155-camera-direct{
+  min-height:44px;
+  color:#fff!important;
+  background:#087b61!important;
+  border:1px solid #52c5a6!important;
+  border-radius:9px;
+  font-weight:700;
+  cursor:pointer;
+  padding:9px 13px;
+}
+#tk144-live-studio #tk155-camera-direct:disabled{
+  background:#30475c!important;
+  cursor:not-allowed;
+}
+#tk144-live-studio .tk155-camera-state{
+  color:#dcecff;
+  font-size:13px;
+  line-height:1.4;
+}
+
+
+/* Consolidated from fullscreen-referee-h156.css */
+/* H156 — deterministic one-icon navigation and accessible fullscreen referee actions.
+ * Cosmetic only; no scoring handlers, auth, tournament data or RTDB changes.
+ */
+html[data-tk-sport] #app-shell .topbar>.nav [data-tab]::after {
+  content:none!important;
+  display:none!important;
+}
+/* H132 ::before is the single canonical sport icon; H156 removes JS duplicates. */
+html[data-tk-sport] #app-shell .topbar>.nav [data-tab] > :is(.tk141-nav-icon,.tk-h130-icon,.tk-nav-icon,.nav-icon,.icon) {
+  display:none!important;
+}
+#tk144-live-studio .tk144-workspace {
+  min-height:0!important;
+  overflow:visible!important;
+}
+#tk144-live-studio .tk144-official-pane {
+  position:relative;
+  min-height:0!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  padding-bottom:calc(28px + env(safe-area-inset-bottom,0px))!important;
+}
+#tk144-live-studio .tk144-official-pane > .card {
+  min-height:0!important;
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+}
+#tk144-live-studio .tk144-official-pane #umpire-board {
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+  min-height:0!important;
+}
+#tk144-live-studio .tk144-official-pane #set-actions,
+#tk144-live-studio .tk144-official-pane #single-actions {
+  position:relative;
+  z-index:1;
+}
+/* Sticky shortcuts reveal existing buttons in the original referee DOM.
+   They NEVER execute a score/penalty by themselves. */
+#tk144-live-studio .tk156-referee-shortcuts {
+  position:sticky;
+  top:0;
+  z-index:35;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex-wrap:wrap;
+  padding:9px;
+  margin:0 0 8px;
+  border:1px solid #6996b6;
+  border-radius:10px;
+  background:#0b2945;
+  box-shadow:0 4px 14px rgba(0,0,0,.4);
+}
+#tk144-live-studio .tk156-referee-shortcuts button {
+  flex:1 1 112px;
+  min-width:0;
+  min-height:44px;
+  padding:8px 9px;
+  border:1px solid #81b3d5;
+  border-radius:9px;
+  background:#214b6c;
+  color:#fff;
+  font:700 13px/1.3 system-ui,sans-serif;
+  cursor:pointer;
+}
+#tk144-live-studio .tk156-referee-shortcuts button:disabled {
+  opacity:.75;
+  cursor:not-allowed;
+}
+#tk144-live-studio .tk156-referee-shortcuts button:focus-visible {
+  outline:3px solid #9af3ff;
+  outline-offset:2px;
+}
+#tk144-live-studio .tk156-referee-help {
+  width:100%;
+  font-size:12px;
+  color:#d7edff;
+  line-height:1.4;
+}
+#tk144-live-studio .tk156-highlight {
+  outline:3px solid #ffd166!important;
+  outline-offset:4px;
+  scroll-margin-top:95px;
+}
+#tk144-live-studio .tk144-official-pane :is(button,select,input) {
+  scroll-margin-top:110px;
+}
+#tk144-live-studio:fullscreen .tk144-workspace,
+#tk144-live-studio.tk144-pseudo-fullscreen .tk144-workspace {
+  min-height:0!important;
+  overflow:hidden!important;
+}
+#tk144-live-studio:fullscreen .tk144-official-pane,
+#tk144-live-studio.tk144-pseudo-fullscreen .tk144-official-pane {
+  height:100%!important;
+  max-height:100%!important;
+  overflow-y:auto!important;
+}
+@media(max-width:900px) {
+  #tk144-live-studio .tk156-referee-shortcuts {
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    scrollbar-width:thin;
+  }
+  #tk144-live-studio .tk156-referee-shortcuts button {
+    flex:0 0 auto;
+    white-space:nowrap;
+  }
+  #tk144-live-studio .tk156-referee-help {
+    display:none;
+  }
+}
+
+
+/* Consolidated from public-viewer-h137.css */
+/* H137 lightweight spectator mobile layout */
+html.tk-public-boot body{background:#071426;color:#eff7ff}
+html.tk-public-boot #public-spectator{display:block!important;min-height:100vh;padding:clamp(12px,3vw,28px);color:#eff7ff}
+html.tk-public-boot #public-spectator>.card{max-width:100%}
+html.tk-public-boot #public-spectator h1,
+html.tk-public-boot #public-spectator h2{color:#f5faff!important;opacity:1}
+html.tk-public-boot #public-spectator .tk137-message{margin:12px 0;padding:12px 15px;border:1px solid #42769a;border-radius:10px;background:#102a44;color:#d7ebff;font-size:14px;line-height:1.5}
+html.tk-public-boot #public-spectator .tk137-error{border-color:#bf7979;background:#4d202d;color:#ffe7e7}
+html.tk-public-boot #public-spectator .tk137-item{display:flex;flex-direction:column;gap:8px;margin:9px 0;padding:14px 16px;border:1px solid #335575;border-radius:12px;background:#0e2742;color:#f3faff}
+html.tk-public-boot #public-spectator .tk137-item strong{font-size:clamp(15px,2vw,17px);line-height:1.45;font-weight:750;color:#f7fbff}
+html.tk-public-boot #public-spectator .tk137-item small{font-size:13px;color:#caddf0;line-height:1.55}
+html.tk-public-boot #public-spectator .grid.g2{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+@media(max-width:760px){html.tk-public-boot #public-spectator .grid.g2{grid-template-columns:minmax(0,1fr)}html.tk-public-boot #public-spectator .split{display:flex;flex-wrap:wrap;gap:10px}}
+
+/* H143: stable public scoreboard and playable remote stream panel. */
+html.tk-public-boot #public-spectator .tk143-live{gap:10px}
+html.tk-public-boot #public-spectator .tk143-score{font-size:clamp(22px,5vw,34px);letter-spacing:.02em;color:#b5fbda}
+html.tk-public-boot #public-spectator .tk143-media{width:100%;min-width:0}
+html.tk-public-boot #public-spectator .tk143-media :is(video,iframe){display:block;width:100%;aspect-ratio:16/9;background:#061528;border:0;border-radius:10px}
+html.tk-public-boot #public-spectator .tk143-stream-note{font-size:14px;line-height:1.55;color:#ffebbd;background:#1f3145;border:1px solid #7a7480;padding:12px;border-radius:9px}
+/* H137 result summaries: compact, readable match scores on public schedule cards. */
+html.tk-public-boot #public-spectator .tk137-result{display:block;margin-top:3px;font-size:clamp(16px,4vw,22px);font-weight:800;letter-spacing:.02em;color:#b5fbda;line-height:1.4;overflow-wrap:anywhere}
+/* H170 public viewer standings */
+html.tk-public-boot #public-spectator .tk137-standings{margin-top:18px;padding:14px;border:1px solid #335575;border-radius:14px;background:#102a44;color:#f3faff}
+html.tk-public-boot #public-spectator .tk137-standings h2{margin:0 0 10px;font-size:clamp(20px,5vw,28px)}
+html.tk-public-boot #public-spectator .tk137-rank-row{display:grid;grid-template-columns:30px minmax(0,1fr);gap:8px;padding:11px 8px;border-bottom:1px solid #31516d}
+html.tk-public-boot #public-spectator .tk137-rank-name{font-weight:750;overflow-wrap:anywhere}
+html.tk-public-boot #public-spectator .tk137-rank-row small{grid-column:2;color:#b9cfe2;font-size:12px;line-height:1.5}
+
+
+/* Consolidated from youtube-live-h157.css */
+/* H157 YouTube Live integration: display-only styles, respects existing dark panels. */
+#tk157-youtube-panel{grid-column:1/-1;background:#10283f;border:1px solid #6292b8;color:#eaf6ff;border-radius:12px;padding:14px;margin:8px 0;display:grid;gap:10px}
+#tk157-youtube-panel h3{margin:0;color:#fff;font-size:18px}
+#tk157-youtube-panel .tk157-hint{margin:0;color:#d4e8fa;line-height:1.45;font-size:14px}
+#tk157-youtube-panel label{color:#eaf6ff;font-weight:650}
+#tk157-youtube-panel input{width:100%;min-width:0;padding:11px;border:1px solid #85b5d5;border-radius:9px;background:#0c2238;color:#fff;font:inherit;color-scheme:dark}
+#tk157-youtube-panel .tk157-buttons{display:flex;flex-wrap:wrap;gap:8px}
+#tk157-youtube-panel .tk157-buttons :is(button,a){cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex:1 1 150px;min-height:44px;padding:9px 12px;color:#fff;background:#175b8d;border:1px solid #80bcdf;border-radius:9px;font:650 14px/1.4 system-ui;text-decoration:none;text-align:center}
+#tk157-youtube-panel .tk157-buttons :is(button,a):hover{background:#2073ad}
+#tk157-youtube-panel :is(input,button,a):focus-visible{outline:3px solid #8ceaff;outline-offset:2px}
+#tk157-youtube-panel #tk157-status{color:#dcf0ff;line-height:1.5}
+
+
+/* Consolidated from commentary-audio-h160.css */
+/* H160 audio recovery controls do not alter Live/Viewer layout or scoring. */
+#tk160-audio-panel{background:#112b43;border:1px solid #6da1c4;border-radius:10px;padding:10px;margin:10px 0;color:#e9f7ff;display:grid;gap:8px}
+#tk160-audio-panel .tk160-audio-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#tk160-audio-panel .tk160-audio-row button{flex:1 1 155px;min-height:44px}
+#tk160-audio-panel small{line-height:1.5;color:#d7ecff}
+#tk160-audio-panel button:focus-visible{outline:3px solid #86eafb;outline-offset:2px}
+
+
+/* Consolidated from twitch-mobile-live-h161.css */
+/* H161 official Twitch mobile-to-Viewer source controls. */
+#tk161-panel{grid-column:1/-1;display:grid;gap:10px;background:#102b43;border:1px solid #6fa7c6;border-radius:12px;padding:14px;color:#e9f6ff}
+#tk161-panel h3{margin:0;font-size:18px;color:#fff}
+#tk161-panel p,#tk161-panel small{margin:0;line-height:1.5;color:#d8eafa}
+#tk161-panel label{font-weight:700;color:#fff}
+#tk161-panel input{width:100%;min-width:0;padding:11px;background:#081b31;color:#fff;border:1px solid #91b5cd;border-radius:9px;font:inherit}
+#tk161-panel .tk161-actions{display:flex;flex-wrap:wrap;gap:8px}
+#tk161-panel .tk161-actions :is(a,button){min-height:44px;display:inline-flex;justify-content:center;align-items:center;flex:1 1 180px;padding:9px 13px;border:1px solid #81b4d7;border-radius:9px;background:#175681;color:#fff;font:700 14px/1.3 system-ui;text-align:center;text-decoration:none;cursor:pointer}
+#tk161-panel :is(a,button,input):focus-visible{outline:3px solid #84f5ff;outline-offset:2px}
+#spectator-live .tk143-media iframe[src^="https://player.twitch.tv/"]{width:100%;min-height:300px;aspect-ratio:16/9}
+
+#spectator-live .tk161-twitch-fallback{display:block;margin:8px 0;color:#c5eafa;font-weight:700;text-decoration:underline}
+#spectator-live .tk161-twitch-fallback:focus-visible{outline:3px solid #85eeff;outline-offset:2px}
+
+
+/* Canva sport navigation: exactly one icon layer, supplied by the shared nav. */
+html[data-tk-sport] #app-shell .topbar>.nav [data-tab]::after{content:none!important;display:none!important}
+html[data-tk-sport] #app-shell .topbar>.nav [data-tab]>:is(.tk141-nav-icon,.tk-h130-icon,.tk-nav-icon,.nav-icon,.icon){display:none!important}
+
+
+/* Consolidated H141 accessible navigation/panel collapse behavior. */
+/* H141 — consistent collapse controls for authenticated sports and the Hub.
+   No content or interaction is removed from the DOM. */
+.tk141-nav-toggle,.tk141-panel-toggle {
+  appearance:none;
+  cursor:pointer;
+  color:#f5fbff!important;
+  background:#155a78!important;
+  border:1px solid #6bb7ca!important;
+  border-radius:9px;
+  padding:8px 12px;
+  font:700 12px/1.4 system-ui,sans-serif;
+  min-height:36px;
+}
+.tk141-nav-toggle:hover,.tk141-panel-toggle:hover{background:#176d88!important}
+.tk141-nav-toggle:focus-visible,.tk141-panel-toggle:focus-visible{
+  outline:3px solid #91e8f4!important;
+  outline-offset:3px;
+}
+.tk141-nav-toggle{margin-left:auto;flex:none;white-space:nowrap;z-index:85}
+.tk141-panel-toggle{
+  float:right;
+  margin:0 0 10px 12px;
+  position:relative;
+  z-index:2;
+}
+[data-tk141-foldable="1"]::after{content:"";display:block;clear:both}
+[data-tk141-foldable="1"].tk141-panel-folded>:not(.tk141-panel-toggle) {
+  display:none!important;
+}
+[data-tk141-foldable="1"].tk141-panel-folded {
+  min-height:0!important;
+  height:auto!important;
+  padding:12px 14px!important;
+}
+.tk141-nav-icon{display:inline-grid;place-items:center;width:21px;flex:none;margin-right:7px;font-size:16px}
+body.tk141-nav-collapsed #app-shell {
+  grid-template-columns:0 minmax(0,1fr)!important;
+}
+body.tk141-nav-collapsed #app-shell .topbar>.nav {
+  visibility:hidden!important;
+  opacity:0!important;
+  overflow:hidden!important;
+  pointer-events:none!important;
+  width:0!important;
+  min-width:0!important;
+  padding:0!important;
+  border:0!important;
+}
+body.tk141-nav-collapsed #app-shell>.shell {
+  grid-column:2!important;
+  width:100%!important;
+  min-width:0;
+}
+body.tk141-nav-collapsed #app-shell .nav [data-tab] {pointer-events:none}
+body.tk141-nav-collapsed #app-shell .nav .tk-h130-sidebar-toggle {display:none!important}
+body #app-shell .nav .tk-h130-sidebar-toggle{display:none!important}
+body.tk141-nav-collapsed.tk-h130-collapsed #app-shell{grid-template-columns:0 minmax(0,1fr)!important}
+/* Ensure the toggle is always visible in the white top header. */
+html[data-tk-sport] #app-shell .tk141-nav-toggle,
+body.tk-smooth-admin #app-shell .tk141-nav-toggle{background:#155a78!important;color:#fff!important}
+@media(max-width:700px){
+  body.tk141-nav-collapsed #app-shell {
+    display:block!important;
+    grid-template-columns:none!important;
+  }
+  body.tk141-nav-collapsed #app-shell .topbar>.nav {
+    display:none!important;
+  }
+  body:not(.tk141-nav-collapsed) #app-shell .topbar>.nav{
+    display:flex!important;
+    visibility:visible!important;
+    width:100%!important;
+    opacity:1!important;
+    pointer-events:auto!important;
+    overflow-x:auto;
+  }
+  #app-shell .topbar>.brand .tk141-nav-toggle{
+    position:relative;
+    margin:5px 0 0 auto;
+    min-width:105px;
+    min-height:42px;
+  }
+  .tk141-panel-toggle{min-height:40px}
+}
+@media(prefers-reduced-motion:reduce){
+  .tk141-nav-toggle,.tk141-panel-toggle{transition:none!important}
+}
+
+/* H145: one navigation glyph per tab.
+   VNext uses H132 pseudo-icon; badminton uses H130 inline icon. */
+html[data-tk-sport] #app-shell .nav [data-tab] > .tk141-nav-icon,
+body.tk-smooth-admin #app-shell .nav [data-tab] > .tk141-nav-icon {
+  display:none!important;
+}
+html[data-tk-sport] #app-shell .nav [data-tab]:has(> .tk-h130-icon)::before,
+body.tk-smooth-admin #app-shell .nav [data-tab]:has(> .tk-h130-icon)::before {
+  display:none!important;
+  content:none!important;
+}

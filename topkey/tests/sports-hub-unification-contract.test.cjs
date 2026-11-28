@@ -49,10 +49,11 @@ for (const [sport, root] of Object.entries({
   assert.ok(vnext.includes("root:'" + root + "'"), 'Firebase root changed for ' + sport);
 }
 
-assert.ok(vnextPage.includes('../topkey-sports-shell.css'), 'VNext must load shared sports shell styles');
-assert.ok(badmintonPage.includes('../topkey-sports-shell.css'), 'Badminton must load shared sports shell styles');
-assert.ok(vnextPage.includes('../topkey-sports-shell.js'), 'VNext must load shared sports shell');
-assert.ok(badmintonPage.includes('../topkey-sports-shell.js'), 'Badminton must load shared sports shell');
+assert.ok(/canva-sports-ui\.css\?v=canva-sports-v\d+-202611\d+/.test(vnextPage), 'VNext must load consolidated Canva sports styles');
+assert.ok(!vnextPage.includes('../topkey-sports-shell.css'), 'Legacy shared sports CSS must be replaced by Canva UI');
+assert.ok(vnextPage.includes('../topkey-sports-shell.js'), 'VNext must preserve shared sports navigation runtime');
+assert.ok(badmintonPage.includes("new URL('../vnext/index.html', location.href)"), 'Legacy badminton route must hand off to shared VNext');
+assert.ok(!badmintonPage.includes('../topkey-sports-shell.css'), 'Legacy badminton route must not render the old shell');
 for (const key of ['football', 'badminton', 'volleyball', 'running', 'handmade', 'shuttle', 'cooking']) {
   assert.ok(sharedShell.includes("key: '" + key + "'"), 'Shared shell missing ' + key);
 }

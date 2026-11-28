@@ -53,7 +53,7 @@ test('volume zero explicitly reports failure and avoids marking scored item as s
 test('screen uses H160 after H154 and does not create Firebase writes',()=>{
  assert.ok(html.indexOf('commentary-audio-h160.js')>html.indexOf('live-publisher-h154.js'));
  assert.equal(html.split('commentary-audio-h160.js').length-1,1);
- assert.match(html,/commentary-audio-h160\.css/);
+ assert.ok(/canva-sports-ui\.css\?v=canva-sports-v\d+-202611\d+/.test(html));
  assert.match(src,/topkey_auto_blv/);
  assert.match(src,/tk153_manual_/);
  assert.doesNotMatch(src,/queueSet\(|queueMulti\(|\.ref\(|firebase\.database/);

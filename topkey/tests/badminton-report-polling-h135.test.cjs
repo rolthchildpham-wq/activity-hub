@@ -3,7 +3,8 @@ const fs=require('node:fs');
 const h55=fs.readFileSync('topkey/sports/badminton/upgrade122-hotfix55.js','utf8');
 const h76=fs.readFileSync('topkey/sports/badminton/upgrade122-hotfix76.js','utf8');
 const loader=fs.readFileSync('topkey/sports/badminton/production-loader.js','utf8');
-const html=fs.readFileSync('topkey/sports/badminton/index.html','utf8');
+const legacy=fs.readFileSync('topkey/sports/badminton/index.html','utf8');
+const html=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
 assert.ok(!h76.includes('setInterval(patchCurrentButton,400)'),'report button must not poll at 400ms');
 assert.ok(!h55.includes('setInterval(()=>{stamp();hookButton()'),'ranking must not poll/re-stamp every 800ms');
 assert.ok(h76.includes('G.renderSettings=function'),'keep settings rendering hook');
@@ -12,5 +13,6 @@ assert.ok(h55.includes("event.target?.closest?.('#tk51-ranking-explain-btn')"),'
 assert.ok(h55.includes('hookButton(); // bind before native button click fires'),'first click must work');
 assert.ok(loader.includes('upgrade122-hotfix55.js?v=h135-event-reports-20261113'));
 assert.ok(loader.includes('upgrade122-hotfix76.js?v=h135-event-reports-20261113'));
-assert.ok(html.includes('production-loader.js?v=tourney-lifecycle-20261117-r1'),'entry must load the current tournament-lifecycle runtime');
+assert.ok(html.includes('../badminton/production-loader.js?v=canva-vnext-runtime-20261128'),'shared VNext entry must load the preserved badminton runtime loader');
+assert.ok(legacy.includes("new URL('../vnext/index.html', location.href)"),'legacy route must redirect to shared VNext');
 console.log('H135 report polling removed, report hooks preserved and new assets wired.');

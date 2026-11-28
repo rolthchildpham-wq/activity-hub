@@ -48,7 +48,7 @@ test('source management retains existing Firebase rules and per-court app method
  assert.match(source,/T\.Auth\?\.can\?\.\('live'\)/);
  assert.doesNotMatch(source,/queueSet\(|firebase\.database|\.ref\(/);
  assert.match(html,/youtube-live-h157\.js\?v=h157-20261121/);
- assert.match(html,/youtube-live-h157\.css\?v=h157-20261121/);
+ assert.ok(/canva-sports-ui\.css\?v=canva-sports-v\d+-202611\d+/.test(html));
 });
 test('OAuth client is disabled until provisioned by channel owner',()=>{
  const config=JSON.parse(fs.readFileSync('topkey/sports/vnext/youtube-oauth-h157.json','utf8'));

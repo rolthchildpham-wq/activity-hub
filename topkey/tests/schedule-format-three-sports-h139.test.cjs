@@ -23,7 +23,9 @@ test('no cross-group matches, uneven groups create correct 3 + 1 pairs',()=>{
  assert.equal(result.length,4);
 });
 test('both badminton and VNext/football/volleyball pages install shared planner',()=>{
- for(const html of [football,badminton])assert.match(html,/schedule-format-h139\.js/);
+ assert.match(football,/schedule-format-h139\.js/,'shared VNext entry must load the schedule planner');
+ assert.ok(badminton.includes("new URL('../vnext/index.html', location.href)"),'legacy badminton route must redirect to shared VNext');
+ assert.ok(badminton.includes("query.set('sport', 'badminton')"),'legacy badminton route must preserve sport identity');
  assert.match(src,/new Set\(\['football', 'volleyball', 'badminton'\]\)/);
  assert.match(src,/SCHEDULE_GROUP_ASSIGN/);
  assert.match(src,/SCHEDULE_FORMAT_CREATE/);

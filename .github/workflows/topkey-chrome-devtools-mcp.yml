@@ -89,8 +89,18 @@ jobs:
         continue-on-error: true
         shell: bash
         run: |
-          set -euo pipefail
-          mcp_tool(){ node topkey/tests/chrome-devtools-mcp-client.mjs call "$@" 2>&1 | tee -a artifacts/chrome-devtools/mcp-tool-output.log; }
+          set -uo pipefail
+          failed=0
+          mcp_tool(){
+            local status=0
+            if node topkey/tests/chrome-devtools-mcp-client.mjs call "$@" 2>&1 | tee -a artifacts/chrome-devtools/mcp-tool-output.log; then
+              return 0
+            else
+              status=$?
+              printf 'MCP_TOOL_ERROR status=%s command=%q args=%q\\n' "$status" "$1" "${*:2}" | tee -a artifacts/chrome-devtools/mcp-errors.txt >&2
+              return 0
+            fi
+          }
           base="http://127.0.0.1:4173"
           mcp_tool navigate_page 1 --url "$base/" | tee artifacts/chrome-devtools/hub-navigation.txt
           mcp_tool take_snapshot 1 --filePath artifacts/chrome-devtools/hub-desktop.txt >/dev/null
@@ -101,17 +111,16 @@ jobs:
               badmintonCard:cards.some(card=>card.textContent.includes("Cầu lông")),
               navLinks:document.querySelectorAll(".tk210-nav a").length,
               overflow:document.documentElement.scrollWidth>innerWidth+2,
-              h219:[...document.styleSheets].some(sheet=>sheet.href?.includes("hub-dashboard-reference-h219.css")),
-              eccDesign:[...document.styleSheets].some(sheet=>sheet.href?.includes("hub-ecc-design-system.css")),
-              h240:[...document.styleSheets].some(sheet=>sheet.href?.includes("hub-redesign-h240.css")),
+              canvaUi:[...document.styleSheets].some(sheet=>sheet.href?.includes("canva-ui-system.css")),
+              legacyStyles:[...document.styleSheets].filter(sheet=>/upgrade|hub-|contrast|visual|dashboard-reference|ecc-design-system/i.test(sheet.href||"")).map(sheet=>sheet.href),
               hubController:window.TopkeyHubWorkspaceNav?.version==="H240",
-              footerHidden:document.querySelector(".footer")?.hidden===true,
+              footerHidden:(()=>{const footer=document.querySelector(".footer");return !footer||getComputedStyle(footer).display==="none"})(),
               activeWorkspace:document.querySelector("main.wrap")?.dataset.activeWorkspace};
             const rgb=value=>value.match(/[\d.]+/g).slice(0,3).map(Number);
             const lum=value=>{const channels=rgb(value).map(v=>{v/=255;return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*channels[0]+.7152*channels[1]+.0722*channels[2]};
             const cardStyle=getComputedStyle(cards[0]),paragraphStyle=getComputedStyle(cards[0].querySelector("p"));
             const contrast=(Math.max(lum(cardStyle.backgroundColor),lum(paragraphStyle.color))+.05)/(Math.min(lum(cardStyle.backgroundColor),lum(paragraphStyle.color))+.05);
-            const eccSheet=[...document.styleSheets].find(sheet=>sheet.href?.includes("hub-ecc-design-system.css"));
+            const eccSheet=null;
             const eccRules=eccSheet?[...eccSheet.cssRules].filter(rule=>rule.selectorText?.includes("#topkey-sports")&&rule.selectorText.includes(".sport")).map(rule=>({selector:rule.selectorText,bg:rule.style.backgroundColor,priority:rule.style.getPropertyPriority("background-color")})):[];
             const lastCardRight=cards[cards.length-1].getBoundingClientRect().right;
             result.cardBackground=cardStyle.backgroundColor;result.cardText=paragraphStyle.color;result.cardContrast=Number(contrast.toFixed(2));
@@ -125,12 +134,12 @@ jobs:
             result.selectorMatches=document.querySelectorAll("html body.tk-bi-hub #topkey-sports.cards a.sport").length;
             result.cardInlineStyle=cards[0].getAttribute("style");result.cardBackgroundImage=cardStyle.backgroundImage;
             result.eccRuleCount=eccSheet?.cssRules?.length||0;result.eccRules=eccRules;
-            if(cards.length<8||!result.badmintonCard||result.overflow||!result.h219||!result.eccDesign||!result.h240||!result.hubController||!result.footerHidden||result.activeWorkspace!=="topkey-home"||cardStyle.backgroundColor==="rgb(255, 255, 255)"||
+            if(cards.length<8||!result.badmintonCard||result.overflow||!result.canvaUi||result.legacyStyles.length||!result.hubController||!result.footerHidden||result.activeWorkspace!=="topkey-home"||cardStyle.backgroundColor==="rgb(255, 255, 255)"||
               contrast<4.5||lastCardRight>innerWidth-8)
               throw new Error("ECC Hub visual contract failed: "+JSON.stringify(result));
             return JSON.stringify(result);
           }' --pageId 1 --output-format=json | tee artifacts/chrome-devtools/hub-desktop.json
-          if grep -q 'Error:' artifacts/chrome-devtools/hub-desktop.json; then exit 1; fi
+          if grep -q 'Error:' artifacts/chrome-devtools/hub-desktop.json; then failed=1; fi
           mcp_tool evaluate_script 'async () => {
             const wait=ms=>new Promise(resolve=>setTimeout(resolve,120));
             document.querySelector("#tk28-language-options [data-lang=\"vi\"]")?.click();
@@ -166,7 +175,7 @@ jobs:
               throw new Error("Hub dashboard fixture/contrast incomplete: "+JSON.stringify(result));
             return JSON.stringify(result);
           }' --pageId 1 --output-format=json | tee artifacts/chrome-devtools/hub-dashboard-fixture.json
-          if grep -q 'Error:' artifacts/chrome-devtools/hub-dashboard-fixture.json; then exit 1; fi
+          if grep -q 'Error:' artifacts/chrome-devtools/hub-dashboard-fixture.json; then failed=1; fi
           mcp_tool take_screenshot 1 --filePath artifacts/chrome-devtools/hub-desktop.png
           mcp_tool take_snapshot 1 --filePath artifacts/chrome-devtools/hub-desktop-after-dashboard.txt >/dev/null
           mcp_tool evaluate_script '() => {document.querySelector("#executive-dashboard")?.scrollIntoView({block:"start"});return "dashboard-scrolled"}' --pageId 1
@@ -174,9 +183,15 @@ jobs:
           mcp_tool evaluate_script '() => {window.scrollTo(0,0);return "top"}' --pageId 1
           mcp_tool resize_page 1 390 844
           mcp_tool evaluate_script '() => {
+            const catalog=document.querySelector("#topkey-sports");
+            const tableWraps=[...document.querySelectorAll(".exec-table-wrap,.exec-insights-tablewrap")];
             const result={width:innerWidth,scrollWidth:document.documentElement.scrollWidth,
               overflow:document.documentElement.scrollWidth>innerWidth+2,
-              navPosition:getComputedStyle(document.querySelector(".tk210-nav")).position};
+              navPosition:getComputedStyle(document.querySelector(".tk210-nav")).position,
+              catalogColumns:getComputedStyle(catalog).gridTemplateColumns.split(" ").length,
+              catalogOverflow:catalog.scrollWidth>catalog.clientWidth+2,
+              tableOverflow:tableWraps.filter(node=>node.scrollWidth>node.clientWidth+2).length,
+              tableCount:tableWraps.length};
             const navRect=document.querySelector(".tk210-nav").getBoundingClientRect();
             const heroRect=document.querySelector(".tk-bi-hero").getBoundingClientRect();
             result.navTop=Math.round(navRect.top);result.heroBottom=Math.round(heroRect.bottom);
@@ -194,8 +209,9 @@ jobs:
               gridMinWidth:getComputedStyle(calendarGrid).minWidth,
               weekdaysWidth:Math.round(weekdayRect.width),weekdaysScrollWidth:weekdays.scrollWidth,
               columns:getComputedStyle(calendarGrid).gridTemplateColumns};
-            if(result.overflow||result.navPosition!=="fixed"||navRect.top<heroRect.bottom)
-              throw new Error("Hub mobile navigation/layout failed: "+JSON.stringify(result));
+            if(result.overflow||result.navPosition!=="fixed"||navRect.top<heroRect.bottom||
+              result.catalogColumns!==4||result.catalogOverflow||result.tableOverflow)
+              throw new Error("Hub mobile navigation/catalog/table overflow failed: "+JSON.stringify(result));
             if(calendar.scrollWidth>calendar.clientWidth+1||
               calendarGrid.scrollWidth>calendarGrid.clientWidth+1||
               weekdays.scrollWidth>weekdays.clientWidth+1||
@@ -209,6 +225,10 @@ jobs:
           mcp_tool evaluate_script '() => {document.querySelector(".exec-calendar-card")?.scrollIntoView({block:"center"});return "calendar-mobile-scrolled"}' --pageId 1
           mcp_tool take_screenshot 1 --filePath artifacts/chrome-devtools/hub-calendar-mobile.png
           mcp_tool resize_page 1 1440 1000
+          if [ "$failed" -ne 0 ] || grep -R -q 'MCP_TOOL_ERROR' artifacts/chrome-devtools; then
+            echo "Hub UI checks completed with one or more recorded failures; see hub-desktop/dashboard/mobile artifacts."
+            exit 1
+          fi
 
       - name: Full UI fixture and interaction matrix – all 7 sports
         id: sports_ui
@@ -490,7 +510,7 @@ jobs:
             exit 1
           fi
 
-      - name: Production HTTP and asset checks
+      - name: Production HTTP and asset checks (collect every endpoint)
         id: production
         if: always()
         continue-on-error: true
@@ -498,8 +518,9 @@ jobs:
         env:
           MCP_BOOTSTRAP_OUTCOME: ${{ steps.mcp_bootstrap.outcome }}
         run: |
-          set -euo pipefail
+          set -uo pipefail
           mkdir -p artifacts/chrome-devtools
+          failed=0
           base="https://topkey-activity-management.edgeone.dev"
           paths=("/" "/sports/vnext/index.html?sport=football" "/sports/vnext/index.html?sport=volleyball" "/sports/vnext/badminton.html" "/sports/badminton/index.html" "/hub-dashboard-reference-h219.css" "/executive-dashboard.js?v=h232-live-schedule-20261126")
           for path in "${paths[@]}"; do
@@ -510,87 +531,154 @@ jobs:
               sleep 2
             done
             echo "$code $path" | tee -a artifacts/chrome-devtools/http-status.txt
-            test "$code" = "200"
+            if [ "$code" != "200" ]; then failed=1; fi
           done
-          # A PR build cannot expect the new release to be on production yet.
-          # Run this live-browser gate only after the EdgeOne Git-provider
-          # readiness/deploy workflow has completed for main.
-          curl --fail --silent --show-error --location "$base/sports/vnext/index.html?sport=volleyball&__topkey_probe=$GITHUB_RUN_ID" -o /tmp/topkey-live-index.html
-          if [ "$GITHUB_EVENT_NAME" = "workflow_run" ] && grep -Fq "workspace-contrast-runtime-h238.js?v=h251-podium-medal-unconditional-aa-20261127" /tmp/topkey-live-index.html 2>/dev/null; then
-            curl --fail --silent --show-error --location "$base/sports/vnext/index.html?sport=volleyball&__h248_probe=$GITHUB_RUN_ID" -o /tmp/topkey-h248-live.html
-            grep -Fq 'workspace-contrast-runtime-h238.js?v=h251-podium-medal-unconditional-aa-20261127' /tmp/topkey-h248-live.html
-            curl --fail --silent --show-error --location "$base/sports/vnext/workspace-contrast-runtime-h238.js?v=h251-podium-medal-unconditional-aa-20261127" -o /tmp/topkey-h248-live.js
-            grep -Fq 'h251-podium-medal-unconditional-aa-20261127' /tmp/topkey-h248-live.js
-            echo "200 H251 production runtime content verified" | tee -a artifacts/chrome-devtools/http-status.txt
 
-            # Verify the deployed production runtime in the real browser through
-            # the official Chrome DevTools MCP client. This fixture changes only
-            # transient DOM nodes; it never signs in or writes Firebase data.
-            if [ "$MCP_BOOTSTRAP_OUTCOME" = "success" ]; then
-              mcp_tool(){ node topkey/tests/chrome-devtools-mcp-client.mjs call "$@" 2>&1 | tee -a artifacts/chrome-devtools/mcp-tool-output.log; }
-              mcp_tool navigate_page 2 --url "$base/sports/vnext/index.html?sport=volleyball&__h248_live=$GITHUB_RUN_ID" | tee artifacts/chrome-devtools/h248-production-navigation.txt
-              sleep 2
-              mcp_tool evaluate_script 'async () => {
-                const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
-                for(let i=0;i<40&&!window.__TOPKEY_WORKSPACE_CONTRAST_H251;i++)await wait(100);
-                const runtime=window.__TOPKEY_WORKSPACE_CONTRAST_H251;
-                if(!runtime)throw new Error("H251 runtime not loaded on live EdgeOne");
-                const host=document.querySelector("#app-shell");
-                if(!host)throw new Error("Live sports workspace root unavailable");
-                const page=document.createElement("section");
-                page.className="page";
-                page.style.backgroundColor="rgb(255,255,255)";
-                const sample=document.createElement("span");
-                sample.textContent="H251 production contrast smoke test";
-                sample.style.color="rgb(181,211,232)";
-                page.appendChild(sample);
-                host.appendChild(page);
-                await wait(150);
-                const foreground=getComputedStyle(sample).color;
-                const background=getComputedStyle(page).backgroundColor;
-                const rgb=value=>String(value).match(/[0-9.]+/g).slice(0,3).map(Number);
-                const lum=value=>{const c=rgb(value).map(v=>{v/=255;return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*c[0]+.7152*c[1]+.0722*c[2]};
-                const ratio=(Math.max(lum(foreground),lum(background))+.05)/(Math.min(lum(foreground),lum(background))+.05);
-                page.remove();
-                const result={runtime:runtime.version,foreground,background,contrast:Number(ratio.toFixed(2))};
-                if(foreground!=="rgb(41, 70, 91)"||ratio<4.5)throw new Error("H251 live production contrast failed: "+JSON.stringify(result));
-                return JSON.stringify(result);
-              }' --pageId 2 --output-format=json | tee artifacts/chrome-devtools/h248-production-browser.json
+          if curl --fail --silent --show-error --location "$base/sports/vnext/index.html?sport=volleyball&__topkey_probe=$GITHUB_RUN_ID" -o /tmp/topkey-live-index.html; then
+            if [ "$GITHUB_EVENT_NAME" = "workflow_run" ] && grep -Fq "workspace-contrast-runtime-h238.js?v=h251-podium-medal-unconditional-aa-20261127" /tmp/topkey-live-index.html 2>/dev/null; then
+              if curl --fail --silent --show-error --location "$base/sports/vnext/index.html?sport=volleyball&__h248_probe=$GITHUB_RUN_ID" -o /tmp/topkey-h248-live.html &&
+                 grep -Fq 'workspace-contrast-runtime-h238.js?v=h251-podium-medal-unconditional-aa-20261127' /tmp/topkey-h248-live.html; then
+                echo "200 H251 production HTML verified" | tee -a artifacts/chrome-devtools/http-status.txt
+              else
+                echo "FAIL H251 production HTML content" | tee -a artifacts/chrome-devtools/http-status.txt
+                failed=1
+              fi
+              if curl --fail --silent --show-error --location "$base/sports/vnext/workspace-contrast-runtime-h238.js?v=h251-podium-medal-unconditional-aa-20261127" -o /tmp/topkey-h248-live.js &&
+                 grep -Fq 'h251-podium-medal-unconditional-aa-20261127' /tmp/topkey-h248-live.js; then
+                echo "200 H251 production runtime content verified" | tee -a artifacts/chrome-devtools/http-status.txt
+              else
+                echo "FAIL H251 production runtime content" | tee -a artifacts/chrome-devtools/http-status.txt
+                failed=1
+              fi
+
+              # Verify deployed production runtime only through official MCP.
+              if [ "$MCP_BOOTSTRAP_OUTCOME" = "success" ]; then
+                mcp_tool(){
+                  local status=0
+                  if node topkey/tests/chrome-devtools-mcp-client.mjs call "$@" 2>&1 | tee -a artifacts/chrome-devtools/mcp-tool-output.log; then return 0; else status=$?; printf 'MCP_TOOL_ERROR status=%s command=%q args=%q\\n' "$status" "$1" "${*:2}" | tee -a artifacts/chrome-devtools/mcp-errors.txt >&2; return 0; fi
+                }
+                mcp_tool navigate_page 2 --url "$base/sports/vnext/index.html?sport=volleyball&__h248_live=$GITHUB_RUN_ID" | tee artifacts/chrome-devtools/h248-production-navigation.txt
+                sleep 2
+                mcp_tool evaluate_script 'async () => {
+                  const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+                  for(let i=0;i<40&&!window.__TOPKEY_WORKSPACE_CONTRAST_H251;i++)await wait(100);
+                  const runtime=window.__TOPKEY_WORKSPACE_CONTRAST_H251;
+                  if(!runtime)throw new Error("H251 runtime not loaded on live EdgeOne");
+                  const host=document.querySelector("#app-shell");
+                  if(!host)throw new Error("Live sports workspace root unavailable");
+                  const page=document.createElement("section");
+                  page.className="page";page.style.backgroundColor="rgb(255,255,255)";
+                  const sample=document.createElement("span");sample.textContent="H251 production contrast smoke test";sample.style.color="rgb(181,211,232)";
+                  page.appendChild(sample);host.appendChild(page);await wait(150);
+                  const foreground=getComputedStyle(sample).color,background=getComputedStyle(page).backgroundColor;
+                  const rgb=value=>String(value).match(/[0-9.]+/g).slice(0,3).map(Number);
+                  const lum=value=>{const c=rgb(value).map(v=>{v/=255;return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*c[0]+.7152*c[1]+.0722*c[2]};
+                  const ratio=(Math.max(lum(foreground),lum(background))+.05)/(Math.min(lum(foreground),lum(background))+.05);
+                  page.remove();const result={runtime:runtime.version,foreground,background,contrast:Number(ratio.toFixed(2))};
+                  if(foreground!=="rgb(41, 70, 91)"||ratio<4.5)throw new Error("H251 live production contrast failed: "+JSON.stringify(result));
+                  return JSON.stringify(result);
+                }' --pageId 2 --output-format=json | tee artifacts/chrome-devtools/h248-production-browser.json
+                if grep -q 'Error:' artifacts/chrome-devtools/h248-production-browser.json || grep -q 'MCP_TOOL_ERROR' artifacts/chrome-devtools/mcp-errors.txt 2>/dev/null; then failed=1; fi
+              else
+                echo "FAIL H251 production browser verification blocked: MCP bootstrap unavailable." | tee -a artifacts/chrome-devtools/http-status.txt
+                failed=1
+              fi
             else
-              echo "::error::MCP bootstrap did not pass; live H251 browser verification is blocked."
-              exit 1
+              echo "H251 production browser verification deferred: current production HTML does not yet advertise the H251 runtime." | tee artifacts/chrome-devtools/h248-production-deferred.txt
             fi
           else
-            echo "H251 production browser verification deferred: the current production HTML does not yet advertise the H251 runtime." | tee artifacts/chrome-devtools/h248-production-deferred.txt
+            echo "FAIL production live VNext probe" | tee -a artifacts/chrome-devtools/http-status.txt
+            failed=1
           fi
 
-      - name: Run regression tests
+          if [ "$failed" -ne 0 ]; then
+            echo "Production HTTP/asset audit completed all endpoints and recorded one or more failures."
+            exit 1
+          fi
+      - name: Run full source syntax and regression audit (collect every failure)
         id: regression
         if: always()
         continue-on-error: true
+        shell: bash
         run: |
-          set -euo pipefail
-          node topkey/tests/hub-route-integrity.test.cjs
-          node topkey/tests/hub-sport-entry-contracts-h221.test.cjs
-          node topkey/tests/sport-shell-public-route-isolation-h222.test.cjs
-          node topkey/tests/hub-asset-inventory.test.cjs
-          node topkey/tests/hub-calendar-responsive-h220.test.cjs
-          node topkey/tests/hub-navigation-semantics.test.cjs
-          node topkey/tests/hub-dashboard-h219.test.cjs
-          node topkey/tests/hub-redesign-h240.test.cjs
-          node topkey/tests/h104-render-binding.test.cjs
-          node topkey/tests/hub-readable-h216.test.cjs
-          node topkey/tests/sport-contrast-h217.test.cjs
-          node topkey/tests/sport-workspace-redesign-h218.test.cjs
-          node topkey/tests/sport-workspaces-ux-h214.test.cjs
-          node topkey/tests/sport-themes-h132.test.cjs
-          node topkey/tests/badminton-dashboard-smooth-h129.test.cjs
-          node topkey/tests/hub-sidebar-full-patch-h130.test.cjs
-          node topkey/tests/short-public-links-h136.test.cjs
-          node topkey/tests/sports-group-standings.test.cjs
-          node topkey/sports/vnext/tests/badminton-indexeddb-v3-compat.test.cjs
-          node topkey/tests/executive-dashboard-live-calendar.test.cjs
+          set -uo pipefail
+          mkdir -p artifacts/chrome-devtools/regression
+          report="artifacts/chrome-devtools/regression/summary.tsv"
+          : > "$report"
+          total=0
+          passed=0
+          failed=0
+          skipped=0
+          run_check(){
+            local name="$1"; shift
+            local log="artifacts/chrome-devtools/regression/${name//[^A-Za-z0-9_.-]/_}.log"
+            total=$((total+1))
+            echo "===== START $name ====="
+            if timeout 30s "$@" >"$log" 2>&1; then
+              passed=$((passed+1))
+              printf 'PASS\t%s\t0\n' "$name" | tee -a "$report"
+              echo "PASS $name"
+            else
+              local code=$?
+              failed=$((failed+1))
+              printf 'FAIL\t%s\t%s\n' "$name" "$code" | tee -a "$report"
+              echo "FAIL $name (exit $code); continuing. Log: $log"
+              sed -n '1,100p' "$log"
+            fi
+          }
 
+          # Parse every first-party JS/CJS/MJS source file. Do not stop at the
+          # first syntax error; record each broken file and continue scanning.
+          while IFS= read -r file; do
+            run_check "syntax-$file" node --check "$file"
+          done < <(find . -type d \( -name node_modules -o -name vendor -o -name .git -o -name .next -o -name dist \) -prune -o -type f \( -name '*.js' -o -name '*.cjs' -o -name '*.mjs' \) -print | sort)
+
+          # Execute the complete Node regression suite as one TAP run.
+          # node --test continues after individual assertion failures and emits
+          # every failing subtest; this avoids serial 30s waits per test file.
+          mapfile -t test_files < <(find . -type d \( -name node_modules -o -name vendor -o -name .git -o -name .next -o -name dist \) -prune -o -type f \( -name '*.test.cjs' -o -name '*.test.mjs' -o -name '*.test.js' \) -print | sort)
+          runnable_tests=()
+          for file in "${test_files[@]}"; do
+            case "$file" in
+              *rules-emulator*.test.cjs|*rules-emulator*.test.mjs|*rules-emulator*.test.js)
+                skipped=$((skipped+1))
+                printf 'DEFERRED\\t%s\\tFirebase emulator gate\\n' "$file" | tee -a "$report"
+                ;;
+              *) runnable_tests+=("$file") ;;
+            esac
+          done
+          total=$((total+1))
+          node_log="artifacts/chrome-devtools/regression/all-node-tests.tap"
+          echo "Running ${#runnable_tests[@]} Node test files in one failure-collecting TAP session."
+          if timeout 180s node --test --test-concurrency=8 "${runnable_tests[@]}" >"$node_log" 2>&1; then
+            node_failed=0
+          else
+            node_failed=$?
+          fi
+          node_passed=$(grep -c '^ok ' "$node_log" || true)
+          node_not_ok=$(grep -c '^not ok ' "$node_log" || true)
+          if [ "$node_failed" -eq 0 ]; then
+            passed=$((passed+1))
+            printf 'PASS\\tall-node-regression-tests (%s files; %s subtests)\\t0\\n' "${#runnable_tests[@]}" "$node_passed" | tee -a "$report"
+          else
+            failed=$((failed+1))
+            printf 'FAIL\\tall-node-regression-tests (%s files; %s failed subtests)\\t%s\\n' "${#runnable_tests[@]}" "$node_not_ok" "$node_failed" | tee -a "$report"
+            echo "Node regression suite returned $node_failed; all TAP failures are listed below."
+            grep -n -A8 -B2 '^not ok ' "$node_log" || true
+            tail -n 80 "$node_log"
+          fi
+
+          # Compile every Python source without writing __pycache__ files.
+          while IFS= read -r file; do
+            run_check "python-$file" python3 -c 'import pathlib,sys; p=pathlib.Path(sys.argv[1]); compile(p.read_text(encoding="utf-8"),str(p),"exec")' "$file"
+          done < <(find . -type d \( -name node_modules -o -name vendor -o -name .git -o -name .next -o -name dist \) -prune -o -type f -name '*.py' -print | sort)
+
+          printf '\nTOTAL=%s PASS=%s FAIL=%s DEFERRED=%s\n' "$total" "$passed" "$failed" "$skipped" | tee artifacts/chrome-devtools/regression/totals.txt
+          if [ "$failed" -ne 0 ]; then
+            echo "Full regression audit found $failed failing checks; all discovered checks were still executed."
+            exit 1
+          fi
+          echo "All executable source and regression checks passed (emulator rules remain under dedicated gate)."
       - name: Upload Chrome DevTools evidence
         if: always()
         uses: actions/upload-artifact@v4

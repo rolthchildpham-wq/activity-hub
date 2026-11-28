@@ -1,7 +1,8 @@
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const vm=require('node:vm');
-const html=fs.readFileSync('topkey/sports/badminton/index.html','utf8');
+const legacy=fs.readFileSync('topkey/sports/badminton/index.html','utf8');
+const vnext=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
 const source=fs.readFileSync('topkey/sports/badminton/fast-start-h124.js','utf8');
 const events=[];
 const scheduled=[];
@@ -21,7 +22,11 @@ const auth={
 const context={window:{Topkey:{App:app,Auth:auth,Data:{auth:{currentUser:{uid:'user-a'}}}}},requestIdleCallback:fn=>scheduled.push(fn),setTimeout:fn=>scheduled.push(fn),console};
 vm.runInNewContext(source,context);
 assert.ok(context.window.TopkeyBadmintonFastStart124.installed);
-assert.ok(html.includes("await loadScript('./fast-start-h124.js?v=h126-startup-20261113',7000);await loadScript('./dashboard-smooth-h129.js?v=h129-20261113',7000);await loadScript('./tab-perf-h133.js?v=h133-20261113',7000);await loadScript('./sidebar-collapse-h130.js?v=h130-20261113',7000);state.core=true"));
+assert.ok(legacy.includes("new URL('../vnext/index.html', location.href)"),'Legacy badminton route must hand off to the shared workspace');
+assert.ok(legacy.includes("query.set('sport', 'badminton')")&&legacy.includes('target.search = query.toString()'),'Legacy badminton route must preserve sport and query parameters');
+assert.ok(vnext.includes('dashboard-live-h227.js?v=h229-dashboard-retry-20261125'),'Shared VNext dashboard runtime must own badminton startup');
+assert.ok(vnext.includes('tk-h124-badminton-performance-runtime'),'Badminton-only performance modules must load after the shared authenticated boot');
+for(const asset of ['fast-start-h124.js?v=h126-startup-20261113','dashboard-smooth-h129.js?v=h129-20261113','tab-perf-h133.js?v=h133-20261113','sidebar-collapse-h130.js?v=h130-20261113'])assert.ok(vnext.includes(asset),'Missing shared badminton runtime '+asset);
 (async()=>{
  // Only the visible authorized tab is rendered on the first Firebase login.
  app.renderAll();
@@ -63,7 +68,7 @@ assert.ok(html.includes("await loadScript('./fast-start-h124.js?v=h126-startup-2
  console.log('H124 fast-start: verified-only background housekeeping, no auth bypass, and logout cancellation passed.');
 })().catch(err=>{console.error(err);process.exitCode=1});
 const authSource=fs.readFileSync('topkey/topkey-shared-auth.js','utf8');
-const entrySource=fs.readFileSync('topkey/sports/badminton/index.html','utf8');
+const entrySource=fs.readFileSync('topkey/sports/vnext/index.html','utf8');
 const perfSource=fs.readFileSync('topkey/sports/badminton/perf-diagnostics-h125.js','utf8');
 assert.ok(authSource.includes("document.getElementById('topkey-auth-boot-pending')?.remove()"),'verified auth must remove old Firebase overlay');
 assert.ok(authSource.includes("document.documentElement?.classList?.add('tk-auth-verified')"));
@@ -71,5 +76,6 @@ assert.ok(authSource.includes("document.documentElement?.classList?.remove('tk-a
 assert.ok(!authSource.includes("setTimeout(()=>this.recoverProductionTournament().catch(e=>console.warn('Tournament recovery',e)),250)"),'do not synchronously churn tournament during first click');
 assert.ok(perfSource.includes('navigationType:metrics.navType'),'diagnostic navigation type');
 assert.ok(perfSource.includes('unexpectedBootOverlays'),'diagnostic overlay count');
-assert.ok(entrySource.includes('topkey-shared-auth.js?v=h127-auth-visual-stability-20261113'));
-assert.ok(entrySource.includes('html.tk-auth-verified #topkey-auth-boot-pending'));
+assert.ok(entrySource.includes('../../topkey-shared-auth.js?v=u122h120-auth-p5-20261110'),'active shared VNext must load the current Firebase shared-auth runtime');
+assert.ok(entrySource.includes('../../h108-auth-guard.js?v=h217-unified-20261124'),'active shared VNext must preserve the auth permission guard');
+assert.ok(!entrySource.includes('id="topkey-auth-boot-pending"'),'active VNext must not ship a blocking legacy auth overlay in static markup');
