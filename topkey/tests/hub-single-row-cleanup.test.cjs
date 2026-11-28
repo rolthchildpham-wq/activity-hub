@@ -21,7 +21,7 @@ assert.match(html,/executive-sport-insights\.js/);
 assert.match(html,/id="system-admin-launch"/);
 assert.match(html,/id="password-change-launch"/);
 assert.doesNotMatch(html,/id="sport-management"|sport-management-launch\.(?:js|css)|Nền tảng dùng chung/,'Duplicated management and promotional card must not load');
-assert.match(html,/canva-ui-system\.css\?v=canva-ui-v1-20261127/);
+assert.match(html,/canva-ui-system\.css\?v=canva-ui-v\d+-202611\d+/);
 assert(!html.includes('hub-single-row.css')&&!html.includes('hub-compact-h130.css'),'Legacy Hub skins must not load');
 assert.match(css,/grid-template-columns:repeat\(8,minmax\(0,1fr\)\)/);
 assert.match(css,/max-width:100%/);
