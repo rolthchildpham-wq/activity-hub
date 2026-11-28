@@ -292,3 +292,14 @@ html[data-tk-sport] #app-shell .topbar .hub-back{display:none!important}
 /* Settings Firebase/security metadata is rendered inside nested dark cards; keep semantic emphasis readable against the navy surface. */
 html[data-tk-sport] body #app-shell:not(.hidden) #page-settings .card :is(b,strong,label,code){color:#F5FAFD!important;opacity:1!important}
 html[data-tk-sport] body #app-shell:not(.hidden) #page-settings .card :is(p,small,.muted,.note){color:#B8C9D6!important;opacity:1!important}
+
+/* Chrome MCP audit: settings metadata also appears in nested .subcard surfaces,
+   not only .card. Keep semantic emphasis readable across every sport workspace. */
+html[data-tk-sport] body #app-shell:not(.hidden) #page-settings :is(b,strong,label,code){
+  color:#F5FAFD!important;
+  opacity:1!important;
+}
+html[data-tk-sport] body #app-shell:not(.hidden) #page-settings :is(p,small,.muted,.note){
+  color:#B8C9D6!important;
+  opacity:1!important;
+}
