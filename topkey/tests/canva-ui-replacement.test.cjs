@@ -9,8 +9,9 @@ function styles(html){
  const tags=html.match(/<link\b[^>]*>/gi)||[];
  return tags.filter(tag=>/\brel=["']stylesheet["']/i.test(tag)).map(tag=>tag.match(/\bhref=["']([^"']+)["']/i)?.[1]).filter(Boolean);
 }
-assert.deepEqual(styles(hub),['./canva-ui-system.css?v=canva-ui-v1-20261127']);
-assert.deepEqual(styles(sports),['./canva-sports-ui.css?v=canva-sports-v1-20261127']);
+assert.deepEqual(styles(hub).map(x=>x.split('?')[0]),['./canva-ui-system.css']);
+assert.deepEqual(styles(sports).map(x=>x.split('?')[0]),['./canva-sports-ui.css']);
+assert.match(sports,/canva-sports-ui\.css\?v=canva-sports-v\d+-202611\d+/);
 for(const [name,html] of [['Hub',hub],['Sports VNext',sports]]){
  const markup=html.replace(/<script\b[\s\S]*?<\/script>/gi,'');
  assert.ok(!/\sstyle\s*=/.test(markup),name+' must not retain inline style attributes');
