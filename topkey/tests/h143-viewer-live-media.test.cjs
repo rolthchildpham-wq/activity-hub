@@ -37,7 +37,7 @@ function createHarness(stream={type:'EMBED',status:'LIVE',url:'https://www.youtu
  const document={getElementById:id=>nodes[id],documentElement:{classList:{add(){}}},head:elem('head'),createElement:elem};
  const sandbox={document,console,URLSearchParams,URL,setTimeout:()=>0,
   location:{search:'?sport=football&tid=main_2026',href:'https://example.com/'},
-  window:{requestAnimationFrame:cb=>{frames.push(cb);return frames.length},TopkeyPlatform:{loadFirebase:async()=>{}},
+  window:{requestAnimationFrame:cb=>{frames.push(cb);queueMicrotask(()=>cb(Date.now()));return frames.length},TopkeyPlatform:{loadFirebase:async()=>{}},
     Topkey:{FIREBASE_CONFIG:{apiKey:'mock'}},firebase:{database:()=>({ref:()=>ref})}}};
  vm.runInNewContext(src,sandbox,{timeout:2000});
  const flush=()=>new Promise(setImmediate);
