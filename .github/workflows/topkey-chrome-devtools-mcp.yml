@@ -183,9 +183,15 @@ jobs:
           mcp_tool evaluate_script '() => {window.scrollTo(0,0);return "top"}' --pageId 1
           mcp_tool resize_page 1 390 844
           mcp_tool evaluate_script '() => {
+            const catalog=document.querySelector("#topkey-sports");
+            const tableWraps=[...document.querySelectorAll(".exec-table-wrap,.exec-insights-tablewrap")];
             const result={width:innerWidth,scrollWidth:document.documentElement.scrollWidth,
               overflow:document.documentElement.scrollWidth>innerWidth+2,
-              navPosition:getComputedStyle(document.querySelector(".tk210-nav")).position};
+              navPosition:getComputedStyle(document.querySelector(".tk210-nav")).position,
+              catalogColumns:getComputedStyle(catalog).gridTemplateColumns.split(" ").length,
+              catalogOverflow:catalog.scrollWidth>catalog.clientWidth+2,
+              tableOverflow:tableWraps.filter(node=>node.scrollWidth>node.clientWidth+2).length,
+              tableCount:tableWraps.length};
             const navRect=document.querySelector(".tk210-nav").getBoundingClientRect();
             const heroRect=document.querySelector(".tk-bi-hero").getBoundingClientRect();
             result.navTop=Math.round(navRect.top);result.heroBottom=Math.round(heroRect.bottom);
@@ -203,8 +209,9 @@ jobs:
               gridMinWidth:getComputedStyle(calendarGrid).minWidth,
               weekdaysWidth:Math.round(weekdayRect.width),weekdaysScrollWidth:weekdays.scrollWidth,
               columns:getComputedStyle(calendarGrid).gridTemplateColumns};
-            if(result.overflow||result.navPosition!=="fixed"||navRect.top<heroRect.bottom)
-              throw new Error("Hub mobile navigation/layout failed: "+JSON.stringify(result));
+            if(result.overflow||result.navPosition!=="fixed"||navRect.top<heroRect.bottom||
+              result.catalogColumns!==4||result.catalogOverflow||result.tableOverflow)
+              throw new Error("Hub mobile navigation/catalog/table overflow failed: "+JSON.stringify(result));
             if(calendar.scrollWidth>calendar.clientWidth+1||
               calendarGrid.scrollWidth>calendarGrid.clientWidth+1||
               weekdays.scrollWidth>weekdays.clientWidth+1||
